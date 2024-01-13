@@ -5,7 +5,7 @@ import datetime
 import pickle
 import xarray as xr
 import dask
-from os.path import join,exists,basename
+from os.path import join,exists,basename,makedirs
 import glob
 import yaml
 import matplotlib 
@@ -19,7 +19,7 @@ import data_retrieval as datre
 import utils
 
 def reduce_clim(qoidict, stagefiles):
-    # Compute daily and areally-averaged temperatures for climatology and ERA5
+    # Compute daily and areally-averaged temperatures for climatology 
     avgD = (
             datre.rezero_lons(xr.open_dataarray(datre.get_clim_filename(qoidict['var_name'])))
             .sel(qoidict['spacesel'])
@@ -30,7 +30,7 @@ def reduce_clim(qoidict, stagefiles):
     return
 
 def reduce_era5(qoidict, stagefiles):
-    # Compute daily and areally-averaged temperatures for climatology and ERA5
+    # Compute daily and areally-averaged temperatures for ERA5
     avgD = (
             datre.rezero_lons(
                 xr.open_dataset(datre.get_era5_filename(qoidict['var_name']))[qoidict['var_name']]
@@ -52,8 +52,7 @@ def reduce_gcm(qoidict, stagefiles, tododict):
             ens_sizes = []
             for expt in qoidict['expts']:
                 print(f"{expt = }")
-                mem_filenames[expt],mem_labels[expt] = datre.get_gcm_6hrPt_filenames(qoidict['model'], qoidict['var_name'], expt, fcdate)
-                print(f"{len(mem_filenames[expt]) = }")
+                mem_filenames[expt],mem_labels[expt] = list(stagefiles[fcdate][expt].keys()), list(stagefiles[fcdate][expt].values())
                 ens_sizes.append(len(mem_filenames[expt]))
             # Before loading data, verify there are the same number of files in each
             if ens_sizes[0] > 0 and len(np.unique(ens_sizes)) == 1:
@@ -63,7 +62,6 @@ def reduce_gcm(qoidict, stagefiles, tododict):
                 ds_fc = xr.concat(ds_fc, dim="expt").assign_coords(expt=qoidict['expts'])
                 print(f"{ds_fc[0]['time'].to_numpy() = }")
                 print(f"Expts concatenated successfully")
-                #ds_fc = ds_fc.compute()
                 ds.append(ds_fc)
         if len(ds) == 2:
             ds = xr.concat(ds, dim='init').assign_coords(init=qoidict['fcdates'])
@@ -109,62 +107,97 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles):
         ds_avgDA = xr.open_dataset(stagefiles['avgDA']) # Do we need to further subset by the variable? Probably not because didn't subtract off ERA5
     if tododict['compute_severity']:
         ds_avgDA = xr.open_dataset(stagefiles['avgDA']) # Do we need to further subset by the variable? Probably not because didn't subtract off ERA5
-        severity = severity_fun_avgDA(ds_avgDA.sel(qoidict['timesel_event']), qoidict) # dims: (fcdate,expt,member)
-        severity.to_netcdf(stagefiles['severity'])
+        for svmetric in qoidict['severity_metrics']:
+            severity = severity_fun_avgDA(ds_avgDA.sel(qoidict['timesel_event']), svmetric) # dims: (fcdate,expt,member,svmetric)
+            severity.to_netcdf(stagefiles['severity'][svmetric])
     if tododict['compute_risk']:
         severity = xr.open_dataset(stagefiles['severity'])
         print(f'{severity.dims = }, {severity.shape = }')
 
     return
         
-        
-
-
-
-# -------------------- Severity functions -------------------
-def severity_fun_avgDA(avgDA, qoidict):
+def severity_fun_avgDA(avgDA, svmetric):
     # measures of severity for daily- and areally-averaged timeseries data
-    if qoidict['metric'] == 'mintemp': 
+    if svmetric == 'mintemp': 
         severity = -avgDA.min(dim='time')
-    elif qoidict['metric'] == 'meantemp':
+    elif svmetric == 'meantemp':
         severity = -avgDA.mean(dim='time')
-    elif qoidict['metric'] == 'durationcold':
+    elif svmetric == 'durationcold':
         # Calculate the maximum duration with temps < some threshold
         pass
     return severity
 
 # -----------------------------------------------------------
 
-tododict = dict({
-    "compute_clim":                  0,
-    "compute_era5":                  0,
-    "compute_model":                 0,
-    "compute_area_averages":         0,
-    "compare_to_will":               1,
-    "compute_risks":                 1,
-    "plot_risks":                    1,
-    "plot_relative_risk":            1,
+# ------ main procedure --------------
+resultdir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-01-13'
+# Bounds of interest in time, variable, etc. 
+model2institute,vbl2key,base_dirs = datre.get_dirinfo()
+models = list(model2institute.keys())
+
+qoidict = dict({
+    'fcdates': np.array([datetime.datetime(2018,1,25),datetime.datetime(2018,2,8)]),
+    'expts': ['control','free','nudged'],
+    'expt_pairs': dict({"n2f": ["nudged","free"], "f2c": ["free","control"], "n2c": ["nudged","control"]}),
+    'timesel_maxposs': dict(time=slice(datetime.datetime(2018,2,12),datetime.datetime(2018,3,11)))
+    'timesel_event': dict(time=slice(datetime.datetime(2018,2,21),datetime.datetime(2018,3,8)))
+    'spacesel': dict(lat=slice(50,65),lon=slice(-10,130)),
+    'data_var': 't2m', # which variable we're interested in the extrema of 
+    'severity_metrics': ['mintemp'],
     })
 
-# Anomalize?
-anomalize_flag = False
-anom_str = "_anom_" if anomalize_flag else "_nom_"
+tododict = dict({
+    'clim': dict({
+        'avgD':   1,
+        'avgDA':  1,
+        }),
+    'era5': dict({
+        'avgD':   1,
+        'avgDA':  1,
+        }),
+    'gcms': dict({
+        model: dict({ 
+            'avgD':             1,
+            'avgDA':            1,
+            'plot_avgDA':       1,
+            'compute_severity': 1,
+            'compute_risk':     1,
+            })
+        for model in models
+        }),
+    'comp': dict({ # comparison or comprehensive
+        'plot_avgDA': 1,
+        'plot_rr':    1, 
+        })
+    })
+
+stagefiles = dict()
+for dataset in ['clim','era5']:
+    resultdir_dataset = join(resultdir,dataset)
+    makedirs(resultdir_dataset, exist_ok=True)
+    stagefiles[dataset]['avgD'] = join(resultdir_model, 'avgD.nc')
+    stagefiles[dataset]['avgDA'] = join(resultdir_model, 'avgDA.nc')
+for model in models:
+    resultdir_model = join(resultdir,model)
+    makedirs(resultdir_model, exist_ok=True)
+    stagefiles[model] = dict()
+    for i_fcdate,fcdate in enumerate(qoidict['fcdates']):
+        stagefiles[model][fcdate] = dict()
+        for expt in qoidict['expts']:
+            mem_filenames,mem_labels = datre.get_gcm_6hrPt_filenames(model,qoidict['var_name'],expt,fcdate)
+            stagefiles[model][fcdate][expt] = dict({label: filename for (label,filename) in zip(mem_labels,mem_filenames)})
+    stagefiles[model]['avgD'] = join(resultdir_model, 'avgD.nc')
+    stagefiles[model]['avgDA'] = join(resultdir_model, 'avgDA.nc')
+    stagefiles[model]['severity'] = join(resultdir_model, 'severity.nc')
+    
+
+# ----- Begin ad-hoc adjustments to tododict -----------
+
+# ----- End ad-hoc adjustments to tododict ------------
+
 # Overwrite? 
 overwrite_flag = False
 
-# ------- Bounds of interest in time, variable, etc. ---------
-model2institute,vbl2key,base_dirs = datre.get_dirinfo()
-models = list(model2institute.keys())
-rois = dict({
-    "eurasia": dict(lat=slice(50,65),lon=slice(-10,130)),
-    })
-expts = ["control","free","nudged"]
-expt_pairs = dict({"n2f": ["nudged","free"], "f2c": ["free","control"], "n2c": ["nudged","control"]})
-fcdates = [datetime.datetime(2018,1,25),datetime.datetime(2018,2,8)]
-vbl = "t2m"
-timesel_event_maxposs = dict(time=slice(datetime.datetime(2018,2,12),datetime.datetime(2018,3,11))) # maximum possible time selection
-timesel_event = dict(time=slice(datetime.datetime(2018,2,21),datetime.datetime(2018,3,8))) # actual time selection
-# ------------------------------------------------------------
 
 # ------------------------ Repackage data into area- and time-resolved -------------
 savedir = "/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018"
