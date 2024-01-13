@@ -125,5 +125,15 @@ def preprocess_gcm_6hrPt(dsmem,vbl,fcdate,start_date,end_date,roi):
             .sel(roi))
     return dsmem
 
+# -------------------- Severity functions -------------------
+def compute_area_averaged_anomaly(aa_clim, ds):
+    # ds could be era5 or a model. Note that aa_clim should be precomputed elsewhere
+    ds_dayofyear = pd.to_datetime(ds['time'].to_numpy()).dayofyear
+    # also compute daily averages 
+    aa_anom = area_average(ds).groupby(ds_dayofyear).mean(dim='time') - aa_clim.sel(dayofyear=ds_dayofyear).assign_coords(ds['time'].to_numpy()).rename(dayofyear='time')
+    return aa_anom
+
+
+
 if __name__ == "__main__":
     count_ensemble_sizes()
