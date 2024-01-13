@@ -114,24 +114,19 @@ def count_ensemble_sizes():
                 counts[model][expt][fcdate] = len(fnames)
     return counts 
 
-def preprocess_gcm_6hrPt(dsmem,vbl,fcdate,start_date,end_date,roi):
+def preprocess_gcm_6hrPt(dsmem,vbl,fcdate,timesel,spacesel):
     dsmem = (
             rezero_lons(
                 dsmem[vbl2key[vbl]]
                 #.assign_coords(time = pd.to_datetime(dsmem.indexes['time'].to_datetimeindex()))
                 #.assign_coords(time = sdate + (dsmem.time.to_numpy() - dsmem.time[0].item()))
                 .assign_coords(time=np.arange(fcdate,fcdate+datetime.timedelta(hours=6*dsmem.time.size),datetime.timedelta(hours=6)))
-                .sel(time=slice(start_date,end_date)))
-            .sel(roi))
+                .sel(timesel))
+            .sel(spacesel))
     return dsmem
 
-# -------------------- Severity functions -------------------
-def compute_area_averaged_anomaly(aa_clim, ds):
-    # ds could be era5 or a model. Note that aa_clim should be precomputed elsewhere
-    ds_dayofyear = pd.to_datetime(ds['time'].to_numpy()).dayofyear
-    # also compute daily averages 
-    aa_anom = area_average(ds).groupby(ds_dayofyear).mean(dim='time') - aa_clim.sel(dayofyear=ds_dayofyear).assign_coords(ds['time'].to_numpy()).rename(dayofyear='time')
-    return aa_anom
+
+
 
 
 

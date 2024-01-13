@@ -18,12 +18,32 @@ pltsvargs = {"bbox_inches": "tight", "pad_inches": 0.2}
 import data_retrieval as datre
 import utils
 
-def risk_calc_pipeline_1model(qoidict, tododict, stagefiles, avgDA_clim, avgDA_era5):
-    # qoidict: quantities of interest
-    # tododict: to-do items
-    # avgD: daily averaged
-    # avgDA: daily and area-averaged
-    if tododict['compile_ensemble_avgD']:
+def reduce_clim(qoidict, stagefiles):
+    # Compute daily and areally-averaged temperatures for climatology and ERA5
+    avgD = (
+            datre.rezero_lons(xr.open_dataarray(datre.get_clim_filename(qoidict['var_name'])))
+            .sel(qoidict['spacesel'])
+            .sel(qoidict['timesel_maxposs']))
+    avgD.to_netcdf(stagefiles['avgD'])
+    avgDA = datre.area_average(avgD)
+    avgDA.to_netcdf(stagefiles['avgDA'])
+    return
+
+def reduce_era5(qoidict, stagefiles):
+    # Compute daily and areally-averaged temperatures for climatology and ERA5
+    avgD = (
+            datre.rezero_lons(
+                xr.open_dataset(datre.get_era5_filename(qoidict['var_name']))[qoidict['var_name']]
+                .sel(time=slice(period_begin,period_end)))
+            .sel(qoidict['spacesel'])
+            .sel(qoidict['timesel_maxposs']))
+    avgD.to_netcdf(stagefiles['avgD'])
+    avgDA = datre.area_average(avgD)
+    avgDA.to_netcdf(stagefiles['avgDA'])
+    return
+
+def reduce_gcm(qoidict, stagefiles, tododict):
+    if tododict['avgD']:
         ds = []
         for i_fcdate,fcdate in enumerate(qoidict['fcdates']):
             preprocess = lambda dsmem: datre.preprocess_gcm_6hrPt(dsmem,qoidict['var_name'],fcdate,qoidict['timesel_maxposs'],qoidict['spacesel'])
@@ -50,28 +70,43 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles, avgDA_clim, avgDA_e
             ds.to_netcdf(stagefiles['avgD'])
     if tododict['avgDA']:
         # Don't anomalize, because absolute minimum temperature might be more relevant than minimum anomaly. Maybe we should subtract the min over the time period from the min over the time period from ERA5
-        for i_fcdate,fcdate in enumerate(qoidict['fcdates']):
-            ds_avgD = xr.open_dataset(stagefiles['avgD'])
-            ds_avgDA datre.area_average(ds_avgD)
-            ds_avgDA.to_netcdf(stagefiles['avgDA'])
+        ds_avgD = xr.open_dataset(stagefiles['avgD'])
+        ds_avgDA = datre.area_average(ds_avgD)
+        ds_avgDA.to_netcdf(stagefiles['avgDA'])
+    return
+
+def plot_avgDA_timeseries(qoidict, stagefiles):
+    # Only for 1 model
+    avgDA_era5 = xr.open_dataarray(stagefiles['era5']['avgDA'])
+    avgDA_clim = xr.open_dataarray(stagefiles['clim']['avgDA'])
+    avgDA_gcm = xr.open_dataarray(stagefiles['gcm']['avgDA'])
+    fig,axes = plt.subplots(nrows=2,ncols=len(qoidict['expts']),figsize=(6*len(qoidict['expts']),6),sharex=True,sharey=True)
+    for i_expt,expt in enumerate(qoidict['expts']):
+        for i_fcdate,fcdate in enumerate(anom_aa_gcm_justin.fcdate.values):
+            ax = axes[i_fcdate,i_expt]
+            for member in anom_aa_gcm_justin.member.values:
+                hgcm, = xr.plot.plot(avgDA_gcm.sel(expt=expt,fcdate=fcdate,member=member),x="time",color="red", ax=ax, label=model, alpha=0.3)
+            hera, = xr.plot.plot(avgDA_era5,x="time",color="black",linewidth=3,linestyle="--",ax=ax,label="ERA5")
+            hclim, = xr.plot.plot(avgDA_clim,x="time",color="gray",linewidth=4,linestyle="-",alpha=0.5,ax=ax,label="Climatology")
+            hgcm_mean, = xr.plot.plot(anom_aa_da_gcm_justin.sel(expt=expt,fcdate=fcdate).mean("member"),x="time",color="red",linewidth=3,linestyle="--", ax=ax, label="Ens. mean")
+
+            ax.set_title(r"Init %s, %s"%(fcdates[i_fcdate].strftime("%Y-%m-%d"),expt))
+            ax.set_ylabel(f"{qoidict['var_name']} [K]")
+            ax.set_xlabel("")
+            ax.legend(handles=[hclim,hera,hgcm,hgcm_mean])
+    fig.savefig(stagefiles['avgDA_plot'],**pltsvargs)
+    plt.close(fig)
+    
+
+def risk_calc_pipeline_1model(qoidict, tododict, stagefiles):
+    # qoidict: quantities of interest
+    # tododict: to-do items
+    # avgD: daily averaged
+    # avgDA: daily and area-averaged
+    if tododict['avgD'] or tododict['avgDA']:
+        reduce_gcm(qoidict, stagefiles, tododict)
     if tododict['plot_avgDA_timeseries']:
         ds_avgDA = xr.open_dataset(stagefiles['avgDA']) # Do we need to further subset by the variable? Probably not because didn't subtract off ERA5
-        fig,axes = plt.subplots(nrows=2,ncols=len(qoidict['expts']),figsize=(6*len(qoidict['expts']),6),sharex=True,sharey=True)
-        for i_expt,expt in enumerate(qoidict['expts']):
-            for i_fcdate,fcdate in enumerate(anom_aa_gcm_justin.fcdate.values):
-                ax = axes[i_fcdate,i_expt]
-                for member in anom_aa_gcm_justin.member.values:
-                    hgcm, = xr.plot.plot(ds_avgDA.sel(expt=expt,fcdate=fcdate,member=member),x="time",color="red", ax=ax, label=model, alpha=0.3)
-                hera, = xr.plot.plot(avgDA_era5,x="time",color="black",linewidth=3,linestyle="--",ax=ax,label="ERA5")
-                hclim, = xr.plot.plot(avgDA_clim,x="time",color="gray",linewidth=4,linestyle="-",alpha=0.5,ax=ax,label="Climatology")
-                hgcm_mean, = xr.plot.plot(anom_aa_da_gcm_justin.sel(expt=expt,fcdate=fcdate).mean("member"),x="time",color="red",linewidth=3,linestyle="--", ax=ax, label="Ens. mean")
-
-                ax.set_title(r"Init %s, %s"%(fcdates[i_fcdate].strftime("%Y-%m-%d"),expt))
-                ax.set_ylabel(f"{qoidict['var_name']} [K]")
-                ax.set_xlabel("")
-                ax.legend(handles=[hclim,hera,hgcm,hgcm_mean])
-        fig.savefig(stagefiles['avgDA_plot'],**pltsvargs)
-        plt.close(fig)
     if tododict['compute_severity']:
         ds_avgDA = xr.open_dataset(stagefiles['avgDA']) # Do we need to further subset by the variable? Probably not because didn't subtract off ERA5
         severity = severity_fun_avgDA(ds_avgDA.sel(qoidict['timesel_event']), qoidict) # dims: (fcdate,expt,member)
@@ -79,6 +114,8 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles, avgDA_clim, avgDA_e
     if tododict['compute_risk']:
         severity = xr.open_dataset(stagefiles['severity'])
         print(f'{severity.dims = }, {severity.shape = }')
+
+    return
         
         
 
@@ -131,7 +168,6 @@ timesel_event = dict(time=slice(datetime.datetime(2018,2,21),datetime.datetime(2
 
 # ------------------------ Repackage data into area- and time-resolved -------------
 savedir = "/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018"
-timespan = np.arange(period_begin,period_end,datetime.timedelta(days=1))
 
 clim_filename = join(savedir,f"{vbl}_clim.nc")
 if tododict["compute_clim"]:
