@@ -101,7 +101,7 @@ def plot_avgDA_timeseries(qoidict, stagefiles_model, stagefiles_era5, stagefiles
             ax.set_title(r"Init %s, %s"%(qoidict['fcdates'][i_fcdate].strftime("%Y-%m-%d"),expt))
             ax.set_ylabel(f"{qoidict['var_name']} [K]")
             ax.set_xlabel("")
-            ax.legend(handles=[hclim,hera,hgcm,hgcm_mean])
+    axes[0,0].legend(handles=[hclim,hera,hgcm,hgcm_mean], loc=(-1,0))
     fig.savefig(stagefiles_model['avgDA_plot'],**pltsvargs)
     plt.close(fig)
     
@@ -141,6 +141,7 @@ def severity_fun_avgDA(avgDA, svmetric):
 
 # ------ main procedure --------------
 resultdir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-01-13'
+figdir = '/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-01-13'
 # Bounds of interest in time, variable, etc. 
 model2institute,vbl2key,base_dirs = datre.get_dirinfo()
 models = list(model2institute.keys())
@@ -189,14 +190,18 @@ stagefiles = dict()
 for dataset in ['clim','era5']:
     stagefiles[dataset] = dict()
     resultdir_dataset = join(resultdir,dataset)
+    figdir_dataset = join(figdir,dataset)
     makedirs(resultdir_dataset, exist_ok=True)
+    makedirs(figdir_dataset, exist_ok=True)
     stagefiles[dataset]['avgD'] = join(resultdir_dataset, 'avgD.nc')
     stagefiles[dataset]['avgDA'] = join(resultdir_dataset, 'avgDA.nc')
 models2include = []
 for model in models:
     include_model = True
     resultdir_model = join(resultdir,model)
+    figdir_model = join(figdir,model)
     makedirs(resultdir_model, exist_ok=True)
+    makedirs(figdir_model, exist_ok=True)
     stagefiles[model] = dict()
     for i_fcdate,fcdate in enumerate(qoidict['fcdates']):
         stagefiles[model][fcdate] = dict()
@@ -205,29 +210,28 @@ for model in models:
             mem_filenames,mem_labels = datre.get_gcm_6hrPt_filenames(model,qoidict['var_name'],expt,fcdate)
             stagefiles[model][fcdate][expt] = dict({label: filename for (label,filename) in zip(mem_labels,mem_filenames)})
             ens_sizes.append(len(mem_filenames))
-        include_model *=  (len(np.unique(ens_sizes)) == 1) * (ens_sizes[0] > 0)
+        include_model *= (len(np.unique(ens_sizes)) == 1) * (ens_sizes[0] > 0)
     if include_model:
         models2include.append(model)
         stagefiles[model]['avgD'] = join(resultdir_model, 'avgD.nc')
         stagefiles[model]['avgDA'] = join(resultdir_model, 'avgDA.nc')
-        stagefiles[model]['avgDA_plot'] = join(resultdir_model, 'avgDA_plot.png')
+        stagefiles[model]['avgDA_plot'] = join(figdir_model, 'avgDA_plot.png')
         stagefiles[model]['severity'] = dict({
             metric: join(resultdir_model, f'severity_{metric}.nc')
             for metric in qoidict['severity_metrics']
             })
 
     
-# ---------------- Process climatology and ERA5 ------------------
+# ---------------- Reduce data from spatially resolved (and possibly sub-daily resolved) to daily averaged and spatially averaged ------------------------------------
 print(f"About to reduce climatology")
 reduce_clim(qoidict, tododict['clim'], stagefiles['clim'])
 print(f"About to reduce reanalysis")
 reduce_era5(qoidict, tododict['era5'], stagefiles['era5'])
-# ---------------- Process models ---------------
 for model in models2include:
     print(f"About to reduce {model}")
     reduce_gcm(qoidict, stagefiles[model], tododict['gcms'][model])
     plot_avgDA_timeseries(qoidict, stagefiles[model], stagefiles['era5'], stagefiles['clim'])
-
+# --------------------------------------------------
 
 
 

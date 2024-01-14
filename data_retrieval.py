@@ -122,7 +122,10 @@ def preprocess_gcm_6hrPt(dsmem,vbl,fcdate,timesel,spacesel):
                 #.assign_coords(time = sdate + (dsmem.time.to_numpy() - dsmem.time[0].item()))
                 .assign_coords(time=np.arange(fcdate,fcdate+datetime.timedelta(hours=6*dsmem.time.size),datetime.timedelta(hours=6)))
                 .sel(timesel))
-            .sel(spacesel))
+            .sel(spacesel)
+            .isel(time=slice(None,4*int(dsmem.time.size/4)))
+            .coarsen({'time': 4}, side='left', coord_func='min')
+            .mean())
     return dsmem
 
 
