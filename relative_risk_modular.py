@@ -125,37 +125,91 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
     if tododict['plot_avgDA']:
         print(f"...plotting")
         plot_avgDA_timeseries(qoidict, stagefiles_model, stagefiles_era5, stagefiles_clim)
-    if tododict['compute_risk']:
-        avgDA_model = xr.open_dataarray(stagefiles_model['avgDA']) # Do we need to further subset by the variable? Probably not because didn't subtract off ERA5
-        avgDA_era5 = xr.open_dataarray(stagefiles_era5['avgDA']) # Do we need to further subset by the variable? Probably not because didn't subtract off ERA5
-        for svmetric in qoidict['severity_metrics']:
+    avgDA_model = xr.open_dataarray(stagefiles_model['avgDA']) # Do we need to further subset by the variable? Probably not because didn't subtract off ERA5
+    avgDA_era5 = xr.open_dataarray(stagefiles_era5['avgDA']) # Do we need to further subset by the variable? Probably not because didn't subtract off ERA5
+    for svmetric in list(qoidict['severity_metrics_families'].keys()):
+        print(f'{svmetric = }')
+        if tododict['compute_severity']:
             severity_model = severity_fun_avgDA(avgDA_model.sel(qoidict['timesel_event']), svmetric) # dims: (fcdate,expt,member,svmetric)
-            severity_era5 = severity_fun_avgDA(avgDA_era5.sel(qoidict['timesel_event']), svmetric)
-            # Absolute risks
-            n_boot = 100
-            rngseed = 987405
-            for family in qoidict['stat_models']:
+            severity_model.to_netcdf(stagefiles_model['severity'][svmetric])
+        severity_model = xr.open_dataarray(stagefiles_model['severity'][svmetric])
+        severity_era5 = severity_fun_avgDA(avgDA_era5.sel(qoidict['timesel_event']), svmetric)
+        for family in qoidict['severity_metrics_families'][svmetric]:
+            if tododict['compute_risk']:
+                # Absolute risks
+                n_boot = 1000
+                rngseed = 987405
                 # TODO specialize how uncertainty is specified depending on the statistical family
                 ar = xr.DataArray(
                         coords={'init': qoidict['fcdates'], 'expt': qoidict['expts'], 'boot': np.arange(n_boot+1)},
                         dims=['init','expt','boot'],
                         data=np.nan)
                 params = xr.DataArray(
-                        coords={'init': qoidict['fcdates'], 'expt': qoidict['expts'], 'param': stfu.param_names(family), 'boot': np.arange(n_boot+1)},
-                        dims=['init','expt','param','boot'],
+                        coords={'init': qoidict['fcdates'], 'expt': qoidict['expts'], 'param_name': stfu.param_names(family), 'boot': np.arange(n_boot+1)},
+                        dims=['init','expt','param_name','boot'],
                         data=np.nan)
                 for init in qoidict['fcdates']:
+                    print(f'{init = }')
                     for expt in qoidict['expts']:
+                        print(f'{expt = }')
                         S = severity_model.sel(init=init, expt=expt).to_numpy()
+                        print(f'{S = }')
                         p = stfu.fit_statistical_model(S, family, thresh=severity_era5.item(), n_boot=n_boot, rngseed=rngseed)
+                        print(f'{p = }')
                         ar.loc[dict(init=init, expt=expt)] = stfu.absolute_risk(family, p, severity_era5)
-                        for pn in params.param.to_numpy():
-                            params.loc[dict(init=init, expt=expt, param=pn)] = p[pn]
+                        for pn in params.param_name.to_numpy():
+                            params.loc[dict(init=init, expt=expt, param_name=pn)] = p[pn]
 
-                # ave both severity and risk within the same file 
-                sev_risk = xr.Dataset(
-                        data_vars={'abs_risk': ar, 'severity': severity_model, 'params': params})
-                sev_risk.to_netcdf(stagefiles_model['severity'][svmetric][family])
+                abs_risk = xr.Dataset(
+                        data_vars={'abs_risk': ar, 'params': params})
+                abs_risk.attrs = {'thresh': severity_era5.item()}
+                abs_risk.to_netcdf(stagefiles_model['abs_risk'][svmetric][family])
+            abs_risk = xr.open_dataset(stagefiles_model['abs_risk'][svmetric][family])
+            if tododict['plot_risk']:
+                # Compute return periods and plot 
+                fig = plt.figure(constrained_layout=True)
+                fig,axes = plt.subplots(ncols=2, nrows=len(qoidict['expts']), figsize=(12,6*len(qoidict['expts'])), sharey=True, sharex='col')
+                # Left: histograms in vertical
+                # Right: return period curves
+                thresh_bounds = np.array([severity_model.min().item(), severity_model.max().item()])
+                thresh_bounds[1] = 2*thresh_bounds[1] - thresh_bounds[0]
+                thresh_list = np.linspace(thresh_bounds[0], thresh_bounds[1], 30)
+                for i_expt,expt in enumerate(qoidict['expts']):
+                    handles = []
+                    for i_init,init in enumerate(qoidict['fcdates']):
+                        ax = axes[i_expt,0]
+                        hist,bin_edges = np.histogram(severity_model.sel(expt=expt,init=init), bins=5, density=True)
+                        bin_centers = 0.5*(bin_edges[:-1]+bin_edges[1:])
+                        ax.plot(hist, bin_centers, marker='.', **qoidict['dispprop']['fcdates'][init])
+                        ax.xaxis.set_tick_params(which='both',labelbottom=True)
+                        ax.set_ylabel(qoidict['dispprop']['severity_metrics'][svmetric]['label'])
+                        ax.set_title(f'{expt} histogram')
+
+                        ax = axes[i_expt,1]
+                        paramdict = dict({param_name: abs_risk['params'].sel(expt=expt,init=init,param_name=param_name,boot=0).item() for param_name in list(abs_risk.param_name.values)})
+                        print(f'{paramdict = }')
+                        return_period = stfu.absolute_risk(family, paramdict, thresh_list)
+                        print(f'{return_period = }')
+                        return_period = 1.0/np.where(return_period>1e-6, return_period, np.nan)
+                        hreturn, = ax.plot(return_period, thresh_list, marker='.', **qoidict['dispprop']['fcdates'][init])
+                        handles.append(hreturn)
+                        ax.set_xscale('log')
+                        ax.xaxis.set_tick_params(which='both',labelbottom=True)
+                        ax.yaxis.set_tick_params(which='both',labelbottom=True)
+                        ax.set_title(f'{expt} return levels')
+                    for ax in axes[i_expt,:]:
+                        hera5 = ax.axhline(severity_era5.item(), color='black', linestyle='--', label='ERA5')
+                handles.append(hera5)
+                axes[0,1].legend(handles=handles,loc='lower right')
+                axes[-1,0].set_xlabel('Probability density')
+                axes[-1,1].set_xlabel('Return period [years]')
+                fig.suptitle(f'Absolute risk via {family}')
+                fig.savefig(stagefiles_model['abs_risk_plot'][svmetric][family], **pltsvargs)
+                plt.close(fig)
+
+
+                        
+            
 
     return
         
@@ -187,8 +241,31 @@ qoidict = dict({
     'timesel_event': dict(time=slice(datetime.datetime(2018,2,21),datetime.datetime(2018,3,8))),
     'spacesel': dict(lat=slice(50,65),lon=slice(-10,130)),
     'var_name': 't2m', # which variable we're interested in the extrema of 
-    'severity_metrics': ['mintemp','meantemp'],
-    'stat_models': ['normal','gev','bernoulli'],
+    'severity_metrics_families': dict({
+        'mintemp': ['normal','gev','bernoulli'],
+        'meantemp': ['normal','gev','bernoulli'],
+        }),
+    })
+# Display properties
+qoidict['dispprop'] = dict({
+    'fcdates': dict({
+        qoidict['fcdates'][0]: dict({
+            'color': 'red',
+            'label': r'Init %s'%(qoidict['fcdates'][0].strftime('%Y-%m-%d')),
+            }),
+        qoidict['fcdates'][1]: dict({
+            'color': 'blue',
+            'label': r'Init %s'%(qoidict['fcdates'][1].strftime('%Y-%m-%d')),
+            }),
+        }),
+    'severity_metrics': dict({ # display properties
+        'mintemp': dict({
+            'label': r'$-\min_t\mathrm{mean}_{x,y}T$ [K]',
+            }),
+        'meantemp': dict({
+            'label': r'$-\mathrm{min}_t\mathrm{mean}_{x,y}T$ [K]',
+            }),
+        }),
     })
 
 tododict = dict({
@@ -199,7 +276,6 @@ tododict = dict({
     'era5': dict({
         'avgD':   0,
         'avgDA':  0,
-        'compute_severity': 1,
         }),
     'gcms': dict({
         model: dict({ 
@@ -207,8 +283,9 @@ tododict = dict({
             'avgD':             0,
             'avgDA':            0,
             'plot_avgDA':       0,
-            'compute_severity': 1,
-            'compute_risk':     1,
+            'compute_severity': 0,
+            'compute_risk':     0,
+            'plot_risk':        1,
             })
         for model in models
         }),
@@ -220,66 +297,67 @@ tododict = dict({
 
 # ----- Begin ad-hoc adjustments to tododict -----------
 # ----- End ad-hoc adjustments to tododict ------------
-
-stagefiles = dict()
-for dataset in ['clim','era5']:
-    stagefiles[dataset] = dict()
-    resultdir_dataset = join(resultdir,dataset)
-    figdir_dataset = join(figdir,dataset)
-    makedirs(resultdir_dataset, exist_ok=True)
-    makedirs(figdir_dataset, exist_ok=True)
-    stagefiles[dataset]['avgD'] = join(resultdir_dataset, 'avgD.nc')
-    stagefiles[dataset]['avgDA'] = join(resultdir_dataset, 'avgDA.nc')
-models2include = []
-for model in models:
-    include_model = True
-    resultdir_model = join(resultdir,model)
-    figdir_model = join(figdir,model)
-    makedirs(resultdir_model, exist_ok=True)
-    makedirs(figdir_model, exist_ok=True)
-    stagefiles[model] = dict()
-    for i_fcdate,fcdate in enumerate(qoidict['fcdates']):
-        stagefiles[model][fcdate] = dict()
-        ens_sizes = []
-        for expt in qoidict['expts']:
-            mem_filenames,mem_labels = datre.get_gcm_6hrPt_filenames(model,qoidict['var_name'],expt,fcdate)
-            stagefiles[model][fcdate][expt] = dict({label: filename for (label,filename) in zip(mem_labels,mem_filenames)})
-            ens_sizes.append(len(mem_filenames))
-        include_model *= (len(np.unique(ens_sizes)) == 1) * (ens_sizes[0] > 0)
-    if include_model:
-        models2include.append(model)
-        stagefiles[model]['avgD'] = join(resultdir_model, 'avgD.nc')
-        stagefiles[model]['avgDA'] = join(resultdir_model, 'avgDA.nc')
-        stagefiles[model]['avgDA_plot'] = join(figdir_model, 'avgDA_plot.png')
-        stagefiles[model]['severity'] = dict()
-        for metric in qoidict['severity_metrics']:
-            stagefiles[model]['severity'][metric] = dict()
-            for family in qoidict['stat_models']: # TODO metrics and stat models should not be orthogonal 
-                stagefiles[model]['severity'][metric][family] = join(resultdir_model, f'severity_{metric}_{family}.nc')
-
-
+def main():
+    print(f'Building stagefiles...', end='')
+    stagefiles = dict()
+    for dataset in ['clim','era5']:
+        stagefiles[dataset] = dict()
+        resultdir_dataset = join(resultdir,dataset)
+        figdir_dataset = join(figdir,dataset)
+        makedirs(resultdir_dataset, exist_ok=True)
+        makedirs(figdir_dataset, exist_ok=True)
+        stagefiles[dataset]['avgD'] = join(resultdir_dataset, 'avgD.nc')
+        stagefiles[dataset]['avgDA'] = join(resultdir_dataset, 'avgDA.nc')
+    models2include = []
+    for model in models:
+        include_model = True
+        resultdir_model = join(resultdir,model)
+        figdir_model = join(figdir,model)
+        makedirs(resultdir_model, exist_ok=True)
+        makedirs(figdir_model, exist_ok=True)
+        stagefiles[model] = dict()
+        for i_fcdate,fcdate in enumerate(qoidict['fcdates']):
+            stagefiles[model][fcdate] = dict()
+            ens_sizes = []
+            for expt in qoidict['expts']:
+                mem_filenames,mem_labels = datre.get_gcm_6hrPt_filenames(model,qoidict['var_name'],expt,fcdate)
+                stagefiles[model][fcdate][expt] = dict({label: filename for (label,filename) in zip(mem_labels,mem_filenames)})
+                ens_sizes.append(len(mem_filenames))
+            include_model *= (len(np.unique(ens_sizes)) == 1) * (ens_sizes[0] > 0)
+        if include_model:
+            models2include.append(model)
+            stagefiles[model]['avgD'] = join(resultdir_model, 'avgD.nc')
+            stagefiles[model]['avgDA'] = join(resultdir_model, 'avgDA.nc')
+            stagefiles[model]['avgDA_plot'] = join(figdir_model, 'avgDA_plot.png')
+            stagefiles[model]['severity'] = dict()
+            stagefiles[model]['abs_risk'] = dict()
+            stagefiles[model]['abs_risk_plot'] = dict()
+            for svmetric in list(qoidict['severity_metrics_families'].keys()):
+                stagefiles[model]['severity'][svmetric] = join(resultdir_model, f'severity_{svmetric}.nc')
+                stagefiles[model]['abs_risk'][svmetric] = dict()
+                stagefiles[model]['abs_risk_plot'][svmetric] = dict()
+                for family in qoidict['severity_metrics_families'][svmetric]: # TODO metrics and stat models should not be orthogonal 
+                    stagefiles[model]['abs_risk'][svmetric][family] = join(resultdir_model, f'risk_{svmetric}_{family}.nc')
+                    stagefiles[model]['abs_risk_plot'][svmetric][family] = join(figdir_model, f'risk_{svmetric}_{family}_plot.png')
+    print(f'done')
     
-# ------------ Reduce climatology and ERA5 --------------
-print(f"About to reduce climatology")
-reduce_clim(qoidict, tododict['clim'], stagefiles['clim'])
-risk_calc_pipeline_era5(qoidict, tododict['era5'], stagefiles['era5'])
-# --------------------------------------------------
+    
+        
+    # ------------ Reduce climatology and ERA5 --------------
+    print(f"About to reduce climatology")
+    reduce_clim(qoidict, tododict['clim'], stagefiles['clim'])
+    risk_calc_pipeline_era5(qoidict, tododict['era5'], stagefiles['era5'])
+    # --------------------------------------------------
+    
+    for model in models2include:
+        print(f"About to start pipeline for {model}")
+        risk_calc_pipeline_1model(qoidict, tododict['gcms'][model], stagefiles[model], stagefiles['era5'], stagefiles['clim'])
 
-for model in models2include:
-    print(f"About to start pipeline for {model}")
-    risk_calc_pipeline_1model(qoidict, tododict['gcms'][model], stagefiles[model], stagefiles['era5'], stagefiles['clim'])
+    return
 
-# -------------------- Compute absolute risks ---------------------
-# Nonparametric
-
-# Parametric (normal)
-
-# Parametric (GEV)
-
-# Parametric (GPD)
-
-
-# ----------------------------------------------------------------
+if __name__ == "__main__":
+    main()
+    
 
 
 

@@ -1,6 +1,6 @@
 # Subroutines for statistical calculations
 import numpy as np
-from scipy.stats import norm as spnorm, genextreme as spgex, genpareto as spgpd
+from scipy.stats import norm as spnorm, genextreme as spgex, genpareto as spgpd, uniform as spunif
 from numpy.random import default_rng
 
 # Binomial (essentially non-parametric) models
@@ -14,8 +14,8 @@ def fit_statistical_model(S, family, thresh=None, n_boot=1, rng=None, rngseed=No
         rng = default_rng(rngseed)
     n = len(S)
     Sboot = np.zeros((n_boot+1, n))
-    Sboot[0,:] = np.arange(n)
-    Sboot[1:,:] = rng.choice(np.arange(n), replace=True, size=(n_boot,n))
+    Sboot[0,:] = S[np.arange(n)]
+    Sboot[1:,:] = S[rng.choice(np.arange(n), replace=True, size=(n_boot,n))]
 
     if family == 'normal':
         params = dict({'mean': np.mean(Sboot, axis=1), 'stddev': np.std(Sboot, axis=1)})
@@ -46,7 +46,7 @@ def absolute_risk(family, params, thresh):
     elif family == 'gev':
         p = spgex.sf(thresh, params['shape'], loc=params['location'], scale=params['scale'])
     elif family == 'bernoulli': 
-        p = params['mean']
+        p = params['mean']*np.ones_like(thresh)
     return p
 
 def relative_risk(ar0, ar1):
