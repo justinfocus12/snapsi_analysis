@@ -1,5 +1,4 @@
 import numpy as np
-from scipy.stats import norm as spnorm
 import pandas as pd
 import datetime
 import pickle
@@ -17,6 +16,7 @@ matplotlib.rcParams.update({
     })
 pltsvargs = {"bbox_inches": "tight", "pad_inches": 0.2}
 import data_retrieval as datre
+import stat_functions as stfu
 
 def reduce_clim(qoidict, tododict, stagefiles):
     # Compute daily and areally-averaged temperatures for climatology 
@@ -104,25 +104,58 @@ def plot_avgDA_timeseries(qoidict, stagefiles_model, stagefiles_era5, stagefiles
     axes[0,0].legend(handles=[hclim,hera,hgcm,hgcm_mean], loc=(-1,0))
     fig.savefig(stagefiles_model['avgDA_plot'],**pltsvargs)
     plt.close(fig)
+    return
+
+def risk_calc_pipeline_era5(qoidict, tododict, stagefiles):
+    print(f"About to reduce reanalysis")
+    reduce_era5(qoidict, tododict, stagefiles)
+    return
+
     
 
-def risk_calc_pipeline_1model(qoidict, tododict, stagefiles):
+def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_era5, stagefiles_clim):
+    print(f"{stagefiles_model.keys() = }")
     # qoidict: quantities of interest
     # tododict: to-do items
     # avgD: daily averaged
     # avgDA: daily and area-averaged
     if tododict['avgD'] or tododict['avgDA']:
-        reduce_gcm(qoidict, stagefiles, tododict)
-    if tododict['plot_avgDA_timeseries']:
-        ds_avgDA = xr.open_dataset(stagefiles['avgDA']) # Do we need to further subset by the variable? Probably not because didn't subtract off ERA5
-    if tododict['compute_severity']:
-        ds_avgDA = xr.open_dataset(stagefiles['avgDA']) # Do we need to further subset by the variable? Probably not because didn't subtract off ERA5
-        for svmetric in qoidict['severity_metrics']:
-            severity = severity_fun_avgDA(ds_avgDA.sel(qoidict['timesel_event']), svmetric) # dims: (fcdate,expt,member,svmetric)
-            severity.to_netcdf(stagefiles['severity'][svmetric])
+        print(f"...reducing")
+        reduce_gcm(qoidict, stagefiles_model, tododict)
+    if tododict['plot_avgDA']:
+        print(f"...plotting")
+        plot_avgDA_timeseries(qoidict, stagefiles_model, stagefiles_era5, stagefiles_clim)
     if tododict['compute_risk']:
-        severity = xr.open_dataset(stagefiles['severity'])
-        print(f'{severity.dims = }, {severity.shape = }')
+        avgDA_model = xr.open_dataarray(stagefiles_model['avgDA']) # Do we need to further subset by the variable? Probably not because didn't subtract off ERA5
+        avgDA_era5 = xr.open_dataarray(stagefiles_era5['avgDA']) # Do we need to further subset by the variable? Probably not because didn't subtract off ERA5
+        for svmetric in qoidict['severity_metrics']:
+            severity_model = severity_fun_avgDA(avgDA_model.sel(qoidict['timesel_event']), svmetric) # dims: (fcdate,expt,member,svmetric)
+            severity_era5 = severity_fun_avgDA(avgDA_era5.sel(qoidict['timesel_event']), svmetric)
+            # Absolute risks
+            n_boot = 100
+            rngseed = 987405
+            for family in qoidict['stat_models']:
+                # TODO specialize how uncertainty is specified depending on the statistical family
+                ar = xr.DataArray(
+                        coords={'init': qoidict['fcdates'], 'expt': qoidict['expts'], 'boot': np.arange(n_boot+1)},
+                        dims=['init','expt','boot'],
+                        data=np.nan)
+                params = xr.DataArray(
+                        coords={'init': qoidict['fcdates'], 'expt': qoidict['expts'], 'param': stfu.param_names(family), 'boot': np.arange(n_boot+1)},
+                        dims=['init','expt','param','boot'],
+                        data=np.nan)
+                for init in qoidict['fcdates']:
+                    for expt in qoidict['expts']:
+                        S = severity_model.sel(init=init, expt=expt).to_numpy()
+                        p = stfu.fit_statistical_model(S, family, thresh=severity_era5.item(), n_boot=n_boot, rngseed=rngseed)
+                        ar.loc[dict(init=init, expt=expt)] = stfu.absolute_risk(family, p, severity_era5)
+                        for pn in params.param.to_numpy():
+                            params.loc[dict(init=init, expt=expt, param=pn)] = p[pn]
+
+                # ave both severity and risk within the same file 
+                sev_risk = xr.Dataset(
+                        data_vars={'abs_risk': ar, 'severity': severity_model, 'params': params})
+                sev_risk.to_netcdf(stagefiles_model['severity'][svmetric][family])
 
     return
         
@@ -144,7 +177,7 @@ resultdir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-01-
 figdir = '/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-01-13'
 # Bounds of interest in time, variable, etc. 
 model2institute,vbl2key,base_dirs = datre.get_dirinfo()
-models = list(model2institute.keys())
+models = ['IFS'] #list(model2institute.keys())
 
 qoidict = dict({
     'fcdates': np.array([datetime.datetime(2018,1,25),datetime.datetime(2018,2,8)]),
@@ -154,7 +187,8 @@ qoidict = dict({
     'timesel_event': dict(time=slice(datetime.datetime(2018,2,21),datetime.datetime(2018,3,8))),
     'spacesel': dict(lat=slice(50,65),lon=slice(-10,130)),
     'var_name': 't2m', # which variable we're interested in the extrema of 
-    'severity_metrics': ['mintemp'],
+    'severity_metrics': ['mintemp','meantemp'],
+    'stat_models': ['normal','gev','bernoulli'],
     })
 
 tododict = dict({
@@ -165,13 +199,14 @@ tododict = dict({
     'era5': dict({
         'avgD':   0,
         'avgDA':  0,
+        'compute_severity': 1,
         }),
     'gcms': dict({
         model: dict({ 
             'overwrite':        0,
             'avgD':             0,
             'avgDA':            0,
-            'plot_avgDA':       1,
+            'plot_avgDA':       0,
             'compute_severity': 1,
             'compute_risk':     1,
             })
@@ -216,22 +251,35 @@ for model in models:
         stagefiles[model]['avgD'] = join(resultdir_model, 'avgD.nc')
         stagefiles[model]['avgDA'] = join(resultdir_model, 'avgDA.nc')
         stagefiles[model]['avgDA_plot'] = join(figdir_model, 'avgDA_plot.png')
-        stagefiles[model]['severity'] = dict({
-            metric: join(resultdir_model, f'severity_{metric}.nc')
-            for metric in qoidict['severity_metrics']
-            })
+        stagefiles[model]['severity'] = dict()
+        for metric in qoidict['severity_metrics']:
+            stagefiles[model]['severity'][metric] = dict()
+            for family in qoidict['stat_models']: # TODO metrics and stat models should not be orthogonal 
+                stagefiles[model]['severity'][metric][family] = join(resultdir_model, f'severity_{metric}_{family}.nc')
+
 
     
-# ---------------- Reduce data from spatially resolved (and possibly sub-daily resolved) to daily averaged and spatially averaged ------------------------------------
+# ------------ Reduce climatology and ERA5 --------------
 print(f"About to reduce climatology")
 reduce_clim(qoidict, tododict['clim'], stagefiles['clim'])
-print(f"About to reduce reanalysis")
-reduce_era5(qoidict, tododict['era5'], stagefiles['era5'])
-for model in models2include:
-    print(f"About to reduce {model}")
-    reduce_gcm(qoidict, stagefiles[model], tododict['gcms'][model])
-    plot_avgDA_timeseries(qoidict, stagefiles[model], stagefiles['era5'], stagefiles['clim'])
+risk_calc_pipeline_era5(qoidict, tododict['era5'], stagefiles['era5'])
 # --------------------------------------------------
+
+for model in models2include:
+    print(f"About to start pipeline for {model}")
+    risk_calc_pipeline_1model(qoidict, tododict['gcms'][model], stagefiles[model], stagefiles['era5'], stagefiles['clim'])
+
+# -------------------- Compute absolute risks ---------------------
+# Nonparametric
+
+# Parametric (normal)
+
+# Parametric (GEV)
+
+# Parametric (GPD)
+
+
+# ----------------------------------------------------------------
 
 
 

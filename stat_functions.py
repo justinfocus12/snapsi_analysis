@@ -1,40 +1,51 @@
 # Subroutines for statistical calculations
 import numpy as np
-from scipy.stats import norm as spnorm, genextreme as spgex, genperato as spgpd
-from np.random import default_rng
+from scipy.stats import norm as spnorm, genextreme as spgex, genpareto as spgpd
+from numpy.random import default_rng
 
 # Binomial (essentially non-parametric) models
 
-def fit_statistical_model(S, family, thresh=None, n_boot=1, rng=None):
+def fit_statistical_model(S, family, thresh=None, n_boot=1, rng=None, rngseed=None):
     # Given a dataset of severities S = [S_0, S_1, ..., S_{n-1}], return a dictionary of parameters (like mean and variance for a normal, or location, shape and scale for a GEV) that fits the data. Maybe also likelihoods.
     # Additionally, return a bootstrap distribution of fits. 
     if rng is None:
-        rng = default_rng(2718)
+        if rngseed is None:
+            rngseed = 2718
+        rng = default_rng(rngseed)
     n = len(S)
     Sboot = np.zeros((n_boot+1, n))
     Sboot[0,:] = np.arange(n)
-    Sboot[1:,:] = rng.choose(np.arange(n), replace=True, size=(n_boot,n))
+    Sboot[1:,:] = rng.choice(np.arange(n), replace=True, size=(n_boot,n))
 
     if family == 'normal':
-        params = dict({'mean': np.mean(S, axis=1), 'stddev': np.std(S, axis=1)})
+        params = dict({'mean': np.mean(Sboot, axis=1), 'stddev': np.std(Sboot, axis=1)})
     elif family == 'gev':
         # TODO probability-weighted moments, too
-        gevpar = np.apply_along_axis(spgex.fit, 1, S, method="MLE")
+        gevpar = np.apply_along_axis(spgex.fit, 1, Sboot, method="MLE")
         params = dict({'shape': gevpar[:,0], 'location': gevpar[:,1], 'scale': gevpar[:,2]})
     elif family == 'bernoulli':
         assert(thresh is not None)
-        params = dict({'mean': np.mean(S > thresh, axis=1)})
+        params = dict({'mean': np.mean(Sboot > thresh, axis=1)})
     params.update(family=family)
     # TODO add confidence intervals via delta method or bootstrap
     return params
 
-def absolute_risk(params, thresh):
+def param_names(family):
+    if family == 'normal':
+        pn = ['mean','stddev'] 
+    elif family == 'gev':
+        pn = ['shape','location','scale']
+    elif family == 'bernoulli':
+        pn = ['mean']
+    return pn
+
+def absolute_risk(family, params, thresh):
     # also returns an array with bootstraps 
-    if params['family'] == 'normal':
+    if family == 'normal':
         p = spnorm.sf(thresh, loc=params['mean'], scale=params['stddev'])
-    elif params['family'] == 'gev':
+    elif family == 'gev':
         p = spgex.sf(thresh, params['shape'], loc=params['location'], scale=params['scale'])
-    elif params['family'] == 'bernoulli': 
+    elif family == 'bernoulli': 
         p = params['mean']
     return p
 
