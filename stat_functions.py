@@ -23,10 +23,7 @@ def fit_statistical_model(S, family, thresh=None, n_boot=1, rng=None, rngseed=No
         # TODO probability-weighted moments, too
         gevpar = np.apply_along_axis(spgex.fit, 1, Sboot, method="MLE")
         params = dict({'shape': gevpar[:,0], 'location': gevpar[:,1], 'scale': gevpar[:,2]})
-    elif family == 'bernoulli':
-        assert(thresh is not None)
-        params = dict({'mean': np.mean(Sboot > thresh, axis=1)})
-    params.update(family=family)
+    #params.update(family=family)
     # TODO add confidence intervals via delta method or bootstrap
     return params
 
@@ -35,18 +32,30 @@ def param_names(family):
         pn = ['mean','stddev'] 
     elif family == 'gev':
         pn = ['shape','location','scale']
-    elif family == 'bernoulli':
-        pn = ['mean']
     return pn
 
-def absolute_risk(family, params, thresh):
-    # also returns an array with bootstraps 
+def absolute_risk_parametric(family, params, thresh):
+    # Assume both params and thresh are 1D arrays
+    param_names = list(params.keys())
+    print(f'{param_names = }')
+    nboot = len(params[param_names[0]])
+    nth = len(thresh)
+    params_flat = dict({param_name: np.outer(params[param_name], np.ones(nth)).flatten() for param_name in param_names})
+    thresh_flat = np.outer(np.ones(nboot), thresh).flatten()
     if family == 'normal':
-        p = spnorm.sf(thresh, loc=params['mean'], scale=params['stddev'])
+        p = spnorm.sf(thresh_flat, loc=params_flat['mean'], scale=params_flat['stddev'])
     elif family == 'gev':
-        p = spgex.sf(thresh, params['shape'], loc=params['location'], scale=params['scale'])
-    elif family == 'bernoulli': 
-        p = params['mean']*np.ones_like(thresh)
+        p = spgex.sf(thresh_flat, params_flat['shape'], loc=params_flat['location'], scale=params_flat['scale'])
+    p = p.reshape((nboot,nth))
+    return p
+
+def absolute_risk_empirical(S, thresh):
+    # S is nboot x ndata
+    nboot,ndata = S.shape
+    nth = len(thresh)
+    S_flat = np.outer(S.flatten(), np.ones(nth)).reshape((nboot,ndata,nth))
+    thresh_flat = np.outer(np.ones(nboot*ndata), thresh).reshape((nboot,ndata,nth))
+    p = np.mean(S_flat > thresh_flat, axis=1)
     return p
 
 def relative_risk(ar0, ar1):

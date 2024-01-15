@@ -134,15 +134,19 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
             severity_model.to_netcdf(stagefiles_model['severity'][svmetric])
         severity_model = xr.open_dataarray(stagefiles_model['severity'][svmetric])
         severity_era5 = severity_fun_avgDA(avgDA_era5.sel(qoidict['timesel_event']), svmetric)
+        thresh_bounds = np.array([min(severity_model.min().item(),severity_era5.item()), max(severity_model.max().item(),severity_era5.item())])
+        elongation = 0.5
+        thresh_bounds[1] = (1+elongation)*thresh_bounds[1] - elongation*thresh_bounds[0]
+        thresh_list = np.linspace(thresh_bounds[0], thresh_bounds[1], 30)
         for family in qoidict['severity_metrics_families'][svmetric]:
             if tododict['compute_risk']:
                 # Absolute risks
-                n_boot = 1000
+                n_boot = 10
                 rngseed = 987405
                 # TODO specialize how uncertainty is specified depending on the statistical family
                 ar = xr.DataArray(
-                        coords={'init': qoidict['fcdates'], 'expt': qoidict['expts'], 'boot': np.arange(n_boot+1)},
-                        dims=['init','expt','boot'],
+                        coords={'init': qoidict['fcdates'], 'expt': qoidict['expts'], 'boot': np.arange(n_boot+1), 'thresh': thresh_list},
+                        dims=['init','expt','boot','thresh'],
                         data=np.nan)
                 params = xr.DataArray(
                         coords={'init': qoidict['fcdates'], 'expt': qoidict['expts'], 'param_name': stfu.param_names(family), 'boot': np.arange(n_boot+1)},
@@ -154,15 +158,15 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
                         print(f'{expt = }')
                         S = severity_model.sel(init=init, expt=expt).to_numpy()
                         print(f'{S = }')
-                        p = stfu.fit_statistical_model(S, family, thresh=severity_era5.item(), n_boot=n_boot, rngseed=rngseed)
-                        print(f'{p = }')
-                        ar.loc[dict(init=init, expt=expt)] = stfu.absolute_risk(family, p, severity_era5)
+                        theta = stfu.fit_statistical_model(S, family, thresh=severity_era5.item(), n_boot=n_boot, rngseed=rngseed)
+                        print(f'{theta = }')
+                        ar.loc[dict(init=init, expt=expt)] = stfu.absolute_risk_parametric(family, theta, thresh_list)
                         for pn in params.param_name.to_numpy():
-                            params.loc[dict(init=init, expt=expt, param_name=pn)] = p[pn]
+                            params.loc[dict(init=init, expt=expt, param_name=pn)] = theta[pn]
 
                 abs_risk = xr.Dataset(
                         data_vars={'abs_risk': ar, 'params': params})
-                abs_risk.attrs = {'thresh': severity_era5.item()}
+                abs_risk.attrs = {'severity_era5': severity_era5.item()}
                 abs_risk.to_netcdf(stagefiles_model['abs_risk'][svmetric][family])
             abs_risk = xr.open_dataset(stagefiles_model['abs_risk'][svmetric][family])
             if tododict['plot_risk']:
@@ -171,13 +175,10 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
                 fig,axes = plt.subplots(ncols=2, nrows=len(qoidict['expts']), figsize=(12,6*len(qoidict['expts'])), sharey=True, sharex='col')
                 # Left: histograms in vertical
                 # Right: return period curves
-                thresh_bounds = np.array([severity_model.min().item(), severity_model.max().item()])
-                thresh_bounds[1] = 2*thresh_bounds[1] - thresh_bounds[0]
-                thresh_list = np.linspace(thresh_bounds[0], thresh_bounds[1], 30)
                 for i_expt,expt in enumerate(qoidict['expts']):
                     handles = []
                     for i_init,init in enumerate(qoidict['fcdates']):
-                        ax = axes[i_expt,0]
+                        S = severity_model.sel(init=init, expt=expt).to_numpy()[np.newaxis, :]
                         hist,bin_edges = np.histogram(severity_model.sel(expt=expt,init=init), bins=5, density=True)
                         bin_centers = 0.5*(bin_edges[:-1]+bin_edges[1:])
                         ax.plot(hist, bin_centers, marker='.', **qoidict['dispprop']['fcdates'][init])
@@ -186,12 +187,10 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
                         ax.set_title(f'{expt} histogram')
 
                         ax = axes[i_expt,1]
-                        paramdict = dict({param_name: abs_risk['params'].sel(expt=expt,init=init,param_name=param_name,boot=0).item() for param_name in list(abs_risk.param_name.values)})
-                        print(f'{paramdict = }')
-                        return_period = stfu.absolute_risk(family, paramdict, thresh_list)
-                        print(f'{return_period = }')
-                        return_period = 1.0/np.where(return_period>1e-6, return_period, np.nan)
-                        hreturn, = ax.plot(return_period, thresh_list, marker='.', **qoidict['dispprop']['fcdates'][init])
+                        return_period_parametric = 1.0/abs_risk['abs_risk'].sel(expt=expt,init=init).where(abs_risk['abs_risk'].sel(expt=expt,init=init)>1e-10)
+                        return_period_empirical = stfu.absolute_risk_empirical(S)
+                        # TODO plot empirical
+                        hreturn, = ax.plot(return_period_parametric, thresh_list, marker='.', **qoidict['dispprop']['fcdates'][init])
                         handles.append(hreturn)
                         ax.set_xscale('log')
                         ax.xaxis.set_tick_params(which='both',labelbottom=True)
@@ -242,8 +241,8 @@ qoidict = dict({
     'spacesel': dict(lat=slice(50,65),lon=slice(-10,130)),
     'var_name': 't2m', # which variable we're interested in the extrema of 
     'severity_metrics_families': dict({
-        'mintemp': ['normal','gev','bernoulli'],
-        'meantemp': ['normal','gev','bernoulli'],
+        'mintemp': ['normal','gev'],
+        'meantemp': ['normal','gev'],
         }),
     })
 # Display properties
@@ -284,7 +283,7 @@ tododict = dict({
             'avgDA':            0,
             'plot_avgDA':       0,
             'compute_severity': 0,
-            'compute_risk':     0,
+            'compute_risk':     1,
             'plot_risk':        1,
             })
         for model in models
