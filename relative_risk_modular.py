@@ -145,7 +145,7 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
             print(f'{family = }')
             if tododict['compute_risk']:
                 # Absolute risks
-                n_boot = 1000
+                n_boot = 500
                 rngseed = 987405
                 # TODO specialize how uncertainty is specified depending on the statistical family
                 ar = xr.DataArray(
@@ -162,7 +162,7 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
                         #print(f'{expt = }')
                         S = severity_model.sel(init=init, expt=expt).to_numpy()
                         #print(f'{S = }')
-                        theta = stfu.fit_statistical_model(S, family, thresh=severity_era5.item(), n_boot=n_boot, rngseed=rngseed)
+                        theta = stfu.fit_statistical_model(S, family, thresh=np.min(thresh_bounds)-1e-10, n_boot=n_boot, rngseed=rngseed)
                         #print(f'{theta = }')
                         ar.loc[dict(init=init, expt=expt)] = stfu.absolute_risk_parametric(family, theta, thresh_list)
                         for pn in params.param_name.to_numpy():
@@ -199,7 +199,7 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
                     for i_init,init in enumerate(qoidict['fcdates']):
                         ax = axes[i_expt,0]
                         S = severity_model.sel(init=init, expt=expt).to_numpy()[np.newaxis, :]
-                        print(f'{S.shape = }')
+                        #print(f'{S.shape = }')
                         hist,bin_edges = np.histogram(severity_model.sel(expt=expt,init=init), bins=5, density=True)
                         bin_centers = 0.5*(bin_edges[:-1]+bin_edges[1:])
                         ax.plot(hist, bin_centers, marker='.', **qoidict['dispprop']['fcdates'][init])
@@ -210,7 +210,7 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
                         ax = axes[i_expt,1]
                         ar_par = abs_risk['abs_risk'].sel(expt=expt,init=init).to_numpy()
                         thresh_list_empirical = np.sort(S.flat)
-                        print(f'{thresh_list_empirical = }')
+                        #print(f'{thresh_list_empirical = }')
                         ar_emp = stfu.absolute_risk_empirical(S, thresh_list_empirical)
                         return_period_parametric = 1.0/np.where(ar_par>1e-10, ar_par, np.nan)
                         return_period_empirical = 1.0/np.where(ar_emp>1e-10, ar_emp, np.nan)
@@ -232,7 +232,7 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
                 axes[-1,1].set_xlabel('Return period [years]')
                 for ax in axes[:,-1]:
                     ax.set_xlim([1.0, 500.0])
-                fig.suptitle(f'Absolute risk via {family}')
+                fig.suptitle(f'Absolute risk with {qoidict["dispprop"]["families"][family]["label"]} model')
                 fig.savefig(stagefiles_model['abs_risk_plot'][svmetric][family], **pltsvargs)
                 plt.close(fig)
                 # -------------- Relative risk -------------------
@@ -256,7 +256,7 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
                             return_period_empirical = 1.0/np.where(ar_emp>1e-10, ar_emp, np.nan)
                             hpar, = ax.plot(return_period_parametric[0,:], thresh_list, **qoidict['dispprop']['expts'][expt], label=expt)
                             # Confidence interval
-                            #ax.fill_betweenx(thresh_list, np.quantile(return_period_parametric, 0.025, axis=0), np.quantile(return_period_parametric, 0.975, axis=0), **qoidict['dispprop']['fcdates'][init], alpha=0.3, zorder=-1)
+                            ax.fill_betweenx(thresh_list, np.quantile(return_period_parametric, 0.025, axis=0), np.quantile(return_period_parametric, 0.975, axis=0), **qoidict['dispprop']['expts'][expt], alpha=0.25, zorder=-1)
                         
                             handles.append(hpar)
                             hemp = ax.scatter(return_period_empirical[0,:], thresh_list_empirical, marker='x', **qoidict['dispprop']['expts'][expt])
@@ -286,7 +286,7 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
                 for ax in axes[:,2]:
                     ax.set_xlim([0,10])
                     ax.axvline(1.0, color='gray', linestyle='-', zorder=-1, alpha=0.5, linewidth=5)
-                fig.suptitle(f'Relative risk via {family}')
+                fig.suptitle(f'Relative risk with {qoidict["dispprop"]["families"][family]["label"]} model')
                 fig.savefig(stagefiles_model['rel_risk_plot'][svmetric][family], **pltsvargs)
                 plt.close(fig)
     return
@@ -309,7 +309,7 @@ resultdir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-01-
 figdir = '/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-01-13'
 # Bounds of interest in time, variable, etc. 
 model2institute,vbl2key,base_dirs = datre.get_dirinfo()
-models = ['IFS'] #list(model2institute.keys())
+models = list(model2institute.keys())
 
 qoidict = dict({
     'fcdates': np.array([datetime.datetime(2018,1,25),datetime.datetime(2018,2,8)]),
@@ -320,12 +320,16 @@ qoidict = dict({
     'spacesel': dict(lat=slice(50,65),lon=slice(-10,130)),
     'var_name': 't2m', # which variable we're interested in the extrema of 
     'severity_metrics_families': dict({
-        'mintemp': ['normal','gev'],
-        #'meantemp': ['normal','gev'],
+        'mintemp': ['gpd','normal','gev'],
         }),
     })
 # Display properties
 qoidict['dispprop'] = dict({
+    'families': dict({
+        'gpd': dict(label='GPD'),
+        'gev': dict(label='GEV'),
+        'normal': dict(label='Gaussian'),
+        }),
     'fcdates': dict({
         qoidict['fcdates'][0]: dict({
             'color': 'red',

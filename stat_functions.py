@@ -23,6 +23,12 @@ def fit_statistical_model(S, family, thresh=None, n_boot=1, rng=None, rngseed=No
         # TODO probability-weighted moments, too
         gevpar = np.apply_along_axis(spgex.fit, 1, Sboot, method="MLE")
         params = dict({'shape': gevpar[:,0], 'location': gevpar[:,1], 'scale': gevpar[:,2]})
+    elif family == 'gpd':
+        # TODO encode the choice of thresh somehow 
+        assert(thresh is not None)
+        func = lambda s: spgpd.fit(s[s > thresh]-thresh, method="MLE", floc=0)
+        gpdpar = np.apply_along_axis(func, 1, Sboot)
+        params = dict({'shape': gpdpar[:,0], 'location': gpdpar[:,1], 'scale': gpdpar[:,2], 'base_level': thresh*np.ones(n_boot+1), 'base_prob': np.mean(Sboot>thresh, axis=1)})
     #params.update(family=family)
     # TODO add confidence intervals via delta method or bootstrap
     return params
@@ -32,20 +38,29 @@ def param_names(family):
         pn = ['mean','stddev'] 
     elif family == 'gev':
         pn = ['shape','location','scale']
+    elif family == 'gpd':
+        pn = ['shape','location','scale','base_level','base_prob']
     return pn
 
 def absolute_risk_parametric(family, params, thresh):
     # Assume both params and thresh are 1D arrays
-    param_names = list(params.keys())
-    print(f'{param_names = }')
-    nboot = len(params[param_names[0]])
+    parnames = param_names(family)
+    print(f'{parnames = }')
+    nboot = len(params[parnames[0]])
     nth = len(thresh)
-    params_flat = dict({param_name: np.outer(params[param_name], np.ones(nth)).flatten() for param_name in param_names})
+    params_flat = dict({param_name: np.outer(params[param_name], np.ones(nth)).flatten() for param_name in parnames})
     thresh_flat = np.outer(np.ones(nboot), thresh).flatten()
     if family == 'normal':
         p = spnorm.sf(thresh_flat, loc=params_flat['mean'], scale=params_flat['stddev'])
     elif family == 'gev':
         p = spgex.sf(thresh_flat, params_flat['shape'], loc=params_flat['location'], scale=params_flat['scale'])
+    elif family == 'gpd':
+        p = np.nan*np.ones(nboot*nth)
+        idx = np.where(thresh_flat > params_flat['base_level'])[0]
+        print(f'{len(idx)/len(p) = }')
+        p[idx] = spgpd.sf(thresh_flat[idx]-params_flat['base_level'][idx], params_flat['shape'][idx], loc=params_flat['location'][idx], scale=params_flat['scale'][idx]) * params_flat['base_prob'][idx]
+        print(f'{p = }')
+        print(f'{np.mean(np.isfinite(p)) = }')
     p = p.reshape((nboot,nth))
     return p
 
