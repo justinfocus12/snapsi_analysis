@@ -21,8 +21,9 @@ def fit_statistical_model(S, family, thresh=None, n_boot=1, rng=None, rngseed=No
         params = dict({'mean': np.mean(Sboot, axis=1), 'stddev': np.std(Sboot, axis=1)})
     elif family == 'gev':
         # TODO probability-weighted moments, too
+        # Note, we use the convention that positive shape parameter means unbounded tail --- the opposite of genextreme
         gevpar = np.apply_along_axis(spgex.fit, 1, Sboot, method="MLE")
-        params = dict({'shape': gevpar[:,0], 'location': gevpar[:,1], 'scale': gevpar[:,2]})
+        params = dict({'shape': -gevpar[:,0], 'location': gevpar[:,1], 'scale': gevpar[:,2]})
     elif family == 'gpd':
         # TODO encode the choice of thresh somehow 
         assert(thresh is not None)
@@ -53,7 +54,7 @@ def absolute_risk_parametric(family, params, thresh):
     if family == 'normal':
         p = spnorm.sf(thresh_flat, loc=params_flat['mean'], scale=params_flat['stddev'])
     elif family == 'gev':
-        p = spgex.sf(thresh_flat, params_flat['shape'], loc=params_flat['location'], scale=params_flat['scale'])
+        p = spgex.sf(thresh_flat, -params_flat['shape'], loc=params_flat['location'], scale=params_flat['scale'])
     elif family == 'gpd':
         p = np.nan*np.ones(nboot*nth)
         idx = np.where(thresh_flat > params_flat['base_level'])[0]
