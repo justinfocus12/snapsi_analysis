@@ -43,6 +43,23 @@ def param_names(family):
         pn = ['shape','location','scale','base_level','base_prob']
     return pn
 
+def quantile_parametric(family, params, risk):
+    parnames = param_names(family)
+    print(f'{parnames = }')
+    print(f'{risk.shape = }')
+    print(f'{family = }')
+    print(f'{params[parnames[0]].shape = }')
+    nboot = len(params[parnames[0]])
+    nr = len(risk)
+    params_flat = dict({param_name: np.outer(params[param_name], np.ones(nr)).flatten() for param_name in parnames})
+    risk_flat = np.outer(np.ones(nboot), risk).flatten()
+    if family == 'normal':
+        q = spnorm.ppf(risk_flat, loc=params_flat['mean'], scale=params_flat['stddev'])
+    elif family == 'gev':
+        q = spgex.isf(risk_flat, -params_flat['shape'], loc=params_flat['location'], scale=params_flat['scale'])
+    q = q.reshape((nboot,nr))
+    return q
+
 def absolute_risk_parametric(family, params, thresh):
     # Assume both params and thresh are 1D arrays
     parnames = param_names(family)

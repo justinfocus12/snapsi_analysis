@@ -191,12 +191,14 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
                 # -------------- Absolute risk -------------------
                 # Compute return periods and plot 
                 fig = plt.figure(constrained_layout=True)
-                fig,axes = plt.subplots(ncols=2, nrows=len(qoidict['expts']), figsize=(12,6*len(qoidict['expts'])), sharey=True, sharex='col')
+                fig,axes = plt.subplots(ncols=3, nrows=len(qoidict['expts']), figsize=(18,6*len(qoidict['expts'])), sharey=True, sharex='col')
                 # Left: histograms in vertical
-                # Right: return period curves
+                # Middle: return period curves 
+                # Right: quantile plots
                 for i_expt,expt in enumerate(qoidict['expts']):
                     handles = []
                     for i_init,init in enumerate(qoidict['fcdates']):
+                        theta = {pn: abs_risk['params'].sel(init=init, expt=expt, param_name=pn) for pn in stfu.param_names(family)}
                         ax = axes[i_expt,0]
                         S = severity_model.sel(init=init, expt=expt).to_numpy()[np.newaxis, :]
                         #print(f'{S.shape = }')
@@ -224,13 +226,22 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
                         ax.xaxis.set_tick_params(which='both',labelbottom=True)
                         ax.yaxis.set_tick_params(which='both',labelbottom=True)
                         ax.set_title(f'{expt} return levels')
+
+                        ax = axes[i_expt,2]
+                        qpar = stfu.quantile_parametric(family, theta, ar_emp.flatten())
+                        ax.scatter(ar_emp, qpar[0,:], color='black', marker='.')
+                        ax.plot([min(np.min(ar_emp),np.min(qpar)), max(np.max(ar_emp),np.max(qpar))], color='black', linestyle='--')
+                        ax.set_xlabel("Empirical risk")
+                        ax.set_ylabel("Parametric risk")
+                        
+
                     for ax in axes[i_expt,:]:
                         hera5 = ax.axhline(severity_era5.item(), color='black', linestyle='--', label='ERA5')
                 handles.append(hera5)
                 axes[0,1].legend(handles=handles,loc='lower right')
                 axes[-1,0].set_xlabel('Probability density')
                 axes[-1,1].set_xlabel('Return period [years]')
-                for ax in axes[:,-1]:
+                for ax in axes[:,1]:
                     ax.set_xlim([1.0, 500.0])
                 fig.suptitle(f'Absolute risk with {qoidict["dispprop"]["families"][family]["label"]} model')
                 fig.savefig(stagefiles_model['abs_risk_plot'][svmetric][family], **pltsvargs)
@@ -320,7 +331,7 @@ qoidict = dict({
     'spacesel': dict(lat=slice(50,65),lon=slice(-10,130)),
     'var_name': 't2m', # which variable we're interested in the extrema of 
     'severity_metrics_families': dict({
-        'mintemp': ['gpd','normal','gev'],
+        'mintemp': ['gpd','normal','gev'][1:],
         }),
     'n_boot': 500,
     })
@@ -387,7 +398,7 @@ tododict = dict({
             'plot_avgDA':       0,
             'compute_severity': 0,
             'compute_risk':     0,
-            'plot_risk':        0,
+            'plot_risk':        1,
             })
         for model in models
         }),
