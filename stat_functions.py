@@ -54,7 +54,7 @@ def quantile_parametric(family, params, risk):
     params_flat = dict({param_name: np.outer(params[param_name], np.ones(nr)).flatten() for param_name in parnames})
     risk_flat = np.outer(np.ones(nboot), risk).flatten()
     if family == 'normal':
-        q = spnorm.ppf(risk_flat, loc=params_flat['mean'], scale=params_flat['stddev'])
+        q = spnorm.isf(risk_flat, loc=params_flat['mean'], scale=params_flat['stddev'])
     elif family == 'gev':
         q = spgex.isf(risk_flat, -params_flat['shape'], loc=params_flat['location'], scale=params_flat['scale'])
     q = q.reshape((nboot,nr))

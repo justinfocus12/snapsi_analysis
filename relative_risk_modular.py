@@ -191,7 +191,7 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
                 # -------------- Absolute risk -------------------
                 # Compute return periods and plot 
                 fig = plt.figure(constrained_layout=True)
-                fig,axes = plt.subplots(ncols=3, nrows=len(qoidict['expts']), figsize=(18,6*len(qoidict['expts'])), sharey=True, sharex='col')
+                fig,axes = plt.subplots(ncols=3, nrows=len(qoidict['expts']), figsize=(18,6*len(qoidict['expts'])), sharey=True, sharex='col', gridspec_kw={'hspace': 0.25})
                 # Left: histograms in vertical
                 # Middle: return period curves 
                 # Right: quantile plots
@@ -212,7 +212,7 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
                         ax = axes[i_expt,1]
                         ar_par = abs_risk['abs_risk'].sel(expt=expt,init=init).to_numpy()
                         thresh_list_empirical = np.sort(S.flat)
-                        #print(f'{thresh_list_empirical = }')
+                        print(f'{thresh_list_empirical = }')
                         ar_emp = stfu.absolute_risk_empirical(S, thresh_list_empirical)
                         return_period_parametric = 1.0/np.where(ar_par>1e-10, ar_par, np.nan)
                         return_period_empirical = 1.0/np.where(ar_emp>1e-10, ar_emp, np.nan)
@@ -221,6 +221,7 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
                         ax.fill_betweenx(thresh_list, np.quantile(return_period_parametric, 0.025, axis=0), np.quantile(return_period_parametric, 0.975, axis=0), **qoidict['dispprop']['fcdates'][init], alpha=0.3, zorder=-1)
                         
                         hemp = ax.scatter(return_period_empirical[0,:], thresh_list_empirical, marker='x', **qoidict['dispprop']['fcdates'][init])
+                        print(f'{thresh_list_empirical[-1] = }')
                         handles.append(hpar)
                         ax.set_xscale('log')
                         ax.xaxis.set_tick_params(which='both',labelbottom=True)
@@ -229,10 +230,19 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
 
                         ax = axes[i_expt,2]
                         qpar = stfu.quantile_parametric(family, theta, ar_emp.flatten())
-                        ax.scatter(ar_emp, qpar[0,:], color='black', marker='.')
-                        ax.plot([min(np.min(ar_emp),np.min(qpar)), max(np.max(ar_emp),np.max(qpar))], color='black', linestyle='--')
-                        ax.set_xlabel("Empirical risk")
-                        ax.set_ylabel("Parametric risk")
+                        qpar = np.where(np.isfinite(qpar), qpar, np.nan)
+                        ax.scatter(qpar[0,:], thresh_list_empirical, **qoidict['dispprop']['fcdates'][init])
+                        print(f'{thresh_list_empirical[-1] = }')
+                        sys.exit()
+                        ax.set_xlabel("Predicted quantile")
+                        ax.xaxis.set_tick_params(which='both',labelbottom=True)
+                        ax.yaxis.set_tick_params(which='both',labelbottom=True)
+                        print(f'{qpar = }')
+                        data_lim = [max(np.min(thresh_list_empirical),np.nanmin(qpar[0,:])),min(np.max(S),np.nanmax(qpar[0,:]))] 
+                        ax.plot(data_lim, data_lim, color='black', linestyle='--')
+                        ax.set_xlabel('Predicted quantiles')
+                        ax.set_ylabel('')
+                        ax.set_title(f'{expt} QQ plot')
                         
 
                     for ax in axes[i_expt,:]:
@@ -320,7 +330,7 @@ resultdir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-01-
 figdir = '/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-01-13'
 # Bounds of interest in time, variable, etc. 
 model2institute,vbl2key,base_dirs = datre.get_dirinfo()
-models = list(model2institute.keys())
+models = ['IFS'] #list(model2institute.keys())
 
 qoidict = dict({
     'fcdates': np.array([datetime.datetime(2018,1,25),datetime.datetime(2018,2,8)]),
@@ -400,7 +410,7 @@ tododict = dict({
             'compute_risk':     0,
             'plot_risk':        1,
             })
-        for model in models
+        for model in models #["IFS"]
         }),
     'riskcomp': dict({ # comparison or comprehensive
         #'plot_avgDA':      1,
