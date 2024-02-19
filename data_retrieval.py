@@ -115,6 +115,7 @@ def count_ensemble_sizes():
     return counts 
 
 def preprocess_gcm_6hrPt(dsmem,vbl,fcdate,timesel,spacesel):
+    print(f'{spacesel = }')
     dsmem = (
             rezero_lons(
                 dsmem[vbl2key[vbl]]
@@ -122,8 +123,17 @@ def preprocess_gcm_6hrPt(dsmem,vbl,fcdate,timesel,spacesel):
                 #.assign_coords(time = sdate + (dsmem.time.to_numpy() - dsmem.time[0].item()))
                 .assign_coords(time=np.arange(fcdate,fcdate+datetime.timedelta(hours=6*dsmem.time.size),datetime.timedelta(hours=6)))
                 .sel(timesel))
+            )
+    print(f'{dsmem.lon = }')
+    print(f'{dsmem.time = }')
+    dsmem = (
+            dsmem
             .sel(spacesel)
             .isel(time=slice(None,4*int(dsmem.time.size/4)))
+            )
+    print(f'{dsmem.time = }')
+    dsmem = (
+            dsmem
             .coarsen({'time': 4}, side='left', coord_func='min')
             .mean())
     return dsmem
