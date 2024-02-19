@@ -4,6 +4,7 @@ import datetime
 import pickle
 import xarray as xr
 import dask
+import sys
 from os import makedirs
 from os.path import join,exists,basename
 import glob
@@ -183,7 +184,7 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
 
                 abs_risk = xr.Dataset(
                         data_vars={'abs_risk': ar, 'params': params})
-                abs_risk.attrs = {'severity_era5': severity_era5.item()}
+                #abs_risk.attrs = {'severity_era5': severity_era5.item()}
                 abs_risk.to_netcdf(stagefiles_model['abs_risk'][svmetric][family])
 
                 # Relative risk
@@ -205,42 +206,47 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
                 # -------------- Absolute risk -------------------
                 # Compute return periods and plot 
                 for region in regions:
-                    fig,axes = plt.subplots(ncols=3, nrows=len(qoidict['fcdates']), figsize=(18,6*len(qoidict['fcdates'])), sharey=True, sharex='col', gridspec_kw={'hspace': 0.25})
-                    # Left: histograms in vertical
-                    # Middle: return period curves 
-                    # Right: quantile plots
+                    fig,axes = plt.subplots(ncols=4, nrows=len(qoidict['fcdates']), figsize=(24,6*len(qoidict['fcdates'])), sharey=True, sharex='col', gridspec_kw={'hspace': 0.25})
+                    # Each row is a different forecast date
+                    # Col 0: histograms in vertical
+                    # Col 1: return period curves 
+                    # Col 2: quantile plots
+                    # Col 3: relative risk plots
+                    data_lim = [thresh_bounds[0],thresh_bounds[-1]]
                     for i_init,init in enumerate(qoidict['fcdates']):
                         handles = []
+                        handles_ratio = []
                         for i_expt,expt in enumerate(qoidict['expts']):
                             theta = {pn: abs_risk['params'].sel(init=init, region=region, expt=expt, param_name=pn) for pn in stfu.param_names(family)}
                             ax = axes[i_init,0]
                             S = severity_model.sel(init=init, region=region, expt=expt).to_numpy()[np.newaxis, :]
                             #print(f'{S.shape = }')
-                            hist,bin_edges = np.histogram(severity_model.sel(expt=expt,init=init), bins=5, density=True)
+                            hist,bin_edges = np.histogram(severity_model.sel(expt=expt,region=region,init=init), bins=8, density=True)
                             bin_centers = 0.5*(bin_edges[:-1]+bin_edges[1:])
+                            print(f'{bin_centers = }')
                             ax.plot(hist, bin_centers, marker='.', **qoidict['dispprop']['expts'][expt])
                             ax.xaxis.set_tick_params(which='both',labelbottom=True)
                             ax.set_ylabel(qoidict['dispprop']['severity_metrics'][svmetric]['label'])
-                            ax.set_title(f'{expt} histogram')
+                            ax.set_title(f'histogram')
 
                             ax = axes[i_init,1]
-                            ar_par = abs_risk['abs_risk'].sel(region=region, expt=expt,init=init).to_numpy()
+                            ar_par = abs_risk['abs_risk'].sel(region=region, expt=expt, init=init).to_numpy()
                             thresh_list_empirical = np.sort(S.flat)
                             print(f'{thresh_list_empirical = }')
                             ar_emp = stfu.absolute_risk_empirical(S, thresh_list_empirical)
                             return_period_parametric = 1.0/np.where(ar_par>1e-10, ar_par, np.nan)
                             return_period_empirical = 1.0/np.where(ar_emp>1e-10, ar_emp, np.nan)
-                            hpar, = ax.plot(return_period_parametric[0,:], thresh_list, **qoidict['dispprop']['expts'][expt])
+                            hpar, = ax.plot(return_period_parametric[0,:], thresh_list, **qoidict['dispprop']['expts'][expt], label=expt)
                             # Confidence interval
                             ax.fill_betweenx(thresh_list, np.quantile(return_period_parametric, 0.025, axis=0), np.quantile(return_period_parametric, 0.975, axis=0), **qoidict['dispprop']['expts'][expt], alpha=0.3, zorder=-1)
+                            handles.append(hpar)
                             
                             hemp = ax.scatter(return_period_empirical[0,:], thresh_list_empirical, marker='x', **qoidict['dispprop']['expts'][expt])
                             print(f'{thresh_list_empirical[-1] = }')
-                            handles.append(hpar)
                             ax.set_xscale('log')
                             ax.xaxis.set_tick_params(which='both',labelbottom=True)
                             ax.yaxis.set_tick_params(which='both',labelbottom=True)
-                            ax.set_title(f'{expt} return levels')
+                            ax.set_title(f'return levels')
 
                             ax = axes[i_init,2]
                             qpar = stfu.quantile_parametric(family, theta, ar_emp.flatten())
@@ -251,78 +257,43 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
                             ax.xaxis.set_tick_params(which='both',labelbottom=True)
                             ax.yaxis.set_tick_params(which='both',labelbottom=True)
                             print(f'{qpar = }')
-                            data_lim = [max(np.min(thresh_list_empirical),np.nanmin(qpar[0,:])),min(np.max(S),np.nanmax(qpar[0,:]))] 
+                            data_lim = [max(data_lim[0],np.nanmin(thresh_list_empirical),np.nanmin(qpar[0,:])),min(data_lim[1],np.nanmax(S),np.nanmax(qpar[0,:]))] 
                             ax.plot(data_lim, data_lim, color='black', linestyle='--')
-                            ax.set_xlabel('Predicted quantiles')
+                            ax.set_xlabel('')
                             ax.set_ylabel('')
-                            ax.set_title(f'{expt} QQ plot')
-                            
+                            ax.set_title(f'QQ plot')
+                        ax = axes[i_init,3]
+                        for i_expt_pair,expt_pair in enumerate(list(qoidict['expt_pairs'].keys())):
+                            expt0,expt1 = qoidict['expt_pairs'][expt_pair]
+                            hrat, = ax.plot(rel_risk.sel(expt_pair=expt_pair,region=region,init=init,boot=0).to_numpy().flat, thresh_list, **qoidict['dispprop']['expt_pairs'][expt_pair])
+                            handles_ratio.append(hrat)
+                            ax.fill_betweenx(thresh_list, *[rel_risk.sel(expt_pair=expt_pair,region=region,init=init,boot=slice(1,None)).quantile(q, dim='boot').to_numpy().flat for q in [0.275,0.975]], **qoidict['dispprop']['expt_pairs'][expt_pair], alpha=0.3, zorder=-1)
+                        axes[i_init,3].legend(handles=handles_ratio)
 
-                        for ax in axes[i_expt,:]:
-                            hera5 = ax.axhline(severity_era5.item(), color='black', linestyle='--', label='ERA5')
+
+
+                        for ax in axes[i_init,:]:
+                            hera5 = ax.axhline(severity_era5.sel(region=region).item(), color='black', linestyle='--', label='ERA5')
                     handles.append(hera5)
                     axes[0,1].legend(handles=handles,loc='lower right')
                     axes[-1,0].set_xlabel('Probability density')
                     axes[-1,1].set_xlabel('Return period [years]')
+                    axes[-1,2].set_xlabel('Predicted quantile')
+                    axes[-1,3].set_xlabel('Rel. Risk')
                     for ax in axes[:,1]:
                         ax.set_xlim([1.0, 500.0])
-                    fig.suptitle(f'{region} Abs. risk with {qoidict["dispprop"]["families"][family]["label"]} model')
-                    fig.savefig(stagefiles_model['abs_risk_{region}_plot'][svmetric][family], **pltsvargs)
+                    for ax in axes[:,3]:
+                        ax.set_xlim([0.1,6.0])
+                    e5data = severity_era5.sel(region=region).item()
+                    print(f'{e5data = }')
+                    for ax in axes.flat:
+                        ax.set_ylim([min(data_lim[0],e5data)-1,max(data_lim[1],e5data)+1])
+                    fig.suptitle(f'{qoidict["dispprop"]["regions"][region]} risk with {qoidict["dispprop"]["families"][family]["label"]} model')
+                    filename = stagefiles_model['abs_risk_plots'][svmetric][family][region]
+                    print(f'{filename = }')
+                    fig.savefig(filename, **pltsvargs)
                     plt.close(fig)
                 # -------------- Relative risk -------------------
-                sys.exit()
-                # Compute return periods and plot 
-                fig,axes = plt.subplots(ncols=2, nrows=len(qoidict['fcdates']), figsize=(12,6*len(qoidict['fcdates'])), sharey=True, sharex='col')
-                for i_expt_pair,expt_pair in enumerate(list(qoidict['expt_pairs'].keys())):
-                    expt0,expt1 = qoidict['expt_pairs'][expt_pair]
-                    handles_ratio = []
-                    for i_init,init in enumerate(qoidict['fcdates']):
-                        # Left and center: return period curves for both initialization dates
-                        ax = axes[i_init,i_expt_pair]
-                        handles = []
-                        for expt in [expt0,expt1]:
-                            S = severity_model.sel(init=init, expt=expt).to_numpy()[np.newaxis, :]
-
-                            ar_par = abs_risk['abs_risk'].sel(expt=expt,init=init).to_numpy()
-                            thresh_list_empirical = np.sort(S.flat)
-                            ar_emp = stfu.absolute_risk_empirical(S, thresh_list_empirical)
-                            return_period_parametric = 1.0/np.where(ar_par>1e-10, ar_par, np.nan)
-                            return_period_empirical = 1.0/np.where(ar_emp>1e-10, ar_emp, np.nan)
-                            hpar, = ax.plot(return_period_parametric[0,:], thresh_list, **qoidict['dispprop']['expts'][expt], label=expt)
-                            # Confidence interval
-                            ax.fill_betweenx(thresh_list, np.quantile(return_period_parametric, 0.025, axis=0), np.quantile(return_period_parametric, 0.975, axis=0), **qoidict['dispprop']['expts'][expt], alpha=0.25, zorder=-1)
-                        
-                            handles.append(hpar)
-                            hemp = ax.scatter(return_period_empirical[0,:], thresh_list_empirical, marker='x', **qoidict['dispprop']['expts'][expt])
-                        ax.legend(handles=handles)
-                        ax.set_xscale('log')
-                        #ax.xaxis.set_tick_params(which='both',labelbottom=True)
-                        #ax.yaxis.set_tick_params(which='both',labelbottom=True)
-                        ax.set_title(r'Init %s'%(init.strftime('%Y-%m-%d')))
-                        if i_init==0: ax.set_ylabel(qoidict['dispprop']['severity_metrics'][svmetric]['label'])
-
-                        # Right: ratios of return periods
-                        ax = axes[i_expt_pair,2]
-                        hrat, = ax.plot(rel_risk.sel(expt_pair=expt_pair,init=init,boot=0).to_numpy().flat, thresh_list, **qoidict['dispprop']['fcdates'][init], label=r'Init %s'%(init.strftime('%Y-%m-%d')))
-                        handles_ratio.append(hrat)
-                        ax.fill_betweenx(thresh_list, *[rel_risk.sel(expt_pair=expt_pair,init=init,boot=slice(1,None)).quantile(q, dim='boot').to_numpy().flat for q in [0.275,0.975]], **qoidict['dispprop']['fcdates'][init], alpha=0.3, zorder=-1)
-                        #ax.xaxis.set_tick_params(which='both',labelbottom=True)
-                        #ax.yaxis.set_tick_params(which='both',labelbottom=True)
-                        ax.set_title(r'$\frac{\mathrm{%s}}{\mathrm{%s}}$ relative risk'%(expt0,expt1))
-                    axes[i_expt_pair,2].legend(handles=handles_ratio)
-                    for ax in axes[i_expt_pair,:]:
-                        hera5 = ax.axhline(severity_era5.item(), color='black', linestyle='--', label='ERA5')
-                axes[-1,0].set_xlabel('Return period [years]')
-                axes[-1,1].set_xlabel('Return period [years]')
-                axes[-1,2].set_xlabel('Relative risk')
-                for ax in axes[:,:2].flat:
-                    ax.set_xlim([1.0, 500.0])
-                for ax in axes[:,2]:
-                    ax.set_xlim([0,10])
-                    ax.axvline(1.0, color='gray', linestyle='-', zorder=-1, alpha=0.5, linewidth=5)
-                fig.suptitle(f'Relative risk with {qoidict["dispprop"]["families"][family]["label"]} model')
-                fig.savefig(stagefiles_model['rel_risk_plot'][svmetric][family], **pltsvargs)
-                plt.close(fig)
     return
         
 def severity_fun_avgDA(avgDA, svmetric):
@@ -353,12 +324,12 @@ resultdir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-01-
 figdir = '/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-01-13'
 # Bounds of interest in time, variable, etc. 
 model2institute,vbl2key,base_dirs = datre.get_dirinfo()
-models = ['IFS'] #list(model2institute.keys())
+models = list(model2institute.keys())
 
 qoidict = dict({
     'fcdates': np.array([datetime.datetime(2018,1,25),datetime.datetime(2018,2,8)]),
     'expts': ['control','free','nudged'],
-    'expt_pairs': dict({"n2f": ["nudged","free"], "f2c": ["free","control"], "n2c": ["nudged","control"]}),
+    'expt_pairs': dict({"n2f": ["nudged","free"], "n2c": ["nudged","control"]}),
     'timesel_maxposs': dict(time=slice(datetime.datetime(2018,2,12),datetime.datetime(2018,3,11))),
     'timesel_event': dict(time=slice(datetime.datetime(2018,2,21),datetime.datetime(2018,3,8))),
     'spacesels': dict({
@@ -375,7 +346,7 @@ qoidict = dict({
     'severity_metrics_families': dict({
         'mintemp': ['gpd','normal','gev'][1:],
         }),
-    'n_boot': 500,
+    'n_boot': 50,
     })
 # Display properties
 qoidict['dispprop'] = dict({
@@ -400,6 +371,16 @@ qoidict['dispprop'] = dict({
             'label': r'$-\mathrm{min}_t\ \mathrm{mean}_{x,y}T$ [K]',
             }),
         }),
+    'expt_pairs': dict({
+        'n2f': dict({
+            'color': 'red',
+            'label': 'nudged/free',
+            }),
+        'n2c': dict({
+            'color': 'dodgerblue',
+            'label': 'nudged/ctrl',
+            }),
+        }),
     'expts': dict({
         'control': dict({
             'color': 'purple',
@@ -410,6 +391,15 @@ qoidict['dispprop'] = dict({
         'nudged': dict({
             'color': 'cyan',
             }),
+        }),
+    'regions': dict({
+        'eu': 'EUR',
+        'eu_w': 'EUR-W',
+        'eu_e': 'EUR-E',
+        'eu_sw': 'EUR-SW',
+        'eu_se': 'EUR-SE',
+        'eu_nw': 'EUR-NW',
+        'eu_ne': 'EUR-NE',
         }),
     })
 
@@ -428,16 +418,17 @@ def main():
             }),
         'gcms': dict({
             model: dict({ 
-                'overwrite':        0,
-                'avgD':             0,
-                'avgDA':            0,
-                'plot_avgDA':       0,
+                'overwrite':        1,
+                'avgD':             1,
+                'avgDA':            1,
+                'plot_avgDA':       1,
                 'compute_severity': 1,
-                'compute_risk':     0,
-                'plot_risk':        0,
+                'compute_risk':     1,
+                'plot_risk':        1,
                 })
             for model in models
             }),
+        'regions': ['eu','eu_w','eu_e','eu_sw','eu_se','eu_nw','eu_ne'],
         'riskcomp': dict({ # comparison or comprehensive
             #'plot_avgDA':      1,
             #'plot_rr':         1, 
@@ -483,22 +474,26 @@ def main():
                 stagefiles[model][f'avgDA_plots'][spacesel] = join(figdir_model, 'avgDA_{spacesel}_plot.png')
             stagefiles[model]['severity'] = dict()
             stagefiles[model]['abs_risk'] = dict()
-            stagefiles[model]['abs_risk_plot'] = dict()
+            stagefiles[model]['abs_risk_plots'] = dict()
             stagefiles[model]['rel_risk'] = dict()
-            stagefiles[model]['rel_risk_plot'] = dict()
+            stagefiles[model]['rel_risk_plots'] = dict()
             for svmetric in list(qoidict['severity_metrics_families'].keys()):
                 # Each of these may include results for different spatial regions
                 stagefiles[model]['severity'][svmetric] = join(resultdir_model, f'severity_{svmetric}.nc')
                 stagefiles[model]['abs_risk'][svmetric] = dict()
-                stagefiles[model]['abs_risk_plot'][svmetric] = dict()
+                stagefiles[model]['abs_risk_plots'][svmetric] = dict()
                 stagefiles[model]['rel_risk'][svmetric] = dict()
-                stagefiles[model]['rel_risk_plot'][svmetric] = dict()
+                stagefiles[model]['rel_risk_plots'][svmetric] = dict()
                 for family in qoidict['severity_metrics_families'][svmetric]: # TODO metrics and stat models should not be orthogonal 
                     # TODO one more loop over regions
                     stagefiles[model]['abs_risk'][svmetric][family] = join(resultdir_model, f'risk_{svmetric}_{family}.nc')
-                    stagefiles[model]['abs_risk_plot'][svmetric][family] = join(figdir_model, f'risk_{svmetric}_{family}_plot.png')
                     stagefiles[model]['rel_risk'][svmetric][family] = join(resultdir_model, f'rel_risk_{svmetric}_{family}.nc')
-                    stagefiles[model]['rel_risk_plot'][svmetric][family] = join(figdir_model, f'rel_risk_{svmetric}_{family}_plot.png')
+                    stagefiles[model]['abs_risk_plots'][svmetric][family] = dict()
+                    stagefiles[model]['rel_risk_plots'][svmetric][family] = dict()
+                    for region in list(qoidict['spacesels'].keys()):
+                        stagefiles[model]['abs_risk_plots'][svmetric][family][region] = join(figdir_model, f'risk_{svmetric}_{family}_{region}_plot.png')
+                        stagefiles[model]['rel_risk_plots'][svmetric][family][region] = join(figdir_model, f'rel_risk_{svmetric}_{family}_{region}_plot.png')
+                        
         else:
             print(f'no')
 
