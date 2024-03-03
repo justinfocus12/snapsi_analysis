@@ -24,16 +24,16 @@ def reduce_clim(qoidict, tododict, stagefiles):
     if tododict['avgD']:
         avgD = (
                 datre.rezero_lons(xr.open_dataarray(datre.get_clim_filename(qoidict['var_name'])))
-                .sel(next(iter(qoidict['spacesels'].values())))
+                .sel(next(iter(qoidict['regions'].values())))
                 #.sel(qoidict['timesel_maxposs'])
                 )
         avgD.to_netcdf(stagefiles['avgD'])
     if tododict['avgDA']:
         avgD = xr.open_dataarray(stagefiles['avgD'])
         avgDA = []
-        for (key,val) in qoidict['spacesels'].items():
+        for (key,val) in qoidict['regions'].items():
             avgDA.append(datre.area_average(avgD.sel(val)))
-        avgDA = xr.concat(avgDA,dim='region').assign_coords({'region': list(qoidict['spacesels'].keys())})
+        avgDA = xr.concat(avgDA,dim='region').assign_coords({'region': list(qoidict['regions'].keys())})
         avgDA.to_netcdf(stagefiles['avgDA'])
     return
 
@@ -44,15 +44,15 @@ def reduce_era5(qoidict, tododict, stagefiles):
                 datre.rezero_lons(
                     xr.open_dataset(datre.get_era5_filename(qoidict['var_name']))[qoidict['var_name']]
                     .sel(qoidict['timesel_maxposs']))
-                .sel(next(iter(qoidict['spacesels'].values())))
+                .sel(next(iter(qoidict['regions'].values())))
                 )
         avgD.to_netcdf(stagefiles['avgD'])
     if tododict['avgDA']:
         avgD = xr.open_dataarray(stagefiles['avgD'])
         avgDA = []
-        for (key,val) in qoidict['spacesels'].items():
+        for (key,val) in qoidict['regions'].items():
             avgDA.append(datre.area_average(avgD.sel(val)))
-        avgDA = xr.concat(avgDA,dim='region').assign_coords({'region': list(qoidict['spacesels'].keys())})
+        avgDA = xr.concat(avgDA,dim='region').assign_coords({'region': list(qoidict['regions'].keys())})
         avgDA.to_netcdf(stagefiles['avgDA'])
     return
 
@@ -60,7 +60,7 @@ def reduce_gcm(qoidict, stagefiles, tododict):
     if tododict['avgD'] and (tododict['overwrite'] or (not exists(stagefiles['avgD']))):
         ds = []
         for i_fcdate,fcdate in enumerate(qoidict['fcdates']):
-            preprocess = lambda dsmem: datre.preprocess_gcm_6hrPt(dsmem,qoidict['var_name'],fcdate,qoidict['timesel_maxposs'],next(iter(qoidict['spacesels'].values())))
+            preprocess = lambda dsmem: datre.preprocess_gcm_6hrPt(dsmem,qoidict['var_name'],fcdate,qoidict['timesel_maxposs'],next(iter(qoidict['regions'].values())))
             mem_filenames = dict()
             mem_labels = dict()
             ens_sizes = []
@@ -86,34 +86,37 @@ def reduce_gcm(qoidict, stagefiles, tododict):
         # Don't anomalize, because absolute minimum temperature might be more relevant than minimum anomaly. Maybe we should subtract the min over the time period from the min over the time period from ERA5
         ds_avgD = xr.open_dataset(stagefiles['avgD'])
         ds_avgDA = []
-        for (key,val) in qoidict['spacesels'].items():
+        for (key,val) in qoidict['regions'].items():
             ds_avgDA.append(datre.area_average(ds_avgD.sel(val)))
-        ds_avgDA = xr.concat(ds_avgDA, dim='region').assign_coords({'region': list(qoidict['spacesels'].keys())})
+        ds_avgDA = xr.concat(ds_avgDA, dim='region').assign_coords({'region': list(qoidict['regions'].keys())})
         ds_avgDA.to_netcdf(stagefiles['avgDA'])
     return
 
-def plot_avgDA_timeseries(qoidict, stagefiles_model, stagefiles_era5, stagefiles_clim):
+def plot_avgDA_timeseries(qoidict, stagefiles_model, stagefiles_era5, stagefiles_clim, model):
     # Only for 1 model
     avgDA_era5 = xr.open_dataarray(stagefiles_era5['avgDA'])
     doy = pd.to_datetime(avgDA_era5['time'].to_numpy()).dayofyear
     avgDA_clim = xr.open_dataarray(stagefiles_clim['avgDA']).sel(dayofyear=doy).rename({'dayofyear': 'time'}).assign_coords({'time': avgDA_era5['time']})
     avgDA_gcm = xr.open_dataarray(stagefiles_model['avgDA'])
-    fig,axes = plt.subplots(nrows=2,ncols=len(qoidict['expts']),figsize=(6*len(qoidict['expts']),6),sharex=True,sharey=True)
-    for i_expt,expt in enumerate(qoidict['expts']):
-        for i_fcdate,fcdate in enumerate(avgDA_gcm.init.values):
-            ax = axes[i_fcdate,i_expt]
-            for member in avgDA_gcm.member.values:
-                hgcm, = xr.plot.plot(avgDA_gcm.sel(expt=expt,init=fcdate,member=member),x="time",color="red", ax=ax, label=model, alpha=0.3)
-            hera, = xr.plot.plot(avgDA_era5,x="time",color="black",linewidth=3,linestyle="--",ax=ax,label="ERA5")
-            hclim, = xr.plot.plot(avgDA_clim,x="time",color="gray",linewidth=4,linestyle="-",alpha=0.5,ax=ax,label="Climatology")
-            hgcm_mean, = xr.plot.plot(avgDA_gcm.sel(expt=expt,init=fcdate).mean("member"),x="time",color="red",linewidth=3,linestyle="--", ax=ax, label="Ens. mean")
+    print(f'{avgDA_gcm.dims = }')
+    print(f'{avgDA_gcm.coords = }')
+    for region,spacesel in qoidict['regions'].items():
+        fig,axes = plt.subplots(nrows=2,ncols=len(qoidict['expts']),figsize=(6*len(qoidict['expts']),6),sharex=True,sharey=True)
+        for i_expt,expt in enumerate(qoidict['expts']):
+            for i_fcdate,fcdate in enumerate(avgDA_gcm.init.values):
+                ax = axes[i_fcdate,i_expt]
+                for member in avgDA_gcm.member.values:
+                    hgcm, = xr.plot.plot(avgDA_gcm.sel(expt=expt,region=region,init=fcdate,member=member),x="time",color="red", ax=ax, label=model, alpha=0.3)
+                hera, = xr.plot.plot(avgDA_era5.sel(region=region),x="time",color="black",linewidth=3,linestyle="--",ax=ax,label="ERA5")
+                hclim, = xr.plot.plot(avgDA_clim.sel(region=region),x="time",color="gray",linewidth=4,linestyle="-",alpha=0.5,ax=ax,label="Climatology")
+                hgcm_mean, = xr.plot.plot(avgDA_gcm.sel(expt=expt,region=region,init=fcdate).mean("member"),x="time",color="red",linewidth=3,linestyle="--", ax=ax, label="Ens. mean")
 
-            ax.set_title(r"Init %s, %s"%(qoidict['fcdates'][i_fcdate].strftime("%Y-%m-%d"),expt))
-            ax.set_ylabel(f"{qoidict['var_name']} [K]")
-            ax.set_xlabel("")
-    axes[0,0].legend(handles=[hclim,hera,hgcm,hgcm_mean], loc=(-1,0))
-    fig.savefig(stagefiles_model['avgDA_plot'],**pltsvargs)
-    plt.close(fig)
+                ax.set_title(r"Init %s, %s"%(qoidict['fcdates'][i_fcdate].strftime("%Y-%m-%d"),expt))
+                ax.set_ylabel(f"{qoidict['var_name']} [K]")
+                ax.set_xlabel("")
+        axes[0,0].legend(handles=[hclim,hera,hgcm,hgcm_mean], loc=(-1,0), title=qoidict['dispprop']['regions'][region])
+        fig.savefig(stagefiles_model['avgDA_plots'][region],**pltsvargs)
+        plt.close(fig)
     return
 
 def risk_calc_pipeline_era5(qoidict, tododict, stagefiles):
@@ -123,7 +126,7 @@ def risk_calc_pipeline_era5(qoidict, tododict, stagefiles):
 
     
 
-def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_era5, stagefiles_clim):
+def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_era5, stagefiles_clim, model):
     print(f"{stagefiles_model.keys() = }")
     # qoidict: quantities of interest
     # tododict: to-do items
@@ -135,9 +138,11 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
         reduce_gcm(qoidict, stagefiles_model, tododict)
     if tododict['plot_avgDA']:
         print(f"...plotting")
-        plot_avgDA_timeseries(qoidict, stagefiles_model, stagefiles_era5, stagefiles_clim)
+        plot_avgDA_timeseries(qoidict, stagefiles_model, stagefiles_era5, stagefiles_clim, model)
     avgDA_model = xr.open_dataarray(stagefiles_model['avgDA']) # Do we need to further subset by the variable? Probably not because didn't subtract off ERA5
     avgDA_era5 = xr.open_dataarray(stagefiles_era5['avgDA']) # Do we need to further subset by the variable? Probably not because didn't subtract off ERA5
+    doy = pd.to_datetime(avgDA_era5['time'].to_numpy()).dayofyear
+    avgDA_clim = xr.open_dataarray(stagefiles_clim['avgDA']).sel(dayofyear=doy).rename({'dayofyear': 'time'}).assign_coords({'time': avgDA_era5['time']})
     # TODO add other severity metrics which are functions of more moderately reduced data
     for svmetric in list(qoidict['severity_metrics_families'].keys()):
         print(f'{svmetric = }')
@@ -146,6 +151,7 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
             severity_model.to_netcdf(stagefiles_model['severity'][svmetric])
         severity_model = xr.open_dataarray(stagefiles_model['severity'][svmetric])
         severity_era5 = severity_fun_avgDA(avgDA_era5.sel(qoidict['timesel_event']), svmetric)
+        severity_clim = severity_fun_avgDA(avgDA_clim.sel(qoidict['timesel_event']), svmetric)
         print(f'{severity_model = }')
         print(f'{severity_era5 = }')
         thresh_bounds = np.array([min(severity_model.min().item(),severity_era5.min().item()), max(severity_model.max().item(),severity_era5.max().item())])
@@ -153,37 +159,42 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
         thresh_bounds[1] = (1+elongation)*thresh_bounds[1] - elongation*thresh_bounds[0]
         print(f'{thresh_bounds = }')
         thresh_list = np.linspace(thresh_bounds[0], thresh_bounds[1], 30)
-        regions = list(qoidict['spacesels'].keys())
+        regions = list(qoidict['regions'].keys())
         for family in qoidict['severity_metrics_families'][svmetric]:
             print(f'{family = }')
             if tododict['compute_risk']:
-                # Absolute risks
                 n_boot = qoidict['n_boot']
                 rngseed = 987405
+                # Basic parameters
+                params = xr.DataArray(
+                        coords={'init': qoidict['fcdates'], 'region': regions, 'expt': qoidict['expts'], 'param_name': stfu.param_names(family), 'boot': np.arange(n_boot+1)},
+                        dims=['init','region','expt','param_name','boot'],
+                        data=np.nan)
                 # TODO specialize how uncertainty is specified depending on the statistical family
+                # Absolute risks
                 ar = xr.DataArray( # absolute risk
                         coords={'init': qoidict['fcdates'], 'region': regions, 'expt': qoidict['expts'], 'boot': np.arange(n_boot+1), 'thresh': thresh_list},
                         dims=['init','region','expt','boot','thresh'],
                         data=np.nan)
-                params = xr.DataArray(
-                        coords={'init': qoidict['fcdates'], 'region': regions, 'expt': qoidict['expts'], 'param_name': stfu.param_names(family), 'boot': np.arange(n_boot+1)},
-                        dims=['init','region','expt','param_name','boot'],
+                # Summary return levels
+                rlev = xr.DataArray(
+                        coords={'init': qoidict['fcdates'], 'region': regions, 'expt': qoidict['expts'], 'boot': np.arange(n_boot+1), 'rt_thresh': qoidict['rt_thresh']},
+                        dims=['init','region','expt','boot','rt_thresh'],
                         data=np.nan)
                 for init in qoidict['fcdates']:
                     print(f'{init = }')
                     for region in regions:
                         for expt in qoidict['expts']:
-                            #print(f'{expt = }')
                             S = severity_model.sel(init=init, region=region, expt=expt).to_numpy()
-                            #print(f'{S = }')
                             theta = stfu.fit_statistical_model(S, family, thresh=np.min(thresh_bounds)-1e-10, n_boot=n_boot, rngseed=rngseed)
-                            #print(f'{theta = }')
-                            ar.loc[dict(init=init, region=region, expt=expt)] = stfu.absolute_risk_parametric(family, theta, thresh_list)
                             for pn in params.param_name.to_numpy():
                                 params.loc[dict(init=init, region=region, expt=expt, param_name=pn)] = theta[pn]
+                            # Compute derived quantities from the parameters
+                            rlev.loc[dict(init=init, region=region, expt=expt)] = stfu.quantile_parametric(family, theta, 1/qoidict['rt_thresh'])
+                            ar.loc[dict(init=init, region=region, expt=expt)] = stfu.absolute_risk_parametric(family, theta, thresh_list)
 
                 abs_risk = xr.Dataset(
-                        data_vars={'abs_risk': ar, 'params': params})
+                        data_vars={'abs_risk': ar, 'rlev': rlev, 'params': params})
                 #abs_risk.attrs = {'severity_era5': severity_era5.item()}
                 abs_risk.to_netcdf(stagefiles_model['abs_risk'][svmetric][family])
 
@@ -206,18 +217,20 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
                 # -------------- Absolute risk -------------------
                 # Compute return periods and plot 
                 for region in regions:
-                    fig,axes = plt.subplots(ncols=4, nrows=len(qoidict['fcdates']), figsize=(24,6*len(qoidict['fcdates'])), sharey=True, sharex='col', gridspec_kw={'hspace': 0.25})
+                    fig,axes = plt.subplots(ncols=5, nrows=len(qoidict['fcdates']), figsize=(30,6*len(qoidict['fcdates'])), sharey=True, sharex='col', gridspec_kw={'hspace': 0.25})
                     # Each row is a different forecast date
                     # Col 0: histograms in vertical
                     # Col 1: return period curves 
                     # Col 2: quantile plots
                     # Col 3: relative risk plots
+                    # Col 4: quantie shifts
                     data_lim = [thresh_bounds[0],thresh_bounds[-1]]
                     for i_init,init in enumerate(qoidict['fcdates']):
                         handles = []
                         handles_ratio = []
                         for i_expt,expt in enumerate(qoidict['expts']):
                             theta = {pn: abs_risk['params'].sel(init=init, region=region, expt=expt, param_name=pn) for pn in stfu.param_names(family)}
+                            # -------- Column 0: histograms in vertical ------------
                             ax = axes[i_init,0]
                             S = severity_model.sel(init=init, region=region, expt=expt).to_numpy()[np.newaxis, :]
                             #print(f'{S.shape = }')
@@ -229,6 +242,7 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
                             ax.set_ylabel(qoidict['dispprop']['severity_metrics'][svmetric]['label'])
                             ax.set_title(f'histogram')
 
+                            # ----------- Column 1: Return period plots ----------
                             ax = axes[i_init,1]
                             ar_par = abs_risk['abs_risk'].sel(region=region, expt=expt, init=init).to_numpy()
                             thresh_list_empirical = np.sort(S.flat)
@@ -248,6 +262,7 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
                             ax.yaxis.set_tick_params(which='both',labelbottom=True)
                             ax.set_title(f'return levels')
 
+                            # ------------- Column 2: QQ plots (probably relegate to appendix) -------
                             ax = axes[i_init,2]
                             qpar = stfu.quantile_parametric(family, theta, ar_emp.flatten())
                             qpar = np.where(np.isfinite(qpar), qpar, np.nan)
@@ -262,6 +277,7 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
                             ax.set_xlabel('')
                             ax.set_ylabel('')
                             ax.set_title(f'QQ plot')
+                        # ---------------- Column 3: relative risks -------------
                         ax = axes[i_init,3]
                         for i_expt_pair,expt_pair in enumerate(list(qoidict['expt_pairs'].keys())):
                             expt0,expt1 = qoidict['expt_pairs'][expt_pair]
@@ -269,31 +285,46 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
                             handles_ratio.append(hrat)
                             ax.fill_betweenx(thresh_list, *[rel_risk.sel(expt_pair=expt_pair,region=region,init=init,boot=slice(1,None)).quantile(q, dim='boot').to_numpy().flat for q in [0.275,0.975]], **qoidict['dispprop']['expt_pairs'][expt_pair], alpha=0.3, zorder=-1)
                         axes[i_init,3].legend(handles=handles_ratio)
+                        ax.axvline(1.0, color='black', linestyle='--')
 
-
+                        # --------------- Column 4: change in quantiles ---------
+                        ax = axes[i_init,4]
+                        xticks = np.log10(qoidict['rt_thresh'])
+                        log_offsets = np.linspace(np.log(0.9),np.log(1.1),len(qoidict['expt_pairs'].keys()))
+                        for i_expt_pair,expt_pair in enumerate(list(qoidict['expt_pairs'].keys())):
+                            expt0,expt1 = qoidict['expt_pairs'][expt_pair]
+                            # Draw arrows 
+                            for i_rtth,rtth in enumerate(qoidict['rt_thresh']):
+                                rlev0,rlev1 = [abs_risk['rlev'].sel(init=init,region=region,boot=0,rt_thresh=rtth,expt=expt).item() for expt in [expt0,expt1]]
+                                ax.arrow(xticks[i_rtth]+log_offsets[i_expt_pair], rlev1, 0, rlev0-rlev1, **qoidict['dispprop']['expt_pairs'][expt_pair], width=0.05, head_width=0.1, head_length=0.2*np.abs(rlev0-rlev1), length_includes_head=True)
+                        ax.set_xticks(xticks)
+                        ax.set_xticklabels([r'%g'%(rtth) for rtth in qoidict['rt_thresh']])
+                        #ax.set_xscale('log')
 
                         for ax in axes[i_init,:]:
                             hera5 = ax.axhline(severity_era5.sel(region=region).item(), color='black', linestyle='--', label='ERA5')
+                            hclim = ax.axhline(severity_clim.sel(region=region).item(), color='gray', linestyle='-', linewidth=4, alpha=0.25, label='CLIM')
                     handles.append(hera5)
+                    handles.append(hclim)
                     axes[0,1].legend(handles=handles,loc='lower right')
                     axes[-1,0].set_xlabel('Probability density')
                     axes[-1,1].set_xlabel('Return period [years]')
                     axes[-1,2].set_xlabel('Predicted quantile')
                     axes[-1,3].set_xlabel('Rel. Risk')
-                    for ax in axes[:,1]:
-                        ax.set_xlim([1.0, 500.0])
+                    axes[-1,4].set_xlabel('Return period [years]')
+                    for ax in axes[:,1].flat:
+                        ax.set_xlim([1.0, 100.0])
                     for ax in axes[:,3]:
                         ax.set_xlim([0.1,6.0])
                     e5data = severity_era5.sel(region=region).item()
-                    print(f'{e5data = }')
+                    climdata = severity_clim.sel(region=region).item()
                     for ax in axes.flat:
-                        ax.set_ylim([min(data_lim[0],e5data)-1,max(data_lim[1],e5data)+1])
-                    fig.suptitle(f'{qoidict["dispprop"]["regions"][region]} risk with {qoidict["dispprop"]["families"][family]["label"]} model')
+                        ax.set_ylim([min(data_lim[0],e5data,climdata)-1,max(data_lim[1],e5data,climdata)+1])
+                    fig.suptitle(f'{model} {qoidict["dispprop"]["regions"][region]} risk with {qoidict["dispprop"]["families"][family]["label"]} fit')
                     filename = stagefiles_model['abs_risk_plots'][svmetric][family][region]
                     print(f'{filename = }')
                     fig.savefig(filename, **pltsvargs)
                     plt.close(fig)
-                # -------------- Relative risk -------------------
     return
         
 def severity_fun_avgDA(avgDA, svmetric):
@@ -324,15 +355,15 @@ resultdir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-01-
 figdir = '/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-01-13'
 # Bounds of interest in time, variable, etc. 
 model2institute,vbl2key,base_dirs = datre.get_dirinfo()
-models = list(model2institute.keys())
+models = ['IFS'] #list(model2institute.keys())
 
 qoidict = dict({
     'fcdates': np.array([datetime.datetime(2018,1,25),datetime.datetime(2018,2,8)]),
     'expts': ['control','free','nudged'],
-    'expt_pairs': dict({"n2f": ["nudged","free"], "n2c": ["nudged","control"]}),
+    'expt_pairs': dict({"n2f": ["nudged","free"], "c2f": ["control","free"]}),
     'timesel_maxposs': dict(time=slice(datetime.datetime(2018,2,12),datetime.datetime(2018,3,11))),
     'timesel_event': dict(time=slice(datetime.datetime(2018,2,21),datetime.datetime(2018,3,8))),
-    'spacesels': dict({
+    'regions': dict({
         # By convention, the first entry is the entire region
         'eu': dict(lat=slice(50,65),lon=slice(-10,130)), # The whole region, with possible sub-regions
         'eu_w': dict(lat=slice(50,65),lon=slice(-10,60)),
@@ -346,6 +377,7 @@ qoidict = dict({
     'severity_metrics_families': dict({
         'mintemp': ['gpd','normal','gev'][1:],
         }),
+    'rt_thresh': np.array([2,4,8,16,32,64]), # Return period thresholds
     'n_boot': 50,
     })
 # Display properties
@@ -374,11 +406,11 @@ qoidict['dispprop'] = dict({
     'expt_pairs': dict({
         'n2f': dict({
             'color': 'red',
-            'label': 'nudged/free',
+            'label': 'N/F',
             }),
-        'n2c': dict({
+        'c2f': dict({
             'color': 'dodgerblue',
-            'label': 'nudged/ctrl',
+            'label': 'C/F',
             }),
         }),
     'expts': dict({
@@ -418,12 +450,12 @@ def main():
             }),
         'gcms': dict({
             model: dict({ 
-                'overwrite':        1,
-                'avgD':             1,
-                'avgDA':            1,
-                'plot_avgDA':       1,
-                'compute_severity': 1,
-                'compute_risk':     1,
+                'overwrite':        0, #(model not in ['IFS','GLOBO']),
+                'avgD':             0,
+                'avgDA':            0,
+                'plot_avgDA':       0,
+                'compute_severity': 0,
+                'compute_risk':     0,
                 'plot_risk':        1,
                 })
             for model in models
@@ -434,7 +466,7 @@ def main():
             #'plot_rr':         1, 
             'compare_params':  0,
             'plot_params':     0,
-            'plot_quantiles':  1,
+            'plot_rt_change':  1,
             })
         })
     print(f'Building stagefiles...', end='')
@@ -470,8 +502,8 @@ def main():
             stagefiles[model]['avgD'] = join(resultdir_model, 'avgD.nc')
             stagefiles[model]['avgDA'] = join(resultdir_model, 'avgDA.nc')
             stagefiles[model]['avgDA_plots'] = dict()
-            for spacesel in list(qoidict['spacesels'].keys()):
-                stagefiles[model][f'avgDA_plots'][spacesel] = join(figdir_model, 'avgDA_{spacesel}_plot.png')
+            for region in list(qoidict['regions'].keys()):
+                stagefiles[model][f'avgDA_plots'][region] = join(figdir_model, f'avgDA_{region}_plot.png')
             stagefiles[model]['severity'] = dict()
             stagefiles[model]['abs_risk'] = dict()
             stagefiles[model]['abs_risk_plots'] = dict()
@@ -490,7 +522,7 @@ def main():
                     stagefiles[model]['rel_risk'][svmetric][family] = join(resultdir_model, f'rel_risk_{svmetric}_{family}.nc')
                     stagefiles[model]['abs_risk_plots'][svmetric][family] = dict()
                     stagefiles[model]['rel_risk_plots'][svmetric][family] = dict()
-                    for region in list(qoidict['spacesels'].keys()):
+                    for region in list(qoidict['regions'].keys()):
                         stagefiles[model]['abs_risk_plots'][svmetric][family][region] = join(figdir_model, f'risk_{svmetric}_{family}_{region}_plot.png')
                         stagefiles[model]['rel_risk_plots'][svmetric][family][region] = join(figdir_model, f'rel_risk_{svmetric}_{family}_{region}_plot.png')
                         
@@ -527,7 +559,7 @@ def main():
         for model in models2include:
             print(f"About to start pipeline for {model}")
             if find_true_in_dict(tododict['gcms'][model]):
-                risk_calc_pipeline_1model(qoidict, tododict['gcms'][model], stagefiles[model], stagefiles['era5'], stagefiles['clim'])
+                risk_calc_pipeline_1model(qoidict, tododict['gcms'][model], stagefiles[model], stagefiles['era5'], stagefiles['clim'], model)
     # ----------------------------------------------------------
 
     # ------------ Compare aspects of risk across models ----------
@@ -544,6 +576,13 @@ def main():
                 paramset.loc[dict(model=model)] = abs_risk['params']
             paramset.to_netcdf(stagefiles['riskcomp'][svmetric][family])
             print(f'{paramset.sel(boot=0) = }')
+        if tododict['riskcomp']['plot_rt_change']:
+            paramset = xr.open_dataarray(stagefiles['riskcomp'][svmetric][family])
+            # Col 0: full-Eurasia change in return level
+            # Col 1: split in half
+            # Col 2: split in quadrants
+        if tododict['riskcomp']['plot_risk_change']:
+            pass
         if tododict['riskcomp']['plot_params']:
             paramset = xr.open_dataarray(stagefiles['riskcomp'][svmetric][family])
             nrows = paramset['param_name'].size
