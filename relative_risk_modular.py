@@ -15,7 +15,7 @@ matplotlib.rcParams.update({
     'font.family': 'monospace',
     'font.size': 20,
     })
-pltsvargs = {"bbox_inches": "tight", "pad_inches": 0.2}
+pltkwargs = {"bbox_inches": "tight", "pad_inches": 0.2}
 import data_retrieval as datre
 import stat_functions as stfu
 
@@ -115,7 +115,7 @@ def plot_avgDA_timeseries(qoidict, stagefiles_model, stagefiles_era5, stagefiles
                 ax.set_ylabel(f"{qoidict['var_name']} [K]")
                 ax.set_xlabel("")
         axes[0,0].legend(handles=[hclim,hera,hgcm,hgcm_mean], loc=(-1,0), title=qoidict['dispprop']['regions'][region])
-        fig.savefig(stagefiles_model['avgDA_plots'][region],**pltsvargs)
+        fig.savefig(stagefiles_model['avgDA_plots'][region],**pltkwargs)
         plt.close(fig)
     return
 
@@ -323,7 +323,7 @@ def risk_calc_pipeline_1model(qoidict, tododict, stagefiles_model, stagefiles_er
                     fig.suptitle(f'{model} {qoidict["dispprop"]["regions"][region]} risk with {qoidict["dispprop"]["families"][family]["label"]} fit')
                     filename = stagefiles_model['abs_risk_plots'][svmetric][family][region]
                     print(f'{filename = }')
-                    fig.savefig(filename, **pltsvargs)
+                    fig.savefig(filename, **pltkwargs)
                     plt.close(fig)
     return
         
@@ -355,7 +355,7 @@ resultdir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-01-
 figdir = '/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-01-13'
 # Bounds of interest in time, variable, etc. 
 model2institute,vbl2key,base_dirs = datre.get_dirinfo()
-models = ['IFS'] #list(model2institute.keys())
+models = ['IFS','GLOBO'] #list(model2institute.keys())
 
 qoidict = dict({
     'fcdates': np.array([datetime.datetime(2018,1,25),datetime.datetime(2018,2,8)]),
@@ -456,7 +456,7 @@ def main():
                 'plot_avgDA':       0,
                 'compute_severity': 0,
                 'compute_risk':     0,
-                'plot_risk':        1,
+                'plot_risk':        0,
                 })
             for model in models
             }),
@@ -466,7 +466,8 @@ def main():
             #'plot_rr':         1, 
             'compare_params':  0,
             'plot_params':     0,
-            'plot_rt_change':  1,
+            'compare_rlevs':   1,
+            'plot_rlev_change':  1,
             })
         })
     print(f'Building stagefiles...', end='')
@@ -540,8 +541,11 @@ def main():
         stagefiles['riskcomp'][svmetric] = dict()
         stagefiles['riskcomp_plot'][svmetric] = dict()
         for family in qoidict['severity_metrics_families'][svmetric]:
-            stagefiles['riskcomp'][svmetric][family] = join(compdir_svmetric, f'{family}.nc')
-            stagefiles['riskcomp_plot'][svmetric][family] = join(compdir_svmetric_plot, f'{family}_plot.png')
+            stagefiles['riskcomp'][svmetric][family] = dict()
+            stagefiles['riskcomp_plot'][svmetric][family] = dict()
+            for sumstat in ['params','rlev']:
+                stagefiles['riskcomp'][svmetric][family][sumstat] = join(compdir_svmetric, f'{family}_{sumstat}.nc')
+                stagefiles['riskcomp_plot'][svmetric][family][sumstat] = join(compdir_svmetric_plot, f'{family}_{sumstat}_plot.png')
     print(f'done')
     
     
@@ -574,15 +578,52 @@ def main():
             for model in models2include:
                 abs_risk = xr.open_dataset(stagefiles[model]['abs_risk'][svmetric][family])
                 paramset.loc[dict(model=model)] = abs_risk['params']
-            paramset.to_netcdf(stagefiles['riskcomp'][svmetric][family])
+            paramset.to_netcdf(stagefiles['riskcomp'][svmetric][family]['params'])
             print(f'{paramset.sel(boot=0) = }')
-        if tododict['riskcomp']['plot_rt_change']:
-            paramset = xr.open_dataarray(stagefiles['riskcomp'][svmetric][family])
+        if tododict['riskcomp']['compare_rlevs']:
+            rlev = xr.DataArray(
+                    coords={'model': models2include, 'init': qoidict['fcdates'], 'region': list(qoidict['regions'].keys()), 'expt': qoidict['expts'], 'boot': np.arange(qoidict['n_boot']+1), 'rt_thresh': qoidict['rt_thresh']},
+                    dims=['model','init','region','expt','boot','rt_thresh'],
+                    data=np.nan)
+            for model in models2include:
+                abs_risk = xr.open_dataset(stagefiles[model]['abs_risk'][svmetric][family])
+                print(f'{abs_risk["rlev"].dims = }')
+                print(f'{rlev.dims = }')
+                rlev.loc[dict(model=model)] = abs_risk['rlev']
+            rlev.to_netcdf(stagefiles['riskcomp'][svmetric][family]['rlev'])
+        if tododict['riskcomp']['plot_rlev_change']:
+            rlev = xr.open_dataarray(stagefiles['riskcomp'][svmetric][family]['rlev'])
             # Col 0: full-Eurasia change in return level
             # Col 1: split in half
             # Col 2: split in quadrants
-        if tododict['riskcomp']['plot_risk_change']:
-            pass
+            rt = 32 # Something robust in the middle of the range
+            for i_init,init in enumerate(qoidict['fcdates']):
+                for i_expt_pair,expt_pair in enumerate(qoidict['expt_pairs']):
+                    expt0,expt1 = qoidict['expt_pairs'][expt_pair]
+                    fig,axes = plt.subplots(ncols=3,nrows=len(models),figsize=(18,3*len(models)))
+                    region_groups = [
+                            [f'eu'],
+                            [f'eu_{q}' for q in ['w','e']],
+                            [f'eu_{q}' for q in ['sw','se','nw','ne']],
+                            ]
+                    for i_rg,regions in enumerate(region_groups):
+                        # Col 2: Change in the four quadrants
+                        x = np.array([np.mean([getattr(qoidict['regions'][reg]['lon'], s) for s in ['start','stop']]) for reg in regions])
+                        y = np.array([np.mean([getattr(qoidict['regions'][reg]['lat'], s) for s in ['start','stop']]) for reg in regions])
+                        rlev_regional = rlev.sel(init=init,region=regions,rt_thresh=rt,boot=0,drop=True)
+                        delta_rlev_regional = rlev_regional.sel(expt=expt0,drop=True) - rlev_regional.sel(expt=expt1,drop=True)
+                        print(f'{delta_rlev_regional.dims = }')
+
+                        for i_model,model in enumerate(models2include):
+                            ax = axes[i_model,i_rg]
+                            for i_reg,reg in enumerate(regions):
+                                ax.arrow(x[i_reg],y[i_reg],0,delta_rlev_regional.sel(model=model,region=reg), width=1, head_width=2, color='black')
+                    fig.savefig(stagefiles['riskcomp_plot'][svmetric][family]['rlev'], **pltkwargs)
+                    print(stagefiles['riskcomp_plot'][svmetric][family]['rlev'])
+                    plt.close(fig)
+                                
+
+
         if tododict['riskcomp']['plot_params']:
             paramset = xr.open_dataarray(stagefiles['riskcomp'][svmetric][family])
             nrows = paramset['param_name'].size
@@ -615,7 +656,7 @@ def main():
                     if family == 'gev' and param_name == 'shape':
                         ax.axhline(0, color='black', linestyle='--')
             axes[0,0].legend(handles=list(handles.values()), ncol=3, loc=(0,1.1))
-            fig.savefig(stagefiles['riskcomp_plot'][svmetric][family], **pltsvargs)
+            fig.savefig(stagefiles['riskcomp_plot'][svmetric][family], **pltkwargs)
             plt.close(fig)
 
 
