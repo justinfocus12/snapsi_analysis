@@ -9,9 +9,10 @@ from os import makedirs
 from os.path import join,exists,basename
 import glob
 import yaml
-import matplotlib 
 import matplotlib.pyplot as plt
-matplotlib.rcParams.update({
+from matplotlib.patches import Rectangle
+from matplotlib import rcParams
+rcParams.update({
     'font.family': 'monospace',
     'font.size': 20,
     })
@@ -355,7 +356,7 @@ resultdir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-01-
 figdir = '/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-01-13'
 # Bounds of interest in time, variable, etc. 
 model2institute,vbl2key,base_dirs = datre.get_dirinfo()
-models = ['IFS','GLOBO'] #list(model2institute.keys())
+models = list(model2institute.keys())
 
 qoidict = dict({
     'fcdates': np.array([datetime.datetime(2018,1,25),datetime.datetime(2018,2,8)]),
@@ -543,9 +544,15 @@ def main():
         for family in qoidict['severity_metrics_families'][svmetric]:
             stagefiles['riskcomp'][svmetric][family] = dict()
             stagefiles['riskcomp_plot'][svmetric][family] = dict()
-            for sumstat in ['params','rlev']:
-                stagefiles['riskcomp'][svmetric][family][sumstat] = join(compdir_svmetric, f'{family}_{sumstat}.nc')
-                stagefiles['riskcomp_plot'][svmetric][family][sumstat] = join(compdir_svmetric_plot, f'{family}_{sumstat}_plot.png')
+            stagefiles['riskcomp'][svmetric][family]['params'] = join(compdir_svmetric, f'{family}_params.nc')
+            stagefiles['riskcomp_plot'][svmetric][family]['params'] = join(compdir_svmetric_plot, f'{family}_params.nc')
+            stagefiles['riskcomp'][svmetric][family]['rlev'] = join(compdir_svmetric, f'{family}_rlev.nc')
+            stagefiles['riskcomp_plot'][svmetric][family]['rlev'] = dict() 
+            for expt_pair in list(qoidict['expt_pairs'].keys()):
+                stagefiles['riskcomp_plot'][svmetric][family]['rlev'][expt_pair] = dict()
+                for i_init,init in enumerate(qoidict['fcdates']):
+                    stagefiles['riskcomp_plot'][svmetric][family]['rlev'][expt_pair][init] = join(compdir_svmetric_plot, f'{family}_rlev_{expt_pair}_{init.strftime("%Y%m%d")}.png')
+
     print(f'done')
     
     
@@ -597,28 +604,42 @@ def main():
             # Col 1: split in half
             # Col 2: split in quadrants
             rt = 32 # Something robust in the middle of the range
-            for i_init,init in enumerate(qoidict['fcdates']):
-                for i_expt_pair,expt_pair in enumerate(qoidict['expt_pairs']):
-                    expt0,expt1 = qoidict['expt_pairs'][expt_pair]
-                    fig,axes = plt.subplots(ncols=3,nrows=len(models),figsize=(18,3*len(models)))
+            for i_expt_pair,expt_pair in enumerate(qoidict['expt_pairs']):
+                expt0,expt1 = qoidict['expt_pairs'][expt_pair]
+                delta_rlev = rlev.sel(expt=expt0,drop=True) - rlev.sel(expt=expt1,drop=True)
+                vmax = (np.abs(delta_rlev.sel(rt_thresh=rt,boot=0))).max().item()
+                for i_init,init in enumerate(qoidict['fcdates']):
+                    fig,axes = plt.subplots(ncols=4,nrows=len(models2include),figsize=(24,3*len(models)))
                     region_groups = [
                             [f'eu'],
                             [f'eu_{q}' for q in ['w','e']],
                             [f'eu_{q}' for q in ['sw','se','nw','ne']],
                             ]
+                    region_group_names = ['Whole','Halves','Quarters']
+                    for i_model,model in enumerate(models2include):
+                        ax = axes[i_model,0]
+                        ax.text(1.0,0.5,model,transform=ax.transAxes,horizontalalignment='right',verticalalignment='center')
+                        ax.axis('off')
+                    
                     for i_rg,regions in enumerate(region_groups):
-                        # Col 2: Change in the four quadrants
-                        x = np.array([np.mean([getattr(qoidict['regions'][reg]['lon'], s) for s in ['start','stop']]) for reg in regions])
-                        y = np.array([np.mean([getattr(qoidict['regions'][reg]['lat'], s) for s in ['start','stop']]) for reg in regions])
-                        rlev_regional = rlev.sel(init=init,region=regions,rt_thresh=rt,boot=0,drop=True)
-                        delta_rlev_regional = rlev_regional.sel(expt=expt0,drop=True) - rlev_regional.sel(expt=expt1,drop=True)
-                        print(f'{delta_rlev_regional.dims = }')
 
                         for i_model,model in enumerate(models2include):
-                            ax = axes[i_model,i_rg]
+                            ax = axes[i_model,i_rg+1]
                             for i_reg,reg in enumerate(regions):
-                                ax.arrow(x[i_reg],y[i_reg],0,delta_rlev_regional.sel(model=model,region=reg), width=1, head_width=2, color='black')
-                    fig.savefig(stagefiles['riskcomp_plot'][svmetric][family]['rlev'], **pltkwargs)
+                                lonsel = qoidict['regions'][reg]['lon']
+                                latsel = qoidict['regions'][reg]['lat']
+                                drlev = delta_rlev.sel(init=init,model=model,region=reg,rt_thresh=rt,boot=0).item()
+                                drlev_lo = delta_rlev.sel(init=init,model=model,region=reg,rt_thresh=rt,boot=slice(1,None)).quantile(0.25,dim='boot').item()
+                                drlev_hi = delta_rlev.sel(init=init,model=model,region=reg,rt_thresh=rt,boot=slice(1,None)).quantile(0.75,dim='boot').item()
+                                print(f'{drlev = }')
+                                color_scaled = ((drlev+vmax)/(2*vmax))
+                                rect = Rectangle((lonsel.start, latsel.start), (lonsel.stop-lonsel.start), (latsel.stop-latsel.start), facecolor=plt.cm.coolwarm(color_scaled))
+                                ax.add_patch(rect)
+                                ax.text((lonsel.start+lonsel.stop)/2,(latsel.start+latsel.stop)/2,r'$%.1f$ K'%(drlev)+'\n'+r'$(%.1f,%.1f)$ K'%(drlev_lo,drlev_hi),horizontalalignment='center',verticalalignment='center')
+                                print(f'{ax.get_xlim() = }')
+                                 
+                            ax.autoscale_view()
+                    fig.savefig(stagefiles['riskcomp_plot'][svmetric][family]['rlev'][expt_pair][init], **pltkwargs)
                     print(stagefiles['riskcomp_plot'][svmetric][family]['rlev'])
                     plt.close(fig)
                                 
