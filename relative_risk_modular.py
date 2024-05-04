@@ -465,9 +465,9 @@ def main():
         'riskcomp': dict({ # comparison or comprehensive
             #'plot_avgDA':      1,
             #'plot_rr':         1, 
-            'compare_params':  0,
-            'plot_params':     0,
+            'compare_params':  1,
             'compare_rlevs':   1,
+            'plot_params':     1,
             'plot_rlev_change':  1,
             })
         })
@@ -579,11 +579,13 @@ def main():
         # Collect shape parameters (point estimate and CI) across all models
         if tododict['riskcomp']['compare_params']:
             paramset = xr.DataArray(
-                    coords={'model': models2include, 'init': qoidict['fcdates'], 'expt': qoidict['expts'], 'param_name': stfu.param_names(family), 'boot': np.arange(qoidict['n_boot']+1)},
-                    dims=['model','init','expt','param_name','boot'],
+                    coords={'model': models2include, 'init': qoidict['fcdates'], 'region': list(qoidict['regions'].keys()), 'expt': qoidict['expts'], 'param_name': stfu.param_names(family), 'boot': np.arange(qoidict['n_boot']+1)},
+                    dims=['model','init','region','expt','param_name','boot'],
                     data=np.nan)
             for model in models2include:
                 abs_risk = xr.open_dataset(stagefiles[model]['abs_risk'][svmetric][family])
+                print(f'{abs_risk["params"].dims = }')
+                print(f'{abs_risk["params"].shape = }')
                 paramset.loc[dict(model=model)] = abs_risk['params']
             paramset.to_netcdf(stagefiles['riskcomp'][svmetric][family]['params'])
             print(f'{paramset.sel(boot=0) = }')
@@ -598,6 +600,43 @@ def main():
                 print(f'{rlev.dims = }')
                 rlev.loc[dict(model=model)] = abs_risk['rlev']
             rlev.to_netcdf(stagefiles['riskcomp'][svmetric][family]['rlev'])
+        if tododict['riskcomp']['plot_params']:
+            print(f'{stagefiles["riskcomp"][svmetric][family] = }')
+            paramset = xr.open_dataarray(stagefiles['riskcomp'][svmetric][family]['params'])
+            nrows = paramset['param_name'].size
+            ncols = paramset['init'].size
+            fig,axes = plt.subplots(nrows=nrows, ncols=ncols, figsize=(6*ncols, 6*nrows), sharex='col', sharey='row')
+            offsets_expt = {'control': -0.25, 'free': 0.0, 'nudged': 0.25}
+            handles = dict()
+            for i_param_name,param_name in enumerate(paramset['param_name'].values):
+                for i_init,init in enumerate(qoidict['fcdates']):
+                    ax = axes[i_param_name,i_init]
+                    for i_model,model in enumerate(models2include):
+                        if i_model < len(models2include)-1:
+                            ax.axvline(i_model+0.5,color='gray')
+                        for i_expt,expt in enumerate(paramset['expt'].values):
+                            exptsel = dict(model=model,param_name=param_name,init=init,expt=expt)
+                            xdata = i_model+offsets_expt[expt]
+                            ydata = paramset.sel(exptsel).sel(boot=0).item()
+                            handles[expt] = ax.scatter(xdata, ydata, c=qoidict['dispprop']['expts'][expt]['color'],marker='o',label=expt)
+                            ciwidths2plot = [0.5,0.95]
+                            for i_ciwidth,ciwidth in enumerate(ciwidths2plot):
+                                qs = [0.5-0.5*ciwidth,0.5+0.5*ciwidth]
+                                linewidth = 2*(len(ciwidths2plot) - i_ciwidth)
+                                ax.plot((i_model+offsets_expt[expt])*np.ones(2), [paramset.sel(exptsel).quantile(q,dim='boot') for q in qs], color=qoidict['dispprop']['expts'][expt]['color'], linewidth=linewidth)
+                    ax.set_title(r'Init %s'%(init.strftime('%Y-%m-%d')))
+                    ax.set_xlabel('')
+                    ax.set_ylabel(param_name)
+                    ax.set_xticks(np.arange(len(models2include)))
+                    ax.set_xticklabels(models2include)
+                    ax.tick_params(axis='x', rotation=90)
+                    if family == 'gev' and param_name == 'shape':
+                        ax.axhline(0, color='black', linestyle='--')
+            axes[0,0].legend(handles=list(handles.values()), ncol=3, loc=(0,1.1))
+            fig.savefig(stagefiles['riskcomp_plot'][svmetric][family], **pltkwargs)
+            plt.close(fig)
+
+
         if tododict['riskcomp']['plot_rlev_change']:
             rlev = xr.open_dataarray(stagefiles['riskcomp'][svmetric][family]['rlev'])
             # Col 0: full-Eurasia change in return level
@@ -643,42 +682,6 @@ def main():
                     print(stagefiles['riskcomp_plot'][svmetric][family]['rlev'])
                     plt.close(fig)
                                 
-
-
-        if tododict['riskcomp']['plot_params']:
-            paramset = xr.open_dataarray(stagefiles['riskcomp'][svmetric][family])
-            nrows = paramset['param_name'].size
-            ncols = paramset['init'].size
-            fig,axes = plt.subplots(nrows=nrows, ncols=ncols, figsize=(6*ncols, 6*nrows), sharex='col', sharey='row')
-            offsets_expt = {'control': -0.25, 'free': 0.0, 'nudged': 0.25}
-            handles = dict()
-            for i_param_name,param_name in enumerate(paramset['param_name'].values):
-                for i_init,init in enumerate(qoidict['fcdates']):
-                    ax = axes[i_param_name,i_init]
-                    for i_model,model in enumerate(models2include):
-                        if i_model < len(models2include)-1:
-                            ax.axvline(i_model+0.5,color='gray')
-                        for i_expt,expt in enumerate(paramset['expt'].values):
-                            exptsel = dict(model=model,param_name=param_name,init=init,expt=expt)
-                            xdata = i_model+offsets_expt[expt]
-                            ydata = paramset.sel(exptsel).sel(boot=0).item()
-                            handles[expt] = ax.scatter(xdata, ydata, c=qoidict['dispprop']['expts'][expt]['color'],marker='o',label=expt)
-                            ciwidths2plot = [0.5,0.95]
-                            for i_ciwidth,ciwidth in enumerate(ciwidths2plot):
-                                qs = [0.5-0.5*ciwidth,0.5+0.5*ciwidth]
-                                linewidth = 2*(len(ciwidths2plot) - i_ciwidth)
-                                ax.plot((i_model+offsets_expt[expt])*np.ones(2), [paramset.sel(exptsel).quantile(q,dim='boot') for q in qs], color=qoidict['dispprop']['expts'][expt]['color'], linewidth=linewidth)
-                    ax.set_title(r'Init %s'%(init.strftime('%Y-%m-%d')))
-                    ax.set_xlabel('')
-                    ax.set_ylabel(param_name)
-                    ax.set_xticks(np.arange(len(models2include)))
-                    ax.set_xticklabels(models2include)
-                    ax.tick_params(axis='x', rotation=90)
-                    if family == 'gev' and param_name == 'shape':
-                        ax.axhline(0, color='black', linestyle='--')
-            axes[0,0].legend(handles=list(handles.values()), ncol=3, loc=(0,1.1))
-            fig.savefig(stagefiles['riskcomp_plot'][svmetric][family], **pltkwargs)
-            plt.close(fig)
 
 
 
