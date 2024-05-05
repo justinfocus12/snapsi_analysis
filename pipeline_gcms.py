@@ -1,11 +1,18 @@
 import numpy as np
 import xarray as xr
+from cartopy import crs as ccrs
 import netCDF4
 import matplotlib.pyplot as plt
 pltkwargs = dict({
     'bbox_inches': 'tight',
     'pad_inches': 0.2,
     })
+from matplotlib import rcParams
+rcParams.update({
+    'font.family': 'monospace',
+    'font.size': 15,
+    })
+pltkwargs = {"bbox_inches": "tight", "pad_inches": 0.2}
 import datetime
 import sys
 from os import listdir, makedirs
@@ -61,15 +68,11 @@ def gcm_workflow(i_gcm, i_expt, i_init, verbose=False):
     # ----------- Files for each stage of analysis -------------
     # 1. Raw data
     raw_data_dir = join('/badc/snap/data/post-cmip6/SNAPSI', gcm2institute[gcm], gcm, expt, 's'+init)
-    print(f'{raw_data_dir = }')
-    print(f'Ensemble_dir: \n{listdir(raw_data_dir)}')
     ens_path_skeleton = join(raw_data_dir,'r*i*p*f*')
     mem_labels = [basename(p) for p in glob.glob(ens_path_skeleton)]
-    print(f'{mem_labels = }')
 
     path_skeleton = join(ens_path_skeleton,'6hrPt','tas','g*','v*','*.nc')
     raw_mem_files = glob.glob(path_skeleton)
-    print(f'{raw_mem_files[0] = }')
     # 2. Spatiotemporal sub-selection and coarse-graining (cg)
     event_region = dict(lat=slice(50,65),lon=slice(-10,130))
     event_time_interval = [datetime.datetime(2018,2,21),datetime.datetime(2018,3,8)]
@@ -80,7 +83,7 @@ def gcm_workflow(i_gcm, i_expt, i_init, verbose=False):
     cgs_levels = analysis_multiparams()
 
     # Plotting dir 
-    figdir = '/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-05-04'
+    figdir = f'/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-05-04/{gcm}'
     makedirs(figdir,exist_ok=True)
        
     workflow = (
@@ -193,9 +196,11 @@ def compare_gev_maps(i_gcm):
 def reduce_gcm(i_gcm,i_expt,i_init):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
     tododict = dict({
-        'coarse_grain_time':           1,
-        'coarse_grain_space':          1,
-        'fit_gev':                     1,
+        'coarse_grain_time':           0,
+        'plot_t2m_map':                1,
+        'coarse_grain_space':          0,
+        'fit_gev':                     0,
+        'plot_gev':                    0,
         })
     gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,figdir,cgs_levels = gcm_workflow(i_gcm,i_expt,i_init)
 
@@ -206,6 +211,41 @@ def reduce_gcm(i_gcm,i_expt,i_init):
         ds_cgt.to_netcdf(ens_file_cgt)
     else:
         ds_cgt = xr.open_dataarray(ens_file_cgt)
+
+    if tododict['plot_t2m_map']:
+        fig = plt.figure(figsize=(20,5))
+        pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'horizontal', 'label': '', 'shrink': 0.5, 'pad': 0.01, 'aspect': 40})
+        daily_mean = ds_cgt.sel(daily_stat='daily_mean')
+        Tmin = daily_mean.min().item()
+        Tmax = daily_mean.max().item()
+        # ensemble mean of time mean; ensemble mean of time min; ensemble std of time mean; ensemble std of time min
+        ax = fig.add_subplot(2,2,1,projection=ccrs.PlateCarree())
+        xr.plot.pcolormesh(daily_mean.mean('time').mean('member'), **pcmargs, vmin=Tmin, vmax=Tmax)
+        ax.coastlines()
+        ax.set_title(r'Time mean, ens. mean')
+        ax.set_xlabel('')
+        ax.set_ylabel('Latitude')
+        ax = fig.add_subplot(2,2,2,projection=ccrs.PlateCarree())
+        xr.plot.pcolormesh(daily_mean.min('time').mean('member'), **pcmargs, vmin=Tmin, vmax=Tmax)
+        ax.coastlines()
+        ax.set_title(r'Time min, ens. mean')
+        ax.set_xlabel('')
+        ax.set_ylabel('')
+        ax = fig.add_subplot(2,2,3,projection=ccrs.PlateCarree())
+        xr.plot.pcolormesh(daily_mean.mean('time').std('member'), **pcmargs)
+        ax.coastlines()
+        ax.set_title(r'Time mean, ens. std.')
+        ax.set_xlabel('Longitude')
+        ax.set_ylabel('Latitude')
+        ax = fig.add_subplot(2,2,4,projection=ccrs.PlateCarree())
+        xr.plot.pcolormesh(daily_mean.min('time').std('member'), **pcmargs)
+        ax.coastlines()
+        ax.set_title(r'Time min, ens. std.')
+        ax.set_xlabel('Longitude')
+        ax.set_ylabel('')
+
+        fig.savefig(join(figdir,f't2m_summary_e{expt}_i{init}_cgt1day.png'),**pltkwargs)
+        plt.close(fig)
 
     for cgs_level in cgs_levels:
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
@@ -236,6 +276,9 @@ def reduce_gcm(i_gcm,i_expt,i_init):
             gevpar.to_netcdf(gev_param_file)
         else:
             gevpar = xr.open_dataarray(gev_param_file)
+
+        if tododict['plot_gev']:
+            pass
         ds_cgts.close()
     ds_cgt.close()
     return 
