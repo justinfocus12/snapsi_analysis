@@ -5,6 +5,7 @@ import sys
 from os import listdir, makedirs
 from os.path import join, exists, basename
 import glob
+from scipy.stats import norm as spnorm, genextreme as spgex
 
 # My own modules
 import utils
@@ -62,24 +63,13 @@ def gcm_workflow(i_gcm, i_expt, i_init, verbose=False):
     event_time_interval = [datetime.datetime(2018,2,21),datetime.datetime(2018,3,8)]
     reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-05-04',gcm)
     makedirs(reduced_data_dir,exist_ok=True)
-    # 2a. Coarse-grained in time (cgt): daily minima, daily mean, and maybe other stats (all members combined into one file)
-    ens_file_cgt = join(reduced_data_dir, f't2m_e{expt}_i{init}_cgt.nc') # will hold daily min and daily mean 
-
-    # 2b. Coarse-grained in time and space (cgts): furthermore take averages over grid boxes of increasing size. List of pairs (a,b) = number of subdivisions in (lon,lat) directions  
-    # The region's longitudinal extent is approximately 6 and 4 times its latitudinal extent, as measured at the lower and upper latitudinal boundaries respectively. 
-    cgs_levels = [(1,1),(2,1),(4,1),(6,1),(35,8),(47,8)]
-    ens_file_cgts = join(reduced_data_dir, f't2m_e{expt}_i{init}_cgts.nc')
-    
-    # 3. Minimize over time 
-    ens_file_cgts_mint = join(reduced_data_dir, f't2m_e{expt}_i{init}_cgts_mint.nc')
-
+    # spatial coarse graining (cgs)
+    cgs_levels = [(1,1),(2,1),(4,1),(6,1),(35,8),(47,8),(141,16)]
     workflow = (
             gcm,expt,init,
             event_region,event_time_interval,
             raw_mem_files,mem_labels,reduced_data_dir,
-            ens_file_cgt,
-            ens_file_cgts,cgs_levels,
-            ens_file_cgts_mint
+            cgs_levels,
             )
     return workflow
 
@@ -104,14 +94,18 @@ def coarse_grain_time(raw_mem_files, mem_labels, event_region, event_time_interv
     ds_ens_cgt = xr.concat([daily_mean,daily_min], dim='daily_stat').assign_coords(daily_stat=['daily_mean','daily_min'])
     return ds_ens_cgt
 
-def coarse_grain_space(ds_ens_cgt, cgs_levels):
+def coarse_grain_space(ds_cgt, cgs_level):
     data_vars = dict()
-    Nlon,Nlat = (ds_ens_cgt[dim].size for dim in ('lon','lat'))
-    for cgs_level in cgs_levels:
-        level_key = r'%dx%d'%(cgs_level[0],cgs_level[1]) # denotes the level of coarsening
-        data_vars[level_key] = ds_ens_cgt.coarsen({'lon': int(round(Nlon/cgs_level[0])), 'lat': int(round(Nlat/cgs_level[1]))}, boundary='pad', coord_func={'lon': 'mean', 'lat': 'mean'}).mean()
-    ds_ens_cgts = xr.Dataset(data_vars=data_vars)
-    return ds_ens_cgts
+    Nlon,Nlat = (ds_cgt[dim].size for dim in ('lon','lat'))
+    print(f'{ds_cgt.dims = }')
+    print(f'{ds_cgt.shape = }')
+    dim = {'lon': int(round(Nlon/cgs_level[0])), 'lat': int(round(Nlat/cgs_level[1]))}
+    print(f'{dim = }')
+    coslat = np.cos(np.deg2rad(ds_cgt['lat'])) * xr.ones_like(ds_cgt)
+    coarsen_kwargs = dict(dim=dim, boundary='pad', coord_func={'lon': 'mean', 'lat': 'mean'})
+    ds_cgts = (ds_cgt * coslat).coarsen(**coarsen_kwargs).sum() / coslat.coarsen(**coarsen_kwargs).sum()
+    print(f'{ds_cgts.shape = }')
+    return ds_cgts # awkward to put into a single dataset because of differing lon/lat coordinates
 
 
 
@@ -133,22 +127,58 @@ def preprocess_gcm_6hrPt(dsmem,fcdate,timesel,spacesel):
 def gcm_procedure():
     tododict = dict({
         'coarse_grain_time':           0,
-        'coarse_grain_space':          1,
+        'coarse_grain_space':          0,
+        'minimize_over_time':          0,
+        'fit_gev':                     1,
         })
-    gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,ens_file_cgt,ens_file_cgts,cgs_levels,ens_file_cgts_mint = gcm_workflow(4,0,0)
-    if tododict['coarse_grain_time']:
-        ds_ens_cgt = coarse_grain_time(raw_mem_files, mem_labels, event_region, event_time_interval)
-        ds_ens_cgt.to_netcdf(ens_file_cgt)
-    else:
-        ds_ens_cgt = xr.open_dataarray(ens_file_cgt)
-    if tododict['coarse_grain_space']:
-        ds_ens_cgts = coarse_grain_space(ds_ens_cgt, cgs_levels)
-        ds_ens_cgts.to_netcdf(ens_file_cgts)
-    else:
-        ds_ens_cgts = xr.open_dataset(ens_file_cgts)
+    gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,cgs_levels = gcm_workflow(4,0,0)
 
-    ds_ens_cgt.close()
-    ds_ens_cgts.close()
+    # ------------- Coarse-grain in time (cgt) and space (cgts) -------------
+    ens_file_cgt = join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt.nc')
+    if tododict['coarse_grain_time']:
+        ds_cgt = coarse_grain_time(raw_mem_files, mem_labels, event_region, event_time_interval)
+        ds_cgt.to_netcdf(ens_file_cgt)
+    else:
+        ds_cgt = xr.open_dataarray(ens_file_cgt)
+
+    for cgs_level in cgs_levels:
+        cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+        ens_file_cgts = join(reduced_data_dir,f't2m_e{expt}_i{init}_cgs{cgs_key}.nc')
+        if tododict['coarse_grain_space']:
+            ds_cgts = coarse_grain_space(ds_cgt, cgs_level)
+            ds_cgts.to_netcdf(ens_file_cgts)
+        else:
+            ds_cgts = xr.open_dataarray(ens_file_cgts)
+        # ---- Minimize in time -----------------------------
+        ens_file_cgts_mint = join(reduced_data_dir,f't2m_e{expt}_i{init}_cgs{cgs_key}_mint.nc')
+        if tododict['minimize_over_time']:
+            ds_cgts_mint = ds_cgts.min(dim='time')
+            ds_cgts_mint.to_netcdf(ens_file_cgts_mint)
+        else:
+            ds_cgts_mint = xr.open_dataarray(ens_file_cgts_mint)
+
+        # ----------- Perform GEV fitting (on negative temperature) --------------
+        gev_param_file = join(reduced_data_dir,f'gevpar_e{expt}_i{init}_cgs{cgs_key}.nc')
+        if tododict['fit_gev']:
+            memdim = ds_cgts_mint.dims.index('member')
+            print(f'{memdim = }')
+            gevpar_array = np.apply_along_axis(spgex.fit, memdim, -ds_cgts_mint.to_numpy())
+            gevpar_dims = list(ds_cgts_mint.dims).copy()
+            gevpar_dims[memdim] = 'param'
+            gevpar_coords = dict(ds_cgts_mint.coords).copy()
+            gevpar_coords.pop('member')
+            gevpar_coords['param'] = ['shape','loc','scale']
+            gevpar = xr.DataArray(
+                    coords=gevpar_coords,
+                    dims=gevpar_dims,
+                    data=gevpar_array)
+            gevpar.loc[dict(param='shape')] *= -1
+            gevpar.to_netcdf(gev_param_file)
+        else:
+            gevpar = xr.open_dataarray(gev_param_file)
+        ds_cgts.close()
+
+    ds_cgt.close()
     return 
 
 if __name__ == "__main__":
