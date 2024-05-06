@@ -2,12 +2,11 @@ import numpy as np
 import xarray as xr
 from cartopy import crs as ccrs
 import netCDF4
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt, rcParams, ticker
 pltkwargs = dict({
     'bbox_inches': 'tight',
     'pad_inches': 0.2,
     })
-from matplotlib import rcParams
 rcParams.update({
     'font.family': 'monospace',
     'font.size': 15,
@@ -33,7 +32,7 @@ def gcm_multiparams():
 
 def analysis_multiparams():
     # lon/lat ratios are 6/1 at the bottom and 4/1 at the top; stick to 5/1 
-    cgs_levels = [(1,1),(5,1),(10,2),(20,4),(40,8),(141,16)][:-1]
+    cgs_levels = [(1,1),(5,1),(10,2),(20,4),(40,8),(141,16)]
     return cgs_levels
 
 
@@ -213,6 +212,42 @@ def plot_gev_map(gevpar):
     ax.set_ylabel('Lat')
     return fig
 
+def plot_gev_with_t2m_map(t2m,gevpar):
+    # Essentially Gaussian parameters next to GEV parameters
+    fig,axes = plt.subplots(figsize=(20,8),nrows=3,ncols=2,subplot_kw={'projection': ccrs.PlateCarree()},gridspec_kw={'hspace': 0.2, 'wspace': 0.2})
+    pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 'ticks': ticker.MaxNLocator(nbins=5)})
+    loc_fields = (t2m.min('time').mean('member'), -gevpar.sel(param='loc'))
+    loc_vmin,loc_vmax = (min((da.min().item() for da in loc_fields)), max((da.max().item() for da in loc_fields)))
+    loc_titles = [r'Mean',r'GEV location']
+    scale_fields = (t2m.min('time').std('member'), gevpar.sel(param='scale'))
+    scale_vmin,scale_vmax = (min((da.min().item() for da in scale_fields)), max((da.max().item() for da in scale_fields)))
+    scale_titles = [r'Std. Dev.',r'GEV scale']
+    shape_fields = (None,gevpar.sel(param='shape'))
+    shape_vmin,shape_vmax = (-max((np.abs(da).max().item() for da in scale_fields if da is not None)), max((np.abs(da).max().item() for da in scale_fields)))
+    shape_titles = [None,r'GEV shape']
+
+    fields = loc_fields + scale_fields + shape_fields
+    vmin = [loc_vmin]*2 + [scale_vmin]*2 + [shape_vmin]*2
+    vmax = [loc_vmax]*2 + [scale_vmax]*2 + [shape_vmax]*2
+    titles = loc_titles + scale_titles + shape_titles
+
+    print(f'{vmin = }')
+    print(f'{vmax = }')
+    for i in range(6):
+        ax = axes.flat[i]
+        if fields[i] is None:
+            ax.axis('off')
+            continue
+        xr.plot.pcolormesh(fields[i], ax=ax, vmin=vmin[i], vmax=vmax[i], **pcmargs)
+        ax.set_title(titles[i])
+    for ax in axes[-1,:]:
+        ax.set_xlabel('Lon')
+    for ax in axes[:,0]:
+        ax.set_ylabel('Lat')
+    return fig,axes
+
+
+
 
 
 
@@ -220,10 +255,11 @@ def reduce_gcm(i_gcm,i_expt,i_init):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
     tododict = dict({
         'coarse_grain_time':           0,
-        'plot_t2m_map':                1,
-        'coarse_grain_space':          0,
-        'fit_gev':                     0,
-        'plot_gev_map':                1,
+        'plot_t2m_map':                0,
+        'coarse_grain_space':          1,
+        'fit_gev':                     1,
+        'plot_gev_map':                0,
+        'plot_gev_with_t2m_map':       1,
         })
     gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,figdir,cgs_levels = gcm_workflow(i_gcm,i_expt,i_init)
 
@@ -273,6 +309,11 @@ def reduce_gcm(i_gcm,i_expt,i_init):
         if tododict['plot_gev_map'] and min(cgs_level) > 1:
             fig = plot_gev_map(gevpar.sel(daily_stat='daily_mean'))
             fig.savefig(join(figdir,f'gev_map_e{expt}_i{init}_cgs{cgs_key}.png'), **pltkwargs)
+            plt.close(fig)
+
+        if tododict['plot_gev_with_t2m_map'] and min(cgs_level) > 1:
+            fig,axes = plot_gev_with_t2m_map(ds_cgt.sel(daily_stat='daily_mean'), gevpar.sel(daily_stat='daily_mean'))
+            fig.savefig(join(figdir,f'gevwitht2m_map_e{expt}_i{init}_cgs{cgs_key}.png'), **pltkwargs)
             plt.close(fig)
         ds_cgts.close()
     ds_cgt.close()
