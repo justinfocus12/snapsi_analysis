@@ -53,8 +53,6 @@ def all_gcms_institutes():
         })
     return gcm2institute
 
-def date2label(date):
-    return r"s%s"%(date.strftime("%Y%m%d"))
 
 def gcm_workflow(i_gcm, i_expt, i_init, verbose=False):
     # Sets out the folders necessary to ingest a chunk of data specified by the input arguments 
@@ -212,18 +210,52 @@ def plot_gev_map(gevpar):
     ax.set_ylabel('Lat')
     return fig
 
-def plot_gev_with_t2m_map(t2m,gevpar):
+def plot_ensstats_map_difference(ds_cgts_0,ds_cgts_1,gevpar_0,gevpar_1):
     # Essentially Gaussian parameters next to GEV parameters
-    fig,axes = plt.subplots(figsize=(20,8),nrows=3,ncols=2,subplot_kw={'projection': ccrs.PlateCarree()},gridspec_kw={'hspace': 0.2, 'wspace': 0.2})
-    pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 'ticks': ticker.MaxNLocator(nbins=5)})
-    loc_fields = (t2m.min('time').mean('member'), -gevpar.sel(param='loc'))
+    fig,axes = plt.subplots(figsize=(20,8),nrows=3,ncols=2,subplot_kw={'projection': ccrs.Orthographic(60,58)},gridspec_kw={'hspace': 0.2, 'wspace': 0.05})
+    pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 'ticks': ticker.LinearLocator(numticks=3)})
+    loc_fields = (ds_cgts_1.mean('member')-ds_cgts_0.mean('member'), -gevpar_1.sel(param='loc')+gevpar_0.sel(param='loc'))
+    loc_vmax = tuple(np.abs(da).max().item() for da in loc_fields)
+    loc_titles = [r'$\Delta$(mean)',r'$\Delta$(GEV location)']
+    scale_fields = (ds_cgts_1.std('member')-ds_cgts_0.std('member'), gevpar_1.sel(param='scale')-gevpar_0.sel(param='scale'))
+    scale_vmax = tuple(np.abs(da).max().item() for da in scale_fields)
+    scale_titles = [r'$\Delta$(std. dev.)',r'$\Delta$(GEV scale)']
+    shape_fields = (None,gevpar_1.sel(param='shape')-gevpar_0.sel(param='shape'))
+    shape_vmax = tuple((np.abs(da).max().item() if da is not None else np.nan) for da in shape_fields)
+    shape_titles = [None,r'$\Delta$(GEV shape)']
+
+    fields = loc_fields + scale_fields + shape_fields
+    vmax = loc_vmax + scale_vmax + shape_vmax
+    vmin = tuple(-vm for vm in vmax)
+    titles = loc_titles + scale_titles + shape_titles
+
+    print(f'{vmin = }')
+    print(f'{vmax = }')
+    for i in range(6):
+        ax = axes.flat[i]
+        if fields[i] is None:
+            ax.axis('off')
+            continue
+        pcmargs['cbar_kwargs'].update(ticks=np.linspace(vmin[i],vmax[i],3))
+        xr.plot.pcolormesh(fields[i], ax=ax, vmin=vmin[i], vmax=vmax[i], **pcmargs)
+        ax.set_title(titles[i])
+        ax.coastlines()
+        ax.gridlines()
+    return fig,axes
+
+def plot_ensstats_map(ds_cgts,gevpar):
+    # Essentially Gaussian parameters next to GEV parameters
+    fig,axes = plt.subplots(figsize=(20,8),nrows=3,ncols=2,subplot_kw={'projection': ccrs.Orthographic(60,58)},gridspec_kw={'hspace': 0.2, 'wspace': 0.05})
+    pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15})
+    loc_fields = (ds_cgts.mean('member'), -gevpar.sel(param='loc'))
     loc_vmin,loc_vmax = (min((da.min().item() for da in loc_fields)), max((da.max().item() for da in loc_fields)))
     loc_titles = [r'Mean',r'GEV location']
-    scale_fields = (t2m.min('time').std('member'), gevpar.sel(param='scale'))
+    scale_fields = (ds_cgts.std('member'), gevpar.sel(param='scale'))
     scale_vmin,scale_vmax = (min((da.min().item() for da in scale_fields)), max((da.max().item() for da in scale_fields)))
     scale_titles = [r'Std. Dev.',r'GEV scale']
     shape_fields = (None,gevpar.sel(param='shape'))
-    shape_vmin,shape_vmax = (-max((np.abs(da).max().item() for da in scale_fields if da is not None)), max((np.abs(da).max().item() for da in scale_fields)))
+    shape_vmax = max((np.abs(da).max().item() for da in shape_fields if da is not None))
+    shape_vmin = -shape_vmax
     shape_titles = [None,r'GEV shape']
 
     fields = loc_fields + scale_fields + shape_fields
@@ -238,13 +270,33 @@ def plot_gev_with_t2m_map(t2m,gevpar):
         if fields[i] is None:
             ax.axis('off')
             continue
+        pcmargs['cbar_kwargs'].update(ticks=np.linspace(vmin[i],vmax[i],3))
         xr.plot.pcolormesh(fields[i], ax=ax, vmin=vmin[i], vmax=vmax[i], **pcmargs)
         ax.set_title(titles[i])
-    for ax in axes[-1,:]:
-        ax.set_xlabel('Lon')
-    for ax in axes[:,0]:
-        ax.set_ylabel('Lat')
+        ax.coastlines()
+        ax.gridlines()
     return fig,axes
+
+
+def compare_ensstats_maps_2expts(i_gcm,i0_expt,i1_expt,i_init):
+    tododict = dict({
+        'plot_param_diff_map':           1,
+        })
+    # Assumes both have been reduced
+    gcm,expt0,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,figdir,cgs_levels = gcm_workflow(i_gcm,i0_expt,i_init)
+    _,expt1,_,_,_,_,_,_,_,_= gcm_workflow(i_gcm,i1_expt,i_init)
+    ds_cgt_0,ds_cgt_1 = (xr.open_dataarray(join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day.nc')) for expt in (expt0,expt1))
+    for cgs_level in cgs_levels:
+        cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+        ds_cgts_mint_0,ds_cgts_mint_1 = (xr.open_dataarray(join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day_cgs{cgs_key}.nc')).sel(daily_stat='daily_mean').min('time') for expt in (expt0,expt1))
+        gevpar_0,gevpar_1 = (xr.open_dataarray(join(reduced_data_dir,f'gevpar_e{expt}_i{init}_cgs{cgs_key}.nc')).sel(daily_stat='daily_mean') for expt in (expt0,expt1))
+        if tododict['plot_param_diff_map']:
+            fig,axes = plot_ensstats_map_difference(ds_cgts_mint_0,ds_cgts_mint_1,gevpar_0,gevpar_1)
+            datestr = datetime.datetime.strptime(init,"%Y%m%d").strftime("%Y-%m-%d")
+            fig.suptitle(f'{expt1} - {expt0}, init {datestr}')
+            fig.savefig(join(figdir,f'ensstats_diffmap_e0{expt0}_e1{expt1}_i{init}_cgs{cgs_key}.png'), **pltkwargs)
+            plt.close(fig)
+    return
 
 
 
@@ -256,10 +308,10 @@ def reduce_gcm(i_gcm,i_expt,i_init):
     tododict = dict({
         'coarse_grain_time':           0,
         'plot_t2m_map':                0,
-        'coarse_grain_space':          1,
-        'fit_gev':                     1,
+        'coarse_grain_space':          0,
+        'fit_gev':                     0,
         'plot_gev_map':                0,
-        'plot_gev_with_t2m_map':       1,
+        'plot_ensstats_map':           1,
         })
     gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,figdir,cgs_levels = gcm_workflow(i_gcm,i_expt,i_init)
 
@@ -311,9 +363,11 @@ def reduce_gcm(i_gcm,i_expt,i_init):
             fig.savefig(join(figdir,f'gev_map_e{expt}_i{init}_cgs{cgs_key}.png'), **pltkwargs)
             plt.close(fig)
 
-        if tododict['plot_gev_with_t2m_map'] and min(cgs_level) > 1:
-            fig,axes = plot_gev_with_t2m_map(ds_cgt.sel(daily_stat='daily_mean'), gevpar.sel(daily_stat='daily_mean'))
-            fig.savefig(join(figdir,f'gevwitht2m_map_e{expt}_i{init}_cgs{cgs_key}.png'), **pltkwargs)
+        if tododict['plot_ensstats_map'] and min(cgs_level) > 1:
+            fig,axes = plot_ensstats_map(ds_cgts_mint.sel(daily_stat='daily_mean'), gevpar.sel(daily_stat='daily_mean'))
+            datestr = datetime.datetime.strptime(init,"%Y%m%d").strftime("%Y-%m-%d")
+            fig.suptitle(f'{expt}, init {datestr}')
+            fig.savefig(join(figdir,f'ensstats_map_e{expt}_i{init}_cgs{cgs_key}.png'), **pltkwargs)
             plt.close(fig)
         ds_cgts.close()
     ds_cgt.close()
@@ -322,6 +376,7 @@ def reduce_gcm(i_gcm,i_expt,i_init):
 if __name__ == "__main__":
     idx_gcm = [4]
     idx_expt = [0,1,2]
+    idx_expt_pairs = [(1,0),(1,2)]
     idx_init = [0,1]
     procedure = sys.argv[1]
     if procedure == 'reduce':
@@ -329,6 +384,8 @@ if __name__ == "__main__":
             for i_expt in idx_expt:
                 for i_init in idx_init:
                     reduce_gcm(i_gcm,i_expt,i_init)
-    elif procedure == 'gevmap':
+    elif procedure == 'compare_expts':
         for i_gcm in idx_gcm:
-            compare_gev_maps(i_gcm)
+            for (i0_expt,i1_expt) in idx_expt_pairs:
+                for i_init in idx_init:
+                    compare_ensstats_maps_2expts(i_gcm,i0_expt,i1_expt,i_init)
