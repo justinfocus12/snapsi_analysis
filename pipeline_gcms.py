@@ -32,7 +32,8 @@ def gcm_multiparams():
     return gcms, expts, inits
 
 def analysis_multiparams():
-    cgs_levels = [(1,1),(2,1),(4,1),(6,1),(35,8),(47,8),(141,16)][:-1]
+    # lon/lat ratios are 6/1 at the bottom and 4/1 at the top; stick to 5/1 
+    cgs_levels = [(1,1),(5,1),(10,2),(20,4),(40,8),(141,16)][:-1]
     return cgs_levels
 
 
@@ -155,43 +156,65 @@ def preprocess_gcm_6hrPt(dsmem,fcdate,timesel,spacesel):
     print(f'Preprocessing done; {dsmem_tas.time.size = }')
     return dsmem_tas
 
-def compare_gev_maps(i_gcm):
-    # Plot maps of GEV parameters at different locations (for the finely-grained maps)
-    # Also plot probabilities as a function of threshold for the total-area average
-    gcms,expts,inits = gcm_multiparams()
-    cgs_levels = analysis_multiparams()
-    for cgs_level in cgs_levels:
-        cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
-        gevpar = []
-        t2m_cgts_mint = []
-        for i_expt,expt in enumerate(expts):
-            gevpar_expt = []
-            t2m_cgts_mint = []
-            for i_init,init in enumerate(inits):
-                gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,figdir,_ = gcm_workflow(i_gcm,i_expt,i_init)
-                gevpar_file = join(reduced_data_dir,f'gevpar_e{expt}_i{init}_cgs{cgs_key}.nc')
-                gevpar_expt_init = xr.open_dataarray(gevpar_file)
-                gevpar_expt.append(gevpar_expt_init)
-                # Plot maps of return period
-                if min(cgs_level) > 1:
-                    makedirs(figdir,exist_ok=True)
-                    fig,axes = plt.subplots(nrows=3,ncols=1,figsize=(6,10))
-                    for i_param,param in enumerate(['shape','loc','scale']):
-                        ax = axes[i_param]
-                        xr.plot.pcolormesh(gevpar_expt_init.sel(param=param,daily_stat='daily_mean'),x='lon',y='lat',cmap='coolwarm',ax=ax)
-                        ax.set_xlabel('Longitude')
-                        ax.set_ylabel('Latitude')
-                        ax.set_title(param)
-                    fig.suptitle(r'%s, init %s'%(expt,init))
-                    fig.savefig(join(figdir,f'plot_gevpar_e{expt}_i{init}_cgs{cgs_key}.png'), **pltkwargs)
-                    plt.close(fig)
-                # 
-                t2m_cgts_file = join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day_cgs{cgs_key}.nc')
-                t2m_cgts_mint.append(xr.open_dataarray(t2m_cgts_file).min(dim='time'))
-            gevpar_expt = xr.concat(gevpar_expt, dim='init').assign_coords(init=inits)
-            gevpar.append(gevpar_expt)
-        gevpar = xr.concat(gevpar, dim='expt').assign_coords(expt=expts)
-    return
+
+def plot_t2m_map(ds):
+    # TODO mirror the GEV plots so they give similar information 
+    fig,axes = plt.subplots(figsize=(20,5),nrows=2,ncols=2,subplot_kw={'projection': ccrs.PlateCarree()},gridspec_kw={'hspace': 0.02, 'wspace': 0.004})
+    pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'horizontal', 'label': '', 'shrink': 0.5, 'pad': 0.14, 'aspect': 40})
+    Tmin = ds.min().item()
+    Tmax = ds.max().item()
+    # ensemble mean of time mean; ensemble mean of time min; ensemble std of time mean; ensemble std of time min
+    ax = axes[0,0]
+    xr.plot.pcolormesh(ds.mean('time').mean('member'), ax=ax, **pcmargs, vmin=Tmin, vmax=Tmax)
+    ax.coastlines()
+    ax.set_title(r'Time mean, ens. mean')
+    ax.set_xlabel('')
+    ax.set_ylabel('Lat')
+    ax = axes[0,1]
+    xr.plot.pcolormesh(ds.min('time').mean('member'), ax=ax, **pcmargs, vmin=Tmin, vmax=Tmax)
+    ax.coastlines()
+    ax.set_title(r'Time min, ens. mean')
+    ax.set_xlabel('')
+    ax.set_ylabel('')
+    ax = axes[1,0]
+    xr.plot.pcolormesh(ds.mean('time').std('member'), ax=ax, **pcmargs)
+    ax.coastlines()
+    ax.set_title(r'Time mean, ens. std.')
+    ax.set_xlabel('Lon')
+    ax.set_ylabel('Lat')
+    ax = axes[1,1]
+    xr.plot.pcolormesh(ds.min('time').std('member'), ax=ax, **pcmargs)
+    ax.coastlines()
+    ax.set_title(r'Time min, ens. std.')
+    ax.set_xlabel('Lon')
+    ax.set_ylabel('')
+    return fig
+
+def plot_gev_map(gevpar):
+    fig,axes = plt.subplots(figsize=(20,8),nrows=3,ncols=1,subplot_kw={'projection': ccrs.PlateCarree()},gridspec_kw={'hspace': 0.02, 'wspace': 0.004})
+    pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15})
+    ax = axes[0]
+    xr.plot.pcolormesh(gevpar.sel(param='shape'), ax=ax, **pcmargs)
+    ax.coastlines()
+    ax.set_title('Shape')
+    ax.set_xlabel('')
+    ax.set_ylabel('Lat')
+    ax = axes[1]
+    xr.plot.pcolormesh(-gevpar.sel(param='loc'), ax=ax, **pcmargs)
+    ax.coastlines()
+    ax.set_title('Location')
+    ax.set_xlabel('')
+    ax.set_ylabel('Lat')
+    ax = axes[2]
+    xr.plot.pcolormesh(gevpar.sel(param='scale'), ax=ax, **pcmargs)
+    ax.coastlines()
+    ax.set_title('Scale')
+    ax.set_xlabel('Lon')
+    ax.set_ylabel('Lat')
+    return fig
+
+
+
 
 def reduce_gcm(i_gcm,i_expt,i_init):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
@@ -200,7 +223,7 @@ def reduce_gcm(i_gcm,i_expt,i_init):
         'plot_t2m_map':                1,
         'coarse_grain_space':          0,
         'fit_gev':                     0,
-        'plot_gev':                    0,
+        'plot_gev_map':                1,
         })
     gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,figdir,cgs_levels = gcm_workflow(i_gcm,i_expt,i_init)
 
@@ -213,37 +236,7 @@ def reduce_gcm(i_gcm,i_expt,i_init):
         ds_cgt = xr.open_dataarray(ens_file_cgt)
 
     if tododict['plot_t2m_map']:
-        fig = plt.figure(figsize=(20,5))
-        pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'horizontal', 'label': '', 'shrink': 0.5, 'pad': 0.01, 'aspect': 40})
-        daily_mean = ds_cgt.sel(daily_stat='daily_mean')
-        Tmin = daily_mean.min().item()
-        Tmax = daily_mean.max().item()
-        # ensemble mean of time mean; ensemble mean of time min; ensemble std of time mean; ensemble std of time min
-        ax = fig.add_subplot(2,2,1,projection=ccrs.PlateCarree())
-        xr.plot.pcolormesh(daily_mean.mean('time').mean('member'), **pcmargs, vmin=Tmin, vmax=Tmax)
-        ax.coastlines()
-        ax.set_title(r'Time mean, ens. mean')
-        ax.set_xlabel('')
-        ax.set_ylabel('Latitude')
-        ax = fig.add_subplot(2,2,2,projection=ccrs.PlateCarree())
-        xr.plot.pcolormesh(daily_mean.min('time').mean('member'), **pcmargs, vmin=Tmin, vmax=Tmax)
-        ax.coastlines()
-        ax.set_title(r'Time min, ens. mean')
-        ax.set_xlabel('')
-        ax.set_ylabel('')
-        ax = fig.add_subplot(2,2,3,projection=ccrs.PlateCarree())
-        xr.plot.pcolormesh(daily_mean.mean('time').std('member'), **pcmargs)
-        ax.coastlines()
-        ax.set_title(r'Time mean, ens. std.')
-        ax.set_xlabel('Longitude')
-        ax.set_ylabel('Latitude')
-        ax = fig.add_subplot(2,2,4,projection=ccrs.PlateCarree())
-        xr.plot.pcolormesh(daily_mean.min('time').std('member'), **pcmargs)
-        ax.coastlines()
-        ax.set_title(r'Time min, ens. std.')
-        ax.set_xlabel('Longitude')
-        ax.set_ylabel('')
-
+        fig = plot_t2m_map(ds_cgt.sel(daily_stat='daily_mean'))
         fig.savefig(join(figdir,f't2m_summary_e{expt}_i{init}_cgt1day.png'),**pltkwargs)
         plt.close(fig)
 
@@ -277,8 +270,10 @@ def reduce_gcm(i_gcm,i_expt,i_init):
         else:
             gevpar = xr.open_dataarray(gev_param_file)
 
-        if tododict['plot_gev']:
-            pass
+        if tododict['plot_gev_map'] and min(cgs_level) > 1:
+            fig = plot_gev_map(gevpar.sel(daily_stat='daily_mean'))
+            fig.savefig(join(figdir,f'gev_map_e{expt}_i{init}_cgs{cgs_key}.png'), **pltkwargs)
+            plt.close(fig)
         ds_cgts.close()
     ds_cgt.close()
     return 
