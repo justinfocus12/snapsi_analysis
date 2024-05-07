@@ -21,6 +21,7 @@ from scipy.stats import norm as spnorm, genextreme as spgex
 
 # My own modules
 import utils
+import pipeline_base
 
 def gcm_multiparams():
     # Sets out all the options for which piece of data to ingest
@@ -73,7 +74,7 @@ def gcm_workflow(i_gcm, i_expt, i_init, verbose=False):
     raw_mem_files = glob.glob(path_skeleton)
     # 2. Spatiotemporal sub-selection and coarse-graining (cg)
     event_region = dict(lat=slice(50,65),lon=slice(-10,130))
-    event_time_interval = (datetime.datetime(2018,2,21),datetime.datetime(2018,3,8))
+    event_time_interval = (datetime.datetime(2018,2,21,0),datetime.datetime(2018,3,8,18))
     reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-05-04',gcm)
     makedirs(reduced_data_dir,exist_ok=True)
 
@@ -121,18 +122,6 @@ def coarse_grain_time(raw_mem_files, mem_labels, event_region, event_time_interv
     ds_ens_cgt = xr.concat([daily_mean,daily_min], dim='daily_stat').assign_coords(daily_stat=['daily_mean','daily_min'])
     return ds_ens_cgt
 
-def coarse_grain_space(ds_cgt, cgs_level):
-    data_vars = dict()
-    Nlon,Nlat = (ds_cgt[dim].size for dim in ('lon','lat'))
-    print(f'{ds_cgt.dims = }')
-    print(f'{ds_cgt.shape = }')
-    dim = {'lon': int(round(Nlon/cgs_level[0])), 'lat': int(round(Nlat/cgs_level[1]))}
-    print(f'{dim = }')
-    coslat = np.cos(np.deg2rad(ds_cgt['lat'])) * xr.ones_like(ds_cgt)
-    coarsen_kwargs = dict(dim=dim, boundary='pad', coord_func={'lon': 'mean', 'lat': 'mean'})
-    ds_cgts = (ds_cgt * coslat).coarsen(**coarsen_kwargs).sum() / coslat.coarsen(**coarsen_kwargs).sum()
-    print(f'{ds_cgts.shape = }')
-    return ds_cgts # awkward to put into a single dataset because of differing lon/lat coordinates between coarsening levels
 
 
 
@@ -154,128 +143,6 @@ def preprocess_gcm_6hrPt(dsmem,fcdate,timesel,spacesel):
     return dsmem_tas
 
 
-def plot_t2m_map(ds):
-    # TODO mirror the GEV plots so they give similar information 
-    fig,axes = plt.subplots(figsize=(20,5),nrows=2,ncols=2,subplot_kw={'projection': ccrs.PlateCarree()},gridspec_kw={'hspace': 0.02, 'wspace': 0.004})
-    pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'horizontal', 'label': '', 'shrink': 0.5, 'pad': 0.14, 'aspect': 40})
-    Tmin = ds.min().item()
-    Tmax = ds.max().item()
-    # ensemble mean of time mean; ensemble mean of time min; ensemble std of time mean; ensemble std of time min
-    ax = axes[0,0]
-    xr.plot.pcolormesh(ds.mean('time').mean('member'), ax=ax, **pcmargs, vmin=Tmin, vmax=Tmax)
-    ax.coastlines()
-    ax.set_title(r'Time mean, ens. mean')
-    ax.set_xlabel('')
-    ax.set_ylabel('Lat')
-    ax = axes[0,1]
-    xr.plot.pcolormesh(ds.min('time').mean('member'), ax=ax, **pcmargs, vmin=Tmin, vmax=Tmax)
-    ax.coastlines()
-    ax.set_title(r'Time min, ens. mean')
-    ax.set_xlabel('')
-    ax.set_ylabel('')
-    ax = axes[1,0]
-    xr.plot.pcolormesh(ds.mean('time').std('member'), ax=ax, **pcmargs)
-    ax.coastlines()
-    ax.set_title(r'Time mean, ens. std.')
-    ax.set_xlabel('Lon')
-    ax.set_ylabel('Lat')
-    ax = axes[1,1]
-    xr.plot.pcolormesh(ds.min('time').std('member'), ax=ax, **pcmargs)
-    ax.coastlines()
-    ax.set_title(r'Time min, ens. std.')
-    ax.set_xlabel('Lon')
-    ax.set_ylabel('')
-    return fig
-
-def plot_gev_map(gevpar):
-    fig,axes = plt.subplots(figsize=(20,8),nrows=3,ncols=1,subplot_kw={'projection': ccrs.PlateCarree()},gridspec_kw={'hspace': 0.02, 'wspace': 0.004})
-    pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15})
-    ax = axes[0]
-    xr.plot.pcolormesh(gevpar.sel(param='shape'), ax=ax, **pcmargs)
-    ax.coastlines()
-    ax.set_title('Shape')
-    ax.set_xlabel('')
-    ax.set_ylabel('Lat')
-    ax = axes[1]
-    xr.plot.pcolormesh(-gevpar.sel(param='loc'), ax=ax, **pcmargs)
-    ax.coastlines()
-    ax.set_title('Location')
-    ax.set_xlabel('')
-    ax.set_ylabel('Lat')
-    ax = axes[2]
-    xr.plot.pcolormesh(gevpar.sel(param='scale'), ax=ax, **pcmargs)
-    ax.coastlines()
-    ax.set_title('Scale')
-    ax.set_xlabel('Lon')
-    ax.set_ylabel('Lat')
-    return fig
-
-def plot_ensstats_map_difference(ds_cgts_0,ds_cgts_1,gevpar_0,gevpar_1):
-    # Essentially Gaussian parameters next to GEV parameters
-    fig,axes = plt.subplots(figsize=(20,8),nrows=3,ncols=2,subplot_kw={'projection': ccrs.Orthographic(60,58)},gridspec_kw={'hspace': 0.2, 'wspace': 0.05})
-    pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 'ticks': ticker.LinearLocator(numticks=3)})
-    loc_fields = (ds_cgts_1.mean('member')-ds_cgts_0.mean('member'), -gevpar_1.sel(param='loc')+gevpar_0.sel(param='loc'))
-    loc_vmax = tuple(np.abs(da).max().item() for da in loc_fields)
-    loc_titles = [r'$\Delta$(mean)',r'$\Delta$(GEV location)']
-    scale_fields = (ds_cgts_1.std('member')-ds_cgts_0.std('member'), gevpar_1.sel(param='scale')-gevpar_0.sel(param='scale'))
-    scale_vmax = tuple(np.abs(da).max().item() for da in scale_fields)
-    scale_titles = [r'$\Delta$(std. dev.)',r'$\Delta$(GEV scale)']
-    shape_fields = (None,gevpar_1.sel(param='shape')-gevpar_0.sel(param='shape'))
-    shape_vmax = tuple((np.abs(da).max().item() if da is not None else np.nan) for da in shape_fields)
-    shape_titles = [None,r'$\Delta$(GEV shape)']
-
-    fields = loc_fields + scale_fields + shape_fields
-    vmax = loc_vmax + scale_vmax + shape_vmax
-    vmin = tuple(-vm for vm in vmax)
-    titles = loc_titles + scale_titles + shape_titles
-
-    print(f'{vmin = }')
-    print(f'{vmax = }')
-    for i in range(6):
-        ax = axes.flat[i]
-        if fields[i] is None:
-            ax.axis('off')
-            continue
-        pcmargs['cbar_kwargs'].update(ticks=np.linspace(vmin[i],vmax[i],3))
-        xr.plot.pcolormesh(fields[i], ax=ax, vmin=vmin[i], vmax=vmax[i], **pcmargs)
-        ax.set_title(titles[i])
-        ax.coastlines()
-        ax.gridlines()
-    return fig,axes
-
-def plot_ensstats_map(ds_cgts,gevpar):
-    # Essentially Gaussian parameters next to GEV parameters
-    fig,axes = plt.subplots(figsize=(20,8),nrows=3,ncols=2,subplot_kw={'projection': ccrs.Orthographic(60,58)},gridspec_kw={'hspace': 0.2, 'wspace': 0.05})
-    pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15})
-    loc_fields = (ds_cgts.mean('member'), -gevpar.sel(param='loc'))
-    loc_vmin,loc_vmax = (min((da.min().item() for da in loc_fields)), max((da.max().item() for da in loc_fields)))
-    loc_titles = [r'Mean',r'GEV location']
-    scale_fields = (ds_cgts.std('member'), gevpar.sel(param='scale'))
-    scale_vmin,scale_vmax = (min((da.min().item() for da in scale_fields)), max((da.max().item() for da in scale_fields)))
-    scale_titles = [r'Std. Dev.',r'GEV scale']
-    shape_fields = (None,gevpar.sel(param='shape'))
-    shape_vmax = max((np.abs(da).max().item() for da in shape_fields if da is not None))
-    shape_vmin = -shape_vmax
-    shape_titles = [None,r'GEV shape']
-
-    fields = loc_fields + scale_fields + shape_fields
-    vmin = [loc_vmin]*2 + [scale_vmin]*2 + [shape_vmin]*2
-    vmax = [loc_vmax]*2 + [scale_vmax]*2 + [shape_vmax]*2
-    titles = loc_titles + scale_titles + shape_titles
-
-    print(f'{vmin = }')
-    print(f'{vmax = }')
-    for i in range(6):
-        ax = axes.flat[i]
-        if fields[i] is None:
-            ax.axis('off')
-            continue
-        pcmargs['cbar_kwargs'].update(ticks=np.linspace(vmin[i],vmax[i],3))
-        xr.plot.pcolormesh(fields[i], ax=ax, vmin=vmin[i], vmax=vmax[i], **pcmargs)
-        ax.set_title(titles[i])
-        ax.coastlines()
-        ax.gridlines()
-    return fig,axes
 
 
 def compare_ensstats_maps_2expts(i_gcm,i0_expt,i1_expt,i_init):
@@ -291,7 +158,7 @@ def compare_ensstats_maps_2expts(i_gcm,i0_expt,i1_expt,i_init):
         ds_cgts_mint_0,ds_cgts_mint_1 = (xr.open_dataarray(join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day_cgs{cgs_key}.nc')).sel(daily_stat='daily_mean').min('time') for expt in (expt0,expt1))
         gevpar_0,gevpar_1 = (xr.open_dataarray(join(reduced_data_dir,f'gevpar_e{expt}_i{init}_cgs{cgs_key}.nc')).sel(daily_stat='daily_mean') for expt in (expt0,expt1))
         if tododict['plot_param_diff_map']:
-            fig,axes = plot_ensstats_map_difference(ds_cgts_mint_0,ds_cgts_mint_1,gevpar_0,gevpar_1)
+            fig,axes = pipeline_base.plot_ensstats_map_difference(ds_cgts_mint_0,ds_cgts_mint_1,gevpar_0,gevpar_1)
             datestr = datetime.datetime.strptime(init,"%Y%m%d").strftime("%Y-%m-%d")
             fig.suptitle(f'{expt1} - {expt0}, init {datestr}')
             fig.savefig(join(figdir,f'ensstats_diffmap_e0{expt0}_e1{expt1}_i{init}_cgs{cgs_key}.png'), **pltkwargs)
@@ -307,7 +174,7 @@ def reduce_gcm(i_gcm,i_expt,i_init):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
     tododict = dict({
         'coarse_grain_time':           0,
-        'plot_t2m_map':                0,
+        'plot_t2m_sumstats_map':       0,
         'coarse_grain_space':          0,
         'fit_gev':                     0,
         'plot_gev_map':                0,
@@ -323,16 +190,18 @@ def reduce_gcm(i_gcm,i_expt,i_init):
     else:
         ds_cgt = xr.open_dataarray(ens_file_cgt)
 
-    if tododict['plot_t2m_map']:
-        fig = plot_t2m_map(ds_cgt.sel(daily_stat='daily_mean'))
-        fig.savefig(join(figdir,f't2m_summary_e{expt}_i{init}_cgt1day.png'),**pltkwargs)
-        plt.close(fig)
+    if tododict['plot_t2m_sumstats_map']:
+        for daily_stat in ['daily_min','daily_mean']:
+            fig,axes = pipeline_base.plot_summary_stats_map(ds_cgt.sel(daily_stat=daily_stat))
+            fig.suptitle(f'{gcm}, {expt}, init {init} {daily_stat}')
+            fig.savefig(join(figdir,f't2m_sumstats_e{expt}_i{init}_cgt1day.png'),**pltkwargs)
+            plt.close(fig)
 
     for cgs_level in cgs_levels:
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
         ens_file_cgts = join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day_cgs{cgs_key}.nc')
         if tododict['coarse_grain_space']:
-            ds_cgts = coarse_grain_space(ds_cgt, cgs_level)
+            ds_cgts = pipeline_base.coarse_grain_space(ds_cgt, cgs_level)
             ds_cgts.to_netcdf(ens_file_cgts)
         else:
             ds_cgts = xr.open_dataarray(ens_file_cgts)
@@ -341,19 +210,7 @@ def reduce_gcm(i_gcm,i_expt,i_init):
         # ----------- Perform GEV fitting (on negative temperature) --------------
         gev_param_file = join(reduced_data_dir,f'gevpar_e{expt}_i{init}_cgs{cgs_key}.nc')
         if tododict['fit_gev']:
-            memdim = ds_cgts_mint.dims.index('member')
-            print(f'{memdim = }')
-            gevpar_array = np.apply_along_axis(spgex.fit, memdim, -ds_cgts_mint.to_numpy())
-            gevpar_dims = list(ds_cgts_mint.dims).copy()
-            gevpar_dims[memdim] = 'param'
-            gevpar_coords = dict(ds_cgts_mint.coords).copy()
-            gevpar_coords.pop('member')
-            gevpar_coords['param'] = ['shape','loc','scale']
-            gevpar = xr.DataArray(
-                    coords=gevpar_coords,
-                    dims=gevpar_dims,
-                    data=gevpar_array)
-            gevpar.loc[dict(param='shape')] *= -1
+            gevpar = pipeline_base.fit_gev_mintemp(ds_cgts_mint)
             gevpar.to_netcdf(gev_param_file)
         else:
             gevpar = xr.open_dataarray(gev_param_file)
@@ -364,11 +221,12 @@ def reduce_gcm(i_gcm,i_expt,i_init):
             plt.close(fig)
 
         if tododict['plot_ensstats_map'] and min(cgs_level) > 1:
-            fig,axes = plot_ensstats_map(ds_cgts_mint.sel(daily_stat='daily_mean'), gevpar.sel(daily_stat='daily_mean'))
-            datestr = datetime.datetime.strptime(init,"%Y%m%d").strftime("%Y-%m-%d")
-            fig.suptitle(f'{expt}, init {datestr}')
-            fig.savefig(join(figdir,f'ensstats_map_e{expt}_i{init}_cgs{cgs_key}.png'), **pltkwargs)
-            plt.close(fig)
+            for daily_stat in ['daily_mean']:
+                fig,axes = pipeline_base.plot_ensstats_map(ds_cgts_mint.sel(daily_stat=daily_stat), gevpar.sel(daily_stat=daily_stat))
+                datestr = datetime.datetime.strptime(init,"%Y%m%d").strftime("%Y-%m-%d")
+                fig.suptitle(f'{expt}, init {datestr}')
+                fig.savefig(join(figdir,f'ensstats_map_e{expt}_i{init}_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
+                plt.close(fig)
         ds_cgts.close()
     ds_cgt.close()
     return 
