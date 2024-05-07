@@ -56,16 +56,21 @@ def era5_workflow(verbose=False):
 
     # Select regions for more detailed GEV analysis (based on visualizing the map)
     # format is (cgs_level, i_lon, i_lat)
-    select_regions = (
-            ((10,2), 3, 1),
-            ((10,2), 4, 1),
-            ((10,2), 1, 1),
+    select_regions = ( # Indexed by cgs_level
+            (), # level (1,1)
+            (), # level (5,1)
+            ((1,1),(3,1),(4,1)),
+            (), # level (20,4)
+            (), # level (40,8)
+            (), # level (141,16)
             )
+    risk_levels = np.exp(np.linspace(np.log(0.001),np.log(0.5),30))
+    # TODO specify levels for relative risk 
 
     workflow = (
             years,event_region,event_time_interval,
             year_filegroups,reduced_data_dir,figdir,
-            cgs_levels,select_regions
+            cgs_levels,select_regions,risk_levels
             )
     print(f'Finished setting up workflow')
     return workflow
@@ -114,14 +119,14 @@ def coarse_grain_time(years, year_filegroups, event_region, event_time_interval)
 
 def reduce_era5():
     tododict = dict({
-        'coarse_grain_time':           1,
-        'plot_t2m_sumstats_map':       1,
-        'coarse_grain_space':          1,
-        'fit_gev':                     1,
-        'plot_ensstats_map':           1,
+        'coarse_grain_time':           0,
+        'plot_t2m_sumstats_map':       0,
+        'coarse_grain_space':          0,
+        'fit_gev':                     0,
+        'plot_statpar_map':            0,
         'fit_gev_select_regions':      1,
         })
-    years,event_region,event_time_interval,year_filegroups,reduced_data_dir,figdir,cgs_levels,select_regions = era5_workflow()
+    years,event_region,event_time_interval,year_filegroups,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels = era5_workflow()
     ens_file_cgt = join(reduced_data_dir,f't2m_cgt1day.nc')
     if tododict['coarse_grain_time']:
         ds_cgt = coarse_grain_time(years, year_filegroups, event_region, event_time_interval)
@@ -132,12 +137,12 @@ def reduce_era5():
     ds_cgt_mint = ds_cgt.min(dim='time')
     if tododict['plot_t2m_sumstats_map']:
         for daily_stat in ['daily_min','daily_mean']:
-            fig,axes = pipeline_base.plot_summary_stats_map(ds_cgt_mint.sel(daily_stat=daily_stat))
+            fig,axes = pipeline_base.plot_sumstats_map(ds_cgt_mint.sel(daily_stat=daily_stat))
             fig.suptitle(f'ERA5 {daily_stat}')
             fig.savefig(join(figdir,f't2m_sumstats_map_{daily_stat}.png'), **pltkwargs)
             plt.close(fig)
 
-    for cgs_level in cgs_levels:
+    for i_cgs_level,cgs_level in enumerate(cgs_levels):
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
         ens_file_cgts = join(reduced_data_dir,f't2m_cgt1day_cgs{cgs_key}.nc')
         if tododict['coarse_grain_space']:
@@ -147,6 +152,7 @@ def reduce_era5():
             ds_cgts = xr.open_dataarray(ens_file_cgts)
         # ---- Minimize in time -----------------------------
         ds_cgts_mint = ds_cgts.min(dim='time')
+        print(f'{ds_cgts_mint.dims = }')
         # ----------- Perform GEV fitting (on negative temperature) --------------
         gev_param_file = join(reduced_data_dir,f'gevpar_cgs{cgs_key}.nc')
         if tododict['fit_gev']:
@@ -154,15 +160,33 @@ def reduce_era5():
             gevpar.to_netcdf(gev_param_file)
         else:
             gevpar = xr.open_dataarray(gev_param_file)
-        if tododict['plot_ensstats_map'] and min(cgs_level) > 1:
+        if tododict['plot_statpar_map'] and min(cgs_level) > 1:
             for daily_stat in ['daily_mean']:
-                fig,axes = pipeline_base.plot_ensstats_map(ds_cgts_mint.sel(daily_stat=daily_stat), gevpar.sel(daily_stat=daily_stat))
+                fig,axes = pipeline_base.plot_statpar_map(ds_cgts_mint.sel(daily_stat=daily_stat), gevpar.sel(daily_stat=daily_stat))
                 fig.suptitle(f'ERA5 {daily_stat}')
-                fig.savefig(join(figdir,f'ensstats_map_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
+                fig.savefig(join(figdir,f'statpar_map_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
                 plt.close(fig)
 
         if tododict['fit_gev_select_regions']:
             # Do a more thorough uncertainty quantification at a specific site or region, using bootstrap analysis and goodness-of-fit etc. Maybe parallelize over all sites too
+
+            for (i_lon,i_lat) in select_regions[i_cgs_level]:
+                mintemp = ds_cgts_mint.sel(daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).to_numpy()
+                gevpar_reg,mintemp_levels_reg = pipeline_base.fit_gev_mintemp_1d_uq(mintemp,risk_levels)
+                # TODO save as netcdf, and later plot 
+                gevpar_reg.to_netcdf(join(reduced_data_dir,'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
+                fig,ax = plt.subplots()
+                order = np.argsort(mintemp)
+                risk_empirical = np.arange(1,len(mintemp)+1)/len(mintemp)
+                ax.scatter(risk_empirical, mintemp, color='black', marker='+')
+                ax.plot(risk_levels, mintemp_levels_reg, color='red')
+                ax.set_xscale('log')
+                ax.set_xlabel('Probability')
+                ax.set_ylabel('Min temp')
+                fig.savefig(join(figdir,'riskplot_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
+                plt.close(fig)
+               
+                
             pass
 
 

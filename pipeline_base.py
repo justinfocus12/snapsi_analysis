@@ -1,5 +1,6 @@
 import numpy as np
 import xarray as xr 
+from scipy.stats import genextreme as spgex
 from cartopy import crs as ccrs
 import netCDF4
 from matplotlib import pyplot as plt, rcParams, ticker
@@ -13,9 +14,11 @@ rcParams.update({
     })
 pltkwargs = {"bbox_inches": "tight", "pad_inches": 0.2}
 
+import stat_functions as stfu
 
 
-def plot_summary_stats_map(ds):
+
+def plot_sumstats_map(ds):
     # Summary stats for an ensemble 
     fig,axes = plt.subplots(figsize=(20,8),nrows=2,subplot_kw={'projection': ccrs.Orthographic(60,58)},gridspec_kw={'hspace': 0.2, 'wspace': 0.05})
     pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15})
@@ -58,7 +61,7 @@ def coarse_grain_space(ds_cgt, cgs_level):
     print(f'{ds_cgts.shape = }')
     return ds_cgts # awkward to put into a single dataset because of differing lon/lat coordinates between coarsening levels
 
-def plot_ensstats_map(ds_cgts,gevpar):
+def plot_statpar_map(ds_cgts,gevpar):
     # Essentially Gaussian parameters next to GEV parameters
     fig,axes = plt.subplots(figsize=(20,8),nrows=3,ncols=2,subplot_kw={'projection': ccrs.Orthographic(60,58)},gridspec_kw={'hspace': 0.2, 'wspace': 0.05})
     pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15})
@@ -92,7 +95,7 @@ def plot_ensstats_map(ds_cgts,gevpar):
         ax.gridlines()
     return fig,axes
 
-def plot_ensstats_map_difference(ds_cgts_0,ds_cgts_1,gevpar_0,gevpar_1):
+def plot_statpar_map_difference(ds_cgts_0,ds_cgts_1,gevpar_0,gevpar_1):
     # Essentially Gaussian parameters next to GEV parameters
     fig,axes = plt.subplots(figsize=(20,8),nrows=3,ncols=2,subplot_kw={'projection': ccrs.Orthographic(60,58)},gridspec_kw={'hspace': 0.2, 'wspace': 0.05})
     pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 'ticks': ticker.LinearLocator(numticks=3)})
@@ -133,7 +136,7 @@ def fit_gev_mintemp(ds_cgts_mint):
     gevpar_dims = list(ds_cgts_mint.dims).copy()
     gevpar_dims[memdim] = 'param'
     gevpar_coords = dict(ds_cgts_mint.coords).copy()
-    gevpar_coords.pop('year')
+    gevpar_coords.pop('member')
     gevpar_coords['param'] = ['shape','loc','scale']
     gevpar = xr.DataArray(
             coords=gevpar_coords,
@@ -141,5 +144,14 @@ def fit_gev_mintemp(ds_cgts_mint):
             data=gevpar_array)
     gevpar.loc[dict(param='shape')] *= -1
     return gevpar
+
+def fit_gev_mintemp_1d_uq(mintemp, risk_levels):
+    # do bootstrapping to get confidence intervals on return levels, etc. 
+    n_boot=100
+    gevpar_dict = stfu.fit_statistical_model(-mintemp, 'gev', n_boot=n_boot)
+    # Compute quantiles corresponding to risk levels 
+    levels = -stfu.quantile_parametric('gev', gevpar_dict, risk_levels)
+    gevpar = xr.DataArray(coords={'param': ['shape','location','scale'], 'boot': np.arange(n_boot+1)}, data=np.array([gevpar_dict[p] for p in ['shape','location','scale']]))
+    return gevpar, levels
 
 

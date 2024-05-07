@@ -145,7 +145,7 @@ def preprocess_gcm_6hrPt(dsmem,fcdate,timesel,spacesel):
 
 
 
-def compare_ensstats_maps_2expts(i_gcm,i0_expt,i1_expt,i_init):
+def compare_statpar_maps_2expts(i_gcm,i0_expt,i1_expt,i_init):
     tododict = dict({
         'plot_param_diff_map':           1,
         })
@@ -158,10 +158,10 @@ def compare_ensstats_maps_2expts(i_gcm,i0_expt,i1_expt,i_init):
         ds_cgts_mint_0,ds_cgts_mint_1 = (xr.open_dataarray(join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day_cgs{cgs_key}.nc')).sel(daily_stat='daily_mean').min('time') for expt in (expt0,expt1))
         gevpar_0,gevpar_1 = (xr.open_dataarray(join(reduced_data_dir,f'gevpar_e{expt}_i{init}_cgs{cgs_key}.nc')).sel(daily_stat='daily_mean') for expt in (expt0,expt1))
         if tododict['plot_param_diff_map']:
-            fig,axes = pipeline_base.plot_ensstats_map_difference(ds_cgts_mint_0,ds_cgts_mint_1,gevpar_0,gevpar_1)
+            fig,axes = pipeline_base.plot_statpar_map_difference(ds_cgts_mint_0,ds_cgts_mint_1,gevpar_0,gevpar_1)
             datestr = datetime.datetime.strptime(init,"%Y%m%d").strftime("%Y-%m-%d")
             fig.suptitle(f'{expt1} - {expt0}, init {datestr}')
-            fig.savefig(join(figdir,f'ensstats_diffmap_e0{expt0}_e1{expt1}_i{init}_cgs{cgs_key}.png'), **pltkwargs)
+            fig.savefig(join(figdir,f'statpar_diffmap_e0{expt0}_e1{expt1}_i{init}_cgs{cgs_key}.png'), **pltkwargs)
             plt.close(fig)
     return
 
@@ -173,12 +173,11 @@ def compare_ensstats_maps_2expts(i_gcm,i0_expt,i1_expt,i_init):
 def reduce_gcm(i_gcm,i_expt,i_init):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
     tododict = dict({
-        'coarse_grain_time':           0,
-        'plot_t2m_sumstats_map':       0,
-        'coarse_grain_space':          0,
-        'fit_gev':                     0,
-        'plot_gev_map':                0,
-        'plot_ensstats_map':           1,
+        'coarse_grain_time':           1,
+        'plot_t2m_sumstats_map':       1,
+        'coarse_grain_space':          1,
+        'fit_gev':                     1,
+        'plot_statpar_map':           1,
         })
     gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,figdir,cgs_levels = gcm_workflow(i_gcm,i_expt,i_init)
 
@@ -190,11 +189,12 @@ def reduce_gcm(i_gcm,i_expt,i_init):
     else:
         ds_cgt = xr.open_dataarray(ens_file_cgt)
 
+    ds_cgt_mint = ds_cgt.min(dim='time')
     if tododict['plot_t2m_sumstats_map']:
         for daily_stat in ['daily_min','daily_mean']:
-            fig,axes = pipeline_base.plot_summary_stats_map(ds_cgt.sel(daily_stat=daily_stat))
+            fig,axes = pipeline_base.plot_sumstats_map(ds_cgt_mint.sel(daily_stat=daily_stat))
             fig.suptitle(f'{gcm}, {expt}, init {init} {daily_stat}')
-            fig.savefig(join(figdir,f't2m_sumstats_e{expt}_i{init}_cgt1day.png'),**pltkwargs)
+            fig.savefig(join(figdir,f't2m_sumstats_map_{daily_stat}_e{expt}_i{init}_cgt1day.png'),**pltkwargs)
             plt.close(fig)
 
     for cgs_level in cgs_levels:
@@ -214,18 +214,12 @@ def reduce_gcm(i_gcm,i_expt,i_init):
             gevpar.to_netcdf(gev_param_file)
         else:
             gevpar = xr.open_dataarray(gev_param_file)
-
-        if tododict['plot_gev_map'] and min(cgs_level) > 1:
-            fig = plot_gev_map(gevpar.sel(daily_stat='daily_mean'))
-            fig.savefig(join(figdir,f'gev_map_e{expt}_i{init}_cgs{cgs_key}.png'), **pltkwargs)
-            plt.close(fig)
-
-        if tododict['plot_ensstats_map'] and min(cgs_level) > 1:
+        if tododict['plot_statpar_map'] and min(cgs_level) > 1:
             for daily_stat in ['daily_mean']:
-                fig,axes = pipeline_base.plot_ensstats_map(ds_cgts_mint.sel(daily_stat=daily_stat), gevpar.sel(daily_stat=daily_stat))
+                fig,axes = pipeline_base.plot_statpar_map(ds_cgts_mint.sel(daily_stat=daily_stat), gevpar.sel(daily_stat=daily_stat))
                 datestr = datetime.datetime.strptime(init,"%Y%m%d").strftime("%Y-%m-%d")
                 fig.suptitle(f'{expt}, init {datestr}')
-                fig.savefig(join(figdir,f'ensstats_map_e{expt}_i{init}_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
+                fig.savefig(join(figdir,f'statpar_map_e{expt}_i{init}_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
                 plt.close(fig)
         ds_cgts.close()
     ds_cgt.close()
@@ -246,4 +240,4 @@ if __name__ == "__main__":
         for i_gcm in idx_gcm:
             for (i0_expt,i1_expt) in idx_expt_pairs:
                 for i_init in idx_init:
-                    compare_ensstats_maps_2expts(i_gcm,i0_expt,i1_expt,i_init)
+                    compare_statpar_maps_2expts(i_gcm,i0_expt,i1_expt,i_init)
