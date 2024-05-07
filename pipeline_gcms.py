@@ -73,7 +73,7 @@ def gcm_workflow(i_gcm, i_expt, i_init, verbose=False):
     raw_mem_files = glob.glob(path_skeleton)
     # 2. Spatiotemporal sub-selection and coarse-graining (cg)
     event_region = dict(lat=slice(50,65),lon=slice(-10,130))
-    event_time_interval = [datetime.datetime(2018,2,21),datetime.datetime(2018,3,8)]
+    event_time_interval = (datetime.datetime(2018,2,21),datetime.datetime(2018,3,8))
     reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-05-04',gcm)
     makedirs(reduced_data_dir,exist_ok=True)
 
