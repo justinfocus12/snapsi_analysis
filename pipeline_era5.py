@@ -125,8 +125,8 @@ def reduce_era5():
         'coarse_grain_time':           0,
         'plot_t2m_sumstats_map':       0,
         'coarse_grain_space':          0,
-        'fit_gev':                     0,
-        'plot_statpar_map':            0,
+        'fit_gev':                     1,
+        'plot_statpar_map':            1,
         'fit_gev_select_regions':      1,
         'plot_gev_select_regions':     1,
         })

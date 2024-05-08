@@ -85,11 +85,21 @@ def gcm_workflow(i_gcm, i_expt, i_init, verbose=False):
     figdir = f'/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-05-04/{gcm}'
     makedirs(figdir,exist_ok=True)
        
+    select_regions = ( # Indexed by cgs_level
+            (), # level (1,1)
+            (), # level (5,1)
+            ((1,1),(3,1),(4,1)),
+            (), # level (20,4)
+            (), # level (40,8)
+            (), # level (141,16)
+            )
+    select_points = ()
+    risk_levels = np.exp(np.linspace(np.log(0.001),np.log(49/50),30))
     workflow = (
             gcm,expt,init,
             event_region,event_time_interval,
             raw_mem_files,mem_labels,reduced_data_dir,figdir,
-            cgs_levels,
+            cgs_levels,select_regions,risk_levels
             )
     return workflow
 
@@ -147,13 +157,14 @@ def preprocess_gcm_6hrPt(dsmem,fcdate,timesel,spacesel):
 
 def compare_statpar_maps_2expts(i_gcm,i0_expt,i1_expt,i_init):
     tododict = dict({
-        'plot_param_diff_map':           1,
+        'plot_statpar_map_diff':           1,
+        'plot_gev_select_regions_diff':    1,
         })
     # Assumes both have been reduced
-    gcm,expt0,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,figdir,cgs_levels = gcm_workflow(i_gcm,i0_expt,i_init)
-    _,expt1,_,_,_,_,_,_,_,_= gcm_workflow(i_gcm,i1_expt,i_init)
+    gcm,expt0,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels = gcm_workflow(i_gcm,i0_expt,i_init)
+    _,expt1,_,_,_,_,_,_,_,_,_,_ = gcm_workflow(i_gcm,i1_expt,i_init)
     ds_cgt_0,ds_cgt_1 = (xr.open_dataarray(join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day.nc')) for expt in (expt0,expt1))
-    for cgs_level in cgs_levels:
+    for i_cgs_level,cgs_level in enumerate(cgs_levels):
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
         ds_cgts_mint_0,ds_cgts_mint_1 = (xr.open_dataarray(join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day_cgs{cgs_key}.nc')).sel(daily_stat='daily_mean').min('time') for expt in (expt0,expt1))
         gevpar_0,gevpar_1 = (xr.open_dataarray(join(reduced_data_dir,f'gevpar_e{expt}_i{init}_cgs{cgs_key}.nc')).sel(daily_stat='daily_mean') for expt in (expt0,expt1))
@@ -174,12 +185,14 @@ def reduce_gcm(i_gcm,i_expt,i_init):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
     tododict = dict({
         'coarse_grain_time':           0,
-        'plot_t2m_sumstats_map':       1,
+        'plot_t2m_sumstats_map':       0,
         'coarse_grain_space':          0,
         'fit_gev':                     0,
-        'plot_statpar_map':            1,
+        'plot_statpar_map':            0,
+        'fit_gev_select_regions':      1,
+        'plot_gev_select_regions':     1,
         })
-    gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,figdir,cgs_levels = gcm_workflow(i_gcm,i_expt,i_init)
+    gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels = gcm_workflow(i_gcm,i_expt,i_init)
 
     # ------------- Coarse-grain in time (cgt) and space (cgts) -------------
     ens_file_cgt = join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day.nc')
@@ -197,7 +210,7 @@ def reduce_gcm(i_gcm,i_expt,i_init):
             fig.savefig(join(figdir,f't2m_sumstats_map_{daily_stat}_e{expt}_i{init}_cgt1day.png'),**pltkwargs)
             plt.close(fig)
 
-    for cgs_level in cgs_levels:
+    for i_cgs_level,cgs_level in enumerate(cgs_levels):
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
         ens_file_cgts = join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day_cgs{cgs_key}.nc')
         if tododict['coarse_grain_space']:
@@ -220,6 +233,41 @@ def reduce_gcm(i_gcm,i_expt,i_init):
                 datestr = datetime.datetime.strptime(init,"%Y%m%d").strftime("%Y-%m-%d")
                 fig.suptitle(f'{expt}, init {datestr}')
                 fig.savefig(join(figdir,f'statpar_map_e{expt}_i{init}_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
+                plt.close(fig)
+        # Do a more thorough uncertainty quantification at a specific site or region, using bootstrap analysis and goodness-of-fit etc. Maybe parallelize over all sites too
+
+        for (i_lon,i_lat) in select_regions[i_cgs_level]:
+            mintemp = ds_cgts_mint.sel(daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).to_numpy()
+            if tododict['fit_gev_select_regions']:
+                gevpar_reg,mintemp_levels_reg = pipeline_base.fit_gev_mintemp_1d_uq(mintemp,risk_levels)
+                gevpar_reg.to_netcdf(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
+                np.save(f'mintemp_levels_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy', mintemp_levels_reg)
+            else:
+                mintemp_levels_reg = np.load(f'mintemp_levels_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy')
+                gevpar_reg = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
+
+            if tododict['plot_gev_select_regions']:
+                fig,ax = plt.subplots()
+                # Left: probability plot; right: timeseries of minima over years 
+                order = np.argsort(mintemp)
+                rank = np.argsort(order)
+                risk_empirical = np.arange(1,len(mintemp)+1)/len(mintemp)
+                ax.scatter(risk_empirical, mintemp[order], color='black', marker='+')
+                ax.plot(risk_levels,mintemp_levels_reg[0,:],color='red')
+                ax.fill_between(risk_levels, np.quantile(mintemp_levels_reg, 0.25, axis=0), np.quantile(mintemp_levels_reg, 0.75, axis=0), fc='red', ec='none', alpha=0.3, zorder=-1)
+                ax.set_xscale('log')
+                ax.set_xlabel(r'$\mathbb{P}\{\min_t\langle T(t)\rangle_{\mathrm{region}}\leq T\}$')
+                ax.set_ylabel(r'$T$')
+                shape,location,scale = (gevpar_reg.sel(param=p).isel(boot=0) for p in ('shape','location','scale'))
+                param_label = '\n'.join([
+                    r'$\mu=%d$'%(-location),
+                    r'$\sigma=%d$'%(scale),
+                    r'$\xi=%.2f$'%(shape)
+                    ])
+                ax.text(0.1,0.9,param_label, transform=ax.transAxes, ha='left', va='top')
+                ax.set_title(f'{expt}, init {init}')
+
+                fig.savefig(join(figdir,f'riskplot_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
                 plt.close(fig)
         ds_cgts.close()
     ds_cgt.close()
