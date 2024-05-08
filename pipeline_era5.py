@@ -179,7 +179,7 @@ def reduce_era5():
             if tododict['fit_gev_select_regions']:
                 gevpar_reg,mintemp_levels_reg = pipeline_base.fit_gev_mintemp_1d_uq(mintemp,risk_levels)
                 gevpar_reg.to_netcdf(join(reduced_data_dir,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
-                np.save(f'mintemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy', mintemp_levels_reg)
+                np.save(join(reduced_data_dir,f'mintemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy', mintemp_levels_reg))
             else:
                 mintemp_levels_reg = np.load(f'mintemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy')
                 gevpar_reg = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
