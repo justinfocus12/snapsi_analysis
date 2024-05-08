@@ -14,7 +14,8 @@ rcParams.update({
     })
 pltkwargs = {"bbox_inches": "tight", "pad_inches": 0.2}
 
-import stat_functions as stfu
+from importlib import reload
+import stat_functions as stfu; reload(stfu)
 
 
 
@@ -132,7 +133,8 @@ def fit_gev_mintemp(ds_cgts_mint):
     # Take care of negative signs appropriately 
     memdim = ds_cgts_mint.dims.index('member')
     print(f'{memdim = }')
-    gevpar_array = np.apply_along_axis(spgex.fit, memdim, -ds_cgts_mint.to_numpy())
+    func = lambda X: stfu.fit_gev_single(X, method='MLE')
+    gevpar_array = np.apply_along_axis(func, memdim, -ds_cgts_mint.to_numpy())
     gevpar_dims = list(ds_cgts_mint.dims).copy()
     gevpar_dims[memdim] = 'param'
     gevpar_coords = dict(ds_cgts_mint.coords).copy()
@@ -142,16 +144,16 @@ def fit_gev_mintemp(ds_cgts_mint):
             coords=gevpar_coords,
             dims=gevpar_dims,
             data=gevpar_array)
-    gevpar.loc[dict(param='shape')] *= -1
     return gevpar
 
 def fit_gev_mintemp_1d_uq(mintemp, risk_levels):
     # do bootstrapping to get confidence intervals on return levels, etc. 
     n_boot=100
-    gevpar_dict = stfu.fit_statistical_model(-mintemp, 'gev', n_boot=n_boot)
+    gevpar_dict = stfu.fit_statistical_model(-mintemp, 'gev', n_boot=n_boot, method='MLE')
     gevpar = xr.DataArray(coords={'param': ['shape','location','scale'], 'boot': np.arange(n_boot+1)}, data=np.array([gevpar_dict[p] for p in ['shape','location','scale']]))
     # Compute quantiles corresponding to risk levels 
     levels = -stfu.quantile_parametric('gev', gevpar_dict, risk_levels)
+    print(f'{levels = }')
     return gevpar, levels
 
 

@@ -1,11 +1,13 @@
 # Subroutines for statistical calculations
 import numpy as np
 from scipy.stats import norm as spnorm, genextreme as spgex, genpareto as spgpd, uniform as spunif
+from scipy.special import gamma as GammaFunction
+from scipy.optimize import bisect
 from numpy.random import default_rng
 
 # Binomial (essentially non-parametric) models
 
-def fit_statistical_model(S, family, thresh=None, n_boot=1, rng=None, rngseed=None):
+def fit_statistical_model(S, family, thresh=None, n_boot=1, rng=None, rngseed=None, method=None):
     # Given a dataset of severities S = [S_0, S_1, ..., S_{n-1}], return a dictionary of parameters (like mean and variance for a normal, or location, shape and scale for a GEV) that fits the data. Maybe also likelihoods.
     # Additionally, return a bootstrap distribution of fits. 
     if rng is None:
@@ -20,10 +22,10 @@ def fit_statistical_model(S, family, thresh=None, n_boot=1, rng=None, rngseed=No
     if family == 'normal':
         params = dict({'mean': np.mean(Sboot, axis=1), 'stddev': np.std(Sboot, axis=1)})
     elif family == 'gev':
-        # TODO probability-weighted moments, too
+        func = lambda X: fit_gev_single(X, method)
         # Note, we use the convention that positive shape parameter means unbounded tail --- the opposite of genextreme
-        gevpar = np.apply_along_axis(spgex.fit, 1, Sboot, method="MLE")
-        params = dict({'shape': -gevpar[:,0], 'location': gevpar[:,1], 'scale': gevpar[:,2]})
+        gevpar = np.apply_along_axis(func, 1, Sboot)
+        params = dict({'shape': gevpar[:,0], 'location': gevpar[:,1], 'scale': gevpar[:,2]})
     elif family == 'gpd':
         # TODO encode the choice of thresh somehow 
         assert(thresh is not None)
@@ -33,6 +35,62 @@ def fit_statistical_model(S, family, thresh=None, n_boot=1, rng=None, rngseed=No
     #params.update(family=family)
     # TODO add confidence intervals via delta method or bootstrap
     return params
+
+def fit_gev_single(X, method):
+    if method == 'MLE':
+        gevpar = np.array(spgex.fit(X, method='MLE'))
+        print(f'{gevpar = }')
+        gevpar[0] *= -1 # We use the standard convention that negative shape parameter means bounded tail 
+    elif method == 'PWM':
+        N = len(X)
+        order = np.argsort(X)
+        Xord = X[order]
+        Word = np.ones(N)/N
+        Ford = np.cumsum(Word)
+        b0 = np.sum(Word * Xord)
+        b1 = np.sum(Word * Xord * Ford)
+        b2 = np.sum(Word * Xord * Ford**2)
+        # Solve for the shape, location, and scale parameters. Don't use the linear approximation, but
+        b_ratio = (3*b2 - b0)/(2*b1 - b0)
+        if b_ratio <= 0.0:
+            # TODO come up with the best possible alternative...xi is a very large number, probably 
+            raise Exception(f"The L-moment method has no solution; {b_ratio = }")
+        # Choose initialization for solver
+        tol = 1e-2
+        psf0 = pwm_shape_func(0,b_ratio) 
+        if psf0 == 0:
+            shape = 0.0
+        elif psf0 < 0: # shape > 0
+            lower = 0.0
+            upper = 1.0
+            while pwm_shape_func(upper,b_ratio) < 0.0:
+                upper *= 2.0
+        else: # shape < 0
+            lower = -1.0
+            upper = 0.0
+            while pwm_shape_func(lower,b_ratio) > 0.0:
+                lower *= 2.0
+        shape,root_result = bisect(pwm_shape_func, lower, upper, args=(b_ratio,), full_output=True, disp=True)
+
+        g = GammaFunction(1 - shape)
+        if shape == 0:
+            scale = (2*b1 - b0)/np.log(2)
+            loc = b0 - 0.5772*scale
+        else:
+            scale = shape*(2*b1 - b0)/((2**shape-1) * g)
+            loc = b0 + scale*(1 - g)/shape
+        gevpar = np.array([shape,loc,scale])
+        print(f'{shape = }, {loc = }, {scale = }')
+    return gevpar
+
+def pwm_shape_func(shape,b_ratio): # The function to solve: (3**shape-1)/(2**shape-1) - (3*b2-b0)/(2*b1-b0)
+    if np.abs(shape) < 1e-6:
+        return np.log(3)/np.log(2)*(1 + np.log(3/2)/2*shape - np.log(6)/4*shape**2) - b_ratio
+        # Use local quadratic approximation
+    return (3**shape - 1)/(2**shape - 1) - b_ratio
+
+def hosking_shape_fprime_log(k, log_b_ratio):
+    return np.log(3)/(3**k-1) - np.log(2)/(2**k-1)
 
 def param_names(family):
     if family == 'normal':

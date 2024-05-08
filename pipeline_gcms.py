@@ -173,11 +173,11 @@ def compare_statpar_maps_2expts(i_gcm,i0_expt,i1_expt,i_init):
 def reduce_gcm(i_gcm,i_expt,i_init):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
     tododict = dict({
-        'coarse_grain_time':           1,
+        'coarse_grain_time':           0,
         'plot_t2m_sumstats_map':       1,
-        'coarse_grain_space':          1,
-        'fit_gev':                     1,
-        'plot_statpar_map':           1,
+        'coarse_grain_space':          0,
+        'fit_gev':                     0,
+        'plot_statpar_map':            1,
         })
     gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,figdir,cgs_levels = gcm_workflow(i_gcm,i_expt,i_init)
 

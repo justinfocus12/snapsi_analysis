@@ -22,9 +22,10 @@ import glob
 from scipy.stats import norm as spnorm, genextreme as spgex
 
 # My own modules
-import utils
-import pipeline_base
-import stat_functions as stfu
+from importlib import reload
+import utils; reload(utils)
+import pipeline_base; reload(pipeline_base)
+import stat_functions as stfu; reload(stfu)
 
 def analysis_multiparams():
     # lon/lat ratios are 6/1 at the bottom and 4/1 at the top; stick to 5/1 
@@ -57,6 +58,7 @@ def era5_workflow(verbose=False):
 
     # Select regions for more detailed GEV analysis (based on visualizing the map)
     # format is (cgs_level, i_lon, i_lat)
+    # TODO change this to a list of floating point locations, which will be part of different-sized neighborhoods as a function of resolution 
     select_regions = ( # Indexed by cgs_level
             (), # level (1,1)
             (), # level (5,1)
@@ -65,9 +67,9 @@ def era5_workflow(verbose=False):
             (), # level (40,8)
             (), # level (141,16)
             )
-    risk_levels = np.exp(np.linspace(np.log(0.001),np.log(0.5),30))
-    # TODO specify levels for relative risk 
-
+    select_points = ()
+    risk_levels = np.exp(np.linspace(np.log(0.001),np.log(49/50),30))
+    # TODO specify temperature levels for relative risk 
     workflow = (
             years,event_region,event_time_interval,
             year_filegroups,reduced_data_dir,figdir,
@@ -125,7 +127,7 @@ def reduce_era5():
         'coarse_grain_space':          0,
         'fit_gev':                     0,
         'plot_statpar_map':            0,
-        'fit_gev_select_regions':      0,
+        'fit_gev_select_regions':      1,
         'plot_gev_select_regions':     1,
         })
     years,event_region,event_time_interval,year_filegroups,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels = era5_workflow()
@@ -178,10 +180,14 @@ def reduce_era5():
                 gevpar_reg,mintemp_levels_reg = pipeline_base.fit_gev_mintemp_1d_uq(mintemp,risk_levels)
                 gevpar_reg.to_netcdf(join(reduced_data_dir,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
                 np.save(f'mintemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy', mintemp_levels_reg)
-            if tododict['plot_gev_select_regions']:
+            else:
                 mintemp_levels_reg = np.load(f'mintemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy')
                 gevpar_reg = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
-                fig,ax = plt.subplots()
+
+            if tododict['plot_gev_select_regions']:
+                fig,axes = plt.subplots(ncols=2,figsize=(10,4),sharey=True)
+                # Left: probability plot; right: timeseries of minima over years 
+                ax = axes[0]
                 order = np.argsort(mintemp)
                 rank = np.argsort(order)
                 risk_empirical = np.arange(1,len(mintemp)+1)/len(mintemp)
@@ -193,8 +199,20 @@ def reduce_era5():
                 ax.plot(risk_levels,mintemp_levels_reg[0,:],color='red')
                 ax.fill_between(risk_levels, np.quantile(mintemp_levels_reg, 0.25, axis=0), np.quantile(mintemp_levels_reg, 0.75, axis=0), fc='red', ec='none', alpha=0.3, zorder=-1)
                 ax.set_xscale('log')
-                ax.set_xlabel(r'$\mathbb{P}\{\overline{T}}^*\leq T$')
+                ax.set_xlabel(r'$\mathbb{P}\{\min_t\langle T(t)\rangle_{\mathrm{region}}\leq T\}$')
                 ax.set_ylabel(r'$T$')
+                shape,location,scale = (gevpar_reg.sel(param=p).isel(boot=0) for p in ('shape','location','scale'))
+                param_label = '\n'.join([
+                    r'$\mu=%d$'%(-location),
+                    r'$\sigma=%d$'%(scale),
+                    r'$\xi=%.2f$'%(shape)
+                    ])
+                ax.text(0.1,0.9,param_label, transform=ax.transAxes, ha='left', va='top')
+
+                ax = axes[1]
+                ax.plot(ds_cgts_mint['member'].to_numpy(), mintemp, color='black', marker='+')
+                ax.set(xlabel='Year',ylabel='')
+                ax.yaxis.set_tick_params(which='both',labelbottom=True)
                 fig.savefig(join(figdir,f'riskplot_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
                 plt.close(fig)
     ds_cgt.close()
