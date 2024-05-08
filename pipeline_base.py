@@ -149,9 +149,9 @@ def fit_gev_mintemp_1d_uq(mintemp, risk_levels):
     # do bootstrapping to get confidence intervals on return levels, etc. 
     n_boot=100
     gevpar_dict = stfu.fit_statistical_model(-mintemp, 'gev', n_boot=n_boot)
+    gevpar = xr.DataArray(coords={'param': ['shape','location','scale'], 'boot': np.arange(n_boot+1)}, data=np.array([gevpar_dict[p] for p in ['shape','location','scale']]))
     # Compute quantiles corresponding to risk levels 
     levels = -stfu.quantile_parametric('gev', gevpar_dict, risk_levels)
-    gevpar = xr.DataArray(coords={'param': ['shape','location','scale'], 'boot': np.arange(n_boot+1)}, data=np.array([gevpar_dict[p] for p in ['shape','location','scale']]))
     return gevpar, levels
 
 

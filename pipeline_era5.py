@@ -24,6 +24,7 @@ from scipy.stats import norm as spnorm, genextreme as spgex
 # My own modules
 import utils
 import pipeline_base
+import stat_functions as stfu
 
 def analysis_multiparams():
     # lon/lat ratios are 6/1 at the bottom and 4/1 at the top; stick to 5/1 
@@ -124,7 +125,8 @@ def reduce_era5():
         'coarse_grain_space':          0,
         'fit_gev':                     0,
         'plot_statpar_map':            0,
-        'fit_gev_select_regions':      1,
+        'fit_gev_select_regions':      0,
+        'plot_gev_select_regions':     1,
         })
     years,event_region,event_time_interval,year_filegroups,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels = era5_workflow()
     ens_file_cgt = join(reduced_data_dir,f't2m_cgt1day.nc')
@@ -167,30 +169,34 @@ def reduce_era5():
                 fig.savefig(join(figdir,f'statpar_map_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
                 plt.close(fig)
 
-        if tododict['fit_gev_select_regions']:
-            # Do a more thorough uncertainty quantification at a specific site or region, using bootstrap analysis and goodness-of-fit etc. Maybe parallelize over all sites too
 
-            for (i_lon,i_lat) in select_regions[i_cgs_level]:
-                mintemp = ds_cgts_mint.sel(daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).to_numpy()
+        # Do a more thorough uncertainty quantification at a specific site or region, using bootstrap analysis and goodness-of-fit etc. Maybe parallelize over all sites too
+
+        for (i_lon,i_lat) in select_regions[i_cgs_level]:
+            mintemp = ds_cgts_mint.sel(daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).to_numpy()
+            if tododict['fit_gev_select_regions']:
                 gevpar_reg,mintemp_levels_reg = pipeline_base.fit_gev_mintemp_1d_uq(mintemp,risk_levels)
-                # TODO save as netcdf, and later plot 
-                gevpar_reg.to_netcdf(join(reduced_data_dir,'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
+                gevpar_reg.to_netcdf(join(reduced_data_dir,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
+                np.save(f'mintemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy', mintemp_levels_reg)
+            if tododict['plot_gev_select_regions']:
+                mintemp_levels_reg = np.load(f'mintemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy')
+                gevpar_reg = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
                 fig,ax = plt.subplots()
                 order = np.argsort(mintemp)
+                rank = np.argsort(order)
                 risk_empirical = np.arange(1,len(mintemp)+1)/len(mintemp)
-                ax.scatter(risk_empirical, mintemp, color='black', marker='+')
-                ax.plot(risk_levels, mintemp_levels_reg, color='red')
+                ax.scatter(risk_empirical, mintemp[order], color='black', marker='+')
+                # Special marker for 2018
+                i_mem_2018 = np.where(ds_cgts_mint.member == 2018)[0][0]
+
+                ax.scatter(risk_empirical[rank[i_mem_2018]], mintemp[i_mem_2018], color='black', marker='o')
+                ax.plot(risk_levels,mintemp_levels_reg[0,:],color='red')
+                ax.fill_between(risk_levels, np.quantile(mintemp_levels_reg, 0.25, axis=0), np.quantile(mintemp_levels_reg, 0.75, axis=0), fc='red', ec='none', alpha=0.3, zorder=-1)
                 ax.set_xscale('log')
-                ax.set_xlabel('Probability')
-                ax.set_ylabel('Min temp')
-                fig.savefig(join(figdir,'riskplot_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
+                ax.set_xlabel(r'$\mathbb{P}\{\overline{T}}^*\leq T$')
+                ax.set_ylabel(r'$T$')
+                fig.savefig(join(figdir,f'riskplot_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
                 plt.close(fig)
-               
-                
-            pass
-
-
-
     ds_cgt.close()
     ds_cgt_mint.close()
 
