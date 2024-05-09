@@ -29,7 +29,7 @@ import stat_functions as stfu; reload(stfu)
 
 def analysis_multiparams():
     # lon/lat ratios are 6/1 at the bottom and 4/1 at the top; stick to 5/1 
-    cgs_levels = [(1,1),(5,1),(10,2),(20,4),(40,8),(141,16)]
+    cgs_levels = [(1,1),(5,1),(10,2),(20,4),(40,8)] #,(141,16)]
     return cgs_levels
 
 def era5_workflow(verbose=False):
@@ -124,9 +124,9 @@ def reduce_era5():
     tododict = dict({
         'coarse_grain_time':           0,
         'plot_t2m_sumstats_map':       0,
-        'coarse_grain_space':          0,
-        'fit_gev':                     0,
-        'plot_statpar_map':            0,
+        'coarse_grain_space':          1,
+        'fit_gev':                     1,
+        'plot_statpar_map':            1,
         'fit_gev_select_regions':      1,
         'plot_gev_select_regions':     1,
         })
@@ -160,7 +160,7 @@ def reduce_era5():
         # ----------- Perform GEV fitting (on negative temperature) --------------
         gev_param_file = join(reduced_data_dir,f'gevpar_cgs{cgs_key}.nc')
         if tododict['fit_gev']:
-            gevpar = pipeline_base.fit_gev_mintemp(ds_cgts_mint)
+            gevpar = pipeline_base.fit_gev_mintemp(ds_cgts_mint,method='PWM')
             gevpar.to_netcdf(gev_param_file)
         else:
             gevpar = xr.open_dataarray(gev_param_file)
@@ -177,7 +177,7 @@ def reduce_era5():
         for (i_lon,i_lat) in select_regions[i_cgs_level]:
             mintemp = ds_cgts_mint.sel(daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).to_numpy()
             if tododict['fit_gev_select_regions']:
-                gevpar_reg,mintemp_levels_reg = pipeline_base.fit_gev_mintemp_1d_uq(mintemp,risk_levels)
+                gevpar_reg,mintemp_levels_reg = pipeline_base.fit_gev_mintemp_1d_uq(mintemp,risk_levels,method='PWM')
                 gevpar_reg.to_netcdf(join(reduced_data_dir,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
                 np.save(join(reduced_data_dir,f'mintemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'), mintemp_levels_reg)
             else:

@@ -1,7 +1,7 @@
 # Subroutines for statistical calculations
 import numpy as np
 from scipy.stats import norm as spnorm, genextreme as spgex, genpareto as spgpd, uniform as spunif
-from scipy.special import gamma as GammaFunction
+from scipy.special import gamma as GammaFunction, logsumexp
 from scipy.optimize import bisect
 from numpy.random import default_rng
 
@@ -43,12 +43,16 @@ def fit_gev_single(X, method):
     elif method == 'PWM':
         N = len(X)
         order = np.argsort(X)
-        Xord = X[order]
-        Word = np.ones(N)/N
-        Ford = np.cumsum(Word)
-        b0 = np.sum(Word * Xord)
-        b1 = np.sum(Word * Xord * Ford)
-        b2 = np.sum(Word * Xord * Ford**2)
+        offset = 1e-6 - X[order[0]]
+        Xord = X[order] + offset
+        logwnorm = -np.log(N)*np.ones(N)
+        logWord = logwnorm[order]
+        logFord = np.logaddexp.accumulate(logWord)
+        b0 = np.exp(logsumexp(logWord, b=Xord)) #np.sum(Word * Xord)
+        b1 = np.exp(logsumexp(logWord + logFord, b=Xord)) #np.sum(Word * Xord * Ford)
+        b2 = np.exp(logsumexp(logWord + 2*logFord, b=Xord)) #np.sum(Word * Xord * Ford**2)
+        #print(f'{Xord = }\n{logWord = }\n{logFord = }\n{logWord + logFord = }')
+        #print(f'{b0 = }, {b1 = }, {b2 = }')
         # Solve for the shape, location, and scale parameters. Don't use the linear approximation, but
         b_ratio = (3*b2 - b0)/(2*b1 - b0)
         if b_ratio <= 0.0:
@@ -78,11 +82,12 @@ def fit_gev_single(X, method):
         else:
             scale = shape*(2*b1 - b0)/((2**shape-1) * g)
             loc = b0 + scale*(1 - g)/shape
-        gevpar = np.array([shape,loc,scale])
-        print(f'{shape = }, {loc = }, {scale = }')
+        gevpar = np.array([shape,loc-offset,scale])
+        #print(f'{shape = }, {loc = }, {scale = }')
     return gevpar
 
 def pwm_shape_func(shape,b_ratio): # The function to solve: (3**shape-1)/(2**shape-1) - (3*b2-b0)/(2*b1-b0)
+    #print(f'{shape = }, {b_ratio = }')
     if np.abs(shape) < 1e-6:
         return np.log(3)/np.log(2)*(1 + np.log(3/2)/2*shape - np.log(6)/4*shape**2) - b_ratio
         # Use local quadratic approximation
