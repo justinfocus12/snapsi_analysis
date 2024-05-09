@@ -77,6 +77,7 @@ def gcm_workflow(i_gcm, i_expt, i_init, verbose=False):
     event_time_interval = (datetime.datetime(2018,2,21,0),datetime.datetime(2018,3,8,18))
     reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-05-04',gcm)
     makedirs(reduced_data_dir,exist_ok=True)
+    reduced_data_dir_era5 = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-05-04/era5'
 
     # spatial coarse graining (cgs)
     cgs_levels = analysis_multiparams()
@@ -98,7 +99,7 @@ def gcm_workflow(i_gcm, i_expt, i_init, verbose=False):
     workflow = (
             gcm,expt,init,
             event_region,event_time_interval,
-            raw_mem_files,mem_labels,reduced_data_dir,figdir,
+            raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,
             cgs_levels,select_regions,risk_levels
             )
     return workflow
@@ -161,8 +162,8 @@ def compare_statpar_maps_2expts(i_gcm,i0_expt,i1_expt,i_init):
         'plot_gev_select_regions_diff':    1,
         })
     # Assumes both have been reduced
-    gcm,expt0,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels = gcm_workflow(i_gcm,i0_expt,i_init)
-    _,expt1,_,_,_,_,_,_,_,_,_,_ = gcm_workflow(i_gcm,i1_expt,i_init)
+    gcm,expt0,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels = gcm_workflow(i_gcm,i0_expt,i_init)
+    _,expt1,_,_,_,_,_,_,_,_,_,_,_ = gcm_workflow(i_gcm,i1_expt,i_init)
     ds_cgt_0,ds_cgt_1 = (xr.open_dataarray(join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day.nc')) for expt in (expt0,expt1))
     for i_cgs_level,cgs_level in enumerate(cgs_levels):
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
@@ -189,10 +190,10 @@ def reduce_gcm(i_gcm,i_expt,i_init):
         'coarse_grain_space':          0,
         'fit_gev':                     0,
         'plot_statpar_map':            0,
-        'fit_gev_select_regions':      1,
+        'fit_gev_select_regions':      0,
         'plot_gev_select_regions':     1,
         })
-    gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels = gcm_workflow(i_gcm,i_expt,i_init)
+    gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels = gcm_workflow(i_gcm,i_expt,i_init)
 
     # ------------- Coarse-grain in time (cgt) and space (cgts) -------------
     ens_file_cgt = join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day.nc')
@@ -218,8 +219,10 @@ def reduce_gcm(i_gcm,i_expt,i_init):
             ds_cgts.to_netcdf(ens_file_cgts)
         else:
             ds_cgts = xr.open_dataarray(ens_file_cgts)
+        ds_cgts_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc'))
         # ---- Minimize in time -----------------------------
         ds_cgts_mint = ds_cgts.min(dim='time')
+        ds_cgts_mint_era5 = ds_cgts_era5.min(dim='time')
         # ----------- Perform GEV fitting (on negative temperature) --------------
         gev_param_file = join(reduced_data_dir,f'gevpar_e{expt}_i{init}_cgs{cgs_key}.nc')
         if tododict['fit_gev']:
@@ -238,33 +241,56 @@ def reduce_gcm(i_gcm,i_expt,i_init):
 
         for (i_lon,i_lat) in select_regions[i_cgs_level]:
             mintemp = ds_cgts_mint.sel(daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).to_numpy()
+            mintemp_era5 = ds_cgts_mint_era5.sel(daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).to_numpy()
             if tododict['fit_gev_select_regions']:
                 gevpar_reg,mintemp_levels_reg = pipeline_base.fit_gev_mintemp_1d_uq(mintemp,risk_levels)
                 gevpar_reg.to_netcdf(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
-                np.save(join(data_dir,f'mintemp_levels_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy', mintemp_levels_reg))
+                np.save(join(reduced_data_dir,f'mintemp_levels_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'), mintemp_levels_reg)
             else:
-                mintemp_levels_reg = np.load(join(data_dir,f'mintemp_levels_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
+                mintemp_levels_reg = np.load(join(reduced_data_dir,f'mintemp_levels_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
                 gevpar_reg = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
+                # Also load the ERA5 data 
+            mintemp_levels_reg_era5 = np.load(join(reduced_data_dir_era5,f'mintemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
+            gevpar_reg_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
+            print(f'{i_lon = }, {i_lat = }')
+            print(f'{gevpar_reg_era5.isel(boot=0) = }')
 
             if tododict['plot_gev_select_regions']:
                 fig,ax = plt.subplots()
-                # Left: probability plot; right: timeseries of minima over years 
-                order = np.argsort(mintemp)
-                rank = np.argsort(order)
-                risk_empirical = np.arange(1,len(mintemp)+1)/len(mintemp)
-                ax.scatter(risk_empirical, mintemp[order], color='black', marker='+')
-                ax.plot(risk_levels,mintemp_levels_reg[0,:],color='red')
-                ax.fill_between(risk_levels, np.quantile(mintemp_levels_reg, 0.25, axis=0), np.quantile(mintemp_levels_reg, 0.75, axis=0), fc='red', ec='none', alpha=0.3, zorder=-1)
-                ax.set_xscale('log')
-                ax.set_xlabel(r'$\mathbb{P}\{\min_t\langle T(t)\rangle_{\mathrm{region}}\leq T\}$')
-                ax.set_ylabel(r'$T$')
                 shape,location,scale = (gevpar_reg.sel(param=p).isel(boot=0) for p in ('shape','location','scale'))
-                param_label = '\n'.join([
+                shape_era5,location_era5,scale_era5 = (gevpar_reg_era5.sel(param=p).isel(boot=0) for p in ('shape','location','scale'))
+                param_label = ','.join([
                     r'$\mu=%d$'%(-location),
                     r'$\sigma=%d$'%(scale),
                     r'$\xi=%.2f$'%(shape)
                     ])
-                ax.text(0.1,0.9,param_label, transform=ax.transAxes, ha='left', va='top')
+                param_label_era5 = ','.join([
+                    r'$\mu=%d$'%(-location_era5),
+                    r'$\sigma=%d$'%(scale_era5),
+                    r'$\xi=%.2f$'%(shape_era5)
+                    ])
+                # GCM data
+                order = np.argsort(mintemp)
+                rank = np.argsort(order)
+                risk_empirical = np.arange(1,len(mintemp)+1)/len(mintemp)
+                ax.scatter(risk_empirical, mintemp[order], color='red', marker='+')
+                hgcm, = ax.plot(risk_levels,mintemp_levels_reg[0,:],color='red',label=r'%s (%s)'%(gcm,param_label))
+                ax.fill_between(risk_levels, np.quantile(mintemp_levels_reg, 0.25, axis=0), np.quantile(mintemp_levels_reg, 0.75, axis=0), fc='red', ec='none', alpha=0.3, zorder=-1)
+                # Now ERA5
+                order = np.argsort(mintemp_era5)
+                rank = np.argsort(order)
+                risk_empirical = np.arange(1,len(mintemp_era5)+1)/len(mintemp_era5)
+                ax.scatter(risk_empirical, mintemp_era5[order], color='black', marker='+')
+                # Special marker for 2018
+                i_mem_2018 = np.where(ds_cgts_mint_era5.member == 2018)[0][0]
+
+                ax.scatter(risk_empirical[rank[i_mem_2018]], mintemp_era5[i_mem_2018], color='black', marker='o')
+                hera5, = ax.plot(risk_levels,mintemp_levels_reg_era5[0,:],color='black',label=r'ERA5 (%s)'%(param_label_era5))
+                ax.fill_between(risk_levels, np.quantile(mintemp_levels_reg_era5, 0.25, axis=0), np.quantile(mintemp_levels_reg_era5, 0.75, axis=0), fc='gray', ec='none', alpha=0.3, zorder=-1)
+                ax.legend(handles=[hera5,hgcm])
+                ax.set_xscale('log')
+                ax.set_xlabel(r'$\mathbb{P}\{\min_t\langle T(t)\rangle_{\mathrm{region}}\leq T\}$')
+                ax.set_ylabel(r'$T$')
                 ax.set_title(f'{expt}, init {init}')
 
                 fig.savefig(join(figdir,f'riskplot_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)

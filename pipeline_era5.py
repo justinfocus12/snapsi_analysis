@@ -125,8 +125,8 @@ def reduce_era5():
         'coarse_grain_time':           0,
         'plot_t2m_sumstats_map':       0,
         'coarse_grain_space':          0,
-        'fit_gev':                     1,
-        'plot_statpar_map':            1,
+        'fit_gev':                     0,
+        'plot_statpar_map':            0,
         'fit_gev_select_regions':      1,
         'plot_gev_select_regions':     1,
         })
@@ -179,15 +179,15 @@ def reduce_era5():
             if tododict['fit_gev_select_regions']:
                 gevpar_reg,mintemp_levels_reg = pipeline_base.fit_gev_mintemp_1d_uq(mintemp,risk_levels)
                 gevpar_reg.to_netcdf(join(reduced_data_dir,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
-                np.save(join(reduced_data_dir,f'mintemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy', mintemp_levels_reg))
+                np.save(join(reduced_data_dir,f'mintemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'), mintemp_levels_reg)
             else:
-                mintemp_levels_reg = np.load(f'mintemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy')
+                mintemp_levels_reg = np.load(join(reduced_data_dir,f'mintemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
                 gevpar_reg = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
+            print(f'{i_lon = }, {i_lat = }')
+            print(f'{gevpar_reg.isel(boot=0) = }')
 
             if tododict['plot_gev_select_regions']:
-                fig,axes = plt.subplots(ncols=2,figsize=(10,4),sharey=True)
-                # Left: probability plot; right: timeseries of minima over years 
-                ax = axes[0]
+                fig,ax = plt.subplots()
                 order = np.argsort(mintemp)
                 rank = np.argsort(order)
                 risk_empirical = np.arange(1,len(mintemp)+1)/len(mintemp)
@@ -207,12 +207,7 @@ def reduce_era5():
                     r'$\sigma=%d$'%(scale),
                     r'$\xi=%.2f$'%(shape)
                     ])
-                ax.text(0.1,0.9,param_label, transform=ax.transAxes, ha='left', va='top')
 
-                ax = axes[1]
-                ax.plot(ds_cgts_mint['member'].to_numpy(), mintemp, color='black', marker='+')
-                ax.set(xlabel='Year',ylabel='')
-                ax.yaxis.set_tick_params(which='both',labelbottom=True)
                 fig.savefig(join(figdir,f'riskplot_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
                 plt.close(fig)
     ds_cgt.close()
