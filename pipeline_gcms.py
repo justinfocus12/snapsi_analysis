@@ -180,8 +180,31 @@ def compare_statpar_maps_2expts(i_gcm,i0_expt,i1_expt,i_init):
     return
 
 
+
 def compare_expts(i_gcm, i_init):
-    pass
+    tododict = dict({
+        'plot_statpar_map_diff':           1,
+        'plot_gev_select_regions':         1,
+        })
+    expts = []
+    for i_init in range(3):
+        gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels = gcm_workflow(i_gcm,i0_expt,i_init)
+        expts.append(expt)
+
+    for i_cgs_level,cgs_level in enumerate(cgs_levels):
+        if tododict['plot_gev_select_regions_diff']:
+            cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+            dss_cgts = (
+                    xr.open_dataarray(join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day_cgs{cgs_key}.nc'))
+                    for expt in expts)
+            ds_cgts_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc'))
+
+            # Plot all four curves on one plot (ERA5, free, control, nudged)
+            fig,ax = plt.suplots()
+
+    
+
+    return
 
 
 
