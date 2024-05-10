@@ -84,6 +84,11 @@ def gcm_workflow(i_gcm, i_expt, i_init, verbose=False):
     # spatial coarse graining (cgs)
     cgs_levels = analysis_multiparams()
 
+    # bootstrap parameters
+    n_boot = 1000
+    confint_width = 0.5
+
+
     # Plotting dir 
     figdir = f'/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-05-04/{gcm}'
     makedirs(figdir,exist_ok=True)
@@ -91,7 +96,7 @@ def gcm_workflow(i_gcm, i_expt, i_init, verbose=False):
     select_regions = ( # Indexed by cgs_level
             (), # level (1,1)
             (), # level (5,1)
-            ((1,1),(3,1),(4,1)),
+            ((1,1),(3,1),(4,1),(6,1)),
             (), # level (20,4)
             (), # level (40,8)
             (), # level (141,16)
@@ -102,7 +107,7 @@ def gcm_workflow(i_gcm, i_expt, i_init, verbose=False):
             gcm,expt,init,
             event_region,event_time_interval,
             raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,
-            cgs_levels,select_regions,risk_levels
+            cgs_levels,select_regions,risk_levels,n_boot,confint_width
             )
     return workflow
 
@@ -164,8 +169,8 @@ def compare_statpar_maps_2expts(i_gcm,i0_expt,i1_expt,i_init):
         'plot_gev_select_regions_diff':    1,
         })
     # Assumes both have been reduced
-    gcm,expt0,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels = gcm_workflow(i_gcm,i0_expt,i_init)
-    _,expt1,_,_,_,_,_,_,_,_,_,_,_ = gcm_workflow(i_gcm,i1_expt,i_init)
+    gcm,expt0,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(i_gcm,i0_expt,i_init)
+    _,expt1,_,_,_,_,_,_,_,_,_,_,_,_,_ = gcm_workflow(i_gcm,i1_expt,i_init)
     ds_cgt_0,ds_cgt_1 = (xr.open_dataarray(join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day.nc')) for expt in (expt0,expt1))
     for i_cgs_level,cgs_level in enumerate(cgs_levels):
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
@@ -188,11 +193,12 @@ def compare_expts(i_gcm, i_init):
         })
     expts = []
     for i_expt in range(3):
-        gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels = gcm_workflow(i_gcm,i_expt,i_init)
+        gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(i_gcm,i_expt,i_init)
         expts.append(expt)
     datestr = datetime.datetime.strptime(init,"%Y%m%d").strftime("%Y-%m-%d")
 
     daily_stat = 'daily_mean'
+    boot_type = 'percentile'
     for i_cgs_level,cgs_level in enumerate(cgs_levels):
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
         ds_cgts_mints = dict()
@@ -229,15 +235,16 @@ def compare_expts(i_gcm, i_init):
             if tododict['plot_gev_select_regions']:
                 print(f'Plotting GEV select regions')
                 # Plot all four curves on one plot (ERA5, free, control, nudged)
-                colors = dict({'era5': 'black', 'control': 'purple', 'free': 'red', 'nudged': 'dodgerblue'})
+                colors = dict({'era5': 'black', 'control': 'dodgerblue', 'free': 'limegreen', 'nudged': 'red'})
 
                 fig,axes = plt.subplots(ncols=2, figsize=(12,4), sharey=True)
+                for ax in axes: 
+                    ax.axhline(mintemps['era5'].sel(member=2018).item(), color='black', linestyle='--')
                 ax = axes[0]
                 handles = []
-                ax.axhline(mintemps['era5'].sel(member=2018).item(), color='black', linestyle='--')
 
                 # Interpolate for relative risk 
-                mintemp_levels_range = (max([T.min().item() for T in mintemp_levels_regs.values()]), min([T.max().item() for T in mintemp_levels_regs.values()]))
+                mintemp_levels_range = [mintemp_levels_regs['era5'][0,:].min().item(),mintemp_levels_regs['era5'][0,:].max().item()] #(max([T.min().item() for T in mintemp_levels_regs.values()]), min([T.max().item() for T in mintemp_levels_regs.values()]))
                 mintemp_levels_common = np.linspace(*mintemp_levels_range, 30)
                 risk_at_levels = dict()
                 for expt in expts + ['era5']:
@@ -245,7 +252,7 @@ def compare_expts(i_gcm, i_init):
                     param_label = ','.join([
                         r'$\mu=%d$'%(-location),
                         r'$\sigma=%d$'%(scale),
-                        r'$\xi=%.2f$'%(shape)
+                        r'$\xi=%+.2f$'%(shape)
                         ])
                     mintemp = mintemps[expt].to_numpy()
                     mintemp_levels_reg = mintemp_levels_regs[expt]
@@ -255,8 +262,15 @@ def compare_expts(i_gcm, i_init):
                     ax.scatter(risk_empirical, mintemp[order], color=colors[expt], marker='+')
                     h, = ax.plot(risk_levels,mintemp_levels_reg[0,:],color=colors[expt],label=r'%s (%s)'%(expt+' '*(7-len(expt)),param_label))
                     handles.append(h)
-                    ax.fill_between(risk_levels, np.quantile(mintemp_levels_reg[1:], 0.25, axis=0), np.quantile(mintemp_levels_reg[1:], 0.75, axis=0), fc=colors[expt], ec='none', alpha=0.3, zorder=-1)
-                    risk_at_levels[expt] = np.interp(mintemp_levels_common, mintemp_levels_reg[0,:], risk_levels)
+                    boot_quant_lo,boot_quant_hi = (np.quantile(mintemp_levels_reg[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
+                    if boot_type == 'percentile':
+                        lo,hi = boot_quant_lo,boot_quant_hi
+                    elif boot_type == 'basic':
+                        lo,hi = (2*mintemp_levels_reg[0,:]-boot_quant_hi,2*mintemp_levels_reg[0,:]-boot_quant_lo)
+                    ax.fill_between(risk_levels, lo, hi, fc=colors[expt], ec='none', alpha=0.3, zorder=-1)
+                    # Interpolate every bootstrap
+                    func = lambda T: np.interp(mintemp_levels_common, T, risk_levels)
+                    risk_at_levels[expt] = np.apply_along_axis(func, 1, mintemp_levels_reg)
                 ax.set_xscale('log')
                 ax.set_xlabel(r'$\mathbb{P}\{\min_t\langle T(t)\rangle_{\mathrm{region}}\leq T\}$')
                 ax.set_ylabel(r'$T$')
@@ -264,13 +278,30 @@ def compare_expts(i_gcm, i_init):
 
                 # Relative risk
                 ax = axes[1]
+                ax.axvline(1.0, color=colors['free'], linestyle='-')
                 # Interpolate to common set of levels and plot relative risk 
                 handles = []
                 for (expt0,expt1) in (('free','control'),('free','nudged')):
-                    h, = ax.plot(risk_at_levels[expt1]/risk_at_levels[expt0], mintemp_levels_common, label=r'%s/%s'%(expt1,expt0))
+                    risk_ratio = risk_at_levels[expt1] / risk_at_levels[expt0]
+                    h, = ax.plot(risk_ratio[0,:], mintemp_levels_common, color=colors[expt1], label=r'%s/%s'%(expt1,expt0))
                     handles.append(h)
-                ax.legend(handles=handles)
+                    boot_quant_lo,boot_quant_hi = (np.quantile(risk_ratio[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
+                    if boot_type == 'percentile':
+                        lo,hi = boot_quant_lo,boot_quant_hi
+                    else:
+                        lo,hi = 2*risk_ratio[0,:]-boot_quant_hi, 2*risk_ratio[0,:]-boot_quant_lo
+                    ax.fill_betweenx(mintemp_levels_common, lo, hi, fc=colors[expt1], ec='none', alpha=0.3, zorder=-1)
+                ax.set_xscale('log')
+                ax.set_xlim([0.5,5.0])
+                ax.get_xaxis().set_major_formatter(ticker.NullFormatter())
+                ax.get_xaxis().set_minor_formatter(ticker.NullFormatter())
+                xticks = [0.5,1.0,2.0,5.0]
+                ax.set_xticks(xticks, [r'%g'%(xtick) for xtick in xticks])
+                #ax.legend(handles=handles)
+                ax.set_xlabel(r'Relative risk w.r.t. free')
 
+                for ax in axes:
+                    ax.set_ylim(mintemp_levels_range)
 
                 fig.suptitle(f'{gcm}, init {datestr} at {lonlatstr}')
 
@@ -289,14 +320,14 @@ def reduce_gcm(i_gcm,i_expt,i_init):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
     tododict = dict({
         'coarse_grain_time':           0,
-        'plot_t2m_sumstats_map':       1,
+        'plot_t2m_sumstats_map':       0,
         'coarse_grain_space':          0,
-        'fit_gev':                     0,
+        'fit_gev':                     1,
         'plot_statpar_map':            1,
-        'fit_gev_select_regions':      0,
+        'fit_gev_select_regions':      1,
         'plot_gev_select_regions':     1,
         })
-    gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels = gcm_workflow(i_gcm,i_expt,i_init)
+    gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(i_gcm,i_expt,i_init)
 
     # ------------- Coarse-grain in time (cgt) and space (cgts) -------------
     ens_file_cgt = join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day.nc')
@@ -321,7 +352,7 @@ def reduce_gcm(i_gcm,i_expt,i_init):
     for i_cgs_level,cgs_level in enumerate(cgs_levels):
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
         if min(cgs_level) > 1: 
-            lon_blocksize,lat_blocksize = (ds_cgt_era5[dim][:2].diff(d).item() for d in ('lon','lat'))
+            lon_blocksize,lat_blocksize = (ds_cgt_era5[d][:2].diff(d).item() for d in ('lon','lat'))
         ens_file_cgts = join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day_cgs{cgs_key}.nc')
         if tododict['coarse_grain_space']:
             ds_cgts = pipeline_base.coarse_grain_space(ds_cgt, cgs_level)
@@ -364,13 +395,14 @@ def reduce_gcm(i_gcm,i_expt,i_init):
 
         for (i_lon,i_lat) in select_regions[i_cgs_level]:
             mintemp = ds_cgts_mint.sel(daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).to_numpy()
-            mintemp_era5 = ds_cgts_mint_era5.sel(daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).to_numpy()
-            center_lon,center_lat = mintemp_era5.lon[0].item(),mintemp_era5.lat[0].item()
+            mintemp_era5 = ds_cgts_mint_era5.sel(daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat)
+            center_lon,center_lat = mintemp_era5.lon.item(),mintemp_era5.lat.item()
+            mintemp_era5 = mintemp_era5.to_numpy()
             lonlatstr = r'$\lambda=%d\pm%d,\phi=%d\pm%d$'%(center_lon,lon_blocksize/2,center_lat,lat_blocksize/2)
             if tododict['fit_gev_select_regions']:
                 if np.any(np.isnan(mintemp)):
                     raise Exception(f'{mintemp = }')
-                gevpar_reg,mintemp_levels_reg = pipeline_base.fit_gev_mintemp_1d_uq(mintemp,risk_levels, method='PWM')
+                gevpar_reg,mintemp_levels_reg = pipeline_base.fit_gev_mintemp_1d_uq(mintemp,risk_levels, method='PWM', n_boot=n_boot)
                 gevpar_reg.to_netcdf(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
                 np.save(join(reduced_data_dir,f'mintemp_levels_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'), mintemp_levels_reg)
             else:

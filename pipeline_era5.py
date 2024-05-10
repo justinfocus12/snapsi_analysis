@@ -52,6 +52,8 @@ def era5_workflow(verbose=False):
     # spatial coarse graining (cgs)
     cgs_levels = analysis_multiparams()
 
+    n_boot = 1000
+    confint_width = 0.5
 
     figdir = f'/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-05-04/era5'
     makedirs(figdir,exist_ok=True)
@@ -62,7 +64,7 @@ def era5_workflow(verbose=False):
     select_regions = ( # Indexed by cgs_level
             (), # level (1,1)
             (), # level (5,1)
-            ((1,1),(3,1),(4,1)),
+            ((1,1),(3,1),(4,1),(6,1)),
             (), # level (20,4)
             (), # level (40,8)
             (), # level (141,16)
@@ -73,7 +75,7 @@ def era5_workflow(verbose=False):
     workflow = (
             years,event_region,event_time_interval,
             year_filegroups,reduced_data_dir,figdir,
-            cgs_levels,select_regions,risk_levels
+            cgs_levels,select_regions,risk_levels,n_boot,confint_width
             )
     print(f'Finished setting up workflow')
     return workflow
@@ -124,13 +126,14 @@ def reduce_era5():
     tododict = dict({
         'coarse_grain_time':           0,
         'plot_t2m_sumstats_map':       0,
-        'coarse_grain_space':          1,
-        'fit_gev':                     1,
+        'coarse_grain_space':          0,
+        'fit_gev':                     0,
         'plot_statpar_map':            1,
-        'fit_gev_select_regions':      1,
-        'plot_gev_select_regions':     1,
+        'fit_gev_select_regions':      0,
+        'plot_gev_select_regions':     0,
         })
-    years,event_region,event_time_interval,year_filegroups,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels = era5_workflow()
+    years,event_region,event_time_interval,year_filegroups,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = era5_workflow()
+    boot_type = 'percentile'
     ens_file_cgt = join(reduced_data_dir,f't2m_cgt1day.nc')
     if tododict['coarse_grain_time']:
         ds_cgt = coarse_grain_time(years, year_filegroups, event_region, event_time_interval)
@@ -166,7 +169,7 @@ def reduce_era5():
             gevpar = xr.open_dataarray(gev_param_file)
         if tododict['plot_statpar_map'] and min(cgs_level) > 1:
             for daily_stat in ['daily_mean']:
-                fig,axes = pipeline_base.plot_statpar_map(ds_cgts_mint.sel(daily_stat=daily_stat), gevpar.sel(daily_stat=daily_stat))
+                fig,axes = pipeline_base.plot_statpar_map(ds_cgts_mint.sel(daily_stat=daily_stat), gevpar.sel(daily_stat=daily_stat),locsign=-1)
                 fig.suptitle(f'ERA5 {daily_stat}')
                 fig.savefig(join(figdir,f'statpar_map_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
                 plt.close(fig)
@@ -197,7 +200,12 @@ def reduce_era5():
 
                 ax.scatter(risk_empirical[rank[i_mem_2018]], mintemp[i_mem_2018], color='black', marker='o')
                 ax.plot(risk_levels,mintemp_levels_reg[0,:],color='red')
-                ax.fill_between(risk_levels, np.quantile(mintemp_levels_reg, 0.25, axis=0), np.quantile(mintemp_levels_reg, 0.75, axis=0), fc='red', ec='none', alpha=0.3, zorder=-1)
+                boot_quant_lo,boot_quant_hi = (np.quantile(mintemp_levels_reg[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
+                if boot_type == 'percentile':
+                    lo,hi = boot_quant_lo,boot_quant_hi
+                else:
+                    lo,hi = 2*risk_ratio[0,:]-boot_quant_hi, 2*risk_ratio[0,:]-boot_quant_lo
+                ax.fill_between(risk_levels, lo, hi, fc='gray', ec='none', alpha=0.3, zorder=-1)
                 ax.set_xscale('log')
                 ax.set_xlabel(r'$\mathbb{P}\{\min_t\langle T(t)\rangle_{\mathrm{region}}\leq T\}$')
                 ax.set_ylabel(r'$T$')
@@ -205,7 +213,7 @@ def reduce_era5():
                 param_label = '\n'.join([
                     r'$\mu=%d$'%(-location),
                     r'$\sigma=%d$'%(scale),
-                    r'$\xi=%.2f$'%(shape)
+                    r'$\xi=%+.2f$'%(shape)
                     ])
 
                 fig.savefig(join(figdir,f'riskplot_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
