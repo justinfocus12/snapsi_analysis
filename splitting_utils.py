@@ -1215,6 +1215,6 @@ if __name__ == "__main__":
     test_block_maxima =  1
     if test_pwm:
         for shape in [-1.5, -1.0, -0.5, -0.25, 0.0, 0.25, 0.5, 1.0, 1.5]:
-            pwm_unit_test(shape=shape, loc=0.0, scale=1.0, nsamp_max=10000, ntrials_per_samp=20)
+            pwm_unit_test(shape=shape, loc=7.3, scale=4.0, nsamp_max=10000, ntrials_per_samp=20)
     if test_block_maxima:
         block_maxima_unit_test()

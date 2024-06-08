@@ -49,6 +49,34 @@ def plot_sumstats_map(ds):
         ax.gridlines()
     return fig,axes
 
+def plot_risk_map(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
+    # the reference ds_cgts is ERA5, and should only have one year asociated with it 
+    Nlon,Nlat = (ds_cgts[d].size for d in ('lon','lat'))
+    print(f'{gevpar.dims = }')
+    print(f'{gevpar_ref.dims = }')
+    print(f'{gevpar.param = }')
+    risk = xr.DataArray(
+            coords={'lon': ds_cgts_ref.lon, 'lat': ds_cgts_ref.lat},
+            dims=['lon','lat'],
+            data=np.nan,
+            )
+    # TODO fill in the rest of this risk array by simply looping over spatial regions 
+    for i_lon in range(Nlon):
+        for i_lat in range(Nlat):
+            thresh = np.array([locsign*ds_cgts_ref.isel(lon=i_lon,lat=i_lat).item()])
+            paramdict = dict({pn: np.array([gevpar.isel(lon=i_lon,lat=i_lat).sel(param=pn)]) for pn in gevpar.coords['param'].values})
+            risk[dict(lon=i_lon,lat=i_lat)] = stfu.absolute_risk_parametric('gev', paramdict, thresh=thresh).item()
+            # TODO correct for directionality 
+    fig,ax = plt.subplots(subplot_kw={'projection': ccrs.Orthographic(60,58)})
+    # calculate the probability of more extreme temp
+    pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15})
+    xr.plot.pcolormesh(risk, **pcmargs, ax=ax)
+    ax.set_title("Risk of exceeding reality")
+    ax.coastlines()
+    ax.gridlines()
+    return fig,ax
+
+
 def coarse_grain_space(ds_cgt, cgs_level):
     data_vars = dict()
     Nlon,Nlat = (ds_cgt[d].size for d in ('lon','lat'))
@@ -98,6 +126,7 @@ def plot_statpar_map(ds_cgts,gevpar,locsign=1):
         ax.coastlines()
         ax.gridlines()
     return fig,axes
+
 
 def plot_statpar_map_difference(ds_cgts_0,ds_cgts_1,gevpar_0,gevpar_1,locsign=1):
     # NOTE this is only for mintemp where we care about NEGATIVE extremes

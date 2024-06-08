@@ -1,13 +1,15 @@
+
 # Subroutines for statistical calculations
 import numpy as np
 from scipy.stats import norm as spnorm, genextreme as spgex, genpareto as spgpd, uniform as spunif
 from scipy.special import gamma as GammaFunction, logsumexp
 from scipy.optimize import bisect
 from numpy.random import default_rng
+import matplotlib.pyplot as plt
 
 # Binomial (essentially non-parametric) models
 
-def fit_statistical_model(S, family, thresh=None, n_boot=1, rng=None, rngseed=None, method=None):
+def fit_statistical_model(S, family, thresh=None, n_boot=0, rng=None, rngseed=None, method=None):
     # Given a dataset of severities S = [S_0, S_1, ..., S_{n-1}], return a dictionary of parameters (like mean and variance for a normal, or location, shape and scale for a GEV) that fits the data. 
     # Additionally, return a bootstrap distribution of fits. 
     if rng is None:
@@ -83,6 +85,7 @@ def fit_gev_single(X, method):
             scale = shape*(2*b1 - b0)/((2**shape-1) * g)
             loc = b0 + scale*(1 - g)/shape
         gevpar = np.array([shape,loc-offset,scale])
+    print(f'{gevpar = }')
     return gevpar
 
 def pwm_shape_func(shape,b_ratio): # The function to solve: (3**shape-1)/(2**shape-1) - (3*b2-b0)/(2*b1-b0)
@@ -91,95 +94,91 @@ def pwm_shape_func(shape,b_ratio): # The function to solve: (3**shape-1)/(2**sha
         return np.log(3)/np.log(2)*(1 + np.log(3/2)/2*shape - np.log(6)/4*shape**2) - b_ratio
     return (3**shape - 1)/(2**shape - 1) - b_ratio
 
-def hosking_shape_fprime_log(k, log_b_ratio):
-    return np.log(3)/(3**k-1) - np.log(2)/(2**k-1)
+def gev_cdf(xin, shape, loc, scale):
+    issc = np.isscalar(xin)
+    x = np.array([xin]) if issc else xin
+    if shape == 0:
+        F = np.exp(-np.exp(-(x-loc)/scale))
+    else:
+        F = np.zeros_like(x)
+        arg = 1 + shape*(x - loc)/scale
+        idx_pos = np.where(arg > 0)[0]
+        if len(idx_pos) > 0:
+            F[idx_pos] = np.exp(-arg[idx_pos]**(-1/shape))
+        if len(idx_pos) < len(x):
+            F[np.setdiff1d(range(len(x)),idx_pos)] = 1.0 if shape < 0 else 0.0
+    if issc: F = F[0]
+    return F
 
-def param_names(family):
-    if family == 'normal':
-        pn = ['mean','stddev'] 
-    elif family == 'gev':
-        pn = ['shape','loc','scale']
-    elif family == 'gpd':
-        pn = ['shape','loc','scale','base_level','base_prob']
-    return pn
+def gev_lsf(xin, shape, loc, scale):
+    # log-survival function
+    issc = np.isscalar(xin)
+    x = np.array([xin]) if issc else xin
 
-def quantile_parametric(family, params, risk):
-    parnames = param_names(family)
-    print(f'{parnames = }')
-    print(f'{risk.shape = }')
-    print(f'{family = }')
-    print(f'{params[parnames[0]].shape = }')
-    nboot = len(params[parnames[0]])
-    nr = len(risk)
-    params_flat = dict({param_name: np.outer(params[param_name], np.ones(nr)).flatten() for param_name in parnames})
-    risk_flat = np.outer(np.ones(nboot), risk).flatten()
-    if family == 'normal':
-        q = spnorm.isf(risk_flat, loc=params_flat['mean'], scale=params_flat['stddev'])
-    elif family == 'gev':
-        q = spgex.isf(risk_flat, -params_flat['shape'], loc=params_flat['loc'], scale=params_flat['scale'])
-    q = q.reshape((nboot,nr))
-    return q
+    if shape == 0:
+        F = np.log(-np.expm1(-np.exp(-(x-loc)/scale)))
+    else:
+        F = np.zeros_like(x)
+        arg = 1 + shape*(x - loc)/scale
+        idx_pos = np.where(arg > 0)[0]
+        if len(idx_pos) > 0:
+            F[idx_pos] = np.log(-np.expm1(-arg[idx_pos]**(-1/shape)))
+        if len(idx_pos) < len(x):
+            F[np.setdiff1d(range(len(x)),idx_pos)] = 1.0 if shape < 0 else 0.0
+    if issc: F = F[0]
+    return F
+    
 
-def absolute_risk_parametric(family, params, thresh):
-    # Assume both params and thresh are 1D arrays
-    parnames = param_names(family)
-    nboot = len(params[parnames[0]])
-    nth = len(thresh)
-    params_flat = dict({param_name: np.outer(params[param_name], np.ones(nth)).flatten() for param_name in parnames})
-    thresh_flat = np.outer(np.ones(nboot), thresh).flatten()
-    if family == 'normal':
-        p = spnorm.sf(thresh_flat, loc=params_flat['mean'], scale=params_flat['stddev'])
-    elif family == 'gev':
-        p = spgex.sf(thresh_flat, -params_flat['shape'], loc=params_flat['loc'], scale=params_flat['scale'])
-    elif family == 'gpd':
-        p = np.nan*np.ones(nboot*nth)
-        idx = np.where(thresh_flat > params_flat['base_level'])[0]
-        print(f'{len(idx)/len(p) = }')
-        p[idx] = spgpd.sf(thresh_flat[idx]-params_flat['base_level'][idx], params_flat['shape'][idx], loc=params_flat['loc'][idx], scale=params_flat['scale'][idx]) * params_flat['base_prob'][idx]
-        print(f'{p = }')
-        print(f'{np.mean(np.isfinite(p)) = }')
-    p = p.reshape((nboot,nth))
-    return p
+def gev_invcdf(u, shape, loc, scale):
+    # inverse CDF
+    if shape == 0:
+        x = loc - scale * np.log(-np.log(u))
+    else:
+        x = loc + scale/shape * (np.power(-np.log(u), -shape) - 1)
+    return x
 
-def absolute_risk_empirical(S, thresh):
-    # S is nboot x ndata
-    nboot,ndata = S.shape
-    nth = len(thresh)
-    S_flat = np.outer(S.flatten(), np.ones(nth)).reshape((nboot,ndata,nth))
-    thresh_flat = np.outer(np.ones(nboot*ndata), thresh).reshape((nboot,ndata,nth))
-    p = np.mean(S_flat > thresh_flat, axis=1)
-    return p
+def gev_invlsf(u, shape, loc, scale):
+    # = gev_invcdf(1 - exp(u))
+    return gev_invcdf(-np.expm1(u), shape, loc, scale)
 
-def relative_risk(ar0, ar1):
-    # ar0 and ar1 are absolute risks
-    zidx0 = np.where(ar0==0)
-    zidx01 = np.where((ar0==0) * (ar1==0))
-    rr = ar0 / np.where(ar1>0, ar1, np.nan)
-    rr[zidx0] = np.inf # positive / zero
-    rr[zidx01] = np.nan # zero / zero 
-    return rr
+def pwm_unit_test(shape, loc, scale, seed=48732, nsamp_max=1000, ntrials_per_samp=10):
 
-def confidence_interval_bootstrap(param, ciwidth):
-    # Given many bootstrap resamplings, estimate the confidence interval
-    qlo = np.quantile(param[1:], 0.5*(1-ciwidth))
-    qhi = np.quantile(param[1:], 0.5*(1+ciwidth))
-    ci = {'percentile': np.array([qlo,qhi]), 'basic': 2*param[0] - np.array([qhi,qlo])}
-    return ci
+    rng = default_rng(seed)
 
+    # True parameters
+    param_symbols = [r"$\xi$",r"$\mu$",r"$\sigma$"]
+    param_names = ["shape", "loc", "scale"]
+    gevpar = dict(shape=shape, loc=loc, scale=scale)
+    
+    nsamp_list = np.exp(np.linspace(np.log(20), np.log(nsamp_max), 5)).astype(int)
+    gevpar_hat = np.zeros((len(nsamp_list),ntrials_per_samp,len(param_names)))
+    for i_nsamp,nsamp in enumerate(nsamp_list):
+        print(f"Starting sample size {nsamp}")
+        for trial in range(ntrials_per_samp):
+            U = rng.uniform(size=nsamp)
+            X = gev_invcdf(U, shape, loc, scale)
+            W = np.ones(nsamp)
+            params_fitted = fit_statistical_model(X, "gev", n_boot=1, method="PWM")
+            gevpar_hat[i_nsamp,trial,:] = [params_fitted[param][0] for (i_param,param) in enumerate(param_names)]
 
-def confidence_interval_wilson(nsucc, nfail, ciwidth):
-    # compute the binomial confidence interval on p given nsucc successes and nfail failures
-    z = spnorm.ppf(0.5 + 0.5*ciwidth)
-    z2 = z*z
-    n = nsucc + nfail
-    phat = nsucc/n
-    center = (phat + z2/(2*n))/(1 + z2/n)
-    radius = z/(1+z2/n) * np.sqrt(phat*(1-phat)/n + z2/(4*n*n))
-    lower = center - radius
-    idx0 = np.where(nsucc==0)[0]
-    #lower[idx0] = 3/n[idx0]
-    upper = center + radius
-    idx0 = np.where(nfail==0)[0]
-    #upper[idx0] = 1-3/n[idx0]
-    return lower,upper
+    fig,axes = plt.subplots(nrows=3, figsize=(10,15), sharex=True, gridspec_kw={"hspace": 0.25})
+    for i_param,param in enumerate(["shape","loc","scale"]):
+        ax = axes[i_param]
+        htrue = ax.axhline(gevpar[param], color="black", linestyle="--", linewidth=3, label="Truth")
+        for i_nsamp,nsamp in enumerate(nsamp_list): 
+            ax.scatter(nsamp*np.ones(ntrials_per_samp), gevpar_hat[i_nsamp,:,i_param], color="red", marker=".")
+        hpwm, = ax.plot(nsamp_list,np.mean(gevpar_hat[:,:,i_param],axis=1), color="red", label="PWM")
+        ax.set_xscale("log")
+        ax.set_xlabel("Sample size")
+        ax.xaxis.set_tick_params(which="both",labelbottom=True)
+        ax.set_ylabel(param_symbols[i_param])
+        ax.set_title(param_names[i_param])
+    fig.savefig((f"gev_fit_shp{gevpar['shape']}_loc{gevpar['shape']}_scale{gevpar['scale']}").replace(".","p"),bbox_inches="tight",pad_inches=0.2)
+    plt.close(fig)
+    return
 
+if __name__ == "__main__":
+    loc = 1.6
+    scale = 3.14
+    for shape in [-1.5, -1.0, -0.5, -0.25, 0.0, 0.25, 0.5, 1.0, 1.5]:
+        pwm_unit_test(shape, loc, scale, nsamp_max=10000, ntrials_per_samp=20)
