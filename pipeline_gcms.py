@@ -77,9 +77,9 @@ def gcm_workflow(i_gcm, i_expt, i_init, verbose=False):
     # 2. Spatiotemporal sub-selection and coarse-graining (cg)
     event_region = dict(lat=slice(50,65),lon=slice(-10,130))
     event_time_interval = (datetime.datetime(2018,2,21,0),datetime.datetime(2018,3,8,18))
-    reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-05-04',gcm)
+    reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-06-19',gcm)
     makedirs(reduced_data_dir,exist_ok=True)
-    reduced_data_dir_era5 = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-05-04/era5'
+    reduced_data_dir_era5 = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-06-19/era5'
 
     # spatial coarse graining (cgs)
     cgs_levels = analysis_multiparams()
@@ -90,7 +90,7 @@ def gcm_workflow(i_gcm, i_expt, i_init, verbose=False):
 
 
     # Plotting dir 
-    figdir = f'/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-05-04/{gcm}'
+    figdir = f'/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-06-19/{gcm}'
     makedirs(figdir,exist_ok=True)
        
     select_regions = ( # Indexed by cgs_level
@@ -248,9 +248,9 @@ def compare_expts(i_gcm, i_init):
                 mintemp_levels_common = np.linspace(*mintemp_levels_range, 30)
                 risk_at_levels = dict()
                 for expt in expts + ['era5']:
-                    shape,location,scale = (gevpar_regs[expt].sel(param=p).isel(boot=0) for p in ('shape','location','scale'))
+                    shape,loc,scale = (gevpar_regs[expt].sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
                     param_label = ','.join([
-                        r'$\mu=%d$'%(-location),
+                        r'$\mu=%d$'%(-loc),
                         r'$\sigma=%d$'%(scale),
                         r'$\xi=%+.2f$'%(shape)
                         ])
@@ -315,15 +315,15 @@ def compare_expts(i_gcm, i_init):
 def reduce_gcm(i_gcm,i_expt,i_init):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
     tododict = dict({
-        'coarse_grain_time':           0,
-        'plot_t2m_sumstats_map':       0,
-        'coarse_grain_space':          0,
-        'fit_gev':                     0,
-        'plot_statpar_map':            0,
+        'coarse_grain_time':           1,
+        'plot_t2m_sumstats_map':       1,
+        'coarse_grain_space':          1,
+        'fit_gev':                     1,
+        'plot_statpar_map':            1,
         'compute_risk':                1,
         'plot_risk_map':               1,
-        'fit_gev_select_regions':      0,
-        'plot_gev_select_regions':     0,
+        'fit_gev_select_regions':      1,
+        'plot_gev_select_regions':     1,
         })
     gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(i_gcm,i_expt,i_init)
 
@@ -373,19 +373,19 @@ def reduce_gcm(i_gcm,i_expt,i_init):
         # ----------------- Compute risk w.r.t. ERA5 ---------------
         risk_file = join(reduced_data_dir,f'risk_e{expt}_i{init}_cgs{cgs_key}.nc')
         if tododict['compute_risk']:
-            kwargs = dict(daily_stat=daily_stat,drop=True)
+            dskwargs = dict(daily_stat=daily_stat,drop=True)
             risk = pipeline_base.compute_risk(
-                    ds_cgts_mint.sel(**kwargs),
-                    ds_cgts_mint_era5.sel(member=2018,**kwargs),
-                    gevpar.sel(**kwargs),
-                    gevpar_era5.sel(**kwargs),
+                    ds_cgts_mint.sel(**dskwargs),
+                    ds_cgts_mint_era5.sel(member=2018,**dskwargs),
+                    gevpar.sel(**dskwargs),
+                    gevpar_era5.sel(**dskwargs),
                     locsign=-1)
             risk.to_netcdf(risk_file)
         else:
             risk = xr.open_netcdf(risk_file)
 
         if tododict['plot_risk_map'] and min(cgs_level) > 1:
-            fig,ax = pipeline_base.plot_risk_map(ds_cgts_mint.sel(daily_stat=daily_stat,drop=True), ds_cgts_mint_era5.sel(member=2018, daily_stat=daily_stat,drop=True), gevpar.sel(daily_stat=daily_stat,drop=True), gevpar_era5.sel(daily_stat=daily_stat,drop=True), locsign=-1)
+            fig,ax = pipeline_base.plot_risk_map(risk, locsign=-1)
             fig.savefig(join(figdir,f'risk_map_e{expt}_i{init}_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
             plt.close(fig)
         if tododict['plot_statpar_map'] and min(cgs_level) > 1:
@@ -433,15 +433,15 @@ def reduce_gcm(i_gcm,i_expt,i_init):
 
             if tododict['plot_gev_select_regions']:
                 fig,ax = plt.subplots()
-                shape,location,scale = (gevpar_reg.sel(param=p).isel(boot=0) for p in ('shape','location','scale'))
-                shape_era5,location_era5,scale_era5 = (gevpar_reg_era5.sel(param=p).isel(boot=0) for p in ('shape','location','scale'))
+                shape,loc,scale = (gevpar_reg.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
+                shape_era5,loc_era5,scale_era5 = (gevpar_reg_era5.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
                 param_label = ','.join([
-                    r'$\mu=%d$'%(-location),
+                    r'$\mu=%d$'%(-loc),
                     r'$\sigma=%d$'%(scale),
                     r'$\xi=%.2f$'%(shape)
                     ])
                 param_label_era5 = ','.join([
-                    r'$\mu=%d$'%(-location_era5),
+                    r'$\mu=%d$'%(-loc_era5),
                     r'$\sigma=%d$'%(scale_era5),
                     r'$\xi=%.2f$'%(shape_era5)
                     ])

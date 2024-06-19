@@ -46,7 +46,7 @@ def era5_workflow(verbose=False):
 
     event_region = dict(lat=slice(50,65),lon=slice(-10,130))
 
-    reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-05-04','era5')
+    reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-06-19','era5')
     makedirs(reduced_data_dir,exist_ok=True)
 
     # spatial coarse graining (cgs)
@@ -55,7 +55,7 @@ def era5_workflow(verbose=False):
     n_boot = 1000
     confint_width = 0.5
 
-    figdir = f'/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-05-04/era5'
+    figdir = f'/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-06-19/era5'
     makedirs(figdir,exist_ok=True)
 
     # Select regions for more detailed GEV analysis (based on visualizing the map)
@@ -128,7 +128,9 @@ def reduce_era5():
         'plot_t2m_sumstats_map':       0,
         'coarse_grain_space':          0,
         'fit_gev':                     0,
-        'plot_statpar_map':            1,
+        'plot_statpar_map':            0,
+        'compute_risk':                0,
+        'plot_risk_map':               1,
         'fit_gev_select_regions':      0,
         'plot_gev_select_regions':     0,
         })
@@ -149,6 +151,7 @@ def reduce_era5():
             fig.savefig(join(figdir,f't2m_sumstats_map_{daily_stat}.png'), **pltkwargs)
             plt.close(fig)
 
+    daily_stat = 'daily_mean'
     for i_cgs_level,cgs_level in enumerate(cgs_levels):
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
         ens_file_cgts = join(reduced_data_dir,f't2m_cgt1day_cgs{cgs_key}.nc')
@@ -167,12 +170,30 @@ def reduce_era5():
             gevpar.to_netcdf(gev_param_file)
         else:
             gevpar = xr.open_dataarray(gev_param_file)
+        # ----------------- Compute risk w.r.t. 2018 ---------------
+        risk_file = join(reduced_data_dir,f'risk_wrt2018.nc')
+        if tododict['compute_risk']:
+            dskwargs = dict(daily_stat=daily_stat,drop=True)
+            risk = pipeline_base.compute_risk(
+                    ds_cgts_mint.sel(**dskwargs),
+                    ds_cgts_mint.sel(member=2018,**dskwargs),
+                    gevpar.sel(**dskwargs),
+                    gevpar.sel(**dskwargs),
+                    locsign=-1)
+            risk.to_netcdf(risk_file)
+        else:
+            risk = xr.open_dataarray(risk_file)
+        if tododict['plot_risk_map'] and min(cgs_level) > 1:
+            fig,ax = pipeline_base.plot_risk_map(risk,locsign=-1)
+            ax.set_title(r"$\mathbb{P}_{\mathrm{ERA5}}\{\min_t\langle T(t)\rangle\leq \min_t\langle T(t)\rangle_{\mathrm{ERA5,2018}}$")
+            fig.savefig(join(figdir,f'risk_map_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
+            plt.close(fig)
+
         if tododict['plot_statpar_map'] and min(cgs_level) > 1:
-            for daily_stat in ['daily_mean']:
-                fig,axes = pipeline_base.plot_statpar_map(ds_cgts_mint.sel(daily_stat=daily_stat), gevpar.sel(daily_stat=daily_stat),locsign=-1)
-                fig.suptitle(f'ERA5 {daily_stat}')
-                fig.savefig(join(figdir,f'statpar_map_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
-                plt.close(fig)
+            fig,axes = pipeline_base.plot_statpar_map(ds_cgts_mint.sel(daily_stat=daily_stat,drop=True),gevpar.sel(daily_stat=daily_stat,drop=True),locsign=-1)
+            fig.savefig(join(figdir,f'statpar_map_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
+            fig.suptitle(r"ERA5 %s"%(daily_stat))
+            plt.close(fig)
 
 
         # Do a more thorough uncertainty quantification at a specific site or region, using bootstrap analysis and goodness-of-fit etc. Maybe parallelize over all sites too
@@ -209,9 +230,9 @@ def reduce_era5():
                 ax.set_xscale('log')
                 ax.set_xlabel(r'$\mathbb{P}\{\min_t\langle T(t)\rangle_{\mathrm{region}}\leq T\}$')
                 ax.set_ylabel(r'$T$')
-                shape,location,scale = (gevpar_reg.sel(param=p).isel(boot=0) for p in ('shape','location','scale'))
+                shape,loc,scale = (gevpar_reg.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
                 param_label = '\n'.join([
-                    r'$\mu=%d$'%(-location),
+                    r'$\mu=%d$'%(-loc),
                     r'$\sigma=%d$'%(scale),
                     r'$\xi=%+.2f$'%(shape)
                     ])

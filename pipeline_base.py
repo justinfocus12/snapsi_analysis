@@ -68,29 +68,12 @@ def compute_risk(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
             # TODO correct for directionality 
     return risk
 
-def plot_risk_map(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
+def plot_risk_map(risk, locsign=1):
     # the reference ds_cgts is ERA5, and should only have one year asociated with it 
-    Nlon,Nlat = (ds_cgts[d].size for d in ('lon','lat'))
-    print(f'{gevpar.dims = }')
-    print(f'{gevpar_ref.dims = }')
-    print(f'{gevpar.param = }')
-    risk = xr.DataArray(
-            coords={'lon': ds_cgts_ref.lon, 'lat': ds_cgts_ref.lat},
-            dims=['lon','lat'],
-            data=np.nan,
-            )
-    # TODO fill in the rest of this risk array by simply looping over spatial regions 
-    for i_lon in range(Nlon):
-        for i_lat in range(Nlat):
-            thresh = np.array([locsign*ds_cgts_ref.isel(lon=i_lon,lat=i_lat).item()])
-            paramdict = dict({pn: np.array([gevpar.isel(lon=i_lon,lat=i_lat).sel(param=pn)]) for pn in gevpar.coords['param'].values})
-            risk[dict(lon=i_lon,lat=i_lat)] = stfu.absolute_risk_parametric('gev', paramdict, thresh=thresh).item()
-            # TODO correct for directionality 
     fig,ax = plt.subplots(subplot_kw={'projection': ccrs.Orthographic(60,58)})
     # calculate the probability of more extreme temp
     pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15})
     xr.plot.pcolormesh(risk, **pcmargs, ax=ax)
-    ax.set_title("Risk of exceeding reality")
     ax.coastlines()
     ax.gridlines()
     return fig,ax
@@ -206,7 +189,7 @@ def fit_gev_mintemp(ds_cgts_mint,method='MLE'):
 def fit_gev_mintemp_1d_uq(mintemp, risk_levels, method='MLE', n_boot=1000):
     # do bootstrapping to get confidence intervals on return levels, etc. 
     gevpar_dict = stfu.fit_statistical_model(-mintemp, 'gev', n_boot=n_boot, method=method)
-    gevpar = xr.DataArray(coords={'param': ['shape','location','scale'], 'boot': np.arange(n_boot+1)}, data=np.array([gevpar_dict[p] for p in ['shape','location','scale']]))
+    gevpar = xr.DataArray(coords={'param': ['shape','loc','scale'], 'boot': np.arange(n_boot+1)}, data=np.array([gevpar_dict[p] for p in ['shape','loc','scale']]))
     # Compute quantiles corresponding to risk levels 
     levels = -stfu.quantile_parametric('gev', gevpar_dict, risk_levels)
     print(f'{levels = }')
