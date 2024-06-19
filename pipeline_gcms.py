@@ -307,10 +307,6 @@ def compare_expts(i_gcm, i_init):
 
                 fig.savefig(join(figdir,f'riskplot_reg_eall_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
                 plt.close(fig)
-
-
-    
-
     return
 
 
@@ -324,6 +320,7 @@ def reduce_gcm(i_gcm,i_expt,i_init):
         'coarse_grain_space':          0,
         'fit_gev':                     0,
         'plot_statpar_map':            0,
+        'compute_risk':                1,
         'plot_risk_map':               1,
         'fit_gev_select_regions':      0,
         'plot_gev_select_regions':     0,
@@ -373,6 +370,20 @@ def reduce_gcm(i_gcm,i_expt,i_init):
         else:
             gevpar = xr.open_dataarray(gev_param_file)
         gevpar_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_cgs{cgs_key}.nc'))
+        # ----------------- Compute risk w.r.t. ERA5 ---------------
+        risk_file = join(reduced_data_dir,f'risk_e{expt}_i{init}_cgs{cgs_key}.nc')
+        if tododict['compute_risk']:
+            kwargs = dict(daily_stat=daily_stat,drop=True)
+            risk = pipeline_base.compute_risk(
+                    ds_cgts_mint.sel(**kwargs),
+                    ds_cgts_mint_era5.sel(member=2018,**kwargs),
+                    gevpar.sel(**kwargs),
+                    gevpar_era5.sel(**kwargs),
+                    locsign=-1)
+            risk.to_netcdf(risk_file)
+        else:
+            risk = xr.open_netcdf(risk_file)
+
         if tododict['plot_risk_map'] and min(cgs_level) > 1:
             fig,ax = pipeline_base.plot_risk_map(ds_cgts_mint.sel(daily_stat=daily_stat,drop=True), ds_cgts_mint_era5.sel(member=2018, daily_stat=daily_stat,drop=True), gevpar.sel(daily_stat=daily_stat,drop=True), gevpar_era5.sel(daily_stat=daily_stat,drop=True), locsign=-1)
             fig.savefig(join(figdir,f'risk_map_e{expt}_i{init}_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
@@ -465,7 +476,7 @@ def reduce_gcm(i_gcm,i_expt,i_init):
     return 
 
 if __name__ == "__main__":
-    idx_gcm = [4,9,11]
+    idx_gcm = [4,9,11] #[4,9,11]
     idx_expt = [0,1,2]
     idx_expt_pairs = [(1,0),(1,2)]
     idx_init = [0,1]

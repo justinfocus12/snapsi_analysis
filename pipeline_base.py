@@ -49,6 +49,25 @@ def plot_sumstats_map(ds):
         ax.gridlines()
     return fig,axes
 
+def compute_risk(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
+    Nlon,Nlat = (ds_cgts[d].size for d in ('lon','lat'))
+    print(f'{gevpar.dims = }')
+    print(f'{gevpar_ref.dims = }')
+    print(f'{gevpar.param = }')
+    risk = xr.DataArray(
+            coords={'lon': ds_cgts_ref.lon, 'lat': ds_cgts_ref.lat},
+            dims=['lon','lat'],
+            data=np.nan,
+            )
+    # TODO fill in the rest of this risk array by simply looping over spatial regions 
+    for i_lon in range(Nlon):
+        for i_lat in range(Nlat):
+            thresh = np.array([locsign*ds_cgts_ref.isel(lon=i_lon,lat=i_lat).item()])
+            paramdict = dict({pn: np.array([gevpar.isel(lon=i_lon,lat=i_lat).sel(param=pn)]) for pn in gevpar.coords['param'].values})
+            risk[dict(lon=i_lon,lat=i_lat)] = stfu.absolute_risk_parametric('gev', paramdict, thresh=thresh).item()
+            # TODO correct for directionality 
+    return risk
+
 def plot_risk_map(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
     # the reference ds_cgts is ERA5, and should only have one year asociated with it 
     Nlon,Nlat = (ds_cgts[d].size for d in ('lon','lat'))
@@ -192,5 +211,6 @@ def fit_gev_mintemp_1d_uq(mintemp, risk_levels, method='MLE', n_boot=1000):
     levels = -stfu.quantile_parametric('gev', gevpar_dict, risk_levels)
     print(f'{levels = }')
     return gevpar, levels
+
 
 
