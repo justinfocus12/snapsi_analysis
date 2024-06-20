@@ -68,11 +68,12 @@ def compute_risk(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
             # TODO correct for directionality 
     return risk
 
-def plot_risk_map(risk, locsign=1):
+def plot_risk_map(risk, locsign=1, **other_pcmargs):
     # the reference ds_cgts is ERA5, and should only have one year asociated with it 
     fig,ax = plt.subplots(subplot_kw={'projection': ccrs.Orthographic(60,58)})
     # calculate the probability of more extreme temp
     pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15})
+    pcmargs.update(other_pcmargs)
     xr.plot.pcolormesh(risk, **pcmargs, ax=ax)
     ax.coastlines()
     ax.gridlines()

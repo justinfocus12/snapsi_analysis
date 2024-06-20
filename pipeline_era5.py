@@ -62,7 +62,7 @@ def era5_workflow(verbose=False):
     # format is (cgs_level, i_lon, i_lat)
     # TODO change this to a list of floating point locations, which will be part of different-sized neighborhoods as a function of resolution 
     select_regions = ( # Indexed by cgs_level
-            (), # level (1,1)
+            ((0,0),), # level (1,1)
             (), # level (5,1)
             ((1,1),(3,1),(4,1),(6,1)),
             (), # level (20,4)
@@ -130,9 +130,9 @@ def reduce_era5():
         'fit_gev':                     0,
         'plot_statpar_map':            0,
         'compute_risk':                0,
-        'plot_risk_map':               1,
+        'plot_risk_map':               0,
         'fit_gev_select_regions':      0,
-        'plot_gev_select_regions':     0,
+        'plot_gev_select_regions':     1,
         })
     years,event_region,event_time_interval,year_filegroups,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = era5_workflow()
     boot_type = 'percentile'
@@ -199,6 +199,9 @@ def reduce_era5():
         # Do a more thorough uncertainty quantification at a specific site or region, using bootstrap analysis and goodness-of-fit etc. Maybe parallelize over all sites too
 
         for (i_lon,i_lat) in select_regions[i_cgs_level]:
+            print(f'{ds_cgts_mint.coords = }')
+            print(f'{i_cgs_level = }')
+            print(f'{i_lon = }, {i_lat = }')
             mintemp = ds_cgts_mint.sel(daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).to_numpy()
             if tododict['fit_gev_select_regions']:
                 gevpar_reg,mintemp_levels_reg = pipeline_base.fit_gev_mintemp_1d_uq(mintemp,risk_levels,method='PWM')
@@ -211,16 +214,28 @@ def reduce_era5():
             print(f'{gevpar_reg.isel(boot=0) = }')
 
             if tododict['plot_gev_select_regions']:
+                lon_blocksize,lat_blocksize = ((event_region[d].stop - event_region[d].start)/cgs_level[i_d] for (i_d,d) in enumerate(('lon','lat')))
+                center_lon,center_lat = ((event_region[d].stop + event_region[d].start)/2 for (i_d,d) in enumerate(('lon','lat')))
+                lonlatstr = r'$\lambda=%d\pm%d,\phi=%d\pm%d$'%(center_lon,lon_blocksize/2,center_lat,lat_blocksize/2)
+                if cgs_level == (1,1):
+                    lonlatstr = r'%s (whole region)'%(lonlatstr)
+
                 fig,ax = plt.subplots()
                 order = np.argsort(mintemp)
                 rank = np.argsort(order)
                 risk_empirical = np.arange(1,len(mintemp)+1)/len(mintemp)
                 ax.scatter(risk_empirical, mintemp[order], color='black', marker='+')
+                shape,loc,scale = (gevpar_reg.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
+                param_label = '\n'.join([
+                    r'$\mu=%d$'%(-loc),
+                    r'$\sigma=%d$'%(scale),
+                    r'$\xi=%+.2f$'%(shape)
+                    ])
                 # Special marker for 2018
                 i_mem_2018 = np.where(ds_cgts_mint.member == 2018)[0][0]
 
                 ax.scatter(risk_empirical[rank[i_mem_2018]], mintemp[i_mem_2018], color='black', marker='o')
-                ax.plot(risk_levels,mintemp_levels_reg[0,:],color='red')
+                h, = ax.plot(risk_levels,mintemp_levels_reg[0,:],color='black', label=param_label)
                 boot_quant_lo,boot_quant_hi = (np.quantile(mintemp_levels_reg[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
                 if boot_type == 'percentile':
                     lo,hi = boot_quant_lo,boot_quant_hi
@@ -230,12 +245,8 @@ def reduce_era5():
                 ax.set_xscale('log')
                 ax.set_xlabel(r'$\mathbb{P}\{\min_t\langle T(t)\rangle_{\mathrm{region}}\leq T\}$')
                 ax.set_ylabel(r'$T$')
-                shape,loc,scale = (gevpar_reg.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
-                param_label = '\n'.join([
-                    r'$\mu=%d$'%(-loc),
-                    r'$\sigma=%d$'%(scale),
-                    r'$\xi=%+.2f$'%(shape)
-                    ])
+                ax.set_title(f'ERA5 at {lonlatstr}')
+                ax.legend(handles=[h])
 
                 fig.savefig(join(figdir,f'riskplot_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
                 plt.close(fig)
