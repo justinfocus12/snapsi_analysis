@@ -2,7 +2,7 @@ import numpy as np
 import xarray as xr
 from cartopy import crs as ccrs
 import netCDF4
-from matplotlib import pyplot as plt, rcParams, ticker
+from matplotlib import pyplot as plt, rcParams, ticker, colors as mplcolors
 pltkwargs = dict({
     'bbox_inches': 'tight',
     'pad_inches': 0.2,
@@ -70,8 +70,10 @@ def gcm_workflow(i_gcm, i_expt, i_init, verbose=False):
     print(f'{raw_data_dir = }')
     ens_path_skeleton = join(raw_data_dir,'r*i*p*f*')
     mem_labels = [basename(p) for p in glob.glob(ens_path_skeleton)]
+    print(f'{mem_labels = }')
 
     path_skeleton = join(ens_path_skeleton,'6hrPt','tas','g*','v*','*.nc')
+    print(f'{path_skeleton = }')
     raw_mem_files = glob.glob(path_skeleton)
     print(f'{len(raw_mem_files) = }')
     # 2. Spatiotemporal sub-selection and coarse-graining (cg)
@@ -143,27 +145,30 @@ def coarse_grain_time(raw_mem_files, mem_labels, event_region, fcdate, event_tim
 
 
 
-def preprocess_gcm_6hrPt(dsmem,fcdate,timesel,spacesel):
-    #print(f'{fcdate = }')
-    #print(f'{dsmem.time = }')
-    #print(f'{timesel = }')
+def preprocess_gcm_6hrPt(dsmem,fcdate,timesel,spacesel,verbose=False):
+    if verbose:
+        print(f'{fcdate = }')
+        print(f'{dsmem.time = }')
+        print(f'{timesel = }')
     dsmem_tas = (
             utils.rezero_lons(
                 dsmem['tas']
                 .assign_coords(time=np.arange(fcdate,fcdate+datetime.timedelta(hours=6*dsmem.time.size),datetime.timedelta(hours=6)))
-                .sel(timesel)
+                #.sel(timesel)
                 )
             )
-    #print(f'{dsmem_tas.time = }')
-    #dsmem_tas = dsmem_tas.sel(timesel)
+    if verbose:
+        print(f'{dsmem_tas.time = }')
+    dsmem_tas = dsmem_tas.sel(timesel)
     dsmem_tas = (
             dsmem_tas
             .sel(spacesel)
             .isel(time=slice(0,4*int(dsmem_tas.time.size/4)))
             .expand_dims(member=[dsmem.attrs['variant_label']])
             )
-    #print(f'Preprocessing done; {dsmem_tas.time.size = }')
-    #print(f'{dsmem_tas.time = }')
+    if verbose:
+        print(f'Preprocessing done; {dsmem_tas.time.size = }')
+        print(f'{dsmem_tas.time = }')
     #sys.exit()
     return dsmem_tas
 
@@ -230,10 +235,10 @@ def compare_expts(i_gcm, i_init):
             for (expt0,expt1) in (('free','control'),('free','nudged')):
                 risk0_file,risk1_file = (join(reduced_data_dir,f'risk_e{expt}_i{init}_cgs{cgs_key}.nc') for expt in (expt0,expt1))
                 risk0,risk1 = (xr.open_dataarray(risk_file) for risk_file in (risk0_file,risk1_file))
-                logrr = np.log10(risk1/risk0)
-                logrr = xr.where(np.isfinite(logrr), logrr, np.nan)
-                fig,ax = pipeline_base.plot_risk_map(logrr, locsign=1, cmap=plt.cm.rainbow)
-                ax.set_title(f'{gcm} log10(RR) ({expt1}/{expt0})\ninit {datestr}')
+                rr = risk1/risk0
+                #logrr = xr.where(np.isfinite(logrr), logrr, np.nan)
+                fig,ax = pipeline_base.plot_risk_map(rr, locsign=1, relative=True)
+                ax.set_title(f'{gcm} RR ({expt1}/{expt0})\ninit {datestr}')
                 fig.savefig(join(figdir,f'relrisk_map_e{expt1}over{expt0}_i{init}_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
                 plt.close(fig)
 
@@ -346,7 +351,7 @@ def reduce_gcm(i_gcm,i_expt,i_init):
         'plot_gev_select_regions':     1,
         })
     gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(i_gcm,i_expt,i_init)
-    fcdate = datetime.datetime.strptime(init,'%Y%M%d')
+    fcdate = datetime.datetime.strptime(init,'%Y%m%d')
     datestr = fcdate.strftime("%Y-%m-%d")
 
     # ------------- Coarse-grain in time (cgt) and space (cgts) -------------
@@ -410,7 +415,7 @@ def reduce_gcm(i_gcm,i_expt,i_init):
             risk = xr.open_dataarray(risk_file)
 
         if tododict['plot_risk_map'] and min(cgs_level) > 1:
-            fig,ax = pipeline_base.plot_risk_map(risk, locsign=-1)
+            fig,ax = pipeline_base.plot_risk_map(risk, locsign=-1, relative=False)
             ax.set_title(f'Risk ({gcm}) \n {expt}, init {datestr})')
             fig.savefig(join(figdir,f'risk_map_e{expt}_i{init}_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
             plt.close(fig)
@@ -519,17 +524,17 @@ def reduce_gcm(i_gcm,i_expt,i_init):
     return 
 
 if __name__ == "__main__":
-    idx_gcm = [4] #[1,2,4,5,6,7,8,9,10,11] #[4,9,11][2:] #[4,9,11]
+    idx_gcm = [4,1,2,6,7,8,9,10,11][1:] #[4,9,11][2:] #[4,9,11]
     idx_expt = [0,1,2]
     idx_expt_pairs = [(1,0),(1,2)]
     idx_init = [0,1]
-    procedure = sys.argv[1]
-    if procedure == 'reduce':
+    procedures = sys.argv[1:]
+    if 'reduce' in procedures:
         for i_gcm in idx_gcm:
             for i_expt in idx_expt:
                 for i_init in idx_init:
                     reduce_gcm(i_gcm,i_expt,i_init)
-    elif procedure == 'compare_expts':
+    if 'compare_expts' in procedures:
         for i_gcm in idx_gcm:
             for i_init in idx_init:
                 compare_expts(i_gcm, i_init)
