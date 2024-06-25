@@ -98,7 +98,7 @@ def gcm_workflow(i_gcm, i_expt, i_init, verbose=False):
     select_regions = ( # Indexed by cgs_level
             ((0,0),), # level (1,1)
             (), # level (5,1)
-            ((1,1),(3,1),(4,1),(6,1)),
+            ((i,j) for i in range(10) for j in range(2)),
             (), # level (20,4)
             (), # level (40,8)
             (), # level (141,16)
@@ -340,13 +340,13 @@ def compare_expts(i_gcm, i_init):
 def reduce_gcm(i_gcm,i_expt,i_init):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
     tododict = dict({
-        'coarse_grain_time':           1,
-        'plot_t2m_sumstats_map':       1,
+        'coarse_grain_time':           0,
+        'plot_t2m_sumstats_map':       0,
         'coarse_grain_space':          1,
-        'fit_gev':                     1,
-        'plot_statpar_map':            1,
-        'compute_risk':                1,
-        'plot_risk_map':               1,
+        'fit_gev':                     0,
+        'plot_statpar_map':            0,
+        'compute_risk':                0,
+        'plot_risk_map':               0,
         'fit_gev_select_regions':      1,
         'plot_gev_select_regions':     1,
         })
@@ -470,7 +470,7 @@ def reduce_gcm(i_gcm,i_expt,i_init):
                 ax = axes[1]
                 for i_mem in range(ds_cgts.member.size):
                     temp_gcm = ds_cgts.sel(daily_stat=daily_stat).isel(lat=i_lat,lon=i_lon,member=i_mem)
-                    print(f'{temp_gcm.time = }')
+                    #print(f'{temp_gcm.time = }')
                     ax.plot(np.arange(len(temp_gcm)),temp_gcm.values)
                     ax.axhline(np.min(temp_gcm.values),color='red',linestyle='--')
                 for i_mem in range(ds_cgts_era5.member.size):
@@ -524,7 +524,7 @@ def reduce_gcm(i_gcm,i_expt,i_init):
     return 
 
 if __name__ == "__main__":
-    idx_gcm = [4,1,2,6,7,8,9,10,11][1:] #[4,9,11][2:] #[4,9,11]
+    idx_gcm = [4,1,2,6,7,8,9,10,11] #[4,9,11][2:] #[4,9,11]
     idx_expt = [0,1,2]
     idx_expt_pairs = [(1,0),(1,2)]
     idx_init = [0,1]

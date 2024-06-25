@@ -64,7 +64,7 @@ def era5_workflow(verbose=False):
     select_regions = ( # Indexed by cgs_level
             ((0,0),), # level (1,1)
             (), # level (5,1)
-            ((1,1),(3,1),(4,1),(6,1)),
+            ((i,j) for i in range(10) for j in range(2)),
             (), # level (20,4)
             (), # level (40,8)
             (), # level (141,16)
@@ -131,7 +131,7 @@ def reduce_era5():
         'plot_statpar_map':            0,
         'compute_risk':                0,
         'plot_risk_map':               0,
-        'fit_gev_select_regions':      0,
+        'fit_gev_select_regions':      1,
         'plot_gev_select_regions':     1,
         })
     years,event_region,event_time_interval,year_filegroups,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = era5_workflow()
