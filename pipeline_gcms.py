@@ -2,7 +2,7 @@ import numpy as np
 import xarray as xr
 from cartopy import crs as ccrs
 import netCDF4
-from matplotlib import pyplot as plt, rcParams, ticker, colors as mplcolors
+from matplotlib import pyplot as plt, rcParams, ticker, colors as mplcolors, patches as mplpatches
 pltkwargs = dict({
     'bbox_inches': 'tight',
     'pad_inches': 0.2,
@@ -106,10 +106,21 @@ def gcm_workflow(i_gcm, i_expt, i_init, verbose=False):
     select_points = ()
     risk_levels = np.exp(np.linspace(np.log(0.001),np.log(49/50),30))
     workflow = (
-            gcm,expt,init,
-            event_region,event_time_interval,
-            raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,
-            cgs_levels,select_regions,risk_levels,n_boot,confint_width
+            gcm,
+            expt,
+            init,
+            event_region,
+            event_time_interval,
+            raw_mem_files,
+            mem_labels,
+            reduced_data_dir,
+            reduced_data_dir_era5,
+            figdir,
+            cgs_levels,
+            select_regions,
+            risk_levels,
+            n_boot,
+            confint_width
             )
     return workflow
 
@@ -196,8 +207,85 @@ def compare_statpar_maps_2expts(i_gcm,i0_expt,i1_expt,i_init):
             plt.close(fig)
     return
 
-def compare_gcms():
+def compare_gcms(idx_gcms):
     # Plot relative risk and absolute risk, perhaps in a 2D space 
+    cgs_levels = analysis_multiparams()
+    gcms,expts,inits = gcm_multiparams()
+    colors = dict({'era5': 'black', 'control': 'dodgerblue', 'free': 'limegreen', 'nudged': 'red'})
+    yoffsets = dict({'control': 0.25, 'free': 0.0, 'nudged': -0.25})
+    figdir = f'/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-06-19/multimodel'
+    xlims = [0.2, 5.0]
+    ylims = [-0.5, len(gcms)+0.5]
+    slims = (np.array([1.0, 4.0])*rcParams['lines.markersize']) # bounds on the marker size 
+    makedirs(figdir, exist_ok=True)
+    for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
+        cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+        fig,axes = plt.subplots(figsize=(12,10),ncols=2,nrows=1,sharey=True, dpi=200)
+        handles = []
+        for (i_gcm,gcm) in enumerate(gcms):
+            print(f'Starting {i_gcm,gcm = }')
+            if not (i_gcm in idx_gcms):
+                continue
+            for (i_init,init) in enumerate(inits):
+                ax = axes[i_init]
+                workflow = gcm_workflow(i_gcm,0,i_init)
+                reduced_data_dir = workflow[7]
+                reduced_data_dir_era5 = workflow[8]
+                risk_levels = workflow[12]
+                confint_width = workflow[14]
+                event_region = workflow[3]
+                for (expt0,expt1) in (('free','free'),('free','control'),('free','nudged')):
+                    risk0_file,risk1_file = (join(reduced_data_dir,f'risk_e{expt}_i{init}_cgs{cgs_key}.nc') for expt in (expt0,expt1))
+                    risk0 = xr.open_dataarray(risk0_file).to_numpy()
+                    risk1 = xr.open_dataarray(risk1_file).to_numpy()
+                    rr = np.maximum(xlims[0], np.minimum(xlims[1], risk1/risk0))
+                    print(f'{rr.shape = }')
+                    #ax.scatter(rr, (i_gcm+yoffsets[expt1])*np.ones(len(rr)), ec=colors[expt1], fc='none', s=((slims[0] + risk0*(slims[1]-slims[0])))**2, linestyle='dotted')
+                    h = ax.scatter(rr.flat, (i_gcm+yoffsets[expt1])*np.ones(rr.size), ec=colors[expt1], fc='none', s=((slims[0] + risk1*(slims[1]-slims[0])))**2, label=expt1)
+                    if len(handles) < 3: handles.append(h)
+                    # Add error bars if the level of coarse-graining is 1x1
+                    if i_cgs_level == 0:
+                        ds_cgts_mints_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc')).min('time')
+                        for i_lon in range(rr.shape[0]):
+                            for i_lat in range(rr.shape[1]):
+                                mintemp_levels_reg_expt0 = np.load(join(reduced_data_dir,f'mintemp_levels_reg_e{expt0}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
+                                mintemp_levels_reg_expt1 = np.load(join(reduced_data_dir,f'mintemp_levels_reg_e{expt1}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
+                                mintemp_reg_era5 = ds_cgts_mints_era5.sel(member=2018,daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).item()
+                                mintemp_levels_range = tuple(extfun(mintemp_reg_era5).item() for extfun in (np.min, np.max))
+                                #boot_quant_lo,boot_quant_hi = (np.quantile(mintemp_levels_reg_expt1[1:]/mintemp, 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
+                                func = lambda T: np.interp(mintemp_reg_era5, T, risk_levels)
+                                risk_at_levels_0 = np.apply_along_axis(func, 1, mintemp_levels_reg_expt0)
+                                risk_at_levels_1 = np.apply_along_axis(func, 1, mintemp_levels_reg_expt1)
+                                rel_risk_lo,rel_risk_hi = (np.quantile(risk_at_levels_1/risk_at_levels_0, 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
+                                ax.plot([rel_risk_lo,rel_risk_hi], (i_gcm+yoffsets[expt1])*np.ones(2),color=colors[expt1], linewidth=3)
+                            
+
+
+        filename = join(figdir, f'relrisk_multimodel_cgs{cgs_key}.png')
+        axes[0].set_yticks(range(len(gcms)), labels=gcms)
+        for (i_ax,ax) in enumerate(axes):
+            ax.set_xlim(xlims)
+            ax.set_ylim(ylims)
+            ax.axvline(1.0, color='black', linestyle='--')
+            ax.axvline(xlims[0], color='black', linestyle='--')
+            ax.axvline(xlims[1], color='black', linestyle='--')
+            datestr = datetime.datetime.strptime(inits[i_ax],"%Y%m%d").strftime("%Y-%m-%d")
+            ax.set_title(f"init {datestr}")
+            ax.set_xscale('log')
+            xticks = [xlims[0], 1.0, xlims[1]]
+            ax.set_xticks(xticks, labels=[str(xtick) for xtick in xticks])
+            ax.set_xlabel('rel. risk w.r.t. free')
+            for i_gcm in range(len(gcms)):
+                ax.axhline(i_gcm+0.5, color='gray')
+        dlon = (event_region['lon'].stop - event_region['lon'].start)/(cgs_level[0])
+        dlat = (event_region['lat'].stop - event_region['lat'].start)/(cgs_level[1])
+        fig.suptitle(r'RR ($%d^\circ$lon$\times%d^\circ$lat regions)'%(dlon, dlat))
+        axes[0].legend(handles=handles, bbox_to_anchor=(0,-0.5), loc='upper left', ncol=3)
+        fig.savefig(filename, **pltkwargs)
+
+        plt.close(fig)
+    return
+            
 
 
 def compare_expts(i_gcm, i_init):
@@ -527,17 +615,19 @@ def reduce_gcm(i_gcm,i_expt,i_init):
     return 
 
 if __name__ == "__main__":
-    idx_gcm = [4,1,2,6,7,8,9,10,11] #[4,9,11][2:] #[4,9,11]
+    idx_gcms = [4,1,2,6,7,8,9,10,11] #[4,9,11][2:] #[4,9,11]
     idx_expt = [0,1,2]
     idx_expt_pairs = [(1,0),(1,2)]
     idx_init = [0,1]
     procedures = sys.argv[1:]
     if 'reduce' in procedures:
-        for i_gcm in idx_gcm:
+        for i_gcm in idx_gcms:
             for i_expt in idx_expt:
                 for i_init in idx_init:
                     reduce_gcm(i_gcm,i_expt,i_init)
     if 'compare_expts' in procedures:
-        for i_gcm in idx_gcm:
+        for i_gcm in idx_gcms:
             for i_init in idx_init:
                 compare_expts(i_gcm, i_init)
+    if 'compare_gcms' in procedures:
+        compare_gcms(idx_gcms)
