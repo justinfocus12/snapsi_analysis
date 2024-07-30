@@ -3,7 +3,7 @@ import xarray as xr
 from scipy.stats import genextreme as spgex
 from cartopy import crs as ccrs
 import netCDF4
-from matplotlib import pyplot as plt, rcParams, ticker, colors as mplcolors
+from matplotlib import pyplot as plt, rcParams, ticker, colors as mplcolors, patches as mplpatches
 pltkwargs = dict({
     'bbox_inches': 'tight',
     'pad_inches': 0.2,
@@ -68,35 +68,55 @@ def compute_risk(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
             # TODO correct for directionality 
     return risk
 
-def plot_risk_map(risk, locsign=1, relative=False, **other_pcmargs):
+def plot_risk_map(risk, locsign=1, **other_pcmargs):
     # the reference ds_cgts is ERA5, and should only have one year asociated with it 
     fig,ax = plt.subplots(subplot_kw={'projection': ccrs.Orthographic(60,58)})
-    if relative:
-        pcmargs = dict(
-                x='lon',y='lat', transform=ccrs.PlateCarree(),
-                cmap=plt.cm.RdYlBu,
-                norm=mplcolors.LogNorm(vmin=0.2,vmax=5),
-                cbar_kwargs=dict({
-                    'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 
-                    'ticks': [0.2,0.5,1,2,5], 
-                    'format': ticker.FixedFormatter(['<0.2', '0.5', '1', '2', '>5'])
-                    })
-                )
-    else:
-        pcmargs = dict(
-                x='lon',y='lat', transform=ccrs.PlateCarree(),
-                cmap=plt.cm.RdYlBu,
-                vmin=0.0, vmax=1.0,
-                #norm=mplcolors.LogNorm(vmin=0.2,vmax=5),
-                cbar_kwargs=dict({
-                    'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 
-                    'ticks': [0, 0.25, 0.5, 0.75, 1], 
-                    'format': ticker.FixedFormatter(['0', '0.25', '0.5', '0.75', '1'])
-                    })
-                )
+    pcmargs = dict(
+            x='lon',y='lat', transform=ccrs.PlateCarree(),
+            cmap=plt.cm.RdYlBu,
+            vmin=0.0, vmax=1.0,
+            #norm=mplcolors.LogNorm(vmin=0.2,vmax=5),
+            cbar_kwargs=dict({
+                'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 
+                'ticks': [0, 0.25, 0.5, 0.75, 1], 
+                'format': ticker.FixedFormatter(['0', '0.25', '0.5', '0.75', '1'])
+                })
+            )
     pcmargs.update(other_pcmargs)
     xr.plot.pcolormesh(risk, **pcmargs, ax=ax)
     ax.coastlines()
+    ax.gridlines()
+    return fig,ax
+
+def plot_relative_risk_map(risk0, risk1, locsign=1, **other_pcmargs):
+    # the reference ds_cgts is ERA5, and should only have one year asociated with it 
+    fig,ax = plt.subplots(subplot_kw={'projection': ccrs.Orthographic(60,58)}, dpi=200.0)
+    pcmargs = dict(
+            x='lon',y='lat', transform=ccrs.PlateCarree(),
+            cmap=plt.cm.RdYlBu,
+            norm=mplcolors.LogNorm(vmin=0.2,vmax=5),
+            cbar_kwargs=dict({
+                'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 
+                'ticks': [0.2,0.5,1,2,5], 
+                'format': ticker.FixedFormatter(['<0.2', '0.5', '1', '2', '>5'])
+                })
+            )
+    pcmargs.update(other_pcmargs)
+    rel_risk = risk1 / risk0
+    xr.plot.pcolormesh(rel_risk, **pcmargs, ax=ax)
+    # now plot circles for the baseline risk 
+    dlon,dlat = (c.values[1]-c.values[0] for c in (risk0.lon,risk0.lat))
+    for (i_lon,lon) in enumerate(risk0.lon.values):
+        for (i_lat,lat) in enumerate(risk0.lat.values):
+            diam_fracs = [risk.isel(lon=i_lon,lat=i_lat).item() for risk in (risk0,risk1)]
+            print(f'{lon = }, {lat = }, {diam_fracs = }')
+            #ax.scatter(lon, lat, marker='o', s=100, color='black', transform=ccrs.PlateCarree(),)
+            ell0 = mplpatches.Ellipse((lon,lat), width=dlon*diam_fracs[0], height=dlat*diam_fracs[0], ec='black', linestyle='dotted', fc='none', transform=ccrs.PlateCarree())
+            ell1 = mplpatches.Ellipse((lon,lat), width=dlon*diam_fracs[1], height=dlat*diam_fracs[1], ec='black', linestyle='solid', fc='none', transform=ccrs.PlateCarree())
+            ax.add_patch(ell0)
+            ax.add_patch(ell1)
+            print(f'Made the ellipse')
+    ax.coastlines(color='gray')
     ax.gridlines()
     return fig,ax
 

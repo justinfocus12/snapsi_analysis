@@ -196,13 +196,15 @@ def compare_statpar_maps_2expts(i_gcm,i0_expt,i1_expt,i_init):
             plt.close(fig)
     return
 
+def compare_gcms():
+    # Plot relative risk and absolute risk, perhaps in a 2D space 
 
 
 def compare_expts(i_gcm, i_init):
     tododict = dict({
-        'plot_statpar_map_diff':           1,
-        'plot_relrisk_map':                1,
-        'plot_gev_select_regions':         1,
+        'plot_statpar_map_diff':           0,
+        'plot_relrisk_map':                0,
+        'plot_gev_select_regions':         0,
         })
     expts = []
     for i_expt in range(3):
@@ -221,7 +223,7 @@ def compare_expts(i_gcm, i_init):
             gevpars[expt] = xr.open_dataarray(join(reduced_data_dir,f'gevpar_e{expt}_i{init}_cgs{cgs_key}.nc'))
         ds_cgts_mints['era5'] = xr.open_dataarray(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc')).min('time')
         lon_blocksize,lat_blocksize = ((event_region[d].stop - event_region[d].start)/cgs_level[i_d] for (i_d,d) in enumerate(('lon','lat')))
-        if tododict['plot_statpar_map_diff']:
+        if tododict['plot_statpar_map_diff'] and min(cgs_level) > 1:
             # control-free, nudged-free
             statsel = dict(daily_stat=daily_stat)
             for (expt0,expt1) in (('free','control'),('free','nudged')):
@@ -229,7 +231,7 @@ def compare_expts(i_gcm, i_init):
                 fig.suptitle(f'{gcm} ({expt1} - {expt0}), init {datestr}')
                 fig.savefig(join(figdir,f'statpar_map_e{expt1}minus{expt0}_i{init}_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
                 plt.close(fig)
-        if tododict['plot_relrisk_map']:
+        if tododict['plot_relrisk_map'] and min(cgs_level) > 1:
             # control-free, nudged-free
             statsel = dict(daily_stat=daily_stat)
             for (expt0,expt1) in (('free','control'),('free','nudged')):
@@ -237,27 +239,28 @@ def compare_expts(i_gcm, i_init):
                 risk0,risk1 = (xr.open_dataarray(risk_file) for risk_file in (risk0_file,risk1_file))
                 rr = risk1/risk0
                 #logrr = xr.where(np.isfinite(logrr), logrr, np.nan)
-                fig,ax = pipeline_base.plot_risk_map(rr, locsign=1, relative=True)
+                fig,ax = pipeline_base.plot_relative_risk_map(risk0, risk1, locsign=1)
                 ax.set_title(f'{gcm} RR ({expt1}/{expt0})\ninit {datestr}')
                 fig.savefig(join(figdir,f'relrisk_map_e{expt1}over{expt0}_i{init}_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
                 plt.close(fig)
+                print(f'Saved the figure')
 
-        for (i_lon,i_lat) in select_regions[i_cgs_level]:
-            mintemps = dict()
-            gevpar_regs = dict()
-            mintemp_levels_regs = dict()
-            for expt in expts:
-                mintemps[expt] = ds_cgts_mints[expt].sel(daily_stat=daily_stat).isel(lon=i_lon,lat=i_lat)
-                mintemp_levels_regs[expt] = np.load(join(reduced_data_dir,f'mintemp_levels_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
-                gevpar_regs[expt] = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
-            mintemps['era5'] = ds_cgts_mints['era5'].sel(daily_stat=daily_stat).isel(lon=i_lon,lat=i_lat)
-            mintemp_levels_regs['era5'] = np.load(join(reduced_data_dir_era5,f'mintemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
-            gevpar_regs['era5'] = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
-            center_lon,center_lat = (mintemps['era5'].coords[d].item() for d in ('lon','lat'))
-            lonlatstr = r'$\lambda=%d\pm%d,\phi=%d\pm%d$'%(center_lon,lon_blocksize/2,center_lat,lat_blocksize/2)
-            if max(cgs_level) == 1:
-                lonlatstr = r'%s (whole region)'%(lonlatstr)
-            if tododict['plot_gev_select_regions']:
+        if tododict['plot_gev_select_regions']:
+            for (i_lon,i_lat) in select_regions[i_cgs_level]:
+                mintemps = dict()
+                gevpar_regs = dict()
+                mintemp_levels_regs = dict()
+                for expt in expts:
+                    mintemps[expt] = ds_cgts_mints[expt].sel(daily_stat=daily_stat).isel(lon=i_lon,lat=i_lat)
+                    mintemp_levels_regs[expt] = np.load(join(reduced_data_dir,f'mintemp_levels_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
+                    gevpar_regs[expt] = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
+                mintemps['era5'] = ds_cgts_mints['era5'].sel(daily_stat=daily_stat).isel(lon=i_lon,lat=i_lat)
+                mintemp_levels_regs['era5'] = np.load(join(reduced_data_dir_era5,f'mintemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
+                gevpar_regs['era5'] = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
+                center_lon,center_lat = (mintemps['era5'].coords[d].item() for d in ('lon','lat'))
+                lonlatstr = r'$\lambda=%d\pm%d,\phi=%d\pm%d$'%(center_lon,lon_blocksize/2,center_lat,lat_blocksize/2)
+                if max(cgs_level) == 1:
+                    lonlatstr = r'%s (whole region)'%(lonlatstr)
                 print(f'Plotting GEV select regions')
                 # Plot all four curves on one plot (ERA5, free, control, nudged)
                 colors = dict({'era5': 'black', 'control': 'dodgerblue', 'free': 'limegreen', 'nudged': 'red'})
@@ -342,13 +345,13 @@ def reduce_gcm(i_gcm,i_expt,i_init):
     tododict = dict({
         'coarse_grain_time':           0,
         'plot_t2m_sumstats_map':       0,
-        'coarse_grain_space':          1,
+        'coarse_grain_space':          0,
         'fit_gev':                     0,
         'plot_statpar_map':            0,
         'compute_risk':                0,
         'plot_risk_map':               0,
-        'fit_gev_select_regions':      1,
-        'plot_gev_select_regions':     1,
+        'fit_gev_select_regions':      0,
+        'plot_gev_select_regions':     0,
         })
     gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(i_gcm,i_expt,i_init)
     fcdate = datetime.datetime.strptime(init,'%Y%m%d')
@@ -415,7 +418,7 @@ def reduce_gcm(i_gcm,i_expt,i_init):
             risk = xr.open_dataarray(risk_file)
 
         if tododict['plot_risk_map'] and min(cgs_level) > 1:
-            fig,ax = pipeline_base.plot_risk_map(risk, locsign=-1, relative=False)
+            fig,ax = pipeline_base.plot_risk_map(risk, locsign=-1)
             ax.set_title(f'Risk ({gcm}) \n {expt}, init {datestr})')
             fig.savefig(join(figdir,f'risk_map_e{expt}_i{init}_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
             plt.close(fig)
