@@ -211,11 +211,12 @@ def compare_gcms(idx_gcms):
     # Plot relative risk and absolute risk, perhaps in a 2D space 
     cgs_levels = analysis_multiparams()
     gcms,expts,inits = gcm_multiparams()
+    print(f'{gcms = }')
     colors = dict({'era5': 'black', 'control': 'dodgerblue', 'free': 'limegreen', 'nudged': 'red'})
     yoffsets = dict({'control': 1/3, 'free': 0.0, 'nudged': -1/3})
     figdir = f'/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-06-19/multimodel'
     xlims = [0.2, 5.0]
-    ylims = [-0.5, len(gcms)+0.5]
+    ylims = [-0.5, len(gcms)-0.5]
     slims = (np.array([1.0, 4.0])*rcParams['lines.markersize']) # bounds on the marker size 
     makedirs(figdir, exist_ok=True)
     dpi = 200
@@ -226,7 +227,7 @@ def compare_gcms(idx_gcms):
             ax.set_xlim(xlims)
             ax.set_ylim(ylims)
         # Determine the radius-to-points conversion
-        unit_radius_data = 1/3
+        unit_radius_data = 1/6
         unit_radius_display = axes[0].transData.transform([0, unit_radius_data])[1] - axes[0].transData.transform([0,0])[1]
         unit_radius_points = unit_radius_display * 72/fig.dpi
         handles = []
@@ -248,8 +249,9 @@ def compare_gcms(idx_gcms):
                     risk1 = xr.open_dataarray(risk1_file).to_numpy()
                     rr = np.maximum(xlims[0], np.minimum(xlims[1], risk1/risk0))
                     print(f'{rr.shape = }')
-                    ax.scatter(rr.flat, (i_gcm+yoffsets[expt1])*np.ones(rr.size), ec=colors[expt1], fc='none', s=((unit_radius_points/4 + risk1*(unit_radius_points*3/4)) * 2)**2)
+                    h = ax.scatter(rr.flat, (i_gcm+yoffsets[expt1])*np.ones(rr.size), ec=colors[expt1], linewidth=2, fc='none', s=(2*unit_radius_points * (1/4 + risk1*3/4))**2, label=expt1)
                     # Add error bars if the level of coarse-graining is 1x1
+                    if len(handles) < 3: handles.append(h)
                     if i_cgs_level == 0:
                         ds_cgts_mints_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc')).min('time')
                         for i_lon in range(rr.shape[0]):
@@ -263,7 +265,6 @@ def compare_gcms(idx_gcms):
                                 risk_at_levels_1 = np.apply_along_axis(func, 1, mintemp_levels_reg_1)
                                 rel_risk_lo,rel_risk_hi = (np.quantile(risk_at_levels_1/risk_at_levels_0, 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
                                 h, = ax.plot([rel_risk_lo,rel_risk_hi], (i_gcm+yoffsets[expt1])*np.ones(2),color=colors[expt1], linewidth=3, label=expt1)
-                                if len(handles) < 3: handles.append(h)
                             
 
 
@@ -283,10 +284,13 @@ def compare_gcms(idx_gcms):
             ax.set_xlabel('rel. risk w.r.t. free')
             for i_gcm in range(len(gcms)):
                 ax.axhline(i_gcm+0.5, color='gray')
+                ax.axhline(i_gcm-0.5, color='gray')
+                ax.axhline(i_gcm+1/6, color='gray', linestyle='dotted')
+                ax.axhline(i_gcm-1/6, color='gray', linestyle='dotted')
         dlon = (event_region['lon'].stop - event_region['lon'].start)/(cgs_level[0])
         dlat = (event_region['lat'].stop - event_region['lat'].start)/(cgs_level[1])
-        fig.suptitle(r'RR ($%d^\circ$lon$\times%d^\circ$lat regions)'%(dlon, dlat))
-        fig.legend(handles=handles, bbox_to_anchor=(0.5,-0.05), loc='upper center', ncol=3)
+        fig.suptitle(r'Relative risk ($%d^\circ$lon$\times%d^\circ$lat regions)'%(dlon, dlat))
+        fig.legend(handles=handles, bbox_to_anchor=(0.5,0.0), loc='upper center', ncol=3)
         fig.savefig(filename, **pltkwargs)
 
         plt.close(fig)
