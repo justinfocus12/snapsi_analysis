@@ -27,48 +27,59 @@ import utils; reload(utils)
 import pipeline_base; reload(pipeline_base)
 import stat_functions as stfu; reload(stfu)
 
-def analysis_multiparams():
+def analysis_multiparams(which_ssw):
     # lon/lat ratios are 6/1 at the bottom and 4/1 at the top; stick to 5/1 
-    cgs_levels = [(1,1),(5,1),(10,2),(20,4),(40,8)] #,(141,16)]
-    return cgs_levels
+    if "feb2018" == which_ssw:
+        cgs_levels = [(1,1),(5,1),(10,2),(20,4),(40,8)] #,(141,16)]
+        select_regions = ( # Indexed by cgs_level
+                ((0,0),), # level (1,1)
+                (), # level (5,1)
+                ((i,j) for i in range(10) for j in range(2)),
+                (), # level (20,4)
+                (), # level (40,8)
+                (), # level (141,16)
+                )
+    elif "jan2019" == which_ssw:
+        cgs_levels = [(1,1),(2,1),(5,3),(15,9)]
+        select_regions = ( # Indexed by cgs_level
+                ((0,0),), # level (1,1)
+                ((0,0),(1,0)), # level (2,1)
+                ((i,j) for i in range(5) for j in range(3)),
+                (),
+                )
+    return cgs_levels,select_regions
 
-def era5_workflow(verbose=False):
+def era5_workflow(which_ssw,verbose=False):
     print(f'Starting workflow setup')
     raw_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/era5'
     years = np.arange(1979,2019,dtype=int)
     year_filegroups = []
-    event_time_interval = [datetime.datetime(2018,2,21,0), datetime.datetime(2018,3,8,22)] # for the reference year 
+    if "feb2018" == which_ssw:
+        event_time_interval = [datetime.datetime(2018,2,21,0), datetime.datetime(2018,3,8,22)] # for the reference year 
+        event_region = dict(lat=slice(50,65),lon=slice(-10,130))
+        reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-06-19','era5')
+        figdir = f'/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-06-19/era5'
+    elif "jan2019" == which_ssw:
+        event_time_interval = [datetime.datetime(2019,1,1,0), datetime.datetime(2019,1,31,22)] # for the reference year 
+        event_region = dict(lat=slice(30,45),lon=slice(-95,-70))
+        reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/jan2019/results_2024-06-19','era5')
+        figdir = f'/home/users/ju26596/snapsi_analysis_figures/jan2019/figures_2024-06-19/era5'
     for year in years:
+        # TODO augment this with Decembers 
         year_filegroups.append(tuple(
             join(raw_data_dir,f't2m_nhem_{year:04}-{month:02}.nc')
             for month in [1,2,3]
             ))
 
-    event_region = dict(lat=slice(50,65),lon=slice(-10,130))
 
-    reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-06-19','era5')
     makedirs(reduced_data_dir,exist_ok=True)
-
     # spatial coarse graining (cgs)
-    cgs_levels = analysis_multiparams()
-
+    cgs_levels,select_regions = analysis_multiparams(which_ssw)
     n_boot = 1000
     confint_width = 0.5
 
-    figdir = f'/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-06-19/era5'
     makedirs(figdir,exist_ok=True)
 
-    # Select regions for more detailed GEV analysis (based on visualizing the map)
-    # format is (cgs_level, i_lon, i_lat)
-    # TODO change this to a list of floating point locations, which will be part of different-sized neighborhoods as a function of resolution 
-    select_regions = ( # Indexed by cgs_level
-            ((0,0),), # level (1,1)
-            (), # level (5,1)
-            ((i,j) for i in range(10) for j in range(2)),
-            (), # level (20,4)
-            (), # level (40,8)
-            (), # level (141,16)
-            )
     select_points = ()
     risk_levels = np.exp(np.linspace(np.log(0.001),np.log(49/50),30))
     # TODO specify temperature levels for relative risk 
@@ -122,19 +133,19 @@ def coarse_grain_time(years, year_filegroups, event_region, event_time_interval)
     print(f'{t2m_cgt.dims = }, {t2m_cgt.shape = }')
     return t2m_cgt
 
-def reduce_era5():
+def reduce_era5(which_ssw):
     tododict = dict({
         'coarse_grain_time':           0,
-        'plot_t2m_sumstats_map':       0,
-        'coarse_grain_space':          0,
-        'fit_gev':                     0,
-        'plot_statpar_map':            0,
-        'compute_risk':                0,
-        'plot_risk_map':               0,
+        'plot_t2m_sumstats_map':       1,
+        'coarse_grain_space':          1,
+        'fit_gev':                     1,
+        'plot_statpar_map':            1,
+        'compute_risk':                1,
+        'plot_risk_map':               1,
         'fit_gev_select_regions':      1,
         'plot_gev_select_regions':     1,
         })
-    years,event_region,event_time_interval,year_filegroups,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = era5_workflow()
+    years,event_region,event_time_interval,year_filegroups,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = era5_workflow(which_ssw)
     boot_type = 'percentile'
     ens_file_cgt = join(reduced_data_dir,f't2m_cgt1day.nc')
     if tododict['coarse_grain_time']:
@@ -255,7 +266,7 @@ def reduce_era5():
 
 if __name__ == '__main__':
     print(f'Starting main')
-    reduce_era5()
+    reduce_era5("jan2019")
 
 
 

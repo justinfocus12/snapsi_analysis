@@ -23,18 +23,38 @@ from scipy.stats import norm as spnorm, genextreme as spgex
 import utils
 import pipeline_base
 
-def gcm_multiparams():
+def gcm_multiparams(which_ssw):
     # Sets out all the options for which piece of data to ingest
     gcm2institute = all_gcms_institutes()
     gcms = list(gcm2institute.keys())
     expts = ['control','free','nudged']
-    inits = ['20180125','20180208']
+    if "feb2018" == which_ssw:
+        inits = ['20180125','20180208']
+    elif "jan2019" == which_ssw:
+        inits = ['20181213','20190108']
     return gcms, expts, inits
 
-def analysis_multiparams():
+def analysis_multiparams(which_ssw):
     # lon/lat ratios are 6/1 at the bottom and 4/1 at the top; stick to 5/1 
-    cgs_levels = [(1,1),(5,1),(10,2),(20,4),(40,8)] #,(141,16)]
-    return cgs_levels
+    if "feb2018" == which_ssw:
+        cgs_levels = [(1,1),(5,1),(10,2),(20,4),(40,8)] #,(141,16)]
+        select_regions = ( # Indexed by cgs_level
+                ((0,0),), # level (1,1)
+                (), # level (5,1)
+                ((i,j) for i in range(10) for j in range(2)),
+                (), # level (20,4)
+                (), # level (40,8)
+                (), # level (141,16)
+                )
+    elif "jan2019" == which_ssw:
+        cgs_levels = [(1,1),(2,1),(5,3),(15,9)]
+        select_regions = ( # Indexed by cgs_level
+                ((0,0),), # level (1,1)
+                ((0,0),(1,0)), # level (2,1)
+                ((i,j) for i in range(5) for j in range(3)),
+                (),
+                )
+    return cgs_levels,select_regions
 
 
 def all_gcms_institutes():
@@ -55,9 +75,9 @@ def all_gcms_institutes():
     return gcm2institute
 
 
-def gcm_workflow(i_gcm, i_expt, i_init, verbose=False):
+def gcm_workflow(which_ssw, i_gcm, i_expt, i_init, verbose=False):
     # Sets out the folders necessary to ingest a chunk of data specified by the input arguments 
-    gcms,expts,inits = gcm_multiparams()
+    gcms,expts,inits = gcm_multiparams(which_ssw)
     gcm = gcms[i_gcm]
     expt = expts[i_expt]
     init = inits[i_init]
@@ -77,33 +97,27 @@ def gcm_workflow(i_gcm, i_expt, i_init, verbose=False):
     raw_mem_files = glob.glob(path_skeleton)
     print(f'{len(raw_mem_files) = }')
     # 2. Spatiotemporal sub-selection and coarse-graining (cg)
-    event_region = dict(lat=slice(50,65),lon=slice(-10,130))
-    event_time_interval = (datetime.datetime(2018,2,21,0),datetime.datetime(2018,3,8,18))
     reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-06-19',gcm)
+    if "feb2018" == which_ssw:
+        event_time_interval = [datetime.datetime(2018,2,21,0), datetime.datetime(2018,3,8,22)] # for the reference year 
+        event_region = dict(lat=slice(50,65),lon=slice(-10,130))
+        reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-06-19','era5')
+        reduced_data_dir_era5 = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-06-19/era5'
+        figdir = f'/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-06-19/{gcm}'
+    elif "jan2019" == which_ssw:
+        event_time_interval = [datetime.datetime(2019,1,1,0), datetime.datetime(2019,1,31,22)] # for the reference year 
+        event_region = dict(lat=slice(30,45),lon=slice(-95,-70))
+        reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/jan2019/results_2024-06-19','era5')
+        figdir = f'/home/users/ju26596/snapsi_analysis_figures/jan2019/figures_2024-06-19/{gcm}'
+        reduced_data_dir_era5 = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/jan2019/results_2024-06-19/era5'
     makedirs(reduced_data_dir,exist_ok=True)
-    reduced_data_dir_era5 = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-06-19/era5'
-
+    makedirs(figdir,exist_ok=True)
     # spatial coarse graining (cgs)
-    cgs_levels = analysis_multiparams()
+    cgs_levels,select_regions = analysis_multiparams(which_ssw)
 
     # bootstrap parameters
     n_boot = 1000
     confint_width = 0.5
-
-
-    # Plotting dir 
-    figdir = f'/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-06-19/{gcm}'
-    makedirs(figdir,exist_ok=True)
-       
-    select_regions = ( # Indexed by cgs_level
-            ((0,0),), # level (1,1)
-            (), # level (5,1)
-            ((i,j) for i in range(10) for j in range(2)),
-            (), # level (20,4)
-            (), # level (40,8)
-            (), # level (141,16)
-            )
-    select_points = ()
     risk_levels = np.exp(np.linspace(np.log(0.001),np.log(49/50),30))
     workflow = (
             gcm,
@@ -438,20 +452,20 @@ def compare_expts(i_gcm, i_init):
 
 
 
-def reduce_gcm(i_gcm,i_expt,i_init):
+def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
     tododict = dict({
-        'coarse_grain_time':           0,
-        'plot_t2m_sumstats_map':       0,
-        'coarse_grain_space':          0,
-        'fit_gev':                     0,
-        'plot_statpar_map':            0,
-        'compute_risk':                0,
-        'plot_risk_map':               0,
-        'fit_gev_select_regions':      0,
-        'plot_gev_select_regions':     0,
+        'coarse_grain_time':           1,
+        'plot_t2m_sumstats_map':       1,
+        'coarse_grain_space':          1,
+        'fit_gev':                     1,
+        'plot_statpar_map':            1,
+        'compute_risk':                1,
+        'plot_risk_map':               1,
+        'fit_gev_select_regions':      1,
+        'plot_gev_select_regions':     1,
         })
-    gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(i_gcm,i_expt,i_init)
+    gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(which_ssw,i_gcm,i_expt,i_init)
     fcdate = datetime.datetime.strptime(init,'%Y%m%d')
     datestr = fcdate.strftime("%Y-%m-%d")
 
@@ -625,16 +639,17 @@ def reduce_gcm(i_gcm,i_expt,i_init):
     return 
 
 if __name__ == "__main__":
-    idx_gcms = [4,1,2,6,7,8,9,10,11] #[4,9,11][2:] #[4,9,11]
+    idx_gcms = [4,1,2,6,7,8,9,10,11][:2] #[4,9,11][2:] #[4,9,11]
     idx_expt = [0,1,2]
     idx_expt_pairs = [(1,0),(1,2)]
     idx_init = [0,1]
+    which_ssw = 'jan2019'
     procedures = sys.argv[1:]
     if 'reduce' in procedures:
         for i_gcm in idx_gcms:
             for i_expt in idx_expt:
                 for i_init in idx_init:
-                    reduce_gcm(i_gcm,i_expt,i_init)
+                    reduce_gcm(which_ssw,i_gcm,i_expt,i_init)
     if 'compare_expts' in procedures:
         for i_gcm in idx_gcms:
             for i_init in idx_init:

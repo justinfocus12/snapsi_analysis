@@ -5,7 +5,7 @@ from os.path import join
 c = cdsapi.Client()
 
 for year in range(1979,2019):
-    for month in [1,2,3]:
+    for month in [1,2,3,12][-1:]:
         first_weekday,days_in_month = monthrange(year,month)
         print(f'Beginning to download year {year}, month {month}')
         target_filename = join(

@@ -21,7 +21,8 @@ import stat_functions as stfu; reload(stfu)
 
 def plot_sumstats_map(ds):
     # Summary stats for an ensemble 
-    fig,axes = plt.subplots(figsize=(20,8),nrows=2,subplot_kw={'projection': ccrs.Orthographic(60,58)},gridspec_kw={'hspace': 0.2, 'wspace': 0.05})
+    clon,clat = (ds.coords[coordname].mean().item() for coordname in ('lon','lat'))
+    fig,axes = plt.subplots(figsize=(20,8),nrows=2,subplot_kw={'projection': ccrs.Orthographic(central_longitude=clon,central_latitude=clat)},gridspec_kw={'hspace': 0.2, 'wspace': 0.05})
     pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15})
     loc_fields = (ds.mean('member'),)
     loc_vmin,loc_vmax = (min((da.min().item() for da in loc_fields)), max((da.max().item() for da in loc_fields)))
@@ -70,7 +71,8 @@ def compute_risk(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
 
 def plot_risk_map(risk, locsign=1, **other_pcmargs):
     # the reference ds_cgts is ERA5, and should only have one year asociated with it 
-    fig,ax = plt.subplots(subplot_kw={'projection': ccrs.Orthographic(60,58)})
+    clon,clat = (risk.coords[coordname].mean().item() for coordname in ('lon','lat'))
+    fig,ax = plt.subplots(subplot_kw={'projection': ccrs.Orthographic(central_longitude=clon,central_latitude=clat)})
     pcmargs = dict(
             x='lon',y='lat', transform=ccrs.PlateCarree(),
             cmap=plt.cm.RdYlBu,
@@ -90,7 +92,8 @@ def plot_risk_map(risk, locsign=1, **other_pcmargs):
 
 def plot_relative_risk_map(risk0, risk1, locsign=1, **other_pcmargs):
     # the reference ds_cgts is ERA5, and should only have one year asociated with it 
-    fig,ax = plt.subplots(subplot_kw={'projection': ccrs.Orthographic(60,58)}, dpi=200.0)
+    clon,clat = (risk0.coords[coordname].mean().item() for coordname in ('lon','lat'))
+    fig,ax = plt.subplots(subplot_kw={'projection': ccrs.Orthographic(central_longitude=clon,central_latitude=clat)}, dpi=200.0)
     pcmargs = dict(
             x='lon',y='lat', transform=ccrs.PlateCarree(),
             cmap=plt.cm.RdYlBu,
@@ -139,7 +142,8 @@ def coarse_grain_space(ds_cgt, cgs_level):
 
 def plot_statpar_map(ds_cgts,gevpar,locsign=1):
     # Essentially Gaussian parameters next to GEV parameters
-    fig,axes = plt.subplots(figsize=(20,8),nrows=3,ncols=2,subplot_kw={'projection': ccrs.Orthographic(60,58)},gridspec_kw={'hspace': 0.2, 'wspace': 0.05})
+    clon,clat = (ds_cgts.coords[coordname].mean().item() for coordname in ('lon','lat'))
+    fig,axes = plt.subplots(figsize=(20,8),nrows=3,ncols=2,subplot_kw={'projection': ccrs.Orthographic(central_longitude=clon,central_latitude=clat)},gridspec_kw={'hspace': 0.2, 'wspace': 0.05})
     pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15})
     loc_fields = (ds_cgts.mean('member'), locsign*gevpar.sel(param='loc'))
     loc_vmin,loc_vmax = (min((da.min().item() for da in loc_fields)), max((da.max().item() for da in loc_fields)))
@@ -180,7 +184,8 @@ def plot_statpar_map_difference(ds_cgts_0,ds_cgts_1,gevpar_0,gevpar_1,locsign=1)
         #return diff_interp
         return ds1.assign_coords(coords=ds0.coords) - ds0
     # Essentially Gaussian parameters next to GEV parameters
-    fig,axes = plt.subplots(figsize=(20,8),nrows=3,ncols=2,subplot_kw={'projection': ccrs.Orthographic(60,58)},gridspec_kw={'hspace': 0.2, 'wspace': 0.05})
+    clon,clat = (ds_cgts_0.coords[coordname].mean().item() for coordname in ('lon','lat'))
+    fig,axes = plt.subplots(figsize=(20,8),nrows=3,ncols=2,subplot_kw={'projection': ccrs.Orthographic(central_longitude=clon,central_latitude=clat)},gridspec_kw={'hspace': 0.2, 'wspace': 0.05})
     pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 'ticks': ticker.LinearLocator(numticks=3)})
     loc_fields = (dsdiff(ds_cgts_0.mean('member'),ds_cgts_1.mean('member')), dsdiff(locsign*gevpar_0.sel(param='loc'), locsign*gevpar_1.sel(param='loc')))
     loc_vmax = tuple(np.abs(da).max().item() for da in loc_fields)
