@@ -101,13 +101,13 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_init, verbose=False):
     if "feb2018" == which_ssw:
         event_time_interval = [datetime.datetime(2018,2,21,0), datetime.datetime(2018,3,8,22)] # for the reference year 
         event_region = dict(lat=slice(50,65),lon=slice(-10,130))
-        reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-06-19','era5')
+        reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-06-19',gcm)
         reduced_data_dir_era5 = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-06-19/era5'
         figdir = f'/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-06-19/{gcm}'
     elif "jan2019" == which_ssw:
         event_time_interval = [datetime.datetime(2019,1,1,0), datetime.datetime(2019,1,31,22)] # for the reference year 
         event_region = dict(lat=slice(30,45),lon=slice(-95,-70))
-        reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/jan2019/results_2024-06-19','era5')
+        reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/jan2019/results_2024-06-19',gcm)
         figdir = f'/home/users/ju26596/snapsi_analysis_figures/jan2019/figures_2024-06-19/{gcm}'
         reduced_data_dir_era5 = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/jan2019/results_2024-06-19/era5'
     makedirs(reduced_data_dir,exist_ok=True)
@@ -201,7 +201,7 @@ def preprocess_gcm_6hrPt(dsmem,fcdate,timesel,spacesel,verbose=False):
 
 
 def compare_statpar_maps_2expts(i_gcm,i0_expt,i1_expt,i_init):
-    tododict = dict({
+    todo = dict({
         'plot_statpar_map_diff':           1,
         'plot_gev_select_regions_diff':    1,
         })
@@ -213,7 +213,7 @@ def compare_statpar_maps_2expts(i_gcm,i0_expt,i1_expt,i_init):
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
         ds_cgts_mint_0,ds_cgts_mint_1 = (xr.open_dataarray(join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day_cgs{cgs_key}.nc')).sel(daily_stat='daily_mean').min('time') for expt in (expt0,expt1))
         gevpar_0,gevpar_1 = (xr.open_dataarray(join(reduced_data_dir,f'gevpar_e{expt}_i{init}_cgs{cgs_key}.nc')).sel(daily_stat='daily_mean') for expt in (expt0,expt1))
-        if tododict['plot_param_diff_map']:
+        if todo['plot_param_diff_map']:
             fig,axes = pipeline_base.plot_statpar_map_difference(ds_cgts_mint_0,ds_cgts_mint_1,gevpar_0,gevpar_1,locsign=-1)
             datestr = datetime.datetime.strptime(init,"%Y%m%d").strftime("%Y-%m-%d")
             fig.suptitle(f'{expt1} - {expt0}, init {datestr}')
@@ -313,7 +313,7 @@ def compare_gcms(idx_gcms):
 
 
 def compare_expts(i_gcm, i_init):
-    tododict = dict({
+    todo = dict({
         'plot_statpar_map_diff':           0,
         'plot_relrisk_map':                0,
         'plot_gev_select_regions':         0,
@@ -335,7 +335,7 @@ def compare_expts(i_gcm, i_init):
             gevpars[expt] = xr.open_dataarray(join(reduced_data_dir,f'gevpar_e{expt}_i{init}_cgs{cgs_key}.nc'))
         ds_cgts_mints['era5'] = xr.open_dataarray(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc')).min('time')
         lon_blocksize,lat_blocksize = ((event_region[d].stop - event_region[d].start)/cgs_level[i_d] for (i_d,d) in enumerate(('lon','lat')))
-        if tododict['plot_statpar_map_diff'] and min(cgs_level) > 1:
+        if todo['plot_statpar_map_diff'] and min(cgs_level) > 1:
             # control-free, nudged-free
             statsel = dict(daily_stat=daily_stat)
             for (expt0,expt1) in (('free','control'),('free','nudged')):
@@ -343,7 +343,7 @@ def compare_expts(i_gcm, i_init):
                 fig.suptitle(f'{gcm} ({expt1} - {expt0}), init {datestr}')
                 fig.savefig(join(figdir,f'statpar_map_e{expt1}minus{expt0}_i{init}_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
                 plt.close(fig)
-        if tododict['plot_relrisk_map'] and min(cgs_level) > 1:
+        if todo['plot_relrisk_map'] and min(cgs_level) > 1:
             # control-free, nudged-free
             statsel = dict(daily_stat=daily_stat)
             for (expt0,expt1) in (('free','control'),('free','nudged')):
@@ -357,7 +357,7 @@ def compare_expts(i_gcm, i_init):
                 plt.close(fig)
                 print(f'Saved the figure')
 
-        if tododict['plot_gev_select_regions']:
+        if todo['plot_gev_select_regions']:
             for (i_lon,i_lat) in select_regions[i_cgs_level]:
                 mintemps = dict()
                 gevpar_regs = dict()
@@ -454,7 +454,7 @@ def compare_expts(i_gcm, i_init):
 
 def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
-    tododict = dict({
+    todo = dict({
         'coarse_grain_time':           1,
         'plot_t2m_sumstats_map':       1,
         'coarse_grain_space':          1,
@@ -471,7 +471,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
 
     # ------------- Coarse-grain in time (cgt) and space (cgts) -------------
     ens_file_cgt = join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day.nc')
-    if tododict['coarse_grain_time']:
+    if todo['coarse_grain_time']:
         ds_cgt = coarse_grain_time(raw_mem_files, mem_labels, event_region, fcdate, event_time_interval)
         ds_cgt.to_netcdf(ens_file_cgt)
     else:
@@ -482,7 +482,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     era5_file_cgt = join(reduced_data_dir_era5,f't2m_cgt1day.nc')
     ds_cgt_era5 = xr.open_dataarray(era5_file_cgt)
     ds_cgt_mint_era5 = ds_cgt_era5.min(dim='time')
-    if tododict['plot_t2m_sumstats_map']:
+    if todo['plot_t2m_sumstats_map']:
         for daily_stat in ['daily_min','daily_mean']:
             fig,axes = pipeline_base.plot_sumstats_map(ds_cgt_mint.sel(daily_stat=daily_stat))
             fig.suptitle(f'{gcm}, {expt}, init {init} {daily_stat}')
@@ -498,7 +498,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
         #else:
         #    lon_blocksize,lat_blocksize = (event_region[d].stop - event_region[d].start for d in ('lon','lat'))
         ens_file_cgts = join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day_cgs{cgs_key}.nc')
-        if tododict['coarse_grain_space']:
+        if todo['coarse_grain_space']:
             ds_cgts = pipeline_base.coarse_grain_space(ds_cgt, cgs_level)
             ds_cgts.to_netcdf(ens_file_cgts)
         else:
@@ -509,7 +509,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
         ds_cgts_mint_era5 = ds_cgts_era5.min(dim='time')
         # ----------- Perform GEV fitting (on negative temperature) --------------
         gev_param_file = join(reduced_data_dir,f'gevpar_e{expt}_i{init}_cgs{cgs_key}.nc')
-        if tododict['fit_gev']:
+        if todo['fit_gev']:
             gevpar = pipeline_base.fit_gev_mintemp(ds_cgts_mint,method='PWM')
             gevpar.to_netcdf(gev_param_file)
         else:
@@ -517,7 +517,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
         gevpar_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_cgs{cgs_key}.nc'))
         # ----------------- Compute risk w.r.t. ERA5 ---------------
         risk_file = join(reduced_data_dir,f'risk_e{expt}_i{init}_cgs{cgs_key}.nc')
-        if tododict['compute_risk']:
+        if todo['compute_risk']:
             dskwargs = dict(daily_stat=daily_stat,drop=True)
             risk = pipeline_base.compute_risk(
                     ds_cgts_mint.sel(**dskwargs),
@@ -529,12 +529,12 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
         else:
             risk = xr.open_dataarray(risk_file)
 
-        if tododict['plot_risk_map'] and min(cgs_level) > 1:
+        if todo['plot_risk_map'] and min(cgs_level) > 1:
             fig,ax = pipeline_base.plot_risk_map(risk, locsign=-1)
             ax.set_title(f'Risk ({gcm}) \n {expt}, init {datestr})')
             fig.savefig(join(figdir,f'risk_map_e{expt}_i{init}_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
             plt.close(fig)
-        if tododict['plot_statpar_map'] and min(cgs_level) > 1:
+        if todo['plot_statpar_map'] and min(cgs_level) > 1:
             statsel = dict(daily_stat=daily_stat)
             # Maps as-is
             fig,axes = pipeline_base.plot_statpar_map(ds_cgts_mint.sel(statsel), gevpar.sel(statsel), locsign=-1)
@@ -563,7 +563,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
             if cgs_level == (1,1):
                 lonlatstr = r'%s (whole region)'%(lonlatstr)
 
-            if tododict['fit_gev_select_regions']:
+            if todo['fit_gev_select_regions']:
                 if np.any(np.isnan(mintemp)):
                     raise Exception(f'{mintemp = }')
                 gevpar_reg,mintemp_levels_reg = pipeline_base.fit_gev_mintemp_1d_uq(mintemp,risk_levels, method='PWM', n_boot=n_boot)
@@ -578,7 +578,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
             print(f'{i_lon = }, {i_lat = }')
             print(f'{gevpar_reg_era5.isel(boot=0) = }')
 
-            if tododict['plot_gev_select_regions']:
+            if todo['plot_gev_select_regions']:
                 fig,axes = plt.subplots(ncols=2,figsize=(12,6),sharey=True)
 
                 # Plot timeseries on right
@@ -639,7 +639,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     return 
 
 if __name__ == "__main__":
-    idx_gcms = [4,1,2,6,7,8,9,10,11][:2] #[4,9,11][2:] #[4,9,11]
+    idx_gcms = [4,1,2,6,7,8,9,10,11] #[4,9,11][2:] #[4,9,11]
     idx_expt = [0,1,2]
     idx_expt_pairs = [(1,0),(1,2)]
     idx_init = [0,1]

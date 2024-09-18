@@ -134,8 +134,8 @@ def coarse_grain_time(years, year_filegroups, event_region, event_time_interval)
     return t2m_cgt
 
 def reduce_era5(which_ssw):
-    tododict = dict({
-        'coarse_grain_time':           0,
+    todo = dict({
+        'coarse_grain_time':           1,
         'plot_t2m_sumstats_map':       1,
         'coarse_grain_space':          1,
         'fit_gev':                     1,
@@ -148,14 +148,14 @@ def reduce_era5(which_ssw):
     years,event_region,event_time_interval,year_filegroups,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = era5_workflow(which_ssw)
     boot_type = 'percentile'
     ens_file_cgt = join(reduced_data_dir,f't2m_cgt1day.nc')
-    if tododict['coarse_grain_time']:
+    if todo['coarse_grain_time']:
         ds_cgt = coarse_grain_time(years, year_filegroups, event_region, event_time_interval)
         ds_cgt.to_netcdf(ens_file_cgt)
     else:
         ds_cgt = xr.open_dataarray(ens_file_cgt)
 
     ds_cgt_mint = ds_cgt.min(dim='time')
-    if tododict['plot_t2m_sumstats_map']:
+    if todo['plot_t2m_sumstats_map']:
         for daily_stat in ['daily_min','daily_mean']:
             fig,axes = pipeline_base.plot_sumstats_map(ds_cgt_mint.sel(daily_stat=daily_stat))
             fig.suptitle(f'ERA5 {daily_stat}')
@@ -166,7 +166,7 @@ def reduce_era5(which_ssw):
     for i_cgs_level,cgs_level in enumerate(cgs_levels):
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
         ens_file_cgts = join(reduced_data_dir,f't2m_cgt1day_cgs{cgs_key}.nc')
-        if tododict['coarse_grain_space']:
+        if todo['coarse_grain_space']:
             ds_cgts = pipeline_base.coarse_grain_space(ds_cgt, cgs_level)
             ds_cgts.to_netcdf(ens_file_cgts)
         else:
@@ -176,14 +176,14 @@ def reduce_era5(which_ssw):
         print(f'{ds_cgts_mint.dims = }')
         # ----------- Perform GEV fitting (on negative temperature) --------------
         gev_param_file = join(reduced_data_dir,f'gevpar_cgs{cgs_key}.nc')
-        if tododict['fit_gev']:
+        if todo['fit_gev']:
             gevpar = pipeline_base.fit_gev_mintemp(ds_cgts_mint,method='PWM')
             gevpar.to_netcdf(gev_param_file)
         else:
             gevpar = xr.open_dataarray(gev_param_file)
         # ----------------- Compute risk w.r.t. 2018 ---------------
         risk_file = join(reduced_data_dir,f'risk_wrt2018.nc')
-        if tododict['compute_risk']:
+        if todo['compute_risk']:
             dskwargs = dict(daily_stat=daily_stat,drop=True)
             risk = pipeline_base.compute_risk(
                     ds_cgts_mint.sel(**dskwargs),
@@ -194,13 +194,13 @@ def reduce_era5(which_ssw):
             risk.to_netcdf(risk_file)
         else:
             risk = xr.open_dataarray(risk_file)
-        if tododict['plot_risk_map'] and min(cgs_level) > 1:
+        if todo['plot_risk_map'] and min(cgs_level) > 1:
             fig,ax = pipeline_base.plot_risk_map(risk,locsign=-1)
             ax.set_title(r"$\mathbb{P}_{\mathrm{ERA5}}\{\min_t\langle T(t)\rangle\leq \min_t\langle T(t)\rangle_{\mathrm{ERA5,2018}}$")
             fig.savefig(join(figdir,f'risk_map_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
             plt.close(fig)
 
-        if tododict['plot_statpar_map'] and min(cgs_level) > 1:
+        if todo['plot_statpar_map'] and min(cgs_level) > 1:
             fig,axes = pipeline_base.plot_statpar_map(ds_cgts_mint.sel(daily_stat=daily_stat,drop=True),gevpar.sel(daily_stat=daily_stat,drop=True),locsign=-1)
             fig.savefig(join(figdir,f'statpar_map_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
             fig.suptitle(r"ERA5 %s"%(daily_stat))
@@ -214,7 +214,7 @@ def reduce_era5(which_ssw):
             print(f'{i_cgs_level = }')
             print(f'{i_lon = }, {i_lat = }')
             mintemp = ds_cgts_mint.sel(daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).to_numpy()
-            if tododict['fit_gev_select_regions']:
+            if todo['fit_gev_select_regions']:
                 gevpar_reg,mintemp_levels_reg = pipeline_base.fit_gev_mintemp_1d_uq(mintemp,risk_levels,method='PWM')
                 gevpar_reg.to_netcdf(join(reduced_data_dir,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
                 np.save(join(reduced_data_dir,f'mintemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'), mintemp_levels_reg)
@@ -224,7 +224,7 @@ def reduce_era5(which_ssw):
             print(f'{i_lon = }, {i_lat = }')
             print(f'{gevpar_reg.isel(boot=0) = }')
 
-            if tododict['plot_gev_select_regions']:
+            if todo['plot_gev_select_regions']:
                 lon_blocksize,lat_blocksize = ((event_region[d].stop - event_region[d].start)/cgs_level[i_d] for (i_d,d) in enumerate(('lon','lat')))
                 center_lon,center_lat = ((event_region[d].stop + event_region[d].start)/2 for (i_d,d) in enumerate(('lon','lat')))
                 lonlatstr = r'$\lambda=%d\pm%d,\phi=%d\pm%d$'%(center_lon,lon_blocksize/2,center_lat,lat_blocksize/2)
