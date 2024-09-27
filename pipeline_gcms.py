@@ -91,11 +91,18 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_init, verbose=False):
     ens_path_skeleton = join(raw_data_dir,'r*i*p*f*')
     mem_labels = [basename(p) for p in glob.glob(ens_path_skeleton)]
     print(f'{mem_labels = }')
+    print(f'{len(mem_labels) = }')
 
-    path_skeleton = join(ens_path_skeleton,'6hrPt','tas','g*','v*','*.nc')
+    if "GloSea6" == gcm: # for some reason there's a single odd version file 
+        path_skeleton = join(ens_path_skeleton,'6hrPt','tas','g*','v20230403*','*.nc')
+    else:
+        path_skeleton = join(ens_path_skeleton,'6hrPt','tas','g*','v*','*.nc')
     print(f'{path_skeleton = }')
     raw_mem_files = glob.glob(path_skeleton)
     print(f'{len(raw_mem_files) = }')
+    for rmf in raw_mem_files:
+        print(rmf)
+    assert len(raw_mem_files) == len(mem_labels)
     # 2. Spatiotemporal sub-selection and coarse-graining (cg)
     reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-06-19',gcm)
     if "feb2018" == which_ssw:
@@ -149,7 +156,7 @@ def coarse_grain_time(raw_mem_files, mem_labels, event_region, fcdate, event_tim
         ds_ens = []
         for f in raw_mem_files:
             ds_ens.append(preprocess(xr.open_dataset(f)))
-            print(f'Appended file {f}')
+            print(f'\n\nAppended file {f}, with dimensions \n{ds_ens[-1].dims}\nshape\n{ds_ens[-1].shape}')
         ds_ens = xr.concat(ds_ens, dim='member').assign_coords(member=mem_labels)
     print(f'{ds_ens.coords = }')
     # Take daily mean 
@@ -221,14 +228,15 @@ def compare_statpar_maps_2expts(i_gcm,i0_expt,i1_expt,i_init):
             plt.close(fig)
     return
 
-def compare_gcms(idx_gcms):
+def compare_gcms(which_ssw, idx_gcms):
     # Plot relative risk and absolute risk, perhaps in a 2D space 
-    cgs_levels = analysis_multiparams()
-    gcms,expts,inits = gcm_multiparams()
+    cgs_levels,select_regions = analysis_multiparams(which_ssw)
+    gcms,expts,inits = gcm_multiparams(which_ssw)
     print(f'{gcms = }')
     colors = dict({'era5': 'black', 'control': 'dodgerblue', 'free': 'limegreen', 'nudged': 'red'})
     yoffsets = dict({'control': 1/3, 'free': 0.0, 'nudged': -1/3})
-    figdir = f'/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-06-19/multimodel'
+    figdir = f'/home/users/ju26596/snapsi_analysis_figures/{which_ssw}/figures_2024-06-19/multimodel'
+    print(f'{figdir = }')
     xlims = [0.2, 5.0]
     ylims = [-0.5, len(gcms)-0.5]
     slims = (np.array([1.0, 4.0])*rcParams['lines.markersize']) # bounds on the marker size 
@@ -251,7 +259,7 @@ def compare_gcms(idx_gcms):
                 continue
             for (i_init,init) in enumerate(inits):
                 ax = axes[i_init]
-                workflow = gcm_workflow(i_gcm,0,i_init)
+                workflow = gcm_workflow(which_ssw,i_gcm,0,i_init)
                 reduced_data_dir = workflow[7]
                 reduced_data_dir_era5 = workflow[8]
                 risk_levels = workflow[12]
@@ -312,15 +320,15 @@ def compare_gcms(idx_gcms):
             
 
 
-def compare_expts(i_gcm, i_init):
+def compare_expts(which_ssw, i_gcm, i_init):
     todo = dict({
-        'plot_statpar_map_diff':           0,
-        'plot_relrisk_map':                0,
-        'plot_gev_select_regions':         0,
+        'plot_statpar_map_diff':           1,
+        'plot_relrisk_map':                1,
+        'plot_gev_select_regions':         1,
         })
     expts = []
     for i_expt in range(3):
-        gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(i_gcm,i_expt,i_init)
+        gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(which_ssw, i_gcm,i_expt,i_init)
         expts.append(expt)
     datestr = datetime.datetime.strptime(init,"%Y%m%d").strftime("%Y-%m-%d")
 
@@ -639,7 +647,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     return 
 
 if __name__ == "__main__":
-    idx_gcms = [4,1,2,6,7,8,9,10,11] #[4,9,11][2:] #[4,9,11]
+    idx_gcms = [4,9,11,1,2,6,7,8,10] #[4,9,11][2:] #[4,9,11]
     idx_expt = [0,1,2]
     idx_expt_pairs = [(1,0),(1,2)]
     idx_init = [0,1]
@@ -653,6 +661,6 @@ if __name__ == "__main__":
     if 'compare_expts' in procedures:
         for i_gcm in idx_gcms:
             for i_init in idx_init:
-                compare_expts(i_gcm, i_init)
+                compare_expts(which_ssw, i_gcm, i_init)
     if 'compare_gcms' in procedures:
-        compare_gcms(idx_gcms)
+        compare_gcms(which_ssw, idx_gcms)

@@ -135,14 +135,14 @@ def coarse_grain_time(years, year_filegroups, event_region, event_time_interval)
 
 def reduce_era5(which_ssw):
     todo = dict({
-        'coarse_grain_time':           1,
+        'coarse_grain_time':           0,
         'plot_t2m_sumstats_map':       1,
-        'coarse_grain_space':          1,
-        'fit_gev':                     1,
+        'coarse_grain_space':          0,
+        'fit_gev':                     0,
         'plot_statpar_map':            1,
-        'compute_risk':                1,
+        'compute_risk':                0,
         'plot_risk_map':               1,
-        'fit_gev_select_regions':      1,
+        'fit_gev_select_regions':      0,
         'plot_gev_select_regions':     1,
         })
     years,event_region,event_time_interval,year_filegroups,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = era5_workflow(which_ssw)
@@ -266,7 +266,7 @@ def reduce_era5(which_ssw):
 
 if __name__ == '__main__':
     print(f'Starting main')
-    reduce_era5("jan2019")
+    reduce_era5("feb2018")
 
 
 
