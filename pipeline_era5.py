@@ -51,19 +51,19 @@ def analysis_multiparams(which_ssw):
 
 def era5_workflow(which_ssw,verbose=False):
     print(f'Starting workflow setup')
+    analysis_date = '2024-10-08'
     raw_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/era5'
-    years = np.arange(1979,2019,dtype=int)
+    processed_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596'
+    years = np.arange(1980,2019,dtype=int)
     year_filegroups = []
+    reduced_data_dir = join(processed_data_dir,which_ssw,analysis_date,'era5')
+    figdir = join('/home/users/ju26596/snapsi_analysis_figures',which_ssw,analysis_date,'era5')
     if "feb2018" == which_ssw:
         event_time_interval = [datetime.datetime(2018,2,21,0), datetime.datetime(2018,3,8,22)] # for the reference year 
         event_region = dict(lat=slice(50,65),lon=slice(-10,130))
-        reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-06-19','era5')
-        figdir = f'/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-06-19/era5'
     elif "jan2019" == which_ssw:
         event_time_interval = [datetime.datetime(2019,1,1,0), datetime.datetime(2019,1,31,22)] # for the reference year 
         event_region = dict(lat=slice(30,45),lon=slice(-95,-70))
-        reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/jan2019/results_2024-06-19','era5')
-        figdir = f'/home/users/ju26596/snapsi_analysis_figures/jan2019/figures_2024-06-19/era5'
     for year in years:
         # TODO augment this with Decembers 
         year_filegroups.append(tuple(
@@ -102,7 +102,11 @@ def coarse_grain_time(years, year_filegroups, event_region, event_time_interval)
         t0 = datetime.datetime(year, t0_ref.month, t0_ref.day, t0_ref.hour)
         t1 = t0 + event_duration
         t2m_year = (
-                xr.concat([xr.open_dataarray(yf) for yf in year_filegroups[i_year]], dim='time')
+                xr.concat([
+                    xr.open_dataarray(yf).rename({'valid_time': 'time'}) 
+                    for yf in year_filegroups[i_year]
+                    ], dim='time')
+
                 .isel(latitude=slice(None,None,-1)) # Flip lat to go in increasing order
                 .rename(longitude='lon',latitude='lat')
                 )
@@ -135,14 +139,14 @@ def coarse_grain_time(years, year_filegroups, event_region, event_time_interval)
 
 def reduce_era5(which_ssw):
     todo = dict({
-        'coarse_grain_time':           0,
+        'coarse_grain_time':           1,
         'plot_t2m_sumstats_map':       1,
-        'coarse_grain_space':          0,
-        'fit_gev':                     0,
+        'coarse_grain_space':          1,
+        'fit_gev':                     1,
         'plot_statpar_map':            1,
-        'compute_risk':                0,
+        'compute_risk':                1,
         'plot_risk_map':               1,
-        'fit_gev_select_regions':      0,
+        'fit_gev_select_regions':      1,
         'plot_gev_select_regions':     1,
         })
     years,event_region,event_time_interval,year_filegroups,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = era5_workflow(which_ssw)
@@ -181,13 +185,14 @@ def reduce_era5(which_ssw):
             gevpar.to_netcdf(gev_param_file)
         else:
             gevpar = xr.open_dataarray(gev_param_file)
-        # ----------------- Compute risk w.r.t. 2018 ---------------
-        risk_file = join(reduced_data_dir,f'risk_wrt2018.nc')
+        # ----------------- Compute risk w.r.t. the event year ---------------
+        event_year = event_time_interval[0].year
+        risk_file = join(reduced_data_dir,f'risk_wrt{event_year}.nc')
         if todo['compute_risk']:
             dskwargs = dict(daily_stat=daily_stat,drop=True)
             risk = pipeline_base.compute_risk(
                     ds_cgts_mint.sel(**dskwargs),
-                    ds_cgts_mint.sel(member=2018,**dskwargs),
+                    ds_cgts_mint.sel(member=event_year,**dskwargs),
                     gevpar.sel(**dskwargs),
                     gevpar.sel(**dskwargs),
                     locsign=-1)
@@ -196,7 +201,7 @@ def reduce_era5(which_ssw):
             risk = xr.open_dataarray(risk_file)
         if todo['plot_risk_map'] and min(cgs_level) > 1:
             fig,ax = pipeline_base.plot_risk_map(risk,locsign=-1)
-            ax.set_title(r"$\mathbb{P}_{\mathrm{ERA5}}\{\min_t\langle T(t)\rangle\leq \min_t\langle T(t)\rangle_{\mathrm{ERA5,2018}}$")
+            ax.set_title(r"$\mathbb{P}_{\mathrm{ERA5}}\{\min_t\langle T(t)\rangle\leq \min_t\langle T(t)\rangle_{\mathrm{ERA5,%s}}$"%(event_year))
             fig.savefig(join(figdir,f'risk_map_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
             plt.close(fig)
 
@@ -266,7 +271,8 @@ def reduce_era5(which_ssw):
 
 if __name__ == '__main__':
     print(f'Starting main')
-    reduce_era5("feb2018")
+    for which_ssw in ["feb2018","jan2019"]:
+        reduce_era5(which_ssw)
 
 
 

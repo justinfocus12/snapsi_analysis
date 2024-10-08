@@ -103,20 +103,22 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_init, verbose=False):
     for rmf in raw_mem_files:
         print(rmf)
     assert len(raw_mem_files) == len(mem_labels)
+    
+
+    analysis_date = '2024-10-08'
     # 2. Spatiotemporal sub-selection and coarse-graining (cg)
-    reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-06-19',gcm)
+    reduced_data_dir = join(f'/gws/nopw/j04/snapsi/processed/wg2/ju26596',which_gcm,analysis_date,gcm)
     if "feb2018" == which_ssw:
         event_time_interval = [datetime.datetime(2018,2,21,0), datetime.datetime(2018,3,8,22)] # for the reference year 
         event_region = dict(lat=slice(50,65),lon=slice(-10,130))
-        reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-06-19',gcm)
-        reduced_data_dir_era5 = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/feb2018/results_2024-06-19/era5'
-        figdir = f'/home/users/ju26596/snapsi_analysis_figures/feb2018/figures_2024-06-19/{gcm}'
     elif "jan2019" == which_ssw:
         event_time_interval = [datetime.datetime(2019,1,1,0), datetime.datetime(2019,1,31,22)] # for the reference year 
         event_region = dict(lat=slice(30,45),lon=slice(-95,-70))
-        reduced_data_dir = join('/gws/nopw/j04/snapsi/processed/wg2/ju26596/jan2019/results_2024-06-19',gcm)
-        figdir = f'/home/users/ju26596/snapsi_analysis_figures/jan2019/figures_2024-06-19/{gcm}'
-        reduced_data_dir_era5 = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/jan2019/results_2024-06-19/era5'
+
+    processed_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596'
+    reduced_data_dir = join(processed_data_dir,which_ssw,analysis_date,gcm)
+    reduced_data_dir_era5 = join(processed_data_dir,which_ssw,analysis_date,'era5')
+    figdir = join('/home/users/ju26596/snapsi_analysis_figures',which_ssw,analysis_date,gcm)
     makedirs(reduced_data_dir,exist_ok=True)
     makedirs(figdir,exist_ok=True)
     # spatial coarse graining (cgs)
