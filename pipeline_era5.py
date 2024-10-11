@@ -51,10 +51,10 @@ def analysis_multiparams(which_ssw):
 
 def era5_workflow(which_ssw,verbose=False):
     print(f'Starting workflow setup')
-    analysis_date = '2024-10-08'
+    analysis_date = '2024-10-09'
     raw_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/era5'
     processed_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596'
-    years = np.arange(1980,2019,dtype=int)
+    years = np.arange(1980,2020,dtype=int)
     year_filegroups = []
     reduced_data_dir = join(processed_data_dir,which_ssw,analysis_date,'era5')
     figdir = join('/home/users/ju26596/snapsi_analysis_figures',which_ssw,analysis_date,'era5')
@@ -67,8 +67,8 @@ def era5_workflow(which_ssw,verbose=False):
     for year in years:
         # TODO augment this with Decembers 
         year_filegroups.append(tuple(
-            join(raw_data_dir,f't2m_nhem_{year:04}-{month:02}.nc')
-            for month in [1,2,3]
+            [join(raw_data_dir,f't2m_{(year-1):04}-12.nc')] + 
+            [join(raw_data_dir,f't2m_{year:04}-{month:02}.nc') for month in [1,2,3]]
             ))
 
 
@@ -98,6 +98,7 @@ def coarse_grain_time(years, year_filegroups, event_region, event_time_interval)
     event_duration = t1_ref - t0_ref
     for i_year,year in enumerate(years):
         print(f'Ingesting year {year}')
+        print(f'{year_filegroups[i_year] = }')
         # Modify the time selection
         t0 = datetime.datetime(year, t0_ref.month, t0_ref.day, t0_ref.hour)
         t1 = t0 + event_duration
@@ -122,20 +123,22 @@ def coarse_grain_time(years, year_filegroups, event_region, event_time_interval)
         print(f'{t2m_year.shape = }, {t2m_year.dims = }')
         t2m.append(t2m_year)
     t2m = xr.concat(t2m,dim='member') 
+    print(f"t2m.coords = ")
+    print(t2m.coords)
+    print(f'{t2m.coords["time"] = }')
+    tt = t2m.coords['time'].to_numpy()
+    print(f'{tt = }')
+    assert all([type(t) == type(tt[0]) for t in tt])
     # Take daily mean
-    daily_mean = (
-            t2m 
-            .coarsen({'time': 4}, side='left', coord_func='min')
-            .mean()
-            ).compute()
-    daily_min = (
-            t2m
-            .coarsen({'time': 4}, side='left', coord_func='min')
-            .min()
-            ).compute()
+    daily_mean = t2m.isel(time=range(0,t2m['time'].size,4))
+    daily_min = t2m.isel(time=range(0,t2m['time'].size,4))
+    for i in range(3):
+        daily_mean += t2m.isel(time=range(i,t2m['time'].size,4)).assign_coords({'time': daily_mean['time']})
+        daily_min = np.minimum(daily_min, t2m.isel(time=range(i,t2m['time'].size,4)).assign_coords({'time': daily_min['time']}))
+    daily_mean /= 4
     t2m_cgt = xr.concat([daily_mean,daily_min], dim='daily_stat').assign_coords(daily_stat=['daily_mean','daily_min'])
     print(f'{t2m_cgt.dims = }, {t2m_cgt.shape = }')
-    return t2m_cgt
+    return (t2m_cgt, False)
 
 def reduce_era5(which_ssw):
     todo = dict({
@@ -153,7 +156,9 @@ def reduce_era5(which_ssw):
     boot_type = 'percentile'
     ens_file_cgt = join(reduced_data_dir,f't2m_cgt1day.nc')
     if todo['coarse_grain_time']:
-        ds_cgt = coarse_grain_time(years, year_filegroups, event_region, event_time_interval)
+        ds_cgt,err_flag = coarse_grain_time(years, year_filegroups, event_region, event_time_interval)
+        if err_flag:
+            return ds_cgt
         ds_cgt.to_netcdf(ens_file_cgt)
     else:
         ds_cgt = xr.open_dataarray(ens_file_cgt)
@@ -272,7 +277,7 @@ def reduce_era5(which_ssw):
 if __name__ == '__main__':
     print(f'Starting main')
     for which_ssw in ["feb2018","jan2019"]:
-        reduce_era5(which_ssw)
+        result = reduce_era5(which_ssw)
 
 
 

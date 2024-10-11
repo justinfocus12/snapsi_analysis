@@ -32,6 +32,8 @@ def gcm_multiparams(which_ssw):
         inits = ['20180125','20180208']
     elif "jan2019" == which_ssw:
         inits = ['20181213','20190108']
+    elif "sep2019" == which_ssw:
+        inits = ['s20190829','20191001']
     return gcms, expts, inits
 
 def analysis_multiparams(which_ssw):
@@ -105,13 +107,16 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_init, verbose=False):
     assert len(raw_mem_files) == len(mem_labels)
     
 
-    analysis_date = '2024-10-08'
+    analysis_date = '2024-10-09'
     # 2. Spatiotemporal sub-selection and coarse-graining (cg)
-    reduced_data_dir = join(f'/gws/nopw/j04/snapsi/processed/wg2/ju26596',which_gcm,analysis_date,gcm)
+    reduced_data_dir = join(f'/gws/nopw/j04/snapsi/processed/wg2/ju26596',gcm,analysis_date,gcm)
     if "feb2018" == which_ssw:
         event_time_interval = [datetime.datetime(2018,2,21,0), datetime.datetime(2018,3,8,22)] # for the reference year 
         event_region = dict(lat=slice(50,65),lon=slice(-10,130))
     elif "jan2019" == which_ssw:
+        event_time_interval = [datetime.datetime(2019,1,1,0), datetime.datetime(2019,1,31,22)] # for the reference year 
+        event_region = dict(lat=slice(30,45),lon=slice(-95,-70))
+    elif "sep2019" == which_ssw:
         event_time_interval = [datetime.datetime(2019,1,1,0), datetime.datetime(2019,1,31,22)] # for the reference year 
         event_region = dict(lat=slice(30,45),lon=slice(-95,-70))
 
@@ -237,7 +242,7 @@ def compare_gcms(which_ssw, idx_gcms):
     print(f'{gcms = }')
     colors = dict({'era5': 'black', 'control': 'dodgerblue', 'free': 'limegreen', 'nudged': 'red'})
     yoffsets = dict({'control': 1/3, 'free': 0.0, 'nudged': -1/3})
-    figdir = f'/home/users/ju26596/snapsi_analysis_figures/{which_ssw}/figures_2024-06-19/multimodel'
+    figdir = f'/home/users/ju26596/snapsi_analysis_figures/{which_ssw}/2024-10-09/multimodel'
     print(f'{figdir = }')
     xlims = [0.2, 5.0]
     ylims = [-0.5, len(gcms)-0.5]
@@ -282,7 +287,11 @@ def compare_gcms(which_ssw, idx_gcms):
                             for i_lat in range(rr.shape[1]):
                                 mintemp_levels_reg_0 = np.load(join(reduced_data_dir,f'mintemp_levels_reg_e{expt0}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
                                 mintemp_levels_reg_1 = np.load(join(reduced_data_dir,f'mintemp_levels_reg_e{expt1}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
-                                mintemp_reg_era5 = ds_cgts_mints_era5.sel(member=2018,daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).item()
+                                if "feb2018" == which_ssw:
+                                    target_year = 2018
+                                elif "jan2019" == which_ssw:
+                                    target_year = 2019
+                                mintemp_reg_era5 = ds_cgts_mints_era5.sel(member=target_year,daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).item()
                                 mintemp_levels_range = tuple(extfun(mintemp_reg_era5).item() for extfun in (np.min, np.max))
                                 func = lambda T: np.interp(mintemp_reg_era5, T, risk_levels)
                                 risk_at_levels_0 = np.apply_along_axis(func, 1, mintemp_levels_reg_0)
@@ -388,8 +397,12 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 colors = dict({'era5': 'black', 'control': 'dodgerblue', 'free': 'limegreen', 'nudged': 'red'})
 
                 fig,axes = plt.subplots(ncols=2, figsize=(12,4), sharey=True)
+                if "feb2018" == which_ssw:
+                    target_year = 2018
+                elif "jan2019" == which_ssw:
+                    target_year = 2019
                 for ax in axes: 
-                    ax.axhline(mintemps['era5'].sel(member=2018).item(), color='black', linestyle='--')
+                    ax.axhline(mintemps['era5'].sel(member=target_year).item(), color='black', linestyle='--')
                 ax = axes[0]
                 handles = []
 
@@ -527,11 +540,16 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
         gevpar_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_cgs{cgs_key}.nc'))
         # ----------------- Compute risk w.r.t. ERA5 ---------------
         risk_file = join(reduced_data_dir,f'risk_e{expt}_i{init}_cgs{cgs_key}.nc')
+
         if todo['compute_risk']:
             dskwargs = dict(daily_stat=daily_stat,drop=True)
+            if "feb2018" == which_ssw:
+                target_year = 2018
+            elif "jan2019" == which_ssw:
+                target_year = 2019
             risk = pipeline_base.compute_risk(
                     ds_cgts_mint.sel(**dskwargs),
-                    ds_cgts_mint_era5.sel(member=2018,**dskwargs),
+                    ds_cgts_mint_era5.sel(member=target_year,**dskwargs),
                     gevpar.sel(**dskwargs),
                     gevpar_era5.sel(**dskwargs),
                     locsign=-1)
@@ -653,16 +671,17 @@ if __name__ == "__main__":
     idx_expt = [0,1,2]
     idx_expt_pairs = [(1,0),(1,2)]
     idx_init = [0,1]
-    which_ssw = 'jan2019'
+    ssws = ['feb2018','jan2019','sep2019'][:2]
     procedures = sys.argv[1:]
-    if 'reduce' in procedures:
-        for i_gcm in idx_gcms:
-            for i_expt in idx_expt:
+    for which_ssw in ssws:
+        if 'reduce' in procedures:
+            for i_gcm in idx_gcms:
+                for i_expt in idx_expt:
+                    for i_init in idx_init:
+                        reduce_gcm(which_ssw,i_gcm,i_expt,i_init)
+        if 'compare_expts' in procedures:
+            for i_gcm in idx_gcms:
                 for i_init in idx_init:
-                    reduce_gcm(which_ssw,i_gcm,i_expt,i_init)
-    if 'compare_expts' in procedures:
-        for i_gcm in idx_gcms:
-            for i_init in idx_init:
-                compare_expts(which_ssw, i_gcm, i_init)
-    if 'compare_gcms' in procedures:
-        compare_gcms(which_ssw, idx_gcms)
+                    compare_expts(which_ssw, i_gcm, i_init)
+        if 'compare_gcms' in procedures:
+            compare_gcms(which_ssw, idx_gcms)
