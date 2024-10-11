@@ -75,7 +75,7 @@ def plot_risk_map(risk, locsign=1, **other_pcmargs):
     fig,ax = plt.subplots(subplot_kw={'projection': ccrs.Orthographic(central_longitude=clon,central_latitude=clat)})
     pcmargs = dict(
             x='lon',y='lat', transform=ccrs.PlateCarree(),
-            cmap=plt.cm.RdYlBu,
+            cmap=plt.cm.RdYlBu if locsign==-1 else plt.cm.RdYlBu_r,
             vmin=0.0, vmax=1.0,
             #norm=mplcolors.LogNorm(vmin=0.2,vmax=5),
             cbar_kwargs=dict({
@@ -216,15 +216,16 @@ def plot_statpar_map_difference(ds_cgts_0,ds_cgts_1,gevpar_0,gevpar_1,locsign=1)
         ax.gridlines()
     return fig,axes
 
-def fit_gev_mintemp(ds_cgts_mint,method='MLE'):
+def fit_gev_exttemp(ds_cgts_extt,ext_sign,method='MLE'):
+    # ext_sign = 1 means hot; -1 means cold
     # Take care of negative signs appropriately 
-    memdim = ds_cgts_mint.dims.index('member')
+    memdim = ds_cgts_extt.dims.index('member')
     print(f'{memdim = }')
     func = lambda X: stfu.fit_gev_single(X, method=method)
-    gevpar_array = np.apply_along_axis(func, memdim, -ds_cgts_mint.to_numpy())
-    gevpar_dims = list(ds_cgts_mint.dims).copy()
+    gevpar_array = np.apply_along_axis(func, memdim, ext_sign*ds_cgts_extt.to_numpy())
+    gevpar_dims = list(ds_cgts_extt.dims).copy()
     gevpar_dims[memdim] = 'param'
-    gevpar_coords = dict(ds_cgts_mint.coords).copy()
+    gevpar_coords = dict(ds_cgts_extt.coords).copy()
     gevpar_coords.pop('member')
     gevpar_coords['param'] = ['shape','loc','scale']
     gevpar = xr.DataArray(

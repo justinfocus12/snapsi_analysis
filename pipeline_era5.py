@@ -47,6 +47,14 @@ def analysis_multiparams(which_ssw):
                 ((i,j) for i in range(5) for j in range(3)),
                 (),
                 )
+    elif "sep2019" == which_ssw:
+        cgs_levels = [(1,1),(2,2),(5,5),(15,15)]
+        select_regions = ( # Indexed by cgs_level
+                ((0,0),), # level (1,1)
+                ((0,0),(1,0),(0,1),(1,1)), # level (2,1)
+                ((i,j) for i in range(5) for j in range(5)),
+                (),
+                )
     return cgs_levels,select_regions
 
 def era5_workflow(which_ssw,verbose=False):
@@ -61,15 +69,29 @@ def era5_workflow(which_ssw,verbose=False):
     if "feb2018" == which_ssw:
         event_time_interval = [datetime.datetime(2018,2,21,0), datetime.datetime(2018,3,8,22)] # for the reference year 
         event_region = dict(lat=slice(50,65),lon=slice(-10,130))
+        for year in years:
+            # TODO augment this with Decembers 
+            year_filegroups.append(tuple(
+                [join(raw_data_dir,f't2m_{(year-1):04}-12.nc')] + 
+                [join(raw_data_dir,f't2m_{year:04}-{month:02}.nc') for month in [1,2,3]]
+                ))
     elif "jan2019" == which_ssw:
         event_time_interval = [datetime.datetime(2019,1,1,0), datetime.datetime(2019,1,31,22)] # for the reference year 
+        for year in years:
+            # TODO augment this with Decembers 
+            year_filegroups.append(tuple(
+                [join(raw_data_dir,f't2m_{(year-1):04}-12.nc')] + 
+                [join(raw_data_dir,f't2m_{year:04}-{month:02}.nc') for month in [1,2,3]]
+                ))
         event_region = dict(lat=slice(30,45),lon=slice(-95,-70))
-    for year in years:
-        # TODO augment this with Decembers 
-        year_filegroups.append(tuple(
-            [join(raw_data_dir,f't2m_{(year-1):04}-12.nc')] + 
-            [join(raw_data_dir,f't2m_{year:04}-{month:02}.nc') for month in [1,2,3]]
-            ))
+    elif "sep2019" == which_ssw:
+        event_time_interval = [datetime.datetime(2019,10,15,0), datetime.datetime(2019,11,15,22)]
+        event_region = dict(lat=slice(-50,-5), lon=slice(110,155))
+        for year in years:
+            # TODO augment this with Decembers 
+            year_filegroups.append(tuple(
+                [join(raw_data_dir,f't2m_{year:04}-{month:02}.nc') for month in [9,10,11]]
+                ))
 
 
     makedirs(reduced_data_dir,exist_ok=True)
@@ -132,11 +154,13 @@ def coarse_grain_time(years, year_filegroups, event_region, event_time_interval)
     # Take daily mean
     daily_mean = t2m.isel(time=range(0,t2m['time'].size,4))
     daily_min = t2m.isel(time=range(0,t2m['time'].size,4))
+    daily_max = t2m.isel(time=range(0,t2m['time'].size,4))
     for i in range(3):
         daily_mean += t2m.isel(time=range(i,t2m['time'].size,4)).assign_coords({'time': daily_mean['time']})
         daily_min = np.minimum(daily_min, t2m.isel(time=range(i,t2m['time'].size,4)).assign_coords({'time': daily_min['time']}))
+        daily_max = np.maximum(daily_max, t2m.isel(time=range(i,t2m['time'].size,4)).assign_coords({'time': daily_max['time']}))
     daily_mean /= 4
-    t2m_cgt = xr.concat([daily_mean,daily_min], dim='daily_stat').assign_coords(daily_stat=['daily_mean','daily_min'])
+    t2m_cgt = xr.concat([daily_mean,daily_min,daily_max], dim='daily_stat').assign_coords(daily_stat=['daily_mean','daily_min','daily_max'])
     print(f'{t2m_cgt.dims = }, {t2m_cgt.shape = }')
     return (t2m_cgt, False)
 
@@ -163,10 +187,22 @@ def reduce_era5(which_ssw):
     else:
         ds_cgt = xr.open_dataarray(ens_file_cgt)
 
-    ds_cgt_mint = ds_cgt.min(dim='time')
+    if "sep2019" == which_ssw:
+        ext_sign = 1
+        ext_symb = "max"
+        event_year = "2019"
+    elif "jan2019" == which_ssw:
+        ext_sign = -1
+        ext_symb = "min"
+        event_year = "2019"
+    elif "feb2018" == which_ssw:
+        ext_sign = -1
+        ext_symb = "min"
+        event_year = "2018"
+    ds_cgt_extt = ext_sign * (ext_sign*ds_cgt).max(dim='time')
     if todo['plot_t2m_sumstats_map']:
-        for daily_stat in ['daily_min','daily_mean']:
-            fig,axes = pipeline_base.plot_sumstats_map(ds_cgt_mint.sel(daily_stat=daily_stat))
+        for daily_stat in ['daily_mean']:
+            fig,axes = pipeline_base.plot_sumstats_map(ds_cgt_extt.sel(daily_stat=daily_stat))
             fig.suptitle(f'ERA5 {daily_stat}')
             fig.savefig(join(figdir,f't2m_sumstats_map_{daily_stat}.png'), **pltkwargs)
             plt.close(fig)
@@ -181,12 +217,12 @@ def reduce_era5(which_ssw):
         else:
             ds_cgts = xr.open_dataarray(ens_file_cgts)
         # ---- Minimize in time -----------------------------
-        ds_cgts_mint = ds_cgts.min(dim='time')
-        print(f'{ds_cgts_mint.dims = }')
+        ds_cgts_extt = ext_sign * (ext_sign * ds_cgts).max(dim='time')
+        print(f'{ds_cgts_extt.dims = }')
         # ----------- Perform GEV fitting (on negative temperature) --------------
         gev_param_file = join(reduced_data_dir,f'gevpar_cgs{cgs_key}.nc')
         if todo['fit_gev']:
-            gevpar = pipeline_base.fit_gev_mintemp(ds_cgts_mint,method='PWM')
+            gevpar = pipeline_base.fit_gev_exttemp(ds_cgts_extt,method='PWM')
             gevpar.to_netcdf(gev_param_file)
         else:
             gevpar = xr.open_dataarray(gev_param_file)
@@ -196,22 +232,22 @@ def reduce_era5(which_ssw):
         if todo['compute_risk']:
             dskwargs = dict(daily_stat=daily_stat,drop=True)
             risk = pipeline_base.compute_risk(
-                    ds_cgts_mint.sel(**dskwargs),
-                    ds_cgts_mint.sel(member=event_year,**dskwargs),
+                    ds_cgts_extt.sel(**dskwargs),
+                    ds_cgts_extt.sel(member=event_year,**dskwargs),
                     gevpar.sel(**dskwargs),
                     gevpar.sel(**dskwargs),
-                    locsign=-1)
+                    locsign=ext_sign)
             risk.to_netcdf(risk_file)
         else:
             risk = xr.open_dataarray(risk_file)
         if todo['plot_risk_map'] and min(cgs_level) > 1:
-            fig,ax = pipeline_base.plot_risk_map(risk,locsign=-1)
-            ax.set_title(r"$\mathbb{P}_{\mathrm{ERA5}}\{\min_t\langle T(t)\rangle\leq \min_t\langle T(t)\rangle_{\mathrm{ERA5,%s}}$"%(event_year))
+            fig,ax = pipeline_base.plot_risk_map(risk,locsign=ext_sign)
+            ax.set_title(r"$\mathbb{P}_{\mathrm{ERA5}}\{\%s_t\langle T(t)\rangle\leq \%s_t\langle T(t)\rangle_{\mathrm{ERA5,%s}}$"%(ext_symb,ext_symb,event_year))
             fig.savefig(join(figdir,f'risk_map_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
             plt.close(fig)
 
         if todo['plot_statpar_map'] and min(cgs_level) > 1:
-            fig,axes = pipeline_base.plot_statpar_map(ds_cgts_mint.sel(daily_stat=daily_stat,drop=True),gevpar.sel(daily_stat=daily_stat,drop=True),locsign=-1)
+            fig,axes = pipeline_base.plot_statpar_map(ds_cgts_extt.sel(daily_stat=daily_stat,drop=True),gevpar.sel(daily_stat=daily_stat,drop=True),locsign=ext_sign)
             fig.savefig(join(figdir,f'statpar_map_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
             fig.suptitle(r"ERA5 %s"%(daily_stat))
             plt.close(fig)
@@ -220,16 +256,16 @@ def reduce_era5(which_ssw):
         # Do a more thorough uncertainty quantification at a specific site or region, using bootstrap analysis and goodness-of-fit etc. Maybe parallelize over all sites too
 
         for (i_lon,i_lat) in select_regions[i_cgs_level]:
-            print(f'{ds_cgts_mint.coords = }')
+            print(f'{ds_cgts_extt.coords = }')
             print(f'{i_cgs_level = }')
             print(f'{i_lon = }, {i_lat = }')
-            mintemp = ds_cgts_mint.sel(daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).to_numpy()
+            exttemp = ds_cgts_extt.sel(daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).to_numpy()
             if todo['fit_gev_select_regions']:
-                gevpar_reg,mintemp_levels_reg = pipeline_base.fit_gev_mintemp_1d_uq(mintemp,risk_levels,method='PWM')
+                gevpar_reg,exttemp_levels_reg = pipeline_base.fit_gev_exttemp_1d_uq(exttemp,ext_sign,risk_levels,method='PWM')
                 gevpar_reg.to_netcdf(join(reduced_data_dir,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
-                np.save(join(reduced_data_dir,f'mintemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'), mintemp_levels_reg)
+                np.save(join(reduced_data_dir,f'exttemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'), exttemp_levels_reg)
             else:
-                mintemp_levels_reg = np.load(join(reduced_data_dir,f'mintemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
+                exttemp_levels_reg = np.load(join(reduced_data_dir,f'exttemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
                 gevpar_reg = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
             print(f'{i_lon = }, {i_lat = }')
             print(f'{gevpar_reg.isel(boot=0) = }')
@@ -242,29 +278,29 @@ def reduce_era5(which_ssw):
                     lonlatstr = r'%s (whole region)'%(lonlatstr)
 
                 fig,ax = plt.subplots()
-                order = np.argsort(mintemp)
+                order = np.argsort(exttemp)
                 rank = np.argsort(order)
-                risk_empirical = np.arange(1,len(mintemp)+1)/len(mintemp)
-                ax.scatter(risk_empirical, mintemp[order], color='black', marker='+')
+                risk_empirical = np.arange(1,len(exttemp)+1)/len(exttemp)
+                ax.scatter(risk_empirical, exttemp[order], color='black', marker='+')
                 shape,loc,scale = (gevpar_reg.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
                 param_label = '\n'.join([
-                    r'$\mu=%d$'%(-loc),
+                    r'$\mu=%d$'%(ext_sign*loc),
                     r'$\sigma=%d$'%(scale),
                     r'$\xi=%+.2f$'%(shape)
                     ])
-                # Special marker for 2018
-                i_mem_2018 = np.where(ds_cgts_mint.member == 2018)[0][0]
+                # Special marker for the year 
+                i_mem_event_year = np.where(ds_cgts_extt.member == event_year)[0][0]
 
-                ax.scatter(risk_empirical[rank[i_mem_2018]], mintemp[i_mem_2018], color='black', marker='o')
-                h, = ax.plot(risk_levels,mintemp_levels_reg[0,:],color='black', label=param_label)
-                boot_quant_lo,boot_quant_hi = (np.quantile(mintemp_levels_reg[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
+                ax.scatter(risk_empirical[rank[i_mem_event_year]], exttemp[i_mem_event_year], color='black', marker='o')
+                h, = ax.plot(risk_levels,exttemp_levels_reg[0,:],color='black', label=param_label)
+                boot_quant_lo,boot_quant_hi = (np.quantile(exttemp_levels_reg[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
                 if boot_type == 'percentile':
                     lo,hi = boot_quant_lo,boot_quant_hi
                 else:
                     lo,hi = 2*risk_ratio[0,:]-boot_quant_hi, 2*risk_ratio[0,:]-boot_quant_lo
                 ax.fill_between(risk_levels, lo, hi, fc='gray', ec='none', alpha=0.3, zorder=-1)
                 ax.set_xscale('log')
-                ax.set_xlabel(r'$\mathbb{P}\{\min_t\langle T(t)\rangle_{\mathrm{region}}\leq T\}$')
+                ax.set_xlabel(r'$\mathbb{P}\{\%s_t\langle T(t)\rangle_{\mathrm{region}}\leq T\}$'%(ext_symb))
                 ax.set_ylabel(r'$T$')
                 ax.set_title(f'ERA5 at {lonlatstr}')
                 ax.legend(handles=[h])
@@ -276,7 +312,7 @@ def reduce_era5(which_ssw):
 
 if __name__ == '__main__':
     print(f'Starting main')
-    for which_ssw in ["feb2018","jan2019"]:
+    for which_ssw in ["feb2018","jan2019","sep2019"][2:]:
         result = reduce_era5(which_ssw)
 
 
