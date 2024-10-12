@@ -85,7 +85,7 @@ def era5_workflow(which_ssw,verbose=False):
                 ))
         event_region = dict(lat=slice(30,45),lon=slice(-95,-70))
     elif "sep2019" == which_ssw:
-        event_time_interval = [datetime.datetime(2019,10,15,0), datetime.datetime(2019,11,15,22)]
+        event_time_interval = [datetime.datetime(2019,10,1,0), datetime.datetime(2019,10,14,22)]
         event_region = dict(lat=slice(-50,-5), lon=slice(110,155))
         for year in years:
             # TODO augment this with Decembers 
@@ -190,15 +190,15 @@ def reduce_era5(which_ssw):
     if "sep2019" == which_ssw:
         ext_sign = 1
         ext_symb = "max"
-        event_year = "2019"
+        event_year = 2019
     elif "jan2019" == which_ssw:
         ext_sign = -1
         ext_symb = "min"
-        event_year = "2019"
+        event_year = 2019
     elif "feb2018" == which_ssw:
         ext_sign = -1
         ext_symb = "min"
-        event_year = "2018"
+        event_year = 2018
     ds_cgt_extt = ext_sign * (ext_sign*ds_cgt).max(dim='time')
     if todo['plot_t2m_sumstats_map']:
         for daily_stat in ['daily_mean']:
@@ -222,12 +222,11 @@ def reduce_era5(which_ssw):
         # ----------- Perform GEV fitting (on negative temperature) --------------
         gev_param_file = join(reduced_data_dir,f'gevpar_cgs{cgs_key}.nc')
         if todo['fit_gev']:
-            gevpar = pipeline_base.fit_gev_exttemp(ds_cgts_extt,method='PWM')
+            gevpar = pipeline_base.fit_gev_exttemp(ds_cgts_extt,ext_sign,method='PWM')
             gevpar.to_netcdf(gev_param_file)
         else:
             gevpar = xr.open_dataarray(gev_param_file)
         # ----------------- Compute risk w.r.t. the event year ---------------
-        event_year = event_time_interval[0].year
         risk_file = join(reduced_data_dir,f'risk_wrt{event_year}.nc')
         if todo['compute_risk']:
             dskwargs = dict(daily_stat=daily_stat,drop=True)
@@ -261,7 +260,7 @@ def reduce_era5(which_ssw):
             print(f'{i_lon = }, {i_lat = }')
             exttemp = ds_cgts_extt.sel(daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).to_numpy()
             if todo['fit_gev_select_regions']:
-                gevpar_reg,exttemp_levels_reg = pipeline_base.fit_gev_exttemp_1d_uq(exttemp,ext_sign,risk_levels,method='PWM')
+                gevpar_reg,exttemp_levels_reg = pipeline_base.fit_gev_exttemp_1d_uq(exttemp,risk_levels,ext_sign,method='PWM')
                 gevpar_reg.to_netcdf(join(reduced_data_dir,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
                 np.save(join(reduced_data_dir,f'exttemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'), exttemp_levels_reg)
             else:
@@ -280,7 +279,10 @@ def reduce_era5(which_ssw):
                 fig,ax = plt.subplots()
                 order = np.argsort(exttemp)
                 rank = np.argsort(order)
-                risk_empirical = np.arange(1,len(exttemp)+1)/len(exttemp)
+                if ext_sign == -1:
+                    risk_empirical = np.arange(1,len(exttemp)+1)/len(exttemp)
+                else:
+                    risk_empirical = np.arange(len(exttemp),0,-1)/len(exttemp)
                 ax.scatter(risk_empirical, exttemp[order], color='black', marker='+')
                 shape,loc,scale = (gevpar_reg.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
                 param_label = '\n'.join([
@@ -308,7 +310,7 @@ def reduce_era5(which_ssw):
                 fig.savefig(join(figdir,f'riskplot_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
                 plt.close(fig)
     ds_cgt.close()
-    ds_cgt_mint.close()
+    ds_cgt_extt.close()
 
 if __name__ == '__main__':
     print(f'Starting main')

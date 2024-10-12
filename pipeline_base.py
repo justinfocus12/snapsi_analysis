@@ -234,12 +234,12 @@ def fit_gev_exttemp(ds_cgts_extt,ext_sign,method='MLE'):
             data=gevpar_array)
     return gevpar
 
-def fit_gev_mintemp_1d_uq(mintemp, risk_levels, method='MLE', n_boot=1000):
+def fit_gev_exttemp_1d_uq(exttemp, risk_levels, ext_sign, method='MLE', n_boot=1000):
     # do bootstrapping to get confidence intervals on return levels, etc. 
-    gevpar_dict = stfu.fit_statistical_model(-mintemp, 'gev', n_boot=n_boot, method=method)
+    gevpar_dict = stfu.fit_statistical_model(ext_sign*exttemp, 'gev', n_boot=n_boot, method=method)
     gevpar = xr.DataArray(coords={'param': ['shape','loc','scale'], 'boot': np.arange(n_boot+1)}, data=np.array([gevpar_dict[p] for p in ['shape','loc','scale']]))
     # Compute quantiles corresponding to risk levels 
-    levels = -stfu.quantile_parametric('gev', gevpar_dict, risk_levels)
+    levels = ext_sign*stfu.quantile_parametric('gev', gevpar_dict, risk_levels)
     print(f'{levels = }')
     return gevpar, levels
 
