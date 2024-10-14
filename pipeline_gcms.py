@@ -64,6 +64,12 @@ def analysis_multiparams(which_ssw):
                 ((i,j) for i in range(5) for j in range(5)),
                 (),
                 )
+        cgs_levels = [(1,1),(2,2),(7,6)]
+        select_regions = ( # Indexed by cgs_level
+                ((0,0),), # level (1,1)
+                ((0,0),(1,0),(0,1),(1,1)), # level (2,1)
+                ((i,j) for i in range(7) for j in range(6)),
+                )
     return cgs_levels,select_regions
 
 
@@ -126,7 +132,7 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_init, verbose=False):
         event_region = dict(lat=slice(30,45),lon=slice(-95,-70))
     elif "sep2019" == which_ssw:
         event_time_interval = [datetime.datetime(2019,10,1,0), datetime.datetime(2019,10,14,22)]
-        event_region = dict(lat=slice(-50,-5), lon=slice(110,155))
+        event_region = dict(lat=slice(-46,-10), lon=slice(112,154))
 
     processed_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596'
     reduced_data_dir = join(processed_data_dir,which_ssw,analysis_date,gcm)
@@ -250,6 +256,18 @@ def compare_statpar_maps_2expts(i_gcm,i0_expt,i1_expt,i_init):
 
 def compare_gcms(which_ssw, idx_gcms):
     # Plot relative risk and absolute risk, perhaps in a 2D space 
+    if "sep2019" == which_ssw:
+        ext_sign = 1
+        ext_symb = "max"
+        event_year = 2019
+    elif "jan2019" == which_ssw:
+        ext_sign = -1
+        ext_symb = "min"
+        event_year = 2019
+    elif "feb2018" == which_ssw:
+        ext_sign = -1
+        ext_symb = "min"
+        event_year = 2018
     cgs_levels,select_regions = analysis_multiparams(which_ssw)
     gcms,expts,inits = gcm_multiparams(which_ssw)
     print(f'{gcms = }')
@@ -295,21 +313,21 @@ def compare_gcms(which_ssw, idx_gcms):
                     # Add error bars if the level of coarse-graining is 1x1
                     if len(handles) < 3: handles.append(h)
                     if i_cgs_level == 0:
-                        ds_cgts_mints_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc')).min('time')
+                        ds_cgts_extts_era5 = (xr.open_dataarray(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc')) * ext_sign).max('time') * ext_sign
                         for i_lon in range(rr.shape[0]):
                             for i_lat in range(rr.shape[1]):
-                                mintemp_levels_reg_0 = np.load(join(reduced_data_dir,f'mintemp_levels_reg_e{expt0}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
-                                mintemp_levels_reg_1 = np.load(join(reduced_data_dir,f'mintemp_levels_reg_e{expt1}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
-                                if "feb2018" == which_ssw:
-                                    event_year = 2018
-                                elif "jan2019" == which_ssw:
-                                    event_year = 2019
-                                mintemp_reg_era5 = ds_cgts_mints_era5.sel(member=event_year,daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).item()
-                                mintemp_levels_range = tuple(extfun(mintemp_reg_era5).item() for extfun in (np.min, np.max))
-                                func = lambda T: np.interp(mintemp_reg_era5, T, risk_levels)
-                                risk_at_levels_0 = np.apply_along_axis(func, 1, mintemp_levels_reg_0)
-                                risk_at_levels_1 = np.apply_along_axis(func, 1, mintemp_levels_reg_1)
+                                exttemp_levels_reg_0 = np.load(join(reduced_data_dir,f'exttemp_levels_reg_e{expt0}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
+                                exttemp_levels_reg_1 = np.load(join(reduced_data_dir,f'exttemp_levels_reg_e{expt1}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
+                                exttemp_reg_era5 = ds_cgts_extts_era5.sel(member=event_year,daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).item()
+                                exttemp_levels_range = tuple(extfun(exttemp_reg_era5).item() for extfun in (np.min, np.max))
+                                func = lambda T: np.interp(exttemp_reg_era5, T, risk_levels)
+                                risk_at_levels_0 = np.apply_along_axis(func, 1, exttemp_levels_reg_0)
+                                risk_at_levels_1 = np.apply_along_axis(func, 1, exttemp_levels_reg_1)
+                                print(f'{risk_at_levels_0 = }')
+                                print(f'{risk_at_levels_1 = }')
                                 rel_risk_lo,rel_risk_hi = (np.quantile(risk_at_levels_1/risk_at_levels_0, 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
+                                print(f'{i_init = }, {expt0 = }, {expt1 = }, {i_cgs_level = }, {rel_risk_lo = }, {rel_risk_hi = }')
+                                sys.exit()
                                 h, = ax.plot([rel_risk_lo,rel_risk_hi], (i_gcm+yoffsets[expt1])*np.ones(2),color=colors[expt1], linewidth=3, label=expt1)
                             
 
@@ -356,22 +374,41 @@ def compare_expts(which_ssw, i_gcm, i_init):
         expts.append(expt)
     datestr = datetime.datetime.strptime(init,"%Y%m%d").strftime("%Y-%m-%d")
 
+    if "sep2019" == which_ssw:
+        ext_sign = 1
+        ext_symb = "max"
+        event_year = 2019
+    elif "jan2019" == which_ssw:
+        ext_sign = -1
+        ext_symb = "min"
+        event_year = 2019
+    elif "feb2018" == which_ssw:
+        ext_sign = -1
+        ext_symb = "min"
+        event_year = 2018
+
     daily_stat = 'daily_mean'
     boot_type = 'percentile'
     for i_cgs_level,cgs_level in enumerate(cgs_levels):
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
-        ds_cgts_mints = dict()
+        ds_cgts_extts = dict()
         gevpars = dict()
         for expt in expts:
-            ds_cgts_mints[expt] = xr.open_dataarray(join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day_cgs{cgs_key}.nc')).min('time')
+            ds_cgts_extts[expt] = (
+                    xr.open_dataarray(join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day_cgs{cgs_key}.nc'))
+                    * ext_sign
+                    ).max('time') * ext_sign
             gevpars[expt] = xr.open_dataarray(join(reduced_data_dir,f'gevpar_e{expt}_i{init}_cgs{cgs_key}.nc'))
-        ds_cgts_mints['era5'] = xr.open_dataarray(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc')).min('time')
+        ds_cgts_extts['era5'] = (
+                xr.open_dataarray(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc'))
+                    * ext_sign
+                    ).max('time') * ext_sign
         lon_blocksize,lat_blocksize = ((event_region[d].stop - event_region[d].start)/cgs_level[i_d] for (i_d,d) in enumerate(('lon','lat')))
         if todo['plot_statpar_map_diff'] and min(cgs_level) > 1:
             # control-free, nudged-free
             statsel = dict(daily_stat=daily_stat)
             for (expt0,expt1) in (('free','control'),('free','nudged')):
-                fig,axes = pipeline_base.plot_statpar_map_difference(ds_cgts_mints[expt0].sel(statsel),ds_cgts_mints[expt1].sel(statsel), gevpars[expt0].sel(statsel), gevpars[expt1].sel(statsel), locsign=-1)
+                fig,axes = pipeline_base.plot_statpar_map_difference(ds_cgts_extts[expt0].sel(statsel),ds_cgts_extts[expt1].sel(statsel), gevpars[expt0].sel(statsel), gevpars[expt1].sel(statsel), locsign=ext_sign)
                 fig.suptitle(f'{gcm} ({expt1} - {expt0}), init {datestr}')
                 fig.savefig(join(figdir,f'statpar_map_e{expt1}minus{expt0}_i{init}_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
                 plt.close(fig)
@@ -391,17 +428,17 @@ def compare_expts(which_ssw, i_gcm, i_init):
 
         if todo['plot_gev_select_regions']:
             for (i_lon,i_lat) in select_regions[i_cgs_level]:
-                mintemps = dict()
+                exttemps = dict()
                 gevpar_regs = dict()
-                mintemp_levels_regs = dict()
+                exttemp_levels_regs = dict()
                 for expt in expts:
-                    mintemps[expt] = ds_cgts_mints[expt].sel(daily_stat=daily_stat).isel(lon=i_lon,lat=i_lat)
-                    mintemp_levels_regs[expt] = np.load(join(reduced_data_dir,f'mintemp_levels_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
+                    exttemps[expt] = ds_cgts_extts[expt].sel(daily_stat=daily_stat).isel(lon=i_lon,lat=i_lat)
+                    exttemp_levels_regs[expt] = np.load(join(reduced_data_dir,f'exttemp_levels_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
                     gevpar_regs[expt] = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
-                mintemps['era5'] = ds_cgts_mints['era5'].sel(daily_stat=daily_stat).isel(lon=i_lon,lat=i_lat)
-                mintemp_levels_regs['era5'] = np.load(join(reduced_data_dir_era5,f'mintemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
+                exttemps['era5'] = ds_cgts_extts['era5'].sel(daily_stat=daily_stat).isel(lon=i_lon,lat=i_lat)
+                exttemp_levels_regs['era5'] = np.load(join(reduced_data_dir_era5,f'exttemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
                 gevpar_regs['era5'] = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
-                center_lon,center_lat = (mintemps['era5'].coords[d].item() for d in ('lon','lat'))
+                center_lon,center_lat = (exttemps['era5'].coords[d].item() for d in ('lon','lat'))
                 lonlatstr = r'$\lambda=%d\pm%d,\phi=%d\pm%d$'%(center_lon,lon_blocksize/2,center_lat,lat_blocksize/2)
                 if max(cgs_level) == 1:
                     lonlatstr = r'%s (whole region)'%(lonlatstr)
@@ -410,18 +447,14 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 colors = dict({'era5': 'black', 'control': 'dodgerblue', 'free': 'limegreen', 'nudged': 'red'})
 
                 fig,axes = plt.subplots(ncols=2, figsize=(12,4), sharey=True)
-                if "feb2018" == which_ssw:
-                    event_year = 2018
-                elif "jan2019" == which_ssw:
-                    event_year = 2019
                 for ax in axes: 
-                    ax.axhline(mintemps['era5'].sel(member=event_year).item(), color='black', linestyle='--')
+                    ax.axhline(exttemps['era5'].sel(member=event_year).item(), color='black', linestyle='--')
                 ax = axes[0]
                 handles = []
 
                 # Interpolate for relative risk 
-                mintemp_levels_range = [mintemp_levels_regs['era5'][0,:].min().item(),mintemp_levels_regs['era5'][0,:].max().item()] #(max([T.min().item() for T in mintemp_levels_regs.values()]), min([T.max().item() for T in mintemp_levels_regs.values()]))
-                mintemp_levels_common = np.linspace(*mintemp_levels_range, 30)
+                exttemp_levels_range = [exttemp_levels_regs['era5'][0,:].min().item(),exttemp_levels_regs['era5'][0,:].max().item()] 
+                exttemp_levels_common = np.linspace(*exttemp_levels_range, 30)
                 risk_at_levels = dict()
                 for expt in expts + ['era5']:
                     shape,loc,scale = (gevpar_regs[expt].sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
@@ -430,25 +463,29 @@ def compare_expts(which_ssw, i_gcm, i_init):
                         r'$\sigma=%d$'%(scale),
                         r'$\xi=%+.2f$'%(shape)
                         ])
-                    mintemp = mintemps[expt].to_numpy()
-                    mintemp_levels_reg = mintemp_levels_regs[expt]
-                    order = np.argsort(mintemp)
+                    exttemp = exttemps[expt].to_numpy()
+                    exttemp_levels_reg = exttemp_levels_regs[expt]
+                    order = np.argsort(exttemp)
                     rank = np.argsort(order)
-                    risk_empirical = np.arange(1,len(mintemp)+1)/len(mintemp)
-                    ax.scatter(risk_empirical, mintemp[order], color=colors[expt], marker='+')
-                    h, = ax.plot(risk_levels,mintemp_levels_reg[0,:],color=colors[expt],label=r'%s (%s)'%(expt+' '*(7-len(expt)),param_label))
+                    if ext_sign == -1:
+                        risk_empirical = np.arange(1,len(exttemp)+1)/len(exttemp)
+                    else:
+                        risk_empirical = np.arange(len(exttemp),0,-1)/len(exttemp)
+                    ax.scatter(risk_empirical, exttemp[order], color=colors[expt], marker='+')
+                    h, = ax.plot(risk_levels,exttemp_levels_reg[0,:],color=colors[expt],label=r'%s (%s)'%(expt+' '*(7-len(expt)),param_label))
                     handles.append(h)
-                    boot_quant_lo,boot_quant_hi = (np.quantile(mintemp_levels_reg[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
+                    boot_quant_lo,boot_quant_hi = (np.quantile(exttemp_levels_reg[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
                     if boot_type == 'percentile':
                         lo,hi = boot_quant_lo,boot_quant_hi
                     elif boot_type == 'basic':
-                        lo,hi = (2*mintemp_levels_reg[0,:]-boot_quant_hi,2*mintemp_levels_reg[0,:]-boot_quant_lo)
+                        lo,hi = (2*exttemp_levels_reg[0,:]-boot_quant_hi,2*exttemp_levels_reg[0,:]-boot_quant_lo)
                     ax.fill_between(risk_levels, lo, hi, fc=colors[expt], ec='none', alpha=0.3, zorder=-1)
                     # Interpolate every bootstrap
-                    func = lambda T: np.interp(mintemp_levels_common, T, risk_levels)
-                    risk_at_levels[expt] = np.apply_along_axis(func, 1, mintemp_levels_reg)
+                    func = lambda T: np.interp(exttemp_levels_common, T, risk_levels)
+                    risk_at_levels[expt] = np.apply_along_axis(func, 1, exttemp_levels_reg)
                 ax.set_xscale('log')
-                ax.set_xlabel(r'$\mathbb{P}\{\min_t\langle T(t)\rangle_{\mathrm{region}}\leq T\}$')
+                extstr = "min" if ext_sign==-1 else "max"
+                ax.set_xlabel(r'$\mathbb{P}\{\%s_t\langle T(t)\rangle_{\mathrm{region}}\leq T\}$'%(extstr))
                 ax.set_ylabel(r'$T$')
                 ax.legend(handles=handles, bbox_to_anchor=(-0.25,0.5), loc='center right')
 
@@ -459,14 +496,14 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 handles = []
                 for (expt0,expt1) in (('free','control'),('free','nudged')):
                     risk_ratio = risk_at_levels[expt1] / risk_at_levels[expt0]
-                    h, = ax.plot(risk_ratio[0,:], mintemp_levels_common, color=colors[expt1], label=r'%s/%s'%(expt1,expt0))
+                    h, = ax.plot(risk_ratio[0,:], exttemp_levels_common, color=colors[expt1], label=r'%s/%s'%(expt1,expt0))
                     handles.append(h)
                     boot_quant_lo,boot_quant_hi = (np.quantile(risk_ratio[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
                     if boot_type == 'percentile':
                         lo,hi = boot_quant_lo,boot_quant_hi
                     else:
                         lo,hi = 2*risk_ratio[0,:]-boot_quant_hi, 2*risk_ratio[0,:]-boot_quant_lo
-                    ax.fill_betweenx(mintemp_levels_common, lo, hi, fc=colors[expt1], ec='none', alpha=0.3, zorder=-1)
+                    ax.fill_betweenx(exttemp_levels_common, lo, hi, fc=colors[expt1], ec='none', alpha=0.3, zorder=-1)
                 ax.set_xscale('log')
                 ax.set_xlim([0.5,5.0])
                 ax.get_xaxis().set_major_formatter(ticker.NullFormatter())
@@ -477,7 +514,7 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 ax.set_xlabel(r'Relative risk w.r.t. free')
 
                 for ax in axes:
-                    ax.set_ylim(mintemp_levels_range)
+                    ax.set_ylim(exttemp_levels_range)
 
                 fig.suptitle(f'{gcm}, init {datestr} at {lonlatstr}')
 
@@ -659,14 +696,20 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                 # GCM data
                 order = np.argsort(exttemp)
                 rank = np.argsort(order)
-                risk_empirical = np.arange(1,len(exttemp)+1)/len(exttemp)
+                if ext_sign == -1:
+                    risk_empirical = np.arange(1,len(exttemp)+1)/len(exttemp)
+                else:
+                    risk_empirical = np.arange(len(exttemp),0,-1)/len(exttemp)
                 ax.scatter(risk_empirical, exttemp[order], color='red', marker='+')
                 hgcm, = ax.plot(risk_levels,exttemp_levels_reg[0,:],color='red',label=r'%s (%s)'%(gcm,param_label))
                 ax.fill_between(risk_levels, np.quantile(exttemp_levels_reg[1:], 0.25, axis=0), np.quantile(exttemp_levels_reg[1:], 0.75, axis=0), fc='red', ec='none', alpha=0.3, zorder=-1)
                 # Now ERA5
                 order = np.argsort(exttemp_era5)
                 rank = np.argsort(order)
-                risk_empirical = np.arange(1,len(exttemp_era5)+1)/len(exttemp_era5)
+                if ext_sign == -1:
+                    risk_empirical = np.arange(1,len(exttemp_era5)+1)/len(exttemp_era5)
+                else:
+                    risk_empirical = np.arange(len(exttemp_era5),0,-1)/len(exttemp_era5)
                 ax.scatter(risk_empirical, exttemp_era5[order], color='black', marker='+')
                 # Special marker for 2018
                 i_mem_event_year = np.where(ds_cgts_extt_era5.member == event_year)[0][0]
@@ -690,7 +733,8 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     return 
 
 if __name__ == "__main__":
-    idx_gcms = [4,9,11,1,2,6,7,8,10] #[4,9,11][2:] #[4,9,11]
+    gcms2ignore = [0,1,2,3,5]
+    idx_gcms = [i for i in range(11) if i not in gcms2ignore]
     idx_expt = [0,1,2]
     idx_expt_pairs = [(1,0),(1,2)]
     idx_init = [0,1]

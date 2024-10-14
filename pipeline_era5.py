@@ -48,12 +48,11 @@ def analysis_multiparams(which_ssw):
                 (),
                 )
     elif "sep2019" == which_ssw:
-        cgs_levels = [(1,1),(2,2),(5,5),(15,15)]
+        cgs_levels = [(1,1),(2,2),(7,6)]
         select_regions = ( # Indexed by cgs_level
                 ((0,0),), # level (1,1)
                 ((0,0),(1,0),(0,1),(1,1)), # level (2,1)
-                ((i,j) for i in range(5) for j in range(5)),
-                (),
+                ((i,j) for i in range(7) for j in range(6)),
                 )
     return cgs_levels,select_regions
 
@@ -86,7 +85,7 @@ def era5_workflow(which_ssw,verbose=False):
         event_region = dict(lat=slice(30,45),lon=slice(-95,-70))
     elif "sep2019" == which_ssw:
         event_time_interval = [datetime.datetime(2019,10,1,0), datetime.datetime(2019,10,14,22)]
-        event_region = dict(lat=slice(-50,-5), lon=slice(110,155))
+        event_region = dict(lat=slice(-46,-10), lon=slice(112,154))
         for year in years:
             # TODO augment this with Decembers 
             year_filegroups.append(tuple(
@@ -241,7 +240,8 @@ def reduce_era5(which_ssw):
             risk = xr.open_dataarray(risk_file)
         if todo['plot_risk_map'] and min(cgs_level) > 1:
             fig,ax = pipeline_base.plot_risk_map(risk,locsign=ext_sign)
-            ax.set_title(r"$\mathbb{P}_{\mathrm{ERA5}}\{\%s_t\langle T(t)\rangle\leq \%s_t\langle T(t)\rangle_{\mathrm{ERA5,%s}}$"%(ext_symb,ext_symb,event_year))
+            ineq_sign = "geq" if ext_sign==1 else "leq"
+            ax.set_title(r"$\mathbb{P}_{\mathrm{ERA5}}\{\%s_t\langle T(t)\rangle\%s \%s_t\langle T(t)\rangle_{\mathrm{ERA5,%s}}$"%(ext_symb,ineq_sign,ext_symb,event_year))
             fig.savefig(join(figdir,f'risk_map_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
             plt.close(fig)
 
@@ -302,7 +302,8 @@ def reduce_era5(which_ssw):
                     lo,hi = 2*risk_ratio[0,:]-boot_quant_hi, 2*risk_ratio[0,:]-boot_quant_lo
                 ax.fill_between(risk_levels, lo, hi, fc='gray', ec='none', alpha=0.3, zorder=-1)
                 ax.set_xscale('log')
-                ax.set_xlabel(r'$\mathbb{P}\{\%s_t\langle T(t)\rangle_{\mathrm{region}}\leq T\}$'%(ext_symb))
+                ineq_sign = "geq" if 1==ext_sign else "leq"
+                ax.set_xlabel(r'$\mathbb{P}\{\%s_t\langle T(t)\rangle_{\mathrm{region}}\%s T\}$'%(ext_symb,ineq_sign))
                 ax.set_ylabel(r'$T$')
                 ax.set_title(f'ERA5 at {lonlatstr}')
                 ax.legend(handles=[h])
@@ -314,7 +315,7 @@ def reduce_era5(which_ssw):
 
 if __name__ == '__main__':
     print(f'Starting main')
-    for which_ssw in ["feb2018","jan2019","sep2019"][2:]:
+    for which_ssw in ["feb2018","jan2019","sep2019"][2:3]:
         result = reduce_era5(which_ssw)
 
 
