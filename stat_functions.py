@@ -103,7 +103,7 @@ def param_names(family):
         pn = ['shape','loc','scale','base_level','base_prob']
     return pn
 
-def quantile_parametric(family, params, risk):
+def complementary_quantile_parametric(family, params, risk):
     parnames = param_names(family)
     print(f'{parnames = }')
     print(f'{risk.shape = }')

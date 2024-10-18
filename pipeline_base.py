@@ -239,8 +239,10 @@ def fit_gev_exttemp_1d_uq(exttemp, risk_levels, ext_sign, method='MLE', n_boot=1
     gevpar_dict = stfu.fit_statistical_model(ext_sign*exttemp, 'gev', n_boot=n_boot, method=method)
     gevpar = xr.DataArray(coords={'param': ['shape','loc','scale'], 'boot': np.arange(n_boot+1)}, data=np.array([gevpar_dict[p] for p in ['shape','loc','scale']]))
     # Compute quantiles corresponding to risk levels 
-    levels = ext_sign*stfu.quantile_parametric('gev', gevpar_dict, risk_levels)
+    levels = ext_sign*stfu.complementary_quantile_parametric('gev', gevpar_dict, risk_levels)
     print(f'{levels = }')
+    # levels should get progressively less eextreme as risk_levels increases, because less-extreme levels have a higher risk of being exceeded
+
     return gevpar, levels
 
 
