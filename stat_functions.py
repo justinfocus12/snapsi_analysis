@@ -37,7 +37,9 @@ def fit_statistical_model(S, family, thresh=None, n_boot=1, rng=None, rngseed=No
     return params
 
 def fit_gev_single(X, method):
-    if method == 'MLE':
+    if np.all(np.isfinite(X) == 0):
+        gevpar = np.nan*np.ones(3)
+    elif method == 'MLE':
         gevpar = np.array(spgex.fit(X, method='MLE'))
         gevpar[0] *= -1 # We use the standard convention that negative shape parameter means bounded tail 
     elif method == 'PWM':

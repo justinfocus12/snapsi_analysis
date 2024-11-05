@@ -64,6 +64,8 @@ def compute_risk(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
     for i_lon in range(Nlon):
         for i_lat in range(Nlat):
             thresh = np.array([locsign*ds_cgts_ref.isel(lon=i_lon,lat=i_lat).item()])
+            if not np.isfinite(thresh):
+                continue
             paramdict = dict({pn: np.array([gevpar.isel(lon=i_lon,lat=i_lat).sel(param=pn)]) for pn in gevpar.coords['param'].values})
             risk[dict(lon=i_lon,lat=i_lat)] = stfu.absolute_risk_parametric('gev', paramdict, thresh=thresh).item()
             # TODO correct for directionality 
@@ -124,18 +126,28 @@ def plot_relative_risk_map(risk0, risk1, locsign=1, **other_pcmargs):
     return fig,ax
 
 
-def coarse_grain_space(ds_cgt, cgs_level):
+def coarse_grain_space(ds_cgt, cgs_level, landmask):
+    print(f'before calling coarse_grain_space, {landmask.coords = }')
     data_vars = dict()
     Nlon,Nlat = (ds_cgt[d].size for d in ('lon','lat'))
     print(f'{ds_cgt.dims = }')
     print(f'{ds_cgt.shape = }')
+    print(f'{landmask.dims = }; {landmask.shape = }')
     print(f'{cgs_level = }')
     dim = {'lon': int(Nlon/cgs_level[0]), 'lat': int(Nlat/cgs_level[1])}
     print(f'{dim = }')
-    ds_cgt_trimmed = ds_cgt.isel(lon=slice(None,cgs_level[0]*dim['lon']),lat=slice(None,cgs_level[1]*dim['lat']))
+    trim_kwargs = dict(lon=slice(None,cgs_level[0]*dim['lon']),lat=slice(None,cgs_level[1]*dim['lat']))
+    ds_cgt_trimmed = ds_cgt.isel(**trim_kwargs)
+    landmask_trimmed = landmask.isel(**trim_kwargs) #* xr.ones_like(ds_cgt_trimmed)
+    print(f'{landmask_trimmed.coords = }')
     coslat = np.cos(np.deg2rad(ds_cgt_trimmed['lat'])) * xr.ones_like(ds_cgt_trimmed)
+    # trim land mask the same way 
     coarsen_kwargs = dict(dim=dim, boundary='trim', coord_func={'lon': 'mean', 'lat': 'mean'})
-    ds_cgts = (ds_cgt_trimmed * coslat).coarsen(**coarsen_kwargs).sum() / coslat.coarsen(**coarsen_kwargs).sum()
+    numerator = (ds_cgt_trimmed * landmask_trimmed * coslat).coarsen(**coarsen_kwargs).sum() 
+    denominator = (landmask_trimmed * coslat).coarsen(**coarsen_kwargs).sum() 
+    land_frac = denominator / (coslat.coarsen(**coarsen_kwargs)).sum() 
+    ds_cgts = numerator / denominator 
+    ds_cgts = ds_cgts.where(np.isfinite(ds_cgts)*(land_frac >= 0.5), np.nan)
     print(f'{ds_cgts.shape = }')
     assert ds_cgts.lon.size == cgs_level[0] and ds_cgts.lat.size == cgs_level[1]
     return ds_cgts # awkward to put into a single dataset because of differing lon/lat coordinates between coarsening levels
@@ -240,7 +252,6 @@ def fit_gev_exttemp_1d_uq(exttemp, risk_levels, ext_sign, method='MLE', n_boot=1
     gevpar = xr.DataArray(coords={'param': ['shape','loc','scale'], 'boot': np.arange(n_boot+1)}, data=np.array([gevpar_dict[p] for p in ['shape','loc','scale']]))
     # Compute quantiles corresponding to risk levels 
     levels = ext_sign*stfu.complementary_quantile_parametric('gev', gevpar_dict, risk_levels)
-    print(f'{levels = }')
     # levels should get progressively less eextreme as risk_levels increases, because less-extreme levels have a higher risk of being exceeded
 
     return gevpar, levels

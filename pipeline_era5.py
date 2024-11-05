@@ -58,8 +58,9 @@ def analysis_multiparams(which_ssw):
 
 def era5_workflow(which_ssw,verbose=False):
     print(f'Starting workflow setup')
-    analysis_date = '2024-10-09'
+    analysis_date = '2024-11-05'
     raw_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/era5'
+    landmask_file = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/era5/land_sea_mask.nc'
     processed_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596'
     years = np.arange(1980,2020,dtype=int)
     year_filegroups = []
@@ -106,7 +107,7 @@ def era5_workflow(which_ssw,verbose=False):
     # TODO specify temperature levels for relative risk 
     workflow = (
             years,event_region,event_time_interval,
-            year_filegroups,reduced_data_dir,figdir,
+            landmask_file,year_filegroups,reduced_data_dir,figdir,
             cgs_levels,select_regions,risk_levels,n_boot,confint_width
             )
     print(f'Finished setting up workflow')
@@ -165,7 +166,7 @@ def coarse_grain_time(years, year_filegroups, event_region, event_time_interval)
 
 def reduce_era5(which_ssw):
     todo = dict({
-        'coarse_grain_time':           1,
+        'coarse_grain_time':           0,
         'plot_t2m_sumstats_map':       1,
         'coarse_grain_space':          1,
         'fit_gev':                     1,
@@ -175,9 +176,19 @@ def reduce_era5(which_ssw):
         'fit_gev_select_regions':      1,
         'plot_gev_select_regions':     1,
         })
-    years,event_region,event_time_interval,year_filegroups,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = era5_workflow(which_ssw)
+    years,event_region,event_time_interval,landmask_file,year_filegroups,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = era5_workflow(which_ssw)
     boot_type = 'percentile'
     ens_file_cgt = join(reduced_data_dir,f't2m_cgt1day.nc')
+    landmask = (
+            utils.rezero_lons(
+                xr.open_dataarray(landmask_file)
+                .isel(time=0,drop=True)
+                .isel(latitude=slice(None,None,-1)) # Flip lat to go in increasing order
+                .rename(dict(latitude='lat',longitude='lon'))
+                )
+            .sel(event_region)
+            )
+    print(f'{landmask.coords = }')
     if todo['coarse_grain_time']:
         ds_cgt,err_flag = coarse_grain_time(years, year_filegroups, event_region, event_time_interval)
         if err_flag:
@@ -185,6 +196,12 @@ def reduce_era5(which_ssw):
         ds_cgt.to_netcdf(ens_file_cgt)
     else:
         ds_cgt = xr.open_dataarray(ens_file_cgt)
+
+    landmask = landmask.interp({'lat': ds_cgt.coords['lat'].values, 'lon': ds_cgt.coords['lon'].values})
+    print(f'After interpolation, {landmask.coords = }')
+    print(f'{ds_cgt.coords = }')
+
+    assert np.all(np.isfinite(landmask))
 
     if "sep2019" == which_ssw:
         ext_sign = 1
@@ -211,7 +228,8 @@ def reduce_era5(which_ssw):
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
         ens_file_cgts = join(reduced_data_dir,f't2m_cgt1day_cgs{cgs_key}.nc')
         if todo['coarse_grain_space']:
-            ds_cgts = pipeline_base.coarse_grain_space(ds_cgt, cgs_level)
+            print(f'before calling coarse_grain_space, {landmask.coords = }')
+            ds_cgts = pipeline_base.coarse_grain_space(ds_cgt, cgs_level, landmask)
             ds_cgts.to_netcdf(ens_file_cgts)
         else:
             ds_cgts = xr.open_dataarray(ens_file_cgts)
@@ -241,9 +259,10 @@ def reduce_era5(which_ssw):
         if todo['plot_risk_map'] and min(cgs_level) > 1:
             fig,ax = pipeline_base.plot_risk_map(risk,locsign=ext_sign)
             ineq_sign = "geq" if ext_sign==1 else "leq"
-            ax.set_title(r"$\mathbb{P}_{\mathrm{ERA5}}\{\%s_t\langle T(t)\rangle\%s \%s_t\langle T(t)\rangle_{\mathrm{ERA5,%s}}$"%(ext_symb,ineq_sign,ext_symb,event_year))
+            ax.set_title(r"$\mathbb{P}_{\mathrm{ERA5}}\{\%s_t\langle T(t)\rangle\%s \%s_t\langle T(t)\rangle_{\mathrm{ERA5,%s}}\}$"%(ext_symb,ineq_sign,ext_symb,event_year))
             fig.savefig(join(figdir,f'risk_map_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
             plt.close(fig)
+            print(f'Just plotted risk map with {cgs_key = }')
 
         if todo['plot_statpar_map'] and min(cgs_level) > 1:
             fig,axes = pipeline_base.plot_statpar_map(ds_cgts_extt.sel(daily_stat=daily_stat,drop=True),gevpar.sel(daily_stat=daily_stat,drop=True),locsign=ext_sign)
@@ -255,9 +274,6 @@ def reduce_era5(which_ssw):
         # Do a more thorough uncertainty quantification at a specific site or region, using bootstrap analysis and goodness-of-fit etc. Maybe parallelize over all sites too
 
         for (i_lon,i_lat) in select_regions[i_cgs_level]:
-            print(f'{ds_cgts_extt.coords = }')
-            print(f'{i_cgs_level = }')
-            print(f'{i_lon = }, {i_lat = }')
             exttemp = ds_cgts_extt.sel(daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).to_numpy()
             if todo['fit_gev_select_regions']:
                 gevpar_reg,exttemp_levels_reg = pipeline_base.fit_gev_exttemp_1d_uq(exttemp,risk_levels,ext_sign,method='PWM')
@@ -266,8 +282,6 @@ def reduce_era5(which_ssw):
             else:
                 exttemp_levels_reg = np.load(join(reduced_data_dir,f'exttemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
                 gevpar_reg = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
-            print(f'{i_lon = }, {i_lat = }')
-            print(f'{gevpar_reg.isel(boot=0) = }')
 
             if todo['plot_gev_select_regions']:
                 lon_blocksize,lat_blocksize = ((event_region[d].stop - event_region[d].start)/cgs_level[i_d] for (i_d,d) in enumerate(('lon','lat')))
@@ -285,31 +299,32 @@ def reduce_era5(which_ssw):
                     risk_empirical = np.arange(len(exttemp),0,-1)/len(exttemp)
                 ax.scatter(risk_empirical, exttemp[order], color='black', marker='+')
                 shape,loc,scale = (gevpar_reg.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
-                param_label = '\n'.join([
-                    r'$\mu=%d$'%(ext_sign*loc),
-                    r'$\sigma=%d$'%(scale),
-                    r'$\xi=%+.2f$'%(shape)
-                    ])
-                # Special marker for the year 
-                i_mem_event_year = np.where(ds_cgts_extt.member == event_year)[0][0]
+                if np.all([np.isfinite(p) for p in [shape,loc,scale]]):
+                    param_label = '\n'.join([
+                        r'$\mu=%.1f$'%(ext_sign*loc),
+                        r'$\sigma=%.1f$'%(scale),
+                        r'$\xi=%+.2f$'%(shape)
+                        ])
+                    # Special marker for the year 
+                    i_mem_event_year = np.where(ds_cgts_extt.member == event_year)[0][0]
 
-                ax.scatter(risk_empirical[rank[i_mem_event_year]], exttemp[i_mem_event_year], color='black', marker='o')
-                h, = ax.plot(risk_levels,exttemp_levels_reg[0,:],color='black', label=param_label)
-                boot_quant_lo,boot_quant_hi = (np.quantile(exttemp_levels_reg[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
-                if boot_type == 'percentile':
-                    lo,hi = boot_quant_lo,boot_quant_hi
-                else:
-                    lo,hi = 2*risk_ratio[0,:]-boot_quant_hi, 2*risk_ratio[0,:]-boot_quant_lo
-                ax.fill_between(risk_levels, lo, hi, fc='gray', ec='none', alpha=0.3, zorder=-1)
-                ax.set_xscale('log')
-                ineq_sign = "geq" if 1==ext_sign else "leq"
-                ax.set_xlabel(r'$\mathbb{P}\{\%s_t\langle T(t)\rangle_{\mathrm{region}}\%s T\}$'%(ext_symb,ineq_sign))
-                ax.set_ylabel(r'$T$')
-                ax.set_title(f'ERA5 at {lonlatstr}')
-                ax.legend(handles=[h])
+                    ax.scatter(risk_empirical[rank[i_mem_event_year]], exttemp[i_mem_event_year], color='black', marker='o')
+                    h, = ax.plot(risk_levels,exttemp_levels_reg[0,:],color='black', label=param_label)
+                    boot_quant_lo,boot_quant_hi = (np.quantile(exttemp_levels_reg[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
+                    if boot_type == 'percentile':
+                        lo,hi = boot_quant_lo,boot_quant_hi
+                    else:
+                        lo,hi = 2*risk_ratio[0,:]-boot_quant_hi, 2*risk_ratio[0,:]-boot_quant_lo
+                    ax.fill_between(risk_levels, lo, hi, fc='gray', ec='none', alpha=0.3, zorder=-1)
+                    ax.set_xscale('log')
+                    ineq_sign = "geq" if 1==ext_sign else "leq"
+                    ax.set_xlabel(r'$\mathbb{P}\{\%s_t\langle T(t)\rangle_{\mathrm{region}}\%s T\}$'%(ext_symb,ineq_sign))
+                    ax.set_ylabel(r'$T$')
+                    ax.set_title(f'ERA5 at {lonlatstr}')
+                    ax.legend(handles=[h])
 
-                fig.savefig(join(figdir,f'riskplot_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
-                plt.close(fig)
+                    fig.savefig(join(figdir,f'riskplot_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
+                    plt.close(fig)
     ds_cgt.close()
     ds_cgt_extt.close()
 

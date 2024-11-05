@@ -58,13 +58,6 @@ def analysis_multiparams(which_ssw):
                 (),
                 )
     elif "sep2019" == which_ssw:
-        cgs_levels = [(1,1),(2,2),(5,5),(15,15)]
-        select_regions = ( # Indexed by cgs_level
-                ((0,0),), # level (1,1)
-                ((0,0),(1,0),(0,1),(1,1)), # level (2,1)
-                ((i,j) for i in range(5) for j in range(5)),
-                (),
-                )
         cgs_levels = [(1,1),(2,2),(7,6)]
         select_regions = ( # Indexed by cgs_level
                 ((0,0),), # level (1,1)
@@ -104,6 +97,7 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_init, verbose=False):
     # ----------- Files for each stage of analysis -------------
     # 1. Raw data
     raw_data_dir = join('/badc/snap/data/post-cmip6/SNAPSI', gcm2institute[gcm], gcm, expt, 's'+init)
+    landmask_file = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/era5/land_sea_mask.nc'
     print(f'{raw_data_dir = }')
     ens_path_skeleton = join(raw_data_dir,'r*i*p*f*')
     mem_labels = [basename(p) for p in glob.glob(ens_path_skeleton)]
@@ -122,7 +116,7 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_init, verbose=False):
     assert len(raw_mem_files) == len(mem_labels)
     
 
-    analysis_date = '2024-10-09'
+    analysis_date = '2024-11-04'
     # 2. Spatiotemporal sub-selection and coarse-graining (cg)
     reduced_data_dir = join(f'/gws/nopw/j04/snapsi/processed/wg2/ju26596',gcm,analysis_date,gcm)
     if "feb2018" == which_ssw:
@@ -154,6 +148,7 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_init, verbose=False):
             init,
             event_region,
             event_time_interval,
+            landmask_file,
             raw_mem_files,
             mem_labels,
             reduced_data_dir,
@@ -240,9 +235,18 @@ def compare_statpar_maps_2expts(i_gcm,i0_expt,i1_expt,i_init):
         'plot_gev_select_regions_diff':    1,
         })
     # Assumes both have been reduced
-    gcm,expt0,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(i_gcm,i0_expt,i_init)
-    _,expt1,_,_,_,_,_,_,_,_,_,_,_,_,_ = gcm_workflow(i_gcm,i1_expt,i_init)
+    gcm,expt0,init,event_region,event_time_interval,landmask_file,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(i_gcm,i0_expt,i_init)
+    _,expt1,_,_,_,_,_,_,_,_,_,_,_,_,_,_ = gcm_workflow(i_gcm,i1_expt,i_init)
     ds_cgt_0,ds_cgt_1 = (xr.open_dataarray(join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day.nc')) for expt in (expt0,expt1))
+    landmask = (
+            utils.rezero_lons(
+                xr.open_dataarray(landmask_file)
+                .isel(time=0,drop=True)
+                .isel(latitude=slice(None,None,-1)) # Flip lat to go in increasing order
+                .rename(dict(latitude='lat',longitude='lon'))
+                )
+            .sel(event_region)
+            )
     for i_cgs_level,cgs_level in enumerate(cgs_levels):
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
         ds_cgts_mint_0,ds_cgts_mint_1 = (xr.open_dataarray(join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day_cgs{cgs_key}.nc')).sel(daily_stat='daily_mean').min('time') for expt in (expt0,expt1))
@@ -371,7 +375,7 @@ def compare_expts(which_ssw, i_gcm, i_init):
         })
     expts = []
     for i_expt in range(3):
-        gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(which_ssw, i_gcm,i_expt,i_init)
+        gcm,expt,init,event_region,event_time_interval,landmask_file,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(which_ssw, i_gcm,i_expt,i_init)
         expts.append(expt)
     datestr = datetime.datetime.strptime(init,"%Y%m%d").strftime("%Y-%m-%d")
 
@@ -459,42 +463,45 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 risk_at_levels = dict()
                 for expt in expts + ['era5']:
                     shape,loc,scale = (gevpar_regs[expt].sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
-                    param_label = ','.join([
-                        r'$\mu=%d$'%(ext_sign*loc),
-                        r'$\sigma=%d$'%(scale),
-                        r'$\xi=%+.2f$'%(shape)
-                        ])
-                    exttemp = exttemps[expt].to_numpy()
-                    exttemp_levels_reg = exttemp_levels_regs[expt]
-                    order = np.argsort(exttemp)
-                    rank = np.argsort(order)
-                    if ext_sign == -1:
-                        risk_empirical = np.arange(1,len(exttemp)+1)/len(exttemp)
+                    if not np.all([np.isfinite(p) for p in [shape,loc,scale]]):
+                        risk_at_levels[expt] = np.nan*np.ones_like(exttemp_levels_common)
                     else:
-                        risk_empirical = np.arange(len(exttemp),0,-1)/len(exttemp)
-                    ax.scatter(risk_empirical, exttemp[order], color=colors[expt], marker='+')
-                    h, = ax.plot(risk_levels,exttemp_levels_reg[0,:],color=colors[expt],label=r'%s (%s)'%(expt+' '*(7-len(expt)),param_label))
-                    handles.append(h)
-                    boot_quant_lo,boot_quant_hi = (np.quantile(exttemp_levels_reg[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
-                    if boot_type == 'percentile':
-                        lo,hi = boot_quant_lo,boot_quant_hi
-                    elif boot_type == 'basic':
-                        lo,hi = (2*exttemp_levels_reg[0,:]-boot_quant_hi,2*exttemp_levels_reg[0,:]-boot_quant_lo)
-                    ax.fill_between(risk_levels, lo, hi, fc=colors[expt], ec='none', alpha=0.3, zorder=-1)
-                    # Interpolate every bootstrap
-                    # exttemp_levels_common has to have the right order!!!
-                    if -1 == ext_sign:
-                        ordering_for_interp = np.arange(0,len(risk_levels),1)
-                    else:
-                        ordering_for_interp = np.arange(len(risk_levels)-1,-1,-1)
-                    func = lambda T: np.interp(exttemp_levels_common, T[ordering_for_interp], risk_levels[ordering_for_interp])
-                    risk_at_levels[expt] = np.apply_along_axis(func, 1, exttemp_levels_reg)
+                        param_label = ','.join([
+                            r'$%.1f$'%(ext_sign*loc),
+                            r'$%.1f$'%(scale),
+                            r'$%+.2f$'%(shape)
+                            ])
+                        exttemp = exttemps[expt].to_numpy()
+                        exttemp_levels_reg = exttemp_levels_regs[expt]
+                        order = np.argsort(exttemp)
+                        rank = np.argsort(order)
+                        if ext_sign == -1:
+                            risk_empirical = np.arange(1,len(exttemp)+1)/len(exttemp)
+                        else:
+                            risk_empirical = np.arange(len(exttemp),0,-1)/len(exttemp)
+                        ax.scatter(risk_empirical, exttemp[order], color=colors[expt], marker='+')
+                        h, = ax.plot(risk_levels,exttemp_levels_reg[0,:],color=colors[expt],label=r'%s (%s)'%(expt+' '*(7-len(expt)),param_label))
+                        handles.append(h)
+                        boot_quant_lo,boot_quant_hi = (np.quantile(exttemp_levels_reg[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
+                        if boot_type == 'percentile':
+                            lo,hi = boot_quant_lo,boot_quant_hi
+                        elif boot_type == 'basic':
+                            lo,hi = (2*exttemp_levels_reg[0,:]-boot_quant_hi,2*exttemp_levels_reg[0,:]-boot_quant_lo)
+                        ax.fill_between(risk_levels, lo, hi, fc=colors[expt], ec='none', alpha=0.3, zorder=-1)
+                        # Interpolate every bootstrap
+                        # exttemp_levels_common has to have the right order!!!
+                        if -1 == ext_sign:
+                            ordering_for_interp = np.arange(0,len(risk_levels),1)
+                        else:
+                            ordering_for_interp = np.arange(len(risk_levels)-1,-1,-1)
+                        func = lambda T: np.interp(exttemp_levels_common, T[ordering_for_interp], risk_levels[ordering_for_interp])
+                        risk_at_levels[expt] = np.apply_along_axis(func, 1, exttemp_levels_reg)
                 ax.set_xscale('log')
                 extstr = "min" if ext_sign==-1 else "max"
                 ineqstr = "leq" if ext_sign==-1 else "geq"
                 ax.set_xlabel(r'$\mathbb{P}\{\%s_t\langle T(t)\rangle_{\mathrm{region}}\%s T\}$'%(extstr,ineqstr))
                 ax.set_ylabel(r'$T$')
-                ax.legend(handles=handles, bbox_to_anchor=(-0.25,0.5), loc='center right')
+                ax.legend(handles=handles, title=r'$(\mu,\sigma,\xi)=$', bbox_to_anchor=(-0.25,0.5), loc='center right')
 
                 # Relative risk
                 ax = axes[1]
@@ -504,7 +511,7 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 for (expt0,expt1) in (('free','control'),('free','nudged')):
                     risk_ratio = risk_at_levels[expt1] / risk_at_levels[expt0]
 
-                    pdb.set_trace()
+                    #pdb.set_trace()
 
                     h, = ax.plot(risk_ratio[0,:], exttemp_levels_common, color=colors[expt1], label=r'%s/%s'%(expt1,expt0))
                     handles.append(h)
@@ -538,17 +545,17 @@ def compare_expts(which_ssw, i_gcm, i_init):
 def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
     todo = dict({
-        'coarse_grain_time':           0,
-        'plot_t2m_sumstats_map':       0,
-        'coarse_grain_space':          0,
-        'fit_gev':                     0,
-        'plot_statpar_map':            0,
+        'coarse_grain_time':           1,
+        'plot_t2m_sumstats_map':       1,
+        'coarse_grain_space':          1,
+        'fit_gev':                     1,
+        'plot_statpar_map':            1,
         'compute_risk':                1,
         'plot_risk_map':               1,
         'fit_gev_select_regions':      1,
         'plot_gev_select_regions':     1,
         })
-    gcm,expt,init,event_region,event_time_interval,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(which_ssw,i_gcm,i_expt,i_init)
+    gcm,expt,init,event_region,event_time_interval,landmask_file,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(which_ssw,i_gcm,i_expt,i_init)
     fcdate = datetime.datetime.strptime(init,'%Y%m%d')
     datestr = fcdate.strftime("%Y-%m-%d")
 
@@ -559,6 +566,16 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
         ds_cgt.to_netcdf(ens_file_cgt)
     else:
         ds_cgt = xr.open_dataarray(ens_file_cgt)
+    landmask = (
+            utils.rezero_lons(
+                xr.open_dataarray(landmask_file)
+                .isel(time=0,drop=True)
+                .isel(latitude=slice(None,None,-1)) # Flip lat to go in increasing order
+                .rename(dict(latitude='lat',longitude='lon'))
+                )
+            .sel(event_region)
+            .interp({'lat': ds_cgt.coords['lat'].values, 'lon': ds_cgt.coords['lon'].values})
+            )
 
     if "sep2019" == which_ssw:
         ext_sign = 1
@@ -597,7 +614,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
         #    lon_blocksize,lat_blocksize = (event_region[d].stop - event_region[d].start for d in ('lon','lat'))
         ens_file_cgts = join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day_cgs{cgs_key}.nc')
         if todo['coarse_grain_space']:
-            ds_cgts = pipeline_base.coarse_grain_space(ds_cgt, cgs_level)
+            ds_cgts = pipeline_base.coarse_grain_space(ds_cgt, cgs_level, landmask)
             ds_cgts.to_netcdf(ens_file_cgts)
         else:
             ds_cgts = xr.open_dataarray(ens_file_cgts)
@@ -656,6 +673,8 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
 
         for (i_lon,i_lat) in select_regions[i_cgs_level]:
             exttemp = ds_cgts_extt.sel(daily_stat=daily_stat).isel(lon=i_lon,lat=i_lat).to_numpy()
+            if not np.all(np.isfinite(exttemp)):
+                continue
             exttemp_era5 = ds_cgts_extt_era5.sel(daily_stat=daily_stat).isel(lon=i_lon,lat=i_lat)
             center_lon,center_lat = exttemp_era5.lon.item(),exttemp_era5.lat.item()
             exttemp_era5 = exttemp_era5.to_numpy()
@@ -664,8 +683,6 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                 lonlatstr = r'%s (whole region)'%(lonlatstr)
 
             if todo['fit_gev_select_regions']:
-                if np.any(np.isnan(exttemp)):
-                    raise Exception(f'{exttemp = }')
                 gevpar_reg,exttemp_levels_reg = pipeline_base.fit_gev_exttemp_1d_uq(exttemp,risk_levels, ext_sign, method='PWM', n_boot=n_boot)
                 gevpar_reg.to_netcdf(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
                 np.save(join(reduced_data_dir,f'exttemp_levels_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'), exttemp_levels_reg)
@@ -734,7 +751,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                 ax.fill_between(risk_levels, np.quantile(exttemp_levels_reg_era5, 0.25, axis=0), np.quantile(exttemp_levels_reg_era5, 0.75, axis=0), fc='gray', ec='none', alpha=0.3, zorder=-1)
                 ax.legend(handles=[hera5,hgcm])
                 ax.set_xscale('log')
-                ineq_sign = "geq" if 1==ext_sign else "leq"
+                ineq_symb = "geq" if 1==ext_symb else "leq"
                 ax.set_xlabel(r'$\mathbb{P}\{\%s_t\langle T(t)\rangle_{\mathrm{region}}\%s T\}$'%(ext_symb,ineq_symb))
                 ax.set_ylabel(r'$T$')
                 ax.set_title(f'{gcm} {expt}, init {datestr} at {lonlatstr}')
@@ -749,8 +766,13 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     return 
 
 if __name__ == "__main__":
-    gcms2ignore = [0,1,2,3,5]
-    idx_gcms = [4] #[i for i in range(11) if i not in gcms2ignore]
+    gcm2institute = all_gcms_institutes()
+    gcms = list(gcm2institute.keys())
+    gcms2ignore = ["BCC-CSM2-HR","GLOBO","GEM-NEMO","CanESM5","SPEAR"]
+
+    #idx_gcms = [i for i in range(len(gcms)) if gcms[i] not in gcms2ignore]
+    idx_gcms = [11]
+    print(f'{idx_gcms = }')
     idx_expt = [0,1,2]
     idx_expt_pairs = [(1,0),(1,2)]
     idx_init = [0,1]
