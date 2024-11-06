@@ -166,7 +166,7 @@ def coarse_grain_time(years, year_filegroups, event_region, event_time_interval)
 
 def reduce_era5(which_ssw):
     todo = dict({
-        'coarse_grain_time':           0,
+        'coarse_grain_time':           1,
         'plot_t2m_sumstats_map':       1,
         'coarse_grain_space':          1,
         'fit_gev':                     1,
@@ -330,7 +330,7 @@ def reduce_era5(which_ssw):
 
 if __name__ == '__main__':
     print(f'Starting main')
-    for which_ssw in ["feb2018","jan2019","sep2019"][2:3]:
+    for which_ssw in ["feb2018","jan2019","sep2019"][:2]:
         result = reduce_era5(which_ssw)
 
 

@@ -116,7 +116,7 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_init, verbose=False):
     assert len(raw_mem_files) == len(mem_labels)
     
 
-    analysis_date = '2024-11-04'
+    analysis_date = '2024-11-05'
     # 2. Spatiotemporal sub-selection and coarse-graining (cg)
     reduced_data_dir = join(f'/gws/nopw/j04/snapsi/processed/wg2/ju26596',gcm,analysis_date,gcm)
     if "feb2018" == which_ssw:
@@ -369,8 +369,8 @@ def compare_gcms(which_ssw, idx_gcms):
 
 def compare_expts(which_ssw, i_gcm, i_init):
     todo = dict({
-        'plot_statpar_map_diff':           1,
-        'plot_relrisk_map':                1,
+        'plot_statpar_map_diff':           0,
+        'plot_relrisk_map':                0,
         'plot_gev_select_regions':         1,
         })
     expts = []
@@ -690,8 +690,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                 exttemp_levels_reg = np.load(join(reduced_data_dir,f'exttemp_levels_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
                 gevpar_reg = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
                 # Also load the ERA5 data 
-            prefix = 'min' if "feb2018"==which_ssw else 'ext'
-            exttemp_levels_reg_era5 = np.load(join(reduced_data_dir_era5,f'{prefix}temp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
+            exttemp_levels_reg_era5 = np.load(join(reduced_data_dir_era5,f'exttemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
             gevpar_reg_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
             print(f'{i_lon = }, {i_lat = }')
             print(f'{gevpar_reg_era5.isel(boot=0) = }')
@@ -770,13 +769,13 @@ if __name__ == "__main__":
     gcms = list(gcm2institute.keys())
     gcms2ignore = ["BCC-CSM2-HR","GLOBO","GEM-NEMO","CanESM5","SPEAR"]
 
-    #idx_gcms = [i for i in range(len(gcms)) if gcms[i] not in gcms2ignore]
-    idx_gcms = [11]
+    idx_gcms = [i for i in range(len(gcms)) if gcms[i] not in gcms2ignore]
+    #idx_gcms = [11]
     print(f'{idx_gcms = }')
     idx_expt = [0,1,2]
     idx_expt_pairs = [(1,0),(1,2)]
     idx_init = [0,1]
-    ssws = ['feb2018','jan2019','sep2019'][2:]
+    ssws = ['feb2018','jan2019','sep2019'][:2]
     procedures = sys.argv[1:]
     for which_ssw in ssws:
         if 'reduce' in procedures:
