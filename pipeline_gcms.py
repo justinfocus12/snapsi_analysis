@@ -118,7 +118,6 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_init, verbose=False):
 
     analysis_date = '2024-11-05'
     # 2. Spatiotemporal sub-selection and coarse-graining (cg)
-    reduced_data_dir = join(f'/gws/nopw/j04/snapsi/processed/wg2/ju26596',gcm,analysis_date,gcm)
     if "feb2018" == which_ssw:
         event_time_interval = [datetime.datetime(2018,2,21,0), datetime.datetime(2018,3,8,22)] # for the reference year 
         event_region = dict(lat=slice(50,65),lon=slice(-10,130))
@@ -374,9 +373,18 @@ def compare_expts(which_ssw, i_gcm, i_init):
         'plot_gev_select_regions':         1,
         })
     expts = []
-    for i_expt in range(3):
-        gcm,expt,init,event_region,event_time_interval,landmask_file,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(which_ssw, i_gcm,i_expt,i_init)
-        expts.append(expt)
+    gcms,expts,inits = gcm_multiparams(which_ssw)
+    #for i_expt in range(3):
+    gcm,_,init,event_region,event_time_interval,landmask_file,_,_,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(which_ssw, i_gcm,0,i_init)
+    landmask = (
+            utils.rezero_lons(
+                xr.open_dataarray(landmask_file)
+                .isel(time=0,drop=True)
+                .isel(latitude=slice(None,None,-1)) # Flip lat to go in increasing order
+                .rename(dict(latitude='lat',longitude='lon'))
+                )
+            .sel(event_region)
+            )
     datestr = datetime.datetime.strptime(init,"%Y%m%d").strftime("%Y-%m-%d")
 
     if "sep2019" == which_ssw:
@@ -433,6 +441,8 @@ def compare_expts(which_ssw, i_gcm, i_init):
 
         if todo['plot_gev_select_regions']:
             for (i_lon,i_lat) in select_regions[i_cgs_level]:
+                if not np.all(np.isfinite(ds_cgts_extts[expt].isel(lon=i_lon,lat=i_lat))):
+                    continue
                 exttemps = dict()
                 gevpar_regs = dict()
                 exttemp_levels_regs = dict()
@@ -775,7 +785,7 @@ if __name__ == "__main__":
     idx_expt = [0,1,2]
     idx_expt_pairs = [(1,0),(1,2)]
     idx_init = [0,1]
-    ssws = ['feb2018','jan2019','sep2019'][:2]
+    ssws = ['feb2018','jan2019','sep2019']
     procedures = sys.argv[1:]
     for which_ssw in ssws:
         if 'reduce' in procedures:
