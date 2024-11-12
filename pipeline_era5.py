@@ -330,7 +330,7 @@ def reduce_era5(which_ssw):
 
 if __name__ == '__main__':
     print(f'Starting main')
-    for which_ssw in ["feb2018","jan2019","sep2019"][:2]:
+    for which_ssw in ["feb2018","jan2019","sep2019"][2:]:
         result = reduce_era5(which_ssw)
 
 

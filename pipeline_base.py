@@ -114,26 +114,19 @@ def plot_relative_risk_map(risk0, risk1, locsign=1, **other_pcmargs):
     for (i_lon,lon) in enumerate(risk0.lon.values):
         for (i_lat,lat) in enumerate(risk0.lat.values):
             diam_fracs = [risk.isel(lon=i_lon,lat=i_lat).item() for risk in (risk0,risk1)]
-            print(f'{lon = }, {lat = }, {diam_fracs = }')
             #ax.scatter(lon, lat, marker='o', s=100, color='black', transform=ccrs.PlateCarree(),)
             ell0 = mplpatches.Ellipse((lon,lat), width=dlon*diam_fracs[0], height=dlat*diam_fracs[0], ec='black', linestyle='dotted', fc='none', transform=ccrs.PlateCarree())
             ell1 = mplpatches.Ellipse((lon,lat), width=dlon*diam_fracs[1], height=dlat*diam_fracs[1], ec='black', linestyle='solid', fc='none', transform=ccrs.PlateCarree())
             ax.add_patch(ell0)
             ax.add_patch(ell1)
-            print(f'Made the ellipse')
     ax.coastlines(color='gray')
     ax.gridlines()
     return fig,ax
 
 
 def coarse_grain_space(ds_cgt, cgs_level, landmask):
-    print(f'before calling coarse_grain_space, {landmask.coords = }')
     data_vars = dict()
     Nlon,Nlat = (ds_cgt[d].size for d in ('lon','lat'))
-    print(f'{ds_cgt.dims = }')
-    print(f'{ds_cgt.shape = }')
-    print(f'{landmask.dims = }; {landmask.shape = }')
-    print(f'{cgs_level = }')
     dim = {'lon': int(Nlon/cgs_level[0]), 'lat': int(Nlat/cgs_level[1])}
     print(f'{dim = }')
     trim_kwargs = dict(lon=slice(None,cgs_level[0]*dim['lon']),lat=slice(None,cgs_level[1]*dim['lat']))

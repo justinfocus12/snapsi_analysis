@@ -4,3 +4,4 @@
 *.npy
 .nfs*
 __pycache__/
+progress.out

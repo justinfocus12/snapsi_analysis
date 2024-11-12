@@ -66,7 +66,6 @@ def analysis_multiparams(which_ssw):
                 )
     return cgs_levels,select_regions
 
-
 def all_gcms_institutes():
     gcm2institute = dict({
         'BCC-CSM2-HR': 'BCC',
@@ -441,7 +440,7 @@ def compare_expts(which_ssw, i_gcm, i_init):
 
         if todo['plot_gev_select_regions']:
             for (i_lon,i_lat) in select_regions[i_cgs_level]:
-                if not np.all(np.isfinite(ds_cgts_extts[expt].isel(lon=i_lon,lat=i_lat))):
+                if not np.all([np.all(np.isfinite(ds_cgts_extts[expt].isel(lon=i_lon,lat=i_lat))) for expt in expts+['era5']]):
                     continue
                 exttemps = dict()
                 gevpar_regs = dict()
@@ -683,9 +682,9 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
 
         for (i_lon,i_lat) in select_regions[i_cgs_level]:
             exttemp = ds_cgts_extt.sel(daily_stat=daily_stat).isel(lon=i_lon,lat=i_lat).to_numpy()
-            if not np.all(np.isfinite(exttemp)):
-                continue
             exttemp_era5 = ds_cgts_extt_era5.sel(daily_stat=daily_stat).isel(lon=i_lon,lat=i_lat)
+            if not (np.all(np.isfinite(exttemp)) and np.all(np.isfinite(exttemp_era5))):
+                continue
             center_lon,center_lat = exttemp_era5.lon.item(),exttemp_era5.lat.item()
             exttemp_era5 = exttemp_era5.to_numpy()
             lonlatstr = r'$\lambda=%d\pm%d,\phi=%d\pm%d$'%(center_lon,lon_blocksize/2,center_lat,lat_blocksize/2)
@@ -779,23 +778,23 @@ if __name__ == "__main__":
     gcms = list(gcm2institute.keys())
     gcms2ignore = ["BCC-CSM2-HR","GLOBO","GEM-NEMO","CanESM5","SPEAR"]
 
-    idx_gcms = [i for i in range(len(gcms)) if gcms[i] not in gcms2ignore]
-    #idx_gcms = [11]
+    idx_gcms = [i for i in range(len(gcms)) if gcms[i] not in gcms2ignore][::-1]
+    #idx_gcms = [4]
     print(f'{idx_gcms = }')
+    print(f'{gcms[i] for i in idx_gcms = }')
     idx_expt = [0,1,2]
     idx_expt_pairs = [(1,0),(1,2)]
     idx_init = [0,1]
-    ssws = ['feb2018','jan2019','sep2019']
+    ssws = ['feb2018','jan2019','sep2019'][::-1]
     procedures = sys.argv[1:]
+    print(f'{procedures = }')
     for which_ssw in ssws:
-        if 'reduce' in procedures:
-            for i_gcm in idx_gcms:
+        for i_gcm in idx_gcms:
+            for i_init in idx_init:
                 for i_expt in idx_expt:
-                    for i_init in idx_init:
+                    if 'reduce' in procedures:
                         risk = reduce_gcm(which_ssw,i_gcm,i_expt,i_init)
-        if 'compare_expts' in procedures:
-            for i_gcm in idx_gcms:
-                for i_init in idx_init:
+                if 'compare_expts' in procedures:
                     compare_expts(which_ssw, i_gcm, i_init)
         if 'compare_gcms' in procedures:
             compare_gcms(which_ssw, idx_gcms)
