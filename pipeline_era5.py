@@ -290,16 +290,16 @@ def reduce_era5(which_ssw):
                 if cgs_level == (1,1):
                     lonlatstr = r'%s (whole region)'%(lonlatstr)
 
-                fig,ax = plt.subplots()
                 order = np.argsort(exttemp)
                 rank = np.argsort(order)
                 if ext_sign == -1:
                     risk_empirical = np.arange(1,len(exttemp)+1)/len(exttemp)
                 else:
                     risk_empirical = np.arange(len(exttemp),0,-1)/len(exttemp)
-                ax.scatter(risk_empirical, exttemp[order], color='black', marker='+')
                 shape,loc,scale = (gevpar_reg.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
                 if np.all([np.isfinite(p) for p in [shape,loc,scale]]):
+                    fig,ax = plt.subplots()
+                    ax.scatter(risk_empirical, exttemp[order], color='black', marker='+')
                     param_label = '\n'.join([
                         r'$\mu=%.1f$'%(ext_sign*loc),
                         r'$\sigma=%.1f$'%(scale),
@@ -330,7 +330,7 @@ def reduce_era5(which_ssw):
 
 if __name__ == '__main__':
     print(f'Starting main')
-    for which_ssw in ["feb2018","jan2019","sep2019"][2:]:
+    for which_ssw in ["feb2018","jan2019","sep2019"][0:1]:
         result = reduce_era5(which_ssw)
 
 

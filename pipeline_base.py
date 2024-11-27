@@ -140,7 +140,8 @@ def coarse_grain_space(ds_cgt, cgs_level, landmask):
     denominator = (landmask_trimmed * coslat).coarsen(**coarsen_kwargs).sum() 
     land_frac = denominator / (coslat.coarsen(**coarsen_kwargs)).sum() 
     ds_cgts = numerator / denominator 
-    ds_cgts = ds_cgts.where(np.isfinite(ds_cgts)*(land_frac >= 0.5), np.nan)
+    if cgs_level[0] > 1 or cgs_level[1] > 1:
+        ds_cgts = ds_cgts.where(np.isfinite(ds_cgts)*(land_frac >= 0.5), np.nan)
     print(f'{ds_cgts.shape = }')
     assert ds_cgts.lon.size == cgs_level[0] and ds_cgts.lat.size == cgs_level[1]
     return ds_cgts # awkward to put into a single dataset because of differing lon/lat coordinates between coarsening levels

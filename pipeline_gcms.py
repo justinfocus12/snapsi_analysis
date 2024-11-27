@@ -301,12 +301,14 @@ def compare_gcms(which_ssw, idx_gcms):
             for (i_init,init) in enumerate(inits):
                 ax = axes[i_init]
                 workflow = gcm_workflow(which_ssw,i_gcm,0,i_init)
-                reduced_data_dir = workflow[7]
-                reduced_data_dir_era5 = workflow[8]
-                risk_levels = workflow[12]
-                confint_width = workflow[14]
+                reduced_data_dir = workflow[8]
+                reduced_data_dir_era5 = workflow[9]
+                risk_levels = workflow[13]
+                confint_width = workflow[15]
                 event_region = workflow[3]
                 for (expt0,expt1) in (('free','free'),('free','control'),('free','nudged')):
+                    print(f'{expt0 = }, {expt1 = }')
+                    print(f'{reduced_data_dir = }')
                     risk0_file,risk1_file = (join(reduced_data_dir,f'risk_e{expt}_i{init}_cgs{cgs_key}.nc') for expt in (expt0,expt1))
                     risk0 = xr.open_dataarray(risk0_file).to_numpy()
                     risk1 = xr.open_dataarray(risk1_file).to_numpy()
@@ -319,9 +321,13 @@ def compare_gcms(which_ssw, idx_gcms):
                         ds_cgts_extts_era5 = (xr.open_dataarray(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc')) * ext_sign).max('time') * ext_sign
                         for i_lon in range(rr.shape[0]):
                             for i_lat in range(rr.shape[1]):
+                                #if not np.all([np.all(np.isfinite(ds_cgts_extts[expt].isel(lon=i_lon,lat=i_lat))) for expt in expts+['era5']]):
+                                #    continue
                                 exttemp_levels_reg_0 = np.load(join(reduced_data_dir,f'exttemp_levels_reg_e{expt0}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
                                 exttemp_levels_reg_1 = np.load(join(reduced_data_dir,f'exttemp_levels_reg_e{expt1}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
                                 exttemp_reg_era5 = ds_cgts_extts_era5.sel(member=event_year,daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).item()
+                                if not np.isfinite(exttemp_reg_era5):
+                                    continue
                                 exttemp_levels_range = tuple(extfun(exttemp_reg_era5).item() for extfun in (np.min, np.max))
                                 func = lambda T: np.interp(exttemp_reg_era5, T, risk_levels)
                                 risk_at_levels_0 = np.apply_along_axis(func, 1, exttemp_levels_reg_0)
@@ -330,7 +336,6 @@ def compare_gcms(which_ssw, idx_gcms):
                                 print(f'{risk_at_levels_1 = }')
                                 rel_risk_lo,rel_risk_hi = (np.quantile(risk_at_levels_1/risk_at_levels_0, 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
                                 print(f'{i_init = }, {expt0 = }, {expt1 = }, {i_cgs_level = }, {rel_risk_lo = }, {rel_risk_hi = }')
-                                sys.exit()
                                 h, = ax.plot([rel_risk_lo,rel_risk_hi], (i_gcm+yoffsets[expt1])*np.ones(2),color=colors[expt1], linewidth=3, label=expt1)
                             
 
@@ -785,7 +790,7 @@ if __name__ == "__main__":
     idx_expt = [0,1,2]
     idx_expt_pairs = [(1,0),(1,2)]
     idx_init = [0,1]
-    ssws = ['feb2018','jan2019','sep2019'][::-1]
+    ssws = ['feb2018','jan2019','sep2019'][::-1][:1]
     procedures = sys.argv[1:]
     print(f'{procedures = }')
     for which_ssw in ssws:
