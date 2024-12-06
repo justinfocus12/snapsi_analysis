@@ -108,19 +108,30 @@ def plot_relative_risk_map(risk0, risk1, locsign=1, **other_pcmargs):
             )
     pcmargs.update(other_pcmargs)
     rel_risk = risk1 / risk0
+    print(f'About to pcolormesh')
     xr.plot.pcolormesh(rel_risk, **pcmargs, ax=ax)
     # now plot circles for the baseline risk 
     dlon,dlat = (c.values[1]-c.values[0] for c in (risk0.lon,risk0.lat))
+    # unit circle
+    theta = np.linspace(0,2*np.pi,51)[:-1]
+    x_unit_circ = np.cos(theta)
+    y_unit_circ = np.sin(theta)
+
     for (i_lon,lon) in enumerate(risk0.lon.values):
+        print(f'{i_lon = } out of {risk0.lon.size}')
         for (i_lat,lat) in enumerate(risk0.lat.values):
+            print(f'\t{i_lat = } out of {risk0.lat.size}')
             diam_fracs = [risk.isel(lon=i_lon,lat=i_lat).item() for risk in (risk0,risk1)]
             #ax.scatter(lon, lat, marker='o', s=100, color='black', transform=ccrs.PlateCarree(),)
-            ell0 = mplpatches.Ellipse((lon,lat), width=dlon*diam_fracs[0], height=dlat*diam_fracs[0], ec='black', linestyle='dotted', fc='none', transform=ccrs.PlateCarree())
-            ell1 = mplpatches.Ellipse((lon,lat), width=dlon*diam_fracs[1], height=dlat*diam_fracs[1], ec='black', linestyle='solid', fc='none', transform=ccrs.PlateCarree())
-            ax.add_patch(ell0)
-            ax.add_patch(ell1)
+
+            ax.plot(lon+dlon*diam_fracs[0]/2*x_unit_circ, lat+dlat*diam_fracs[0]/2*y_unit_circ, linestyle='dotted', transform=ccrs.PlateCarree())
+            ax.plot(lon+dlon*diam_fracs[1]/2*x_unit_circ, lat+dlat*diam_fracs[1]/2*y_unit_circ, linestyle='solid', transform=ccrs.PlateCarree())
+
+    print(f'finished the lon-lat loop')
     ax.coastlines(color='gray')
+    print(f'Drew coastlines')
     ax.gridlines()
+    print(f'Drew gridlines')
     return fig,ax
 
 

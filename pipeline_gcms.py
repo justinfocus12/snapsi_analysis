@@ -276,7 +276,7 @@ def compare_gcms(which_ssw, idx_gcms):
     print(f'{gcms = }')
     colors = dict({'era5': 'black', 'control': 'dodgerblue', 'free': 'limegreen', 'nudged': 'red'})
     yoffsets = dict({'control': 1/3, 'free': 0.0, 'nudged': -1/3})
-    figdir = f'/home/users/ju26596/snapsi_analysis_figures/{which_ssw}/2024-10-09/multimodel'
+    figdir = f'/home/users/ju26596/snapsi_analysis_figures/{which_ssw}/2024-11-05/multimodel'
     print(f'{figdir = }')
     xlims = [0.2, 5.0]
     ylims = [-0.5, len(gcms)-0.5]
@@ -285,7 +285,7 @@ def compare_gcms(which_ssw, idx_gcms):
     dpi = 200
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
-        fig,axes = plt.subplots(figsize=(12,10),ncols=2,nrows=1,sharey=True, dpi=dpi)
+        fig,axes = plt.subplots(figsize=(12,8),ncols=2,nrows=1,sharey=True, dpi=dpi)
         for ax in axes:
             ax.set_xlim(xlims)
             ax.set_ylim(ylims)
@@ -294,10 +294,12 @@ def compare_gcms(which_ssw, idx_gcms):
         unit_radius_display = axes[0].transData.transform([0, unit_radius_data])[1] - axes[0].transData.transform([0,0])[1]
         unit_radius_points = unit_radius_display * 72/fig.dpi
         handles = []
+        i_gcm2plot = -1
         for (i_gcm,gcm) in enumerate(gcms):
             print(f'Starting {i_gcm,gcm = }')
             if not (i_gcm in idx_gcms):
                 continue
+            i_gcm2plot += 1
             for (i_init,init) in enumerate(inits):
                 ax = axes[i_init]
                 workflow = gcm_workflow(which_ssw,i_gcm,0,i_init)
@@ -314,7 +316,7 @@ def compare_gcms(which_ssw, idx_gcms):
                     risk1 = xr.open_dataarray(risk1_file).to_numpy()
                     rr = np.maximum(xlims[0], np.minimum(xlims[1], risk1/risk0))
                     print(f'{rr.shape = }')
-                    h = ax.scatter(rr.flat, (i_gcm+yoffsets[expt1])*np.ones(rr.size), ec=colors[expt1], linewidth=2, fc='none', s=(2*unit_radius_points * (1/4 + risk1*3/4))**2, label=expt1)
+                    h = ax.scatter(rr.flat, (i_gcm2plot+yoffsets[expt1])*np.ones(rr.size), ec=colors[expt1], linewidth=2, fc='none', s=(2*unit_radius_points * (1/4 + risk1*3/4))**2, label=expt1)
                     # Add error bars if the level of coarse-graining is 1x1
                     if len(handles) < 3: handles.append(h)
                     if i_cgs_level == 0:
@@ -327,6 +329,7 @@ def compare_gcms(which_ssw, idx_gcms):
                                 exttemp_levels_reg_1 = np.load(join(reduced_data_dir,f'exttemp_levels_reg_e{expt1}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
                                 exttemp_reg_era5 = ds_cgts_extts_era5.sel(member=event_year,daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).item()
                                 if not np.isfinite(exttemp_reg_era5):
+                                    print(f'Oops, not finite for {i_lon = }, {i_lat = }')
                                     continue
                                 exttemp_levels_range = tuple(extfun(exttemp_reg_era5).item() for extfun in (np.min, np.max))
                                 func = lambda T: np.interp(exttemp_reg_era5, T, risk_levels)
@@ -336,7 +339,10 @@ def compare_gcms(which_ssw, idx_gcms):
                                 print(f'{risk_at_levels_1 = }')
                                 rel_risk_lo,rel_risk_hi = (np.quantile(risk_at_levels_1/risk_at_levels_0, 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
                                 print(f'{i_init = }, {expt0 = }, {expt1 = }, {i_cgs_level = }, {rel_risk_lo = }, {rel_risk_hi = }')
-                                h, = ax.plot([rel_risk_lo,rel_risk_hi], (i_gcm+yoffsets[expt1])*np.ones(2),color=colors[expt1], linewidth=3, label=expt1)
+                                print(f'{rel_risk_hi - rel_risk_lo = }')
+                                #if expt0 != expt1:
+                                #    sys.exit()
+                                h, = ax.plot([rel_risk_lo,rel_risk_hi], (i_gcm2plot+yoffsets[expt1])*np.ones(2),color=colors[expt1], linewidth=3, label=expt1)
                             
 
 
@@ -354,14 +360,18 @@ def compare_gcms(which_ssw, idx_gcms):
             xticks = [xlims[0], 1.0, xlims[1]]
             ax.set_xticks(xticks, labels=[str(xtick) for xtick in xticks])
             ax.set_xlabel('rel. risk w.r.t. free')
-            for i_gcm in range(len(gcms)):
-                ax.axhline(i_gcm+0.5, color='gray')
-                ax.axhline(i_gcm-0.5, color='gray')
-                ax.axhline(i_gcm+1/6, color='gray', linestyle='dotted')
-                ax.axhline(i_gcm-1/6, color='gray', linestyle='dotted')
+            for i_gcm2plot in range(len(idx_gcms)):
+                ax.axhline(i_gcm2plot+0.5, color='gray')
+                ax.axhline(i_gcm2plot-0.5, color='gray')
+                ax.axhline(i_gcm2plot+1/6, color='gray', linestyle='dotted')
+                ax.axhline(i_gcm2plot-1/6, color='gray', linestyle='dotted')
         dlon = (event_region['lon'].stop - event_region['lon'].start)/(cgs_level[0])
         dlat = (event_region['lat'].stop - event_region['lat'].start)/(cgs_level[1])
-        fig.suptitle(r'Relative risk ($%d^\circ$lon$\times%d^\circ$lat regions)'%(dlon, dlat))
+        if i_cgs_level == 0:
+            suptitle = r'Relative risk (whole region)'
+        else:
+            suptitle = r'Relative risk ($%d^\circ$lon$\times%d^\circ$lat regions)'%(dlon, dlat)
+        fig.suptitle(suptitle)
         fig.legend(handles=handles, bbox_to_anchor=(0.5,0.0), loc='upper center', ncol=3)
         fig.savefig(filename, **pltkwargs)
 
@@ -373,8 +383,8 @@ def compare_gcms(which_ssw, idx_gcms):
 def compare_expts(which_ssw, i_gcm, i_init):
     todo = dict({
         'plot_statpar_map_diff':           0,
-        'plot_relrisk_map':                0,
-        'plot_gev_select_regions':         1,
+        'plot_relrisk_map':                1,
+        'plot_gev_select_regions':         0,
         })
     expts = []
     gcms,expts,inits = gcm_multiparams(which_ssw)
@@ -430,6 +440,7 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 fig.savefig(join(figdir,f'statpar_map_e{expt1}minus{expt0}_i{init}_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
                 plt.close(fig)
         if todo['plot_relrisk_map'] and min(cgs_level) > 1:
+            print(f'----------------\ngot into relrisk_map block\n---------------')
             # control-free, nudged-free
             statsel = dict(daily_stat=daily_stat)
             for (expt0,expt1) in (('free','control'),('free','nudged')):
@@ -439,9 +450,11 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 #logrr = xr.where(np.isfinite(logrr), logrr, np.nan)
                 fig,ax = pipeline_base.plot_relative_risk_map(risk0, risk1, locsign=1)
                 ax.set_title(f'{gcm} RR ({expt1}/{expt0})\ninit {datestr}')
-                fig.savefig(join(figdir,f'relrisk_map_e{expt1}over{expt0}_i{init}_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
+                figfile = join(figdir,f'relrisk_map_e{expt1}over{expt0}_i{init}_cgs{cgs_key}_{daily_stat}.png')
+                print(f'About to save figfile')
+                fig.savefig(figfile, **pltkwargs)
                 plt.close(fig)
-                print(f'Saved the figure')
+                print(f'Saved the figure to {figfile}')
 
         if todo['plot_gev_select_regions']:
             for (i_lon,i_lat) in select_regions[i_cgs_level]:
@@ -790,7 +803,7 @@ if __name__ == "__main__":
     idx_expt = [0,1,2]
     idx_expt_pairs = [(1,0),(1,2)]
     idx_init = [0,1]
-    ssws = ['feb2018','jan2019','sep2019'][::-1][:1]
+    ssws = ['feb2018','jan2019','sep2019']
     procedures = sys.argv[1:]
     print(f'{procedures = }')
     for which_ssw in ssws:
