@@ -279,7 +279,7 @@ def compare_gcms(which_ssw, idx_gcms):
     figdir = f'/home/users/ju26596/snapsi_analysis_figures/{which_ssw}/2024-11-05/multimodel'
     print(f'{figdir = }')
     xlims = [0.2, 5.0]
-    ylims = [-0.5, len(gcms)-0.5]
+    ylims = [-0.5, len(idx_gcms)-0.5]
     slims = (np.array([1.0, 4.0])*rcParams['lines.markersize']) # bounds on the marker size 
     makedirs(figdir, exist_ok=True)
     dpi = 200
@@ -295,10 +295,9 @@ def compare_gcms(which_ssw, idx_gcms):
         unit_radius_points = unit_radius_display * 72/fig.dpi
         handles = []
         i_gcm2plot = -1
-        for (i_gcm,gcm) in enumerate(gcms):
+        for i_gcm in idx_gcms:
+            gcm = gcms[i_gcm]
             print(f'Starting {i_gcm,gcm = }')
-            if not (i_gcm in idx_gcms):
-                continue
             i_gcm2plot += 1
             for (i_init,init) in enumerate(inits):
                 ax = axes[i_init]
@@ -330,9 +329,16 @@ def compare_gcms(which_ssw, idx_gcms):
                                 exttemp_reg_era5 = ds_cgts_extts_era5.sel(member=event_year,daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).item()
                                 if not np.isfinite(exttemp_reg_era5):
                                     print(f'Oops, not finite for {i_lon = }, {i_lat = }')
+                                    sys.exit()
                                     continue
+
                                 exttemp_levels_range = tuple(extfun(exttemp_reg_era5).item() for extfun in (np.min, np.max))
-                                func = lambda T: np.interp(exttemp_reg_era5, T, risk_levels)
+                                print(f'{exttemp_levels_range = }')
+                                order = np.arange(0,len(risk_levels),dtype=int)
+                                if ext_sign == 1:
+                                    order = order[::-1]
+                                print(f'{order = }')
+                                func = lambda T: (np.interp(exttemp_reg_era5, T[order], risk_levels[order]))
                                 risk_at_levels_0 = np.apply_along_axis(func, 1, exttemp_levels_reg_0)
                                 risk_at_levels_1 = np.apply_along_axis(func, 1, exttemp_levels_reg_1)
                                 print(f'{risk_at_levels_0 = }')
@@ -340,14 +346,15 @@ def compare_gcms(which_ssw, idx_gcms):
                                 rel_risk_lo,rel_risk_hi = (np.quantile(risk_at_levels_1/risk_at_levels_0, 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
                                 print(f'{i_init = }, {expt0 = }, {expt1 = }, {i_cgs_level = }, {rel_risk_lo = }, {rel_risk_hi = }')
                                 print(f'{rel_risk_hi - rel_risk_lo = }')
-                                #if expt0 != expt1:
-                                #    sys.exit()
+                                #pdb.set_trace()
+                                if False and (expt0 != expt1):
+                                    sys.exit()
                                 h, = ax.plot([rel_risk_lo,rel_risk_hi], (i_gcm2plot+yoffsets[expt1])*np.ones(2),color=colors[expt1], linewidth=3, label=expt1)
                             
 
 
         filename = join(figdir, f'relrisk_multimodel_cgs{cgs_key}.png')
-        axes[0].set_yticks(range(len(gcms)), labels=gcms)
+        axes[0].set_yticks(range(len(idx_gcms)), labels=[gcms[i] for i in idx_gcms])
         for (i_ax,ax) in enumerate(axes):
             ax.set_xlim(xlims)
             ax.set_ylim(ylims)
@@ -382,9 +389,9 @@ def compare_gcms(which_ssw, idx_gcms):
 
 def compare_expts(which_ssw, i_gcm, i_init):
     todo = dict({
-        'plot_statpar_map_diff':           0,
+        'plot_statpar_map_diff':           1,
         'plot_relrisk_map':                1,
-        'plot_gev_select_regions':         0,
+        'plot_gev_select_regions':         1,
         })
     expts = []
     gcms,expts,inits = gcm_multiparams(which_ssw)
@@ -803,7 +810,7 @@ if __name__ == "__main__":
     idx_expt = [0,1,2]
     idx_expt_pairs = [(1,0),(1,2)]
     idx_init = [0,1]
-    ssws = ['feb2018','jan2019','sep2019']
+    ssws = ['feb2018','jan2019','sep2019'][2:]
     procedures = sys.argv[1:]
     print(f'{procedures = }')
     for which_ssw in ssws:

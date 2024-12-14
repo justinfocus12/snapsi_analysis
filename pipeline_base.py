@@ -71,6 +71,20 @@ def compute_risk(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
             # TODO correct for directionality 
     return risk
 
+def compute_quantile_shift(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, ccdf, locsign=1):
+    # Calculate the change in the level corresponding to an exceedance probability ccdf
+    q = xr.DataAray(
+            coords={'lon': ds_cgts_ref.lon, 'lat': ds_cgts_ref.lat},
+            dims=['lon','lat'],
+            data=np.nan,
+            )
+    for i_lon in range(Nlon):
+        for i_lat in range(Nlat):
+            x=1
+
+    return qshift
+
+
 def plot_risk_map(risk, locsign=1, **other_pcmargs):
     # the reference ds_cgts is ERA5, and should only have one year asociated with it 
     clon,clat = (risk.coords[coordname].mean().item() for coordname in ('lon','lat'))
@@ -124,8 +138,8 @@ def plot_relative_risk_map(risk0, risk1, locsign=1, **other_pcmargs):
             diam_fracs = [risk.isel(lon=i_lon,lat=i_lat).item() for risk in (risk0,risk1)]
             #ax.scatter(lon, lat, marker='o', s=100, color='black', transform=ccrs.PlateCarree(),)
 
-            ax.plot(lon+dlon*diam_fracs[0]/2*x_unit_circ, lat+dlat*diam_fracs[0]/2*y_unit_circ, linestyle='dotted', transform=ccrs.PlateCarree())
-            ax.plot(lon+dlon*diam_fracs[1]/2*x_unit_circ, lat+dlat*diam_fracs[1]/2*y_unit_circ, linestyle='solid', transform=ccrs.PlateCarree())
+            ax.plot(lon+dlon*diam_fracs[0]/2*x_unit_circ, lat+dlat*diam_fracs[0]/2*y_unit_circ, linestyle='dotted', transform=ccrs.PlateCarree(), color="black")
+            ax.plot(lon+dlon*diam_fracs[1]/2*x_unit_circ, lat+dlat*diam_fracs[1]/2*y_unit_circ, linestyle='solid', transform=ccrs.PlateCarree(), color="black")
 
     print(f'finished the lon-lat loop')
     ax.coastlines(color='gray')
