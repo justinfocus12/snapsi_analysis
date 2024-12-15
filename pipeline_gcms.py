@@ -285,8 +285,9 @@ def compare_gcms(which_ssw, idx_gcms):
     dpi = 200
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
-        fig,axes = plt.subplots(figsize=(12,8),ncols=2,nrows=1,sharey=True, dpi=dpi)
-        for ax in axes:
+        fig_rr,axes_rr = plt.subplots(figsize=(12,8),ncols=2,nrows=1,sharey=True, dpi=dpi) # relative risk
+        fig_dv,axes_dv = plt.subplots(figsize=(12,8),ncols=2,nrows=1,sharey=True, dpi=dpi) # difference in value at risk 
+        for ax in axes_rr:
             ax.set_xlim(xlims)
             ax.set_ylim(ylims)
         # Determine the radius-to-points conversion
@@ -300,7 +301,8 @@ def compare_gcms(which_ssw, idx_gcms):
             print(f'Starting {i_gcm,gcm = }')
             i_gcm2plot += 1
             for (i_init,init) in enumerate(inits):
-                ax = axes[i_init]
+                ax_rr = axes_rr[i_init]
+                ax_dv = axes_dv[i_init]
                 workflow = gcm_workflow(which_ssw,i_gcm,0,i_init)
                 reduced_data_dir = workflow[8]
                 reduced_data_dir_era5 = workflow[9]
@@ -311,13 +313,19 @@ def compare_gcms(which_ssw, idx_gcms):
                     print(f'{expt0 = }, {expt1 = }')
                     print(f'{reduced_data_dir = }')
                     risk0_file,risk1_file = (join(reduced_data_dir,f'risk_e{expt}_i{init}_cgs{cgs_key}.nc') for expt in (expt0,expt1))
+                    rvar0_file,rvar1_file = (join(reduced_data_dir,f'risk_valatrisk_e{expt}_i{init}_cgs{cgs_key}.nc') for expt in (expt0,expt1))
                     risk0 = xr.open_dataarray(risk0_file).to_numpy()
                     risk1 = xr.open_dataarray(risk1_file).to_numpy()
                     rr = np.maximum(xlims[0], np.minimum(xlims[1], risk1/risk0))
+                    rvar0 = xr.open_dataarray(rvar0_file).to_numpy()
+                    rvar1 = xr.open_dataarray(rvar1_file).to_numpy()
+                    dvar = (rvar1.sel(quantity='valatrisk',drop=True) - rvar0.sel(quantity='valatrisk',drop=True)).to_numpy()
                     print(f'{rr.shape = }')
-                    h = ax.scatter(rr.flat, (i_gcm2plot+yoffsets[expt1])*np.ones(rr.size), ec=colors[expt1], linewidth=2, fc='none', s=(2*unit_radius_points * (1/4 + risk1*3/4))**2, label=expt1)
+                    h = ax_rr.scatter(rr.flat, (i_gcm2plot+yoffsets[expt1])*np.ones(rr.size), ec=colors[expt1], linewidth=2, fc='none', s=(2*unit_radius_points * (1/4 + risk1*3/4))**2, label=expt1)
                     # Add error bars if the level of coarse-graining is 1x1
                     if len(handles) < 3: handles.append(h)
+                    h = ax_dv.scatter(dvar.flat, (i_gcm2plot+yoffsets[expt1])*np.ones(dvar.size), ec=colors[expt1], linewidth=2, fc='none', s=(2*unit_radius_points * (1/4 + risk1*3/4))**2, label=expt1)
+                    # Add error bars if the level of coarse-graining is 1x1
                     if i_cgs_level == 0:
                         ds_cgts_extts_era5 = (xr.open_dataarray(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc')) * ext_sign).max('time') * ext_sign
                         for i_lon in range(rr.shape[0]):
@@ -344,18 +352,47 @@ def compare_gcms(which_ssw, idx_gcms):
                                 print(f'{risk_at_levels_0 = }')
                                 print(f'{risk_at_levels_1 = }')
                                 rel_risk_lo,rel_risk_hi = (np.quantile(risk_at_levels_1/risk_at_levels_0, 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
+                                # TODO basic-bootstrap if called for
+                                # now same for value at risk 
+                                i_risklev = np.argmin(np.abs(risk_levels - rvar0.sel(quantity='risk').isel(lon=i_lon,lat=i_lat).item()))
+                                dvar_lo,dvar_hi = (np.quantile(exttemp_levels_reg_1[:,i_risklev] - exttemp_levels_reg_1[:,i_risklev], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
                                 print(f'{i_init = }, {expt0 = }, {expt1 = }, {i_cgs_level = }, {rel_risk_lo = }, {rel_risk_hi = }')
                                 print(f'{rel_risk_hi - rel_risk_lo = }')
                                 #pdb.set_trace()
                                 if False and (expt0 != expt1):
                                     sys.exit()
-                                h, = ax.plot([rel_risk_lo,rel_risk_hi], (i_gcm2plot+yoffsets[expt1])*np.ones(2),color=colors[expt1], linewidth=3, label=expt1)
+                                h, = ax_rr.plot([rel_risk_lo,rel_risk_hi], (i_gcm2plot+yoffsets[expt1])*np.ones(2),color=colors[expt1], linewidth=3, label=expt1)
+                                h, = ax_dv.plot([dvar_lo,dvar_hi], (i_gcm2plot+yoffsets[expt1])*np.ones(2),color=colors[expt1], linewidth=3, label=expt1)
+        # value at risk comparison
+        filename = join(figdir, f'dvalatrisk_multimodel_cgs{cgs_key}.png')
+        axes_dv[0].set_yticks(range(len(idx_gcms)), labels=[gcms[i] for i in idx_gcms])
+        for (i_ax,ax) in enumerate(axes_dv):
+            ax.set_ylim(ylims)
+            ax.axvline(0.0, color='black', linestyle='--')
+            datestr = datetime.datetime.strptime(inits[i_ax],"%Y%m%d").strftime("%Y-%m-%d")
+            ax.set_title(f"init {datestr}")
+            ax.set_xlabel(r'$T-T_{\mathrm{free}}$')
+            for i_gcm2plot in range(len(idx_gcms)):
+                ax.axhline(i_gcm2plot+0.5, color='gray')
+                ax.axhline(i_gcm2plot-0.5, color='gray')
+                ax.axhline(i_gcm2plot+1/6, color='gray', linestyle='dotted')
+                ax.axhline(i_gcm2plot-1/6, color='gray', linestyle='dotted')
+        dlon = (event_region['lon'].stop - event_region['lon'].start)/(cgs_level[0])
+        dlat = (event_region['lat'].stop - event_region['lat'].start)/(cgs_level[1])
+        if i_cgs_level == 0:
+            suptitle = r'$\Delta t$ (whole region)'
+        else:
+            suptitle = r'$\Delta t$ ($%d^\circ$lon$\times%d^\circ$lat regions)'%(dlon, dlat)
+        fig_dv.suptitle(suptitle)
+        fig_dv.legend(handles=handles, bbox_to_anchor=(0.5,0.0), loc='upper center', ncol=3)
+        fig_dv.savefig(filename, **pltkwargs)
+
+        plt.close(fig_dv)
                             
-
-
+        # relative risk comparison
         filename = join(figdir, f'relrisk_multimodel_cgs{cgs_key}.png')
-        axes[0].set_yticks(range(len(idx_gcms)), labels=[gcms[i] for i in idx_gcms])
-        for (i_ax,ax) in enumerate(axes):
+        axes_rr[0].set_yticks(range(len(idx_gcms)), labels=[gcms[i] for i in idx_gcms])
+        for (i_ax,ax) in enumerate(axes_rr):
             ax.set_xlim(xlims)
             ax.set_ylim(ylims)
             ax.axvline(1.0, color='black', linestyle='--')
@@ -378,19 +415,20 @@ def compare_gcms(which_ssw, idx_gcms):
             suptitle = r'Relative risk (whole region)'
         else:
             suptitle = r'Relative risk ($%d^\circ$lon$\times%d^\circ$lat regions)'%(dlon, dlat)
-        fig.suptitle(suptitle)
-        fig.legend(handles=handles, bbox_to_anchor=(0.5,0.0), loc='upper center', ncol=3)
-        fig.savefig(filename, **pltkwargs)
+        fig_rr.suptitle(suptitle)
+        fig_rr.legend(handles=handles, bbox_to_anchor=(0.5,0.0), loc='upper center', ncol=3)
+        fig_rr.savefig(filename, **pltkwargs)
 
-        plt.close(fig)
+        plt_rr.close(fig)
     return
             
 
 
 def compare_expts(which_ssw, i_gcm, i_init):
     todo = dict({
-        'plot_statpar_map_diff':           1,
-        'plot_relrisk_map':                1,
+        'plot_statpar_map_diff':           0,
+        'plot_relrisk_map':                0,
+        # TODO add an option for 'plot_qshift_map'
         'plot_gev_select_regions':         1,
         })
     expts = []
@@ -464,6 +502,12 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 print(f'Saved the figure to {figfile}')
 
         if todo['plot_gev_select_regions']:
+            # Interpolate every bootstrap
+            # exttemp_levels_common has to have the right order!!!
+            if -1 == ext_sign:
+                ordering_for_interp = np.arange(0,len(risk_levels),1)
+            else:
+                ordering_for_interp = np.arange(len(risk_levels)-1,-1,-1)
             for (i_lon,i_lat) in select_regions[i_cgs_level]:
                 if not np.all([np.all(np.isfinite(ds_cgts_extts[expt].isel(lon=i_lon,lat=i_lat))) for expt in expts+['era5']]):
                     continue
@@ -485,10 +529,10 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 # Plot all four curves on one plot (ERA5, free, control, nudged)
                 colors = dict({'era5': 'black', 'control': 'dodgerblue', 'free': 'limegreen', 'nudged': 'red'})
 
-                fig,axes = plt.subplots(ncols=2, figsize=(12,4), sharey=True)
-                for ax in axes: 
+                fig,axes = plt.subplots(ncols=2, nrows=2, figsize=(9,9), sharey='row', sharex='col', width_ratios=[3,2], height_ratios=[2,1])
+                for ax in axes[0,:]: 
                     ax.axhline(exttemps['era5'].sel(member=event_year).item(), color='black', linestyle='--')
-                ax = axes[0]
+                ax = axes[0,0]
                 handles = []
 
                 # Interpolate for relative risk 
@@ -514,31 +558,21 @@ def compare_expts(which_ssw, i_gcm, i_init):
                         else:
                             risk_empirical = np.arange(len(exttemp),0,-1)/len(exttemp)
                         ax.scatter(risk_empirical, exttemp[order], color=colors[expt], marker='+')
-                        h, = ax.plot(risk_levels,exttemp_levels_reg[0,:],color=colors[expt],label=r'%s (%s)'%(expt+' '*(7-len(expt)),param_label))
+                        h, = ax.plot(risk_levels,exttemp_levels_regs[expt][0,:],color=colors[expt],label=r'%s (%s)'%(expt+' '*(7-len(expt)),param_label))
                         handles.append(h)
-                        boot_quant_lo,boot_quant_hi = (np.quantile(exttemp_levels_reg[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
+                        boot_quant_lo,boot_quant_hi = (np.quantile(exttemp_levels_regs[expt][1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
                         if boot_type == 'percentile':
                             lo,hi = boot_quant_lo,boot_quant_hi
                         elif boot_type == 'basic':
-                            lo,hi = (2*exttemp_levels_reg[0,:]-boot_quant_hi,2*exttemp_levels_reg[0,:]-boot_quant_lo)
+                            lo,hi = (2*exttemp_levels_regs[expt][0,:]-boot_quant_hi,2*exttemp_levels_regs[expt][0,:]-boot_quant_lo)
                         ax.fill_between(risk_levels, lo, hi, fc=colors[expt], ec='none', alpha=0.3, zorder=-1)
-                        # Interpolate every bootstrap
-                        # exttemp_levels_common has to have the right order!!!
-                        if -1 == ext_sign:
-                            ordering_for_interp = np.arange(0,len(risk_levels),1)
-                        else:
-                            ordering_for_interp = np.arange(len(risk_levels)-1,-1,-1)
                         func = lambda T: np.interp(exttemp_levels_common, T[ordering_for_interp], risk_levels[ordering_for_interp])
-                        risk_at_levels[expt] = np.apply_along_axis(func, 1, exttemp_levels_reg)
-                ax.set_xscale('log')
-                extstr = "min" if ext_sign==-1 else "max"
-                ineqstr = "leq" if ext_sign==-1 else "geq"
-                ax.set_xlabel(r'$\mathbb{P}\{\%s_t\langle T(t)\rangle_{\mathrm{region}}\%s T\}$'%(extstr,ineqstr))
+                        risk_at_levels[expt] = np.apply_along_axis(func, 1, exttemp_levels_regs[expt])
+                axes[1,0].legend(handles=handles, title=r'$(\mu,\sigma,\xi)=$', bbox_to_anchor=(1.0,1.0), loc='upper left')
                 ax.set_ylabel(r'$T$')
-                ax.legend(handles=handles, title=r'$(\mu,\sigma,\xi)=$', bbox_to_anchor=(-0.25,0.5), loc='center right')
 
                 # Relative risk
-                ax = axes[1]
+                ax = axes[0,1]
                 ax.axvline(1.0, color=colors['free'], linestyle='-')
                 # Interpolate to common set of levels and plot relative risk 
                 handles = []
@@ -555,19 +589,47 @@ def compare_expts(which_ssw, i_gcm, i_init):
                     else:
                         lo,hi = 2*risk_ratio[0,:]-boot_quant_hi, 2*risk_ratio[0,:]-boot_quant_lo
                     ax.fill_betweenx(exttemp_levels_common, lo, hi, fc=colors[expt1], ec='none', alpha=0.3, zorder=-1)
-                ax.set_xscale('log')
-                ax.set_xlim([0.5,5.0])
-                ax.get_xaxis().set_major_formatter(ticker.NullFormatter())
-                ax.get_xaxis().set_minor_formatter(ticker.NullFormatter())
-                xticks = [0.5,1.0,2.0,5.0]
-                ax.set_xticks(xticks, [r'%g'%(xtick) for xtick in xticks])
-                #ax.legend(handles=handles)
-                ax.set_xlabel(r'Relative risk w.r.t. free')
 
-                for ax in axes:
+                for ax in axes[0,:]:
                     ax.set_ylim(exttemp_levels_range)
+                    ax.tick_params(which="both",labelbottom=True)
+
+                # ------- Lower left: plot difference in temperature-at-risk as a function of risk --------
+                ax = axes[1,0]
+                for (expt0,expt1) in (('free','free'),('free','control'),('free','nudged')):
+                    exttemp_levels_diff = exttemp_levels_regs[expt1] - exttemp_levels_regs[expt0]
+                    ax.plot(risk_levels, exttemp_levels_diff[0,:], color=colors[expt1])
+                    boot_quant_lo,boot_quant_hi = (np.quantile(exttemp_levels_diff[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
+                    if boot_type == 'percentile':
+                        lo,hi = boot_quant_lo,boot_quant_hi
+                    else:
+                        lo,hi = 2*exttemp_levels_diff[0,:]-boot_quant_hi, 2*exttemp_levels_diff[0,:]-boot_quant_lo
+                    ax.fill_between(risk_levels, lo, hi, fc=colors[expt1], alpha=0.3, ec='none', zorder=-1)
+                ax.set_ylabel(r"$T-T_{\mathrm{free}}$")
+                    
+                #pdb.set_trace()
+                risk_at_level_observed_era5 = np.interp(exttemps['era5'].sel(member=event_year).item(), exttemp_levels_common, risk_at_levels['era5'][0])
+                for ax in axes[:,0]:
+                    ax.axvline(risk_at_level_observed_era5, color='black', linestyle='dashed') 
+                    ax.set_xscale('log')
+
+                for ax in axes[0,1:2]:
+                    ax.get_xaxis().set_major_formatter(ticker.NullFormatter())
+                    ax.get_xaxis().set_minor_formatter(ticker.NullFormatter())
+                    xticks = [0.2,0.5,1.0,2.0,5.0]
+                    ax.set_xticks(xticks, [r'%g'%(xtick) for xtick in xticks])
+                    ax.set_xlim([0.2,5.0])
+                    #ax.legend(handles=handles)
+                    ax.set_xlabel(r'$\mathrm{risk}/\mathrm{risk}_{\mathrm{free}}$')
+                    ax.set_xscale('log')
+
+                extstr = "min" if ext_sign==-1 else "max"
+                ineqstr = "leq" if ext_sign==-1 else "geq"
+                axes[1,0].set_xlabel(r'$\mathbb{P}\{\%s_t\langle T(t)\rangle_{\mathrm{region}}\%s T\}$'%(extstr,ineqstr))
 
                 fig.suptitle(f'{gcm}, init {datestr} at {lonlatstr}')
+
+                axes[1,1].axis('off')
 
                 fig.savefig(join(figdir,f'riskplot_reg_eall_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
                 plt.close(fig)
@@ -579,15 +641,16 @@ def compare_expts(which_ssw, i_gcm, i_init):
 def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
     todo = dict({
-        'coarse_grain_time':           1,
-        'plot_t2m_sumstats_map':       1,
-        'coarse_grain_space':          1,
-        'fit_gev':                     1,
-        'plot_statpar_map':            1,
-        'compute_risk':                1,
-        'plot_risk_map':               1,
-        'fit_gev_select_regions':      1,
-        'plot_gev_select_regions':     1,
+        'coarse_grain_time':           0,
+        'plot_t2m_sumstats_map':       0,
+        'coarse_grain_space':          0,
+        'fit_gev':                     0,
+        'plot_statpar_map':            0,
+        'compute_risk':                0,
+        'compute_valatrisk':           1,
+        'plot_risk_map':               0,
+        'fit_gev_select_regions':      0,
+        'plot_gev_select_regions':     0,
         })
     gcm,expt,init,event_region,event_time_interval,landmask_file,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(which_ssw,i_gcm,i_expt,i_init)
     fcdate = datetime.datetime.strptime(init,'%Y%m%d')
@@ -678,7 +741,20 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
             risk.to_netcdf(risk_file)
         else:
             risk = xr.open_dataarray(risk_file)
-        
+
+        # TODO compute quantile shift associated with the same probability as the observed event was relative to the historical record
+        risk_valatrisk_file = join(reduced_data_dir,f'risk_valatrisk_e{expt}_i{init}_cgs{cgs_key}.nc')
+        if todo['compute_valatrisk']:
+            dskwargs = dict(daily_stat=daily_stat,drop=True)
+            risk_valatrisk = pipeline_base.compute_valatrisk(
+                    ds_cgts_extt, 
+                    ds_cgts_extt_era5.sel(member=event_year, **dskwargs),
+                    gevpar.sel(**dskwargs),
+                    gevpar_era5.sel(**dskwargs), 
+                    locsign=ext_sign)
+            risk_valatrisk.to_netcdf(valatrisk_file)
+        else:
+            risk_valatrisk = xr.open_dataarray(risk_valatrisk_file)
 
         if todo['plot_risk_map'] and min(cgs_level) > 1:
             fig,ax = pipeline_base.plot_risk_map(risk, locsign=ext_sign)
@@ -803,14 +879,14 @@ if __name__ == "__main__":
     gcms = list(gcm2institute.keys())
     gcms2ignore = ["BCC-CSM2-HR","GLOBO","GEM-NEMO","CanESM5","SPEAR"]
 
-    idx_gcms = [i for i in range(len(gcms)) if gcms[i] not in gcms2ignore][::-1]
+    idx_gcms = [i for i in range(len(gcms)) if gcms[i] not in gcms2ignore][::-1][:1]
     #idx_gcms = [4]
     print(f'{idx_gcms = }')
     print(f'{gcms[i] for i in idx_gcms = }')
     idx_expt = [0,1,2]
     idx_expt_pairs = [(1,0),(1,2)]
     idx_init = [0,1]
-    ssws = ['feb2018','jan2019','sep2019'][2:]
+    ssws = ['feb2018','jan2019','sep2019'][:1]
     procedures = sys.argv[1:]
     print(f'{procedures = }')
     for which_ssw in ssws:

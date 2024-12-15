@@ -1,6 +1,7 @@
 import numpy as np
 import xarray as xr 
 from scipy.stats import genextreme as spgex
+import pdb
 from cartopy import crs as ccrs
 import netCDF4
 from matplotlib import pyplot as plt, rcParams, ticker, colors as mplcolors, patches as mplpatches
@@ -71,18 +72,19 @@ def compute_risk(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
             # TODO correct for directionality 
     return risk
 
-def compute_quantile_shift(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, ccdf, locsign=1):
+def compute_valatrisk(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
     # Calculate the change in the level corresponding to an exceedance probability ccdf
-    q = xr.DataAray(
-            coords={'lon': ds_cgts_ref.lon, 'lat': ds_cgts_ref.lat},
-            dims=['lon','lat'],
+    risk_valatrisk = xr.DataArray(
+            coords={'lon': ds_cgts_ref.lon, 'lat': ds_cgts_ref.lat, 'quantity': ['risk','valatrisk']},
+            dims=['quantity'] + [d for d in ds_cgts_ref.dims if d in ['lat','lon']],
             data=np.nan,
             )
-    for i_lon in range(Nlon):
-        for i_lat in range(Nlat):
-            x=1
-
-    return qshift
+    pdb.set_trace()
+    shapes,locs,scales = (gevpar_ref.sel(param=p).to_numpy() for p in ('shape','loc','scale'))
+    risk_valatrisk.loc[dict(quantity='risk')] = spgex.sf(ds_cgts_ref.to_numpy()*locsign, shapes, loc=locs*locsign, scale=scales)
+    risk_valatrisk.loc[dict(quantity='valatrisk')] = spgex.isf(risk_valatrisk.sel(quantity='risk').to_numpy(), shapes, loc=locs, scale=scales)*locsign
+    # TODO obtain a whole range of quantile shifts to plot as a function of probability ("value at risk"? )
+    return risk_valatrisk
 
 
 def plot_risk_map(risk, locsign=1, **other_pcmargs):
