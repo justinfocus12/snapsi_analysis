@@ -285,15 +285,15 @@ def compare_gcms(which_ssw, idx_gcms):
     dpi = 200
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
-        fig_rr,axes_rr = plt.subplots(figsize=(12,8),ncols=2,nrows=1,sharey=True, dpi=dpi) # relative risk
-        fig_dv,axes_dv = plt.subplots(figsize=(12,8),ncols=2,nrows=1,sharey=True, dpi=dpi) # difference in value at risk 
+        fig_rr,axes_rr = plt.subplots(figsize=(12,8),ncols=2,nrows=1,sharey=True, sharex=True, dpi=dpi) # relative risk
+        fig_dv,axes_dv = plt.subplots(figsize=(12,8),ncols=2,nrows=1,sharey=True, sharex=True, dpi=dpi) # difference in value at risk 
         for ax in axes_rr:
             ax.set_xlim(xlims)
             ax.set_ylim(ylims)
         # Determine the radius-to-points conversion
         unit_radius_data = 1/6
-        unit_radius_display = axes[0].transData.transform([0, unit_radius_data])[1] - axes[0].transData.transform([0,0])[1]
-        unit_radius_points = unit_radius_display * 72/fig.dpi
+        unit_radius_display = axes_rr[0].transData.transform([0, unit_radius_data])[1] - axes_rr[0].transData.transform([0,0])[1]
+        unit_radius_points = unit_radius_display * 72/fig_rr.dpi
         handles = []
         i_gcm2plot = -1
         for i_gcm in idx_gcms:
@@ -317,9 +317,10 @@ def compare_gcms(which_ssw, idx_gcms):
                     risk0 = xr.open_dataarray(risk0_file).to_numpy()
                     risk1 = xr.open_dataarray(risk1_file).to_numpy()
                     rr = np.maximum(xlims[0], np.minimum(xlims[1], risk1/risk0))
-                    rvar0 = xr.open_dataarray(rvar0_file).to_numpy()
-                    rvar1 = xr.open_dataarray(rvar1_file).to_numpy()
+                    rvar0 = xr.open_dataarray(rvar0_file)
+                    rvar1 = xr.open_dataarray(rvar1_file)
                     dvar = (rvar1.sel(quantity='valatrisk',drop=True) - rvar0.sel(quantity='valatrisk',drop=True)).to_numpy()
+                    #pdb.set_trace()
                     print(f'{rr.shape = }')
                     h = ax_rr.scatter(rr.flat, (i_gcm2plot+yoffsets[expt1])*np.ones(rr.size), ec=colors[expt1], linewidth=2, fc='none', s=(2*unit_radius_points * (1/4 + risk1*3/4))**2, label=expt1)
                     # Add error bars if the level of coarse-graining is 1x1
@@ -351,13 +352,17 @@ def compare_gcms(which_ssw, idx_gcms):
                                 risk_at_levels_1 = np.apply_along_axis(func, 1, exttemp_levels_reg_1)
                                 print(f'{risk_at_levels_0 = }')
                                 print(f'{risk_at_levels_1 = }')
-                                rel_risk_lo,rel_risk_hi = (np.quantile(risk_at_levels_1/risk_at_levels_0, 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
+                                rel_risk_lo,rel_risk_hi = (np.quantile(risk_at_levels_1[1:]/risk_at_levels_0[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
                                 # TODO basic-bootstrap if called for
                                 # now same for value at risk 
                                 i_risklev = np.argmin(np.abs(risk_levels - rvar0.sel(quantity='risk').isel(lon=i_lon,lat=i_lat).item()))
-                                dvar_lo,dvar_hi = (np.quantile(exttemp_levels_reg_1[:,i_risklev] - exttemp_levels_reg_1[:,i_risklev], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
-                                print(f'{i_init = }, {expt0 = }, {expt1 = }, {i_cgs_level = }, {rel_risk_lo = }, {rel_risk_hi = }')
+                                #pdb.set_trace()
+                                dvar_los,dvar_his = (np.quantile(exttemp_levels_reg_1[1:,:] - exttemp_levels_reg_0[1:,:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
+                                dvar_lo = np.interp(rvar0.sel(quantity='risk').isel(lon=i_lon,lat=i_lat).item(), risk_levels, dvar_los)
+                                dvar_hi = np.interp(rvar0.sel(quantity='risk').isel(lon=i_lon,lat=i_lat).item(), risk_levels, dvar_his)
+                                print(f'{i_init = }, {expt0 = }, {expt1 = }, {i_cgs_level = }, {dvar_lo = }, {dvar_hi = }')
                                 print(f'{rel_risk_hi - rel_risk_lo = }')
+                                print(f'{dvar_hi - dvar_lo = }')
                                 #pdb.set_trace()
                                 if False and (expt0 != expt1):
                                     sys.exit()
@@ -419,7 +424,7 @@ def compare_gcms(which_ssw, idx_gcms):
         fig_rr.legend(handles=handles, bbox_to_anchor=(0.5,0.0), loc='upper center', ncol=3)
         fig_rr.savefig(filename, **pltkwargs)
 
-        plt_rr.close(fig)
+        plt.close(fig_rr)
     return
             
 
@@ -752,7 +757,8 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                     gevpar.sel(**dskwargs),
                     gevpar_era5.sel(**dskwargs), 
                     locsign=ext_sign)
-            risk_valatrisk.to_netcdf(valatrisk_file)
+            #pdb.set_trace()
+            risk_valatrisk.to_netcdf(risk_valatrisk_file)
         else:
             risk_valatrisk = xr.open_dataarray(risk_valatrisk_file)
 
@@ -879,14 +885,14 @@ if __name__ == "__main__":
     gcms = list(gcm2institute.keys())
     gcms2ignore = ["BCC-CSM2-HR","GLOBO","GEM-NEMO","CanESM5","SPEAR"]
 
-    idx_gcms = [i for i in range(len(gcms)) if gcms[i] not in gcms2ignore][::-1][:1]
+    idx_gcms = [i for i in range(len(gcms)) if gcms[i] not in gcms2ignore][::-1]
     #idx_gcms = [4]
     print(f'{idx_gcms = }')
     print(f'{gcms[i] for i in idx_gcms = }')
     idx_expt = [0,1,2]
     idx_expt_pairs = [(1,0),(1,2)]
     idx_init = [0,1]
-    ssws = ['feb2018','jan2019','sep2019'][:1]
+    ssws = ['feb2018','jan2019','sep2019']
     procedures = sys.argv[1:]
     print(f'{procedures = }')
     for which_ssw in ssws:

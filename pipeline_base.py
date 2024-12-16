@@ -79,10 +79,12 @@ def compute_valatrisk(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
             dims=['quantity'] + [d for d in ds_cgts_ref.dims if d in ['lat','lon']],
             data=np.nan,
             )
-    pdb.set_trace()
-    shapes,locs,scales = (gevpar_ref.sel(param=p).to_numpy() for p in ('shape','loc','scale'))
-    risk_valatrisk.loc[dict(quantity='risk')] = spgex.sf(ds_cgts_ref.to_numpy()*locsign, shapes, loc=locs*locsign, scale=scales)
-    risk_valatrisk.loc[dict(quantity='valatrisk')] = spgex.isf(risk_valatrisk.sel(quantity='risk').to_numpy(), shapes, loc=locs, scale=scales)*locsign
+    #pdb.set_trace()
+    shapes_ref,locs_ref,scales_ref = (gevpar_ref.sel(param=p).to_numpy() for p in ('shape','loc','scale'))
+    shapes,locs,scales = (gevpar.sel(param=p).to_numpy() for p in ('shape','loc','scale'))
+    risk_valatrisk.loc[dict(quantity='risk')] = spgex.sf(ds_cgts_ref.to_numpy()*locsign, -shapes_ref, loc=locs_ref, scale=scales_ref)
+    risk_valatrisk.loc[dict(quantity='valatrisk')] = spgex.isf(risk_valatrisk.sel(quantity='risk').to_numpy(), -shapes, loc=locs, scale=scales)*locsign
+    #pdb.set_trace()
     # TODO obtain a whole range of quantile shifts to plot as a function of probability ("value at risk"? )
     return risk_valatrisk
 
