@@ -1,6 +1,7 @@
 import numpy as np
 import xarray as xr
 import pdb
+import psutil
 from cartopy import crs as ccrs
 import netCDF4
 from matplotlib import pyplot as plt, rcParams, ticker, colors as mplcolors, patches as mplpatches
@@ -100,8 +101,8 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_init, verbose=False):
     print(f'{raw_data_dir = }')
     ens_path_skeleton = join(raw_data_dir,'r*i*p*f*')
     mem_labels = [basename(p) for p in glob.glob(ens_path_skeleton)]
-    print(f'{mem_labels = }')
-    print(f'{len(mem_labels) = }')
+    #print(f'{mem_labels = }')
+    #print(f'{len(mem_labels) = }')
 
     if "GloSea6" == gcm: # for some reason there's a single odd version file 
         path_skeleton = join(ens_path_skeleton,'6hrPt','tas','g*','v20230403*','*.nc')
@@ -110,8 +111,8 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_init, verbose=False):
     print(f'{path_skeleton = }')
     raw_mem_files = glob.glob(path_skeleton)
     print(f'{len(raw_mem_files) = }')
-    for rmf in raw_mem_files:
-        print(rmf)
+    #for rmf in raw_mem_files:
+    #    print(rmf)
     assert len(raw_mem_files) == len(mem_labels)
     
 
@@ -385,9 +386,9 @@ def compare_gcms(which_ssw, idx_gcms):
         dlon = (event_region['lon'].stop - event_region['lon'].start)/(cgs_level[0])
         dlat = (event_region['lat'].stop - event_region['lat'].start)/(cgs_level[1])
         if i_cgs_level == 0:
-            suptitle = r'$\Delta t$ (whole region)'
+            suptitle = r'$\Delta T$ (whole region)'
         else:
-            suptitle = r'$\Delta t$ ($%d^\circ$lon$\times%d^\circ$lat regions)'%(dlon, dlat)
+            suptitle = r'$\Delta T$ ($%d^\circ$lon$\times%d^\circ$lat regions)'%(dlon, dlat)
         fig_dv.suptitle(suptitle)
         fig_dv.legend(handles=handles, bbox_to_anchor=(0.5,0.0), loc='upper center', ncol=3)
         fig_dv.savefig(filename, **pltkwargs)
@@ -600,6 +601,7 @@ def compare_expts(which_ssw, i_gcm, i_init):
                     ax.tick_params(which="both",labelbottom=True)
 
                 # ------- Lower left: plot difference in temperature-at-risk as a function of risk --------
+                print(f'--------------- ENTERING LOWER LEFT DANGER ZONE ------------')
                 ax = axes[1,0]
                 for (expt0,expt1) in (('free','free'),('free','control'),('free','nudged')):
                     exttemp_levels_diff = exttemp_levels_regs[expt1] - exttemp_levels_regs[expt0]
@@ -621,13 +623,14 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 for ax in axes[0,1:2]:
                     ax.get_xaxis().set_major_formatter(ticker.NullFormatter())
                     ax.get_xaxis().set_minor_formatter(ticker.NullFormatter())
-                    xticks = [0.2,0.5,1.0,2.0,5.0]
-                    ax.set_xticks(xticks, [r'%g'%(xtick) for xtick in xticks])
+                    ax.set_xscale('log')
                     ax.set_xlim([0.2,5.0])
+                    xticks = np.array([0.2,1.0,5.0])
+                    ax.set_xticks(xticks, np.array([r'%g'%(xtick) for xtick in xticks]))
                     #ax.legend(handles=handles)
                     ax.set_xlabel(r'$\mathrm{risk}/\mathrm{risk}_{\mathrm{free}}$')
-                    ax.set_xscale('log')
 
+                #pdb.set_trace()
                 extstr = "min" if ext_sign==-1 else "max"
                 ineqstr = "leq" if ext_sign==-1 else "geq"
                 axes[1,0].set_xlabel(r'$\mathbb{P}\{\%s_t\langle T(t)\rangle_{\mathrm{region}}\%s T\}$'%(extstr,ineqstr))
@@ -638,6 +641,7 @@ def compare_expts(which_ssw, i_gcm, i_init):
 
                 fig.savefig(join(figdir,f'riskplot_reg_eall_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
                 plt.close(fig)
+                print(f'------------------ SAVED THE FIG -----------------')
     return
 
 
@@ -759,8 +763,10 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                     locsign=ext_sign)
             #pdb.set_trace()
             risk_valatrisk.to_netcdf(risk_valatrisk_file)
+            print(f'Computed valatrisk')
         else:
             risk_valatrisk = xr.open_dataarray(risk_valatrisk_file)
+            print(f'Loaded valatrisk')
 
         if todo['plot_risk_map'] and min(cgs_level) > 1:
             fig,ax = pipeline_base.plot_risk_map(risk, locsign=ext_sign)
@@ -786,8 +792,11 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
 
                     
         # Do a more thorough uncertainty quantification at a specific site or region, using bootstrap analysis and goodness-of-fit etc. Maybe parallelize over all sites too
+        print(f'Starting loop over select regions')
+        print(f'{select_regions[i_cgs_level] = }')
 
         for (i_lon,i_lat) in select_regions[i_cgs_level]:
+            print(f'{i_lon = }, {i_lat = }')
             exttemp = ds_cgts_extt.sel(daily_stat=daily_stat).isel(lon=i_lon,lat=i_lat).to_numpy()
             exttemp_era5 = ds_cgts_extt_era5.sel(daily_stat=daily_stat).isel(lon=i_lon,lat=i_lat)
             if not (np.all(np.isfinite(exttemp)) and np.all(np.isfinite(exttemp_era5))):
@@ -806,10 +815,11 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                 exttemp_levels_reg = np.load(join(reduced_data_dir,f'exttemp_levels_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
                 gevpar_reg = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
                 # Also load the ERA5 data 
+            print(f'About to load era5 stuff')
             exttemp_levels_reg_era5 = np.load(join(reduced_data_dir_era5,f'exttemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
             gevpar_reg_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
-            print(f'{i_lon = }, {i_lat = }')
-            print(f'{gevpar_reg_era5.isel(boot=0) = }')
+            print(f'{exttemp_levels_reg_era5.shape = }')
+            print(f'{gevpar_reg_era5.shape = }')
 
 
             if todo['plot_gev_select_regions']:
@@ -876,8 +886,12 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                 fig.savefig(join(figdir,f'riskplot_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
                 plt.close(fig)
                 #sys.exit()
-        ds_cgts.close()
-    ds_cgt.close()
+        print(f'Finished the loop over select regions')
+        #ds_cgts.close()
+        print(f'closed ds_cgts')
+    #ds_cgt.close()
+    print(f'closed ds_cgt')
+    print(psutil.virtual_memory())
     return 
 
 if __name__ == "__main__":
@@ -885,7 +899,7 @@ if __name__ == "__main__":
     gcms = list(gcm2institute.keys())
     gcms2ignore = ["BCC-CSM2-HR","GLOBO","GEM-NEMO","CanESM5","SPEAR"]
 
-    idx_gcms = [i for i in range(len(gcms)) if gcms[i] not in gcms2ignore][::-1]
+    idx_gcms = [i for i in range(len(gcms)) if ((gcms[i] not in gcms2ignore))][::-1]
     #idx_gcms = [4]
     print(f'{idx_gcms = }')
     print(f'{gcms[i] for i in idx_gcms = }')
@@ -896,12 +910,18 @@ if __name__ == "__main__":
     procedures = sys.argv[1:]
     print(f'{procedures = }')
     for which_ssw in ssws:
+        print(f'-------------STARTING SSW {which_ssw = }---------------')
         for i_gcm in idx_gcms:
+            print(f'-------------- STARTING I_GCM {i_gcm = } -------------')
             for i_init in idx_init:
+                print(f'----------------- STARTING INIT {i_init = } ---------------')
                 for i_expt in idx_expt:
+                    print(f'---------------- STARTING {i_expt = } ---------------------')
                     if 'reduce' in procedures:
-                        risk = reduce_gcm(which_ssw,i_gcm,i_expt,i_init)
+                        reduce_gcm(which_ssw,i_gcm,i_expt,i_init)
+                        print(f'------------------ finished reduction------------')
                 if 'compare_expts' in procedures:
+                    print(f'------------- STARTING compare_expts -----------')
                     compare_expts(which_ssw, i_gcm, i_init)
         if 'compare_gcms' in procedures:
             compare_gcms(which_ssw, idx_gcms)

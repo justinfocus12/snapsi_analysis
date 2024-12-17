@@ -16,6 +16,7 @@ rcParams.update({
 pltkwargs = {"bbox_inches": "tight", "pad_inches": 0.2}
 
 from importlib import reload
+import utils; reload(utils)
 import stat_functions as stfu; reload(stfu)
 
 
@@ -177,38 +178,71 @@ def coarse_grain_space(ds_cgt, cgs_level, landmask):
 
 def plot_statpar_map(ds_cgts,gevpar,locsign=1):
     # Essentially Gaussian parameters next to GEV parameters
-    clon,clat = (ds_cgts.coords[coordname].mean().item() for coordname in ('lon','lat'))
-    fig,axes = plt.subplots(figsize=(20,8),nrows=3,ncols=2,subplot_kw={'projection': ccrs.Orthographic(central_longitude=clon,central_latitude=clat)},gridspec_kw={'hspace': 0.2, 'wspace': 0.05})
-    pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15})
+    lons,lats = (ds_cgts.coords[coordname].to_numpy() for coordname in ('lon','lat'))
+    dlon,dlat = np.abs(lons[1]-lons[0]),np.abs(lats[1]-lats[0])
+    lonmin,lonmax = np.min(lons)-dlon/2,np.max(lons)+dlon/2
+    latmin,latmax = np.min(np.abs(lats))-dlat/2,np.max(np.abs(lats))+dlat/2
+
+    clon,clat = (np.mean(lons),np.mean(lats))
+
+    # to get aspect ratio, find arc-length between corners
+    length_x = utils.great_circle_distance(lonmin,latmin,lonmax,latmin)
+    length_y = (latmax - latmin)*np.pi/180 + (1 - np.cos(np.deg2rad((lonmax-lonmin)/2)))*np.cos(np.deg2rad(latmax))
+    #pdb.set_trace()
+    cmap_loc = plt.cm.coolwarm
+    cmap_scale = plt.cm.summer_r
+    cmap_shape = plt.cm.RdYlBu_r if locsign==1 else plt.cm.RdYlBu
+    pcmargs = dict(x='lon',y='lat',transform=ccrs.PlateCarree(),cbar_kwargs={'location': 'right', 'label': ''}) #, 'shrink': 0.75, 'aspect': 20, 'fraction': 0.1})
     loc_fields = (ds_cgts.mean('member'), locsign*gevpar.sel(param='loc'))
-    loc_vmin,loc_vmax = (min((da.min().item() for da in loc_fields)), max((da.max().item() for da in loc_fields)))
-    loc_titles = [r'Mean',r'GEV location']
+    loc_min,loc_max = (min((da.min().item() for da in loc_fields)), max((da.max().item() for da in loc_fields)))
+    if locsign == 1:
+        loc_vmin = 2*loc_min - loc_max
+        loc_vmax = loc_max
+    else:
+        loc_vmin = loc_min
+        loc_vmax = 2*loc_max - loc_min
     scale_fields = (ds_cgts.std('member'), gevpar.sel(param='scale'))
     scale_vmin,scale_vmax = (min((da.min().item() for da in scale_fields)), max((da.max().item() for da in scale_fields)))
-    scale_titles = [r'Std. Dev.',r'GEV scale']
     shape_fields = (None,gevpar.sel(param='shape'))
     shape_vmax = max((np.abs(da).max().item() for da in shape_fields if da is not None))
     shape_vmin = -shape_vmax
-    shape_titles = [None,r'GEV shape']
 
-    fields = loc_fields + scale_fields + shape_fields
-    vmin = [loc_vmin]*2 + [scale_vmin]*2 + [shape_vmin]*2
-    vmax = [loc_vmax]*2 + [scale_vmax]*2 + [shape_vmax]*2
-    titles = loc_titles + scale_titles + shape_titles
+    # Gaussian figure (simple mean and std)
+    fig_gaussian,axes_gaussian = plt.subplots(figsize=(10,8*2*length_y/length_x),nrows=2,subplot_kw={'projection': ccrs.Orthographic(central_longitude=clon,central_latitude=clat)},gridspec_kw={'hspace': 0.2,})
+    ax = axes_gaussian[0]
+    pcmargs['cbar_kwargs']['ticks'] = np.linspace(loc_vmin,loc_vmax,3)
+    xr.plot.pcolormesh(loc_fields[0], ax=ax, vmin=loc_vmin, vmax=loc_vmax, **pcmargs, cmap=cmap_loc)
+    ax.set_title("Mean")
+    ax.coastlines()
+    ax.gridlines()
+    ax = axes_gaussian[1]
+    pcmargs['cbar_kwargs']['ticks'] = np.linspace(scale_vmin,scale_vmax,3)
+    xr.plot.pcolormesh(scale_fields[0], ax=ax, vmin=scale_vmin, vmax=scale_vmax, **pcmargs, cmap=cmap_scale)
+    ax.set_title("Std. Dev.")
+    ax.coastlines()
+    ax.gridlines()
 
-    print(f'{vmin = }')
-    print(f'{vmax = }')
-    for i in range(6):
-        ax = axes.flat[i]
-        if fields[i] is None:
-            ax.axis('off')
-            continue
-        pcmargs['cbar_kwargs'].update(ticks=np.linspace(vmin[i],vmax[i],3))
-        xr.plot.pcolormesh(fields[i], ax=ax, vmin=vmin[i], vmax=vmax[i], **pcmargs)
-        ax.set_title(titles[i])
-        ax.coastlines()
-        ax.gridlines()
-    return fig,axes
+    # GEV figure 
+    fig_gev,axes_gev = plt.subplots(figsize=(10,8*3*length_y/length_x),nrows=3,subplot_kw={'projection': ccrs.Orthographic(central_longitude=clon,central_latitude=clat)},gridspec_kw={'hspace': 0.2,})
+    ax = axes_gev[0]
+    pcmargs['cbar_kwargs']['ticks'] = np.linspace(loc_vmin,loc_vmax,3)
+    xr.plot.pcolormesh(loc_fields[1], ax=ax, vmin=loc_vmin, vmax=loc_vmax, **pcmargs, cmap=cmap_loc)
+    ax.set_title("GEV location")
+    ax.coastlines()
+    ax.gridlines()
+    ax = axes_gev[1]
+    pcmargs['cbar_kwargs']['ticks'] = np.linspace(scale_vmin,scale_vmax,3)
+    xr.plot.pcolormesh(scale_fields[1], ax=ax, vmin=scale_vmin, vmax=scale_vmax, **pcmargs, cmap=cmap_scale)
+    ax.set_title("GEV scale")
+    ax.coastlines()
+    ax.gridlines()
+    ax = axes_gev[2]
+    pcmargs['cbar_kwargs']['ticks'] = np.linspace(shape_vmin,shape_vmax,3)
+    xr.plot.pcolormesh(shape_fields[1], ax=ax, vmin=shape_vmin, vmax=shape_vmax, **pcmargs, cmap=cmap_shape)
+    ax.set_title("GEV shape")
+    ax.coastlines()
+    ax.gridlines()
+    return fig_gaussian,axes_gaussian,fig_gev,axes_gev
 
 
 def plot_statpar_map_difference(ds_cgts_0,ds_cgts_1,gevpar_0,gevpar_1,locsign=1):

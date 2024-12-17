@@ -166,15 +166,15 @@ def coarse_grain_time(years, year_filegroups, event_region, event_time_interval)
 
 def reduce_era5(which_ssw):
     todo = dict({
-        'coarse_grain_time':           1,
-        'plot_t2m_sumstats_map':       1,
-        'coarse_grain_space':          1,
-        'fit_gev':                     1,
+        'coarse_grain_time':           0,
+        'plot_t2m_sumstats_map':       0,
+        'coarse_grain_space':          0,
+        'fit_gev':                     0,
         'plot_statpar_map':            1,
-        'compute_risk':                1,
-        'plot_risk_map':               1,
-        'fit_gev_select_regions':      1,
-        'plot_gev_select_regions':     1,
+        'compute_risk':                0,
+        'plot_risk_map':               0,
+        'fit_gev_select_regions':      0,
+        'plot_gev_select_regions':     0,
         })
     years,event_region,event_time_interval,landmask_file,year_filegroups,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = era5_workflow(which_ssw)
     boot_type = 'percentile'
@@ -265,10 +265,13 @@ def reduce_era5(which_ssw):
             print(f'Just plotted risk map with {cgs_key = }')
 
         if todo['plot_statpar_map'] and min(cgs_level) > 1:
-            fig,axes = pipeline_base.plot_statpar_map(ds_cgts_extt.sel(daily_stat=daily_stat,drop=True),gevpar.sel(daily_stat=daily_stat,drop=True),locsign=ext_sign)
-            fig.savefig(join(figdir,f'statpar_map_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
-            fig.suptitle(r"ERA5 %s"%(daily_stat))
-            plt.close(fig)
+            fig_gaussian,axes_gaussian,fig_gev,axes_gev = pipeline_base.plot_statpar_map(ds_cgts_extt.sel(daily_stat=daily_stat,drop=True),gevpar.sel(daily_stat=daily_stat,drop=True),locsign=ext_sign)
+            fig_gaussian.savefig(join(figdir,f'statpar_map_gaussian_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
+            fig_gaussian.suptitle(r"ERA5 %s"%(daily_stat))
+            fig_gev.savefig(join(figdir,f'statpar_map_gev_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
+            fig_gev.suptitle(r"ERA5 %s"%(daily_stat))
+            plt.close(fig_gaussian)
+            plt.close(fig_gev)
 
 
         # Do a more thorough uncertainty quantification at a specific site or region, using bootstrap analysis and goodness-of-fit etc. Maybe parallelize over all sites too
@@ -330,7 +333,7 @@ def reduce_era5(which_ssw):
 
 if __name__ == '__main__':
     print(f'Starting main')
-    for which_ssw in ["feb2018","jan2019","sep2019"][0:1]:
+    for which_ssw in ["feb2018","jan2019","sep2019"]:
         result = reduce_era5(which_ssw)
 
 

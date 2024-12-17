@@ -11,6 +11,20 @@ def area_average(da):
     aa = xr.where(da_finite_fraction>0.5, aa, np.nan)
     return aa
 
+def spherical2cartesian(lon,lat):
+    vec = np.array([
+        np.cos(np.deg2rad(lon))*np.cos(np.deg2rad(lat)),
+        np.sin(np.deg2rad(lon))*np.cos(np.deg2rad(lat)),
+        np.sin(np.deg2rad(lat)),
+        ])
+    return vec
+
+def great_circle_distance(lon0,lat0,lon1,lat1):
+    vec0 = spherical2cartesian(lon0,lat0)
+    vec1 = spherical2cartesian(lon1,lat1)
+    return np.sqrt(2 * (1 - np.sum(vec0*vec1)))
+
+
 def rezero_lons(ds,lonmax=180):
     # Roll coordinates to run from [-180,180) about a given center
     lons_geq_lonmax = np.where(ds.lon.values >= lonmax)[0]
