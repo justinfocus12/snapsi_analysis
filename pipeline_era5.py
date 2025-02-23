@@ -58,7 +58,7 @@ def analysis_multiparams(which_ssw):
 
 def era5_workflow(which_ssw,verbose=False):
     print(f'Starting workflow setup')
-    analysis_date = '2024-11-05'
+    analysis_date = '2025-02-22'
     raw_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/era5'
     landmask_file = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/era5/land_sea_mask.nc'
     processed_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596'
@@ -166,15 +166,15 @@ def coarse_grain_time(years, year_filegroups, event_region, event_time_interval)
 
 def reduce_era5(which_ssw):
     todo = dict({
-        'coarse_grain_time':           0,
-        'plot_t2m_sumstats_map':       0,
-        'coarse_grain_space':          0,
-        'fit_gev':                     0,
+        'coarse_grain_time':           1,
+        'plot_t2m_sumstats_map':       1,
+        'coarse_grain_space':          1,
+        'fit_gev':                     1,
         'plot_statpar_map':            1,
-        'compute_risk':                0,
-        'plot_risk_map':               0,
-        'fit_gev_select_regions':      0,
-        'plot_gev_select_regions':     0,
+        'compute_risk':                1,
+        'plot_risk_map':               1,
+        'fit_gev_select_regions':      1,
+        'plot_gev_select_regions':     1,
         })
     years,event_region,event_time_interval,landmask_file,year_filegroups,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = era5_workflow(which_ssw)
     boot_type = 'percentile'
