@@ -4,4 +4,5 @@
 *.npy
 .nfs*
 __pycache__/
+.ipynb_checkpoints/
 progress.out
