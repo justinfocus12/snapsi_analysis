@@ -105,12 +105,13 @@ def param_names(family):
         pn = ['shape','loc','scale','base_level','base_prob']
     return pn
 
-def complementary_quantile_parametric(family, params, risk):
+def complementary_quantile_parametric(family, params, risk, verbose=False):
     parnames = param_names(family)
-    print(f'{parnames = }')
-    print(f'{risk.shape = }')
-    print(f'{family = }')
-    print(f'{params[parnames[0]].shape = }')
+    if verbose:
+        print(f'{parnames = }')
+        print(f'{risk.shape = }')
+        print(f'{family = }')
+        print(f'{params[parnames[0]].shape = }')
     nboot = len(params[parnames[0]])
     nr = len(risk)
     params_flat = dict({param_name: np.outer(params[param_name], np.ones(nr)).flatten() for param_name in parnames})

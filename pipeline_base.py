@@ -21,16 +21,16 @@ import stat_functions as stfu; reload(stfu)
 
 
 
-def plot_sumstats_map(ds):
+def plot_sumstats_map(ds,loc_vmin,loc_vmax,scale_vmin,scale_vmax):
     # Summary stats for an ensemble 
     clon,clat = (ds.coords[coordname].mean().item() for coordname in ('lon','lat'))
     fig,axes = plt.subplots(figsize=(20,8),nrows=2,subplot_kw={'projection': ccrs.Orthographic(central_longitude=clon,central_latitude=clat)},gridspec_kw={'hspace': 0.2, 'wspace': 0.05})
     pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15})
     loc_fields = (ds.mean('member'),)
-    loc_vmin,loc_vmax = (min((da.min().item() for da in loc_fields)), max((da.max().item() for da in loc_fields)))
+    #loc_vmin,loc_vmax = (min((da.min().item() for da in loc_fields)), max((da.max().item() for da in loc_fields)))
     loc_titles = [r'Mean',]
     scale_fields = (ds.std('member'),)
-    scale_vmin,scale_vmax = (min((da.min().item() for da in scale_fields)), max((da.max().item() for da in scale_fields)))
+    #scale_vmin,scale_vmax = (min((da.min().item() for da in scale_fields)), max((da.max().item() for da in scale_fields)))
     scale_titles = [r'Std. Dev.',]
 
     fields = loc_fields + scale_fields 
@@ -156,13 +156,11 @@ def plot_relative_risk_map(risk0, risk1, locsign=1, **other_pcmargs):
 
 def coarse_grain_space(ds_cgt, cgs_level, landmask):
     data_vars = dict()
-    Nlon,Nlat = (ds_cgt[d].size for d in ('lon','lat'))
-    dim = {'lon': int(Nlon/cgs_level[0]), 'lat': int(Nlat/cgs_level[1])}
-    print(f'{dim = }')
+    Nlon,Nlat = (ds_cgt[d].size for d in ('lon','lat'))        
+    dim = {'lon': Nlon//cgs_level[0], 'lat': Nlat//cgs_level[1]}
     trim_kwargs = dict(lon=slice(None,cgs_level[0]*dim['lon']),lat=slice(None,cgs_level[1]*dim['lat']))
     ds_cgt_trimmed = ds_cgt.isel(**trim_kwargs)
     landmask_trimmed = landmask.isel(**trim_kwargs) #* xr.ones_like(ds_cgt_trimmed)
-    print(f'{landmask_trimmed.coords = }')
     coslat = np.cos(np.deg2rad(ds_cgt_trimmed['lat'])) * xr.ones_like(ds_cgt_trimmed)
     # trim land mask the same way 
     coarsen_kwargs = dict(dim=dim, boundary='trim', coord_func={'lon': 'mean', 'lat': 'mean'})
@@ -172,7 +170,6 @@ def coarse_grain_space(ds_cgt, cgs_level, landmask):
     ds_cgts = numerator / denominator 
     if cgs_level[0] > 1 or cgs_level[1] > 1:
         ds_cgts = ds_cgts.where(np.isfinite(ds_cgts)*(land_frac >= 0.5), np.nan)
-    print(f'{ds_cgts.shape = }')
     assert ds_cgts.lon.size == cgs_level[0] and ds_cgts.lat.size == cgs_level[1]
     return ds_cgts # awkward to put into a single dataset because of differing lon/lat coordinates between coarsening levels
 
@@ -254,7 +251,6 @@ def plot_statpar_map_difference(ds_cgts_0,ds_cgts_1,gevpar_0,gevpar_1,locsign=1)
         return ds1.assign_coords(coords=ds0.coords) - ds0
     # Essentially Gaussian parameters next to GEV parameters
     clon,clat = (ds_cgts_0.coords[coordname].mean().item() for coordname in ('lon','lat'))
-    fig,axes = plt.subplots(figsize=(20,8),nrows=3,ncols=2,subplot_kw={'projection': ccrs.Orthographic(central_longitude=clon,central_latitude=clat)},gridspec_kw={'hspace': 0.2, 'wspace': 0.05})
     pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 'ticks': ticker.LinearLocator(numticks=3)})
     loc_fields = (dsdiff(ds_cgts_0.mean('member'),ds_cgts_1.mean('member')), dsdiff(locsign*gevpar_0.sel(param='loc'), locsign*gevpar_1.sel(param='loc')))
     loc_vmax = tuple(np.abs(da).max().item() for da in loc_fields)
@@ -273,17 +269,16 @@ def plot_statpar_map_difference(ds_cgts_0,ds_cgts_1,gevpar_0,gevpar_1,locsign=1)
 
     print(f'{vmin = }')
     print(f'{vmax = }')
-    for i in range(6):
-        ax = axes.flat[i]
-        if fields[i] is None:
-            ax.axis('off')
-            continue
+    fig_gaussian,axes_gaussian = plt.subplots(figsize=(10,16/3),nrows=2,ncols=1,subplot_kw={'projection': ccrs.Orthographic(central_longitude=clon,central_latitude=clat)},gridspec_kw={'hspace':0.2})
+    fig_gev,axes_gev = plt.subplots(figsize=(10,8),nrows=3,ncols=1,subplot_kw={'projection': ccrs.Orthographic(central_longitude=clon,central_latitude=clat)},gridspec_kw={'hspace':0.2})
+    for (i,ax) in enumerate((axes_gaussian[0],axes_gev[0],axes_gaussian[1],axes_gev[1],None,axes_gev[2])):
+        if ax is None: continue
         pcmargs['cbar_kwargs'].update(ticks=np.linspace(vmin[i],vmax[i],3))
         xr.plot.pcolormesh(fields[i], ax=ax, vmin=vmin[i], vmax=vmax[i], **pcmargs)
         ax.set_title(titles[i])
         ax.coastlines()
         ax.gridlines()
-    return fig,axes
+    return fig_gaussian,axes_gaussian,fig_gev,axes_gev
 
 def fit_gev_exttemp(ds_cgts_extt,ext_sign,method='MLE'):
     # ext_sign = 1 means hot; -1 means cold

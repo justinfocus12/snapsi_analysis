@@ -26,6 +26,7 @@ from importlib import reload
 import utils; reload(utils)
 import pipeline_base; reload(pipeline_base)
 import stat_functions as stfu; reload(stfu)
+from pipeline_gcms import gcm_multiparams
 
 def analysis_multiparams(which_ssw):
     # lon/lat ratios are 6/1 at the bottom and 4/1 at the top; stick to 5/1 
@@ -113,6 +114,15 @@ def era5_workflow(which_ssw,verbose=False):
     print(f'Finished setting up workflow')
     return workflow
 
+def coarse_grain_time_fulltime_solo(which_ssw, i_init): 
+    years,event_region,event_time_interval,landmask_file,year_filegroups,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = era5_workflow(which_ssw)
+    gcms,expts,inits = gcm_multiparams(which_ssw)
+    fcdate = datetime.datetime.strptime(inits[i_init],'%Y%m%d')
+    full_time_interval = [fcdate, event_time_interval[1]]
+    ds_cgt_era5,_ = coarse_grain_time(years, year_filegroups, event_region, full_time_interval)
+    return ds_cgt_era5
+
+
 def coarse_grain_time(years, year_filegroups, event_region, event_time_interval):
     print(f'Starting to coarse-grain time')
     t2m = []
@@ -162,19 +172,20 @@ def coarse_grain_time(years, year_filegroups, event_region, event_time_interval)
     daily_mean /= 4
     t2m_cgt = xr.concat([daily_mean,daily_min,daily_max], dim='daily_stat').assign_coords(daily_stat=['daily_mean','daily_min','daily_max'])
     print(f'{t2m_cgt.dims = }, {t2m_cgt.shape = }')
-    return (t2m_cgt, False)
+    ds = xr.Dataset(data_vars=dict({'1xday': t2m_cgt, '4xday': t2m.rename({'time': 'time_6h'})}))
+    return (ds, False)
 
 def reduce_era5(which_ssw):
     todo = dict({
-        'coarse_grain_time':           1,
-        'plot_t2m_sumstats_map':       1,
-        'coarse_grain_space':          1,
-        'fit_gev':                     1,
+        'coarse_grain_time':           0,
+        'plot_t2m_sumstats_map':       0,
+        'coarse_grain_space':          0,
+        'fit_gev':                     0,
         'plot_statpar_map':            1,
-        'compute_risk':                1,
-        'plot_risk_map':               1,
-        'fit_gev_select_regions':      1,
-        'plot_gev_select_regions':     1,
+        'compute_risk':                0,
+        'plot_risk_map':               0,
+        'fit_gev_select_regions':      0,
+        'plot_gev_select_regions':     0,
         })
     years,event_region,event_time_interval,landmask_file,year_filegroups,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = era5_workflow(which_ssw)
     boot_type = 'percentile'
@@ -218,8 +229,18 @@ def reduce_era5(which_ssw):
     ds_cgt_extt = ext_sign * (ext_sign*ds_cgt).max(dim='time')
     if todo['plot_t2m_sumstats_map']:
         for daily_stat in ['daily_mean']:
-            fig,axes = pipeline_base.plot_sumstats_map(ds_cgt_extt.sel(daily_stat=daily_stat))
-            fig.suptitle(f'ERA5 {daily_stat}')
+            loc_vmin = ds_cgt_extt.sel(daily_stat=daily_stat).mean('member').min().item()
+            loc_vmax = ds_cgt_extt.sel(daily_stat=daily_stat).mean('member').max().item()
+            loc_vdiff = (loc_vmax - loc_vmin)
+            loc_vmin -= 0.25*loc_vdiff
+            loc_vmax += 0.25*loc_vdiff
+            scale_vmin = ds_cgt_extt.sel(daily_stat=daily_stat).std('member').min().item()
+            scale_vmax = ds_cgt_extt.sel(daily_stat=daily_stat).std('member').max().item()
+            scale_vdiff = (scale_vmax - scale_vmin)
+            scale_vmin -= 0.25*scale_vdiff
+            scale_vmax += 0.25*scale_vdiff
+            fig,axes = pipeline_base.plot_sumstats_map(ds_cgt_extt.sel(daily_stat=daily_stat),loc_vmin,loc_vmax,scale_vmin,scale_vmax)
+            fig.suptitle(f'ERA5 severity')
             fig.savefig(join(figdir,f't2m_sumstats_map_{daily_stat}.png'), **pltkwargs)
             plt.close(fig)
 
@@ -266,10 +287,10 @@ def reduce_era5(which_ssw):
 
         if todo['plot_statpar_map'] and min(cgs_level) > 1:
             fig_gaussian,axes_gaussian,fig_gev,axes_gev = pipeline_base.plot_statpar_map(ds_cgts_extt.sel(daily_stat=daily_stat,drop=True),gevpar.sel(daily_stat=daily_stat,drop=True),locsign=ext_sign)
+            fig_gaussian.suptitle(r"ERA5 severity")
             fig_gaussian.savefig(join(figdir,f'statpar_map_gaussian_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
-            fig_gaussian.suptitle(r"ERA5 %s"%(daily_stat))
             fig_gev.savefig(join(figdir,f'statpar_map_gev_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
-            fig_gev.suptitle(r"ERA5 %s"%(daily_stat))
+            fig_gev.suptitle(r"ERA5 severity")
             plt.close(fig_gaussian)
             plt.close(fig_gev)
 
@@ -330,6 +351,7 @@ def reduce_era5(which_ssw):
                     plt.close(fig)
     ds_cgt.close()
     ds_cgt_extt.close()
+    return ds_cgt
 
 if __name__ == '__main__':
     print(f'Starting main')
