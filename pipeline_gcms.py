@@ -30,13 +30,8 @@ def gcm_multiparams(which_ssw):
     gcm2institute = all_gcms_institutes()
     gcms = list(gcm2institute.keys())
     expts = ['control','free','nudged']
-    if "feb2018" == which_ssw:
-        inits = ['20180125','20180208']
-    elif "jan2019" == which_ssw:
-        inits = ['20181213','20190108']
-    elif "sep2019" == which_ssw:
-        inits = ['20190829','20191001']
-    return gcms, expts, inits
+    fc_dates,onset_date,term_date = pipeline_base.dates_of_interest(which_ssw)
+    return gcms, expts, fc_dates, onset_date, term_date 
 
 def analysis_multiparams(which_ssw):
     # lon/lat ratios are 6/1 at the bottom and 4/1 at the top; stick to 5/1 
@@ -87,7 +82,7 @@ def all_gcms_institutes():
 
 def gcm_workflow(which_ssw, i_gcm, i_expt, i_init, verbose=False):
     # Sets out the folders necessary to ingest a chunk of data specified by the input arguments 
-    gcms,expts,inits = gcm_multiparams(which_ssw)
+    gcms,expts,inits,onset_date,term_date = gcm_multiparams(which_ssw)
     gcm = gcms[i_gcm]
     expt = expts[i_expt]
     init = inits[i_init]
@@ -117,6 +112,7 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_init, verbose=False):
     
 
     analysis_date = '2025-02-22'
+    event_region, context_region = pipeline_base.region_of_interest(which_ssw)
     # 2. Spatiotemporal sub-selection and coarse-graining (cg)
     if "feb2018" == which_ssw:
         event_time_interval = [datetime.datetime(2018,2,21,0), datetime.datetime(2018,3,8,22)] # for the reference year 

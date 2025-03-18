@@ -14,7 +14,7 @@ rcParams.update({
     'font.size': 15,
     })
 pltkwargs = {"bbox_inches": "tight", "pad_inches": 0.2}
-import datetime
+import datetime as dtlib
 import sys
 from os import listdir, makedirs
 from os.path import join, exists, basename
@@ -67,9 +67,10 @@ def era5_workflow(which_ssw,verbose=False):
     year_filegroups = []
     reduced_data_dir = join(processed_data_dir,which_ssw,analysis_date,'era5')
     figdir = join('/home/users/ju26596/snapsi_analysis_figures',which_ssw,analysis_date,'era5')
+    fc_dates,onset_date_nominal,term_date = pipeline_base.dates_of_interest(which_ssw)
     if "feb2018" == which_ssw:
-        event_time_interval = [datetime.datetime(2018,2,21,0), datetime.datetime(2018,3,8,22)] # for the reference year 
-        event_region = dict(lat=slice(50,65),lon=slice(-10,130))
+        event_year = 2018
+        ext_sign = -1
         for year in years:
             # TODO augment this with Decembers 
             year_filegroups.append(tuple(
@@ -77,24 +78,22 @@ def era5_workflow(which_ssw,verbose=False):
                 [join(raw_data_dir,f't2m_{year:04}-{month:02}.nc') for month in [1,2,3]]
                 ))
     elif "jan2019" == which_ssw:
-        event_time_interval = [datetime.datetime(2019,1,1,0), datetime.datetime(2019,1,31,22)] # for the reference year 
+        event_year = 2019
+        ext_sign = -1
         for year in years:
             # TODO augment this with Decembers 
             year_filegroups.append(tuple(
                 [join(raw_data_dir,f't2m_{(year-1):04}-12.nc')] + 
                 [join(raw_data_dir,f't2m_{year:04}-{month:02}.nc') for month in [1,2,3]]
                 ))
-        event_region = dict(lat=slice(30,45),lon=slice(-95,-70))
     elif "sep2019" == which_ssw:
-        event_time_interval = [datetime.datetime(2019,10,1,0), datetime.datetime(2019,10,14,22)]
-        event_region = dict(lat=slice(-46,-10), lon=slice(112,154))
+        event_year = 2019
+        ext_sign = 1
         for year in years:
             # TODO augment this with Decembers 
             year_filegroups.append(tuple(
                 [join(raw_data_dir,f't2m_{year:04}-{month:02}.nc') for month in [9,10,11]]
                 ))
-
-
     makedirs(reduced_data_dir,exist_ok=True)
     # spatial coarse graining (cgs)
     cgs_levels,select_regions = analysis_multiparams(which_ssw)
@@ -107,33 +106,37 @@ def era5_workflow(which_ssw,verbose=False):
     risk_levels = np.exp(np.linspace(np.log(0.001),np.log(49/50),30))
     # TODO specify temperature levels for relative risk 
     workflow = (
-            years,event_region,event_time_interval,
+            years,
+            event_year,ext_sign,
+            event_region,context_region,
+            fc_dates,onset_date_nominal,term_date,
             landmask_file,year_filegroups,reduced_data_dir,figdir,
-            cgs_levels,select_regions,risk_levels,n_boot,confint_width
+            cgs_levels,select_regions,
+            risk_levels,n_boot,confint_width
             )
     print(f'Finished setting up workflow')
     return workflow
 
 def coarse_grain_time_fulltime_solo(which_ssw, i_init): 
     years,event_region,event_time_interval,landmask_file,year_filegroups,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = era5_workflow(which_ssw)
-    gcms,expts,inits = gcm_multiparams(which_ssw)
-    fcdate = datetime.datetime.strptime(inits[i_init],'%Y%m%d')
+    inits,fin = pipeline_base.dates_of_interest(which_ssw)
+    event_region = pipeline_base.region_of_interest(which_ssw)
+    fcdate = dtlib.datetime.strptime(inits[i_init],'%Y%m%d')
     full_time_interval = [fcdate, event_time_interval[1]]
     ds_cgt_era5,_ = coarse_grain_time(years, year_filegroups, event_region, full_time_interval)
     return ds_cgt_era5
 
 
-def coarse_grain_time(years, year_filegroups, event_region, event_time_interval):
+def coarse_grain_time(years, year_filegroups, region, init_date, term_date):
     print(f'Starting to coarse-grain time')
     t2m = []
-    t0_ref,t1_ref = event_time_interval
-    event_duration = t1_ref - t0_ref
+    duration = term_date - init_date
     for i_year,year in enumerate(years):
         print(f'Ingesting year {year}')
         print(f'{year_filegroups[i_year] = }')
         # Modify the time selection
-        t0 = datetime.datetime(year, t0_ref.month, t0_ref.day, t0_ref.hour)
-        t1 = t0 + event_duration
+        t0 = dtlib.datetime.replace(init_date, year=year) #dtlib.datetime(year, init_date.month, init_date.day, t0_ref.hour)
+        t1 = t0 + duration
         t2m_year = (
                 xr.concat([
                     xr.open_dataarray(yf).rename({'valid_time': 'time'}) 
@@ -147,19 +150,14 @@ def coarse_grain_time(years, year_filegroups, event_region, event_time_interval)
                 utils.rezero_lons(
                     t2m_year
                     .sel(time=slice(t0,t1))
-                    .assign_coords(time=np.arange(t0_ref,t1_ref,datetime.timedelta(hours=6)))
+                    .assign_coords(time=np.arange(init_date,term_date,dtlib.timedelta(hours=6)))
                     )
-                .sel(event_region)
+                .sel(region)
                 .expand_dims(member=[year])
                 )
         print(f'{t2m_year.shape = }, {t2m_year.dims = }')
         t2m.append(t2m_year)
     t2m = xr.concat(t2m,dim='member') 
-    print(f"t2m.coords = ")
-    print(t2m.coords)
-    print(f'{t2m.coords["time"] = }')
-    tt = t2m.coords['time'].to_numpy()
-    print(f'{tt = }')
     assert all([type(t) == type(tt[0]) for t in tt])
     # Take daily mean
     daily_mean = t2m.isel(time=range(0,t2m['time'].size,4))
@@ -170,24 +168,36 @@ def coarse_grain_time(years, year_filegroups, event_region, event_time_interval)
         daily_min = np.minimum(daily_min, t2m.isel(time=range(i,t2m['time'].size,4)).assign_coords({'time': daily_min['time']}))
         daily_max = np.maximum(daily_max, t2m.isel(time=range(i,t2m['time'].size,4)).assign_coords({'time': daily_max['time']}))
     daily_mean /= 4
-    t2m_cgt = xr.concat([daily_mean,daily_min,daily_max], dim='daily_stat').assign_coords(daily_stat=['daily_mean','daily_min','daily_max'])
+    t2m_cgt_1xday = xr.concat([daily_mean,daily_min,daily_max], dim='daily_stat').assign_coords(daily_stat=['daily_mean','daily_min','daily_max'])
     print(f'{t2m_cgt.dims = }, {t2m_cgt.shape = }')
     ds = xr.Dataset(data_vars=dict({'1xday': t2m_cgt, '4xday': t2m.rename({'time': 'time_6h'})}))
     return (ds, False)
 
 def reduce_era5(which_ssw):
     todo = dict({
-        'coarse_grain_time':           0,
-        'plot_t2m_sumstats_map':       0,
-        'coarse_grain_space':          0,
-        'fit_gev':                     0,
-        'plot_statpar_map':            1,
-        'compute_risk':                0,
-        'plot_risk_map':               0,
-        'fit_gev_select_regions':      0,
-        'plot_gev_select_regions':     0,
+        'onset_date_sensitivity_analysis':  1,
+        'coarse_grain_time':                0,
+        'plot_t2m_sumstats_map':            0,
+        'coarse_grain_space':               0,
+        'fit_gev':                          0,
+        'plot_statpar_map':                 0,
+        'compute_risk':                     0,
+        'plot_risk_map':                    0,
+        'fit_gev_select_regions':           0,
+        'plot_gev_select_regions':          0,
         })
-    years,event_region,event_time_interval,landmask_file,year_filegroups,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = era5_workflow(which_ssw)
+    (
+        years,
+        event_year, ext_sign, 
+        event_region,context_region,
+        fc_dates,onset_date_nominal,term_date,
+        landmask_file, year_filegroups, reduced_data_dir, figdir,
+        cgs_levels,select_regions,
+        risk_levels,n_boot,confint_width
+    ) = era5_workflow(which_ssw)
+    ext_symb = "max" if 1==ext_sign else "min"
+    ineq_sign = "geq" if 1==ext_sign else "leq"
+
     boot_type = 'percentile'
     ens_file_cgt = join(reduced_data_dir,f't2m_cgt1day.nc')
     landmask = (
@@ -199,33 +209,37 @@ def reduce_era5(which_ssw):
                 )
             .sel(event_region)
             )
-    print(f'{landmask.coords = }')
     if todo['coarse_grain_time']:
-        ds_cgt,err_flag = coarse_grain_time(years, year_filegroups, event_region, event_time_interval)
-        if err_flag:
-            return ds_cgt
+        ds_cgt,err_flag = coarse_grain_time(years, year_filegroups, event_region, [fc_dates[0],term_date])
         ds_cgt.to_netcdf(ens_file_cgt)
     else:
-        ds_cgt = xr.open_dataarray(ens_file_cgt)
+        ds_cgt = xr.open_dataset(ens_file_cgt)
 
     landmask = landmask.interp({'lat': ds_cgt.coords['lat'].values, 'lon': ds_cgt.coords['lon'].values})
-    print(f'After interpolation, {landmask.coords = }')
-    print(f'{ds_cgt.coords = }')
 
     assert np.all(np.isfinite(landmask))
 
-    if "sep2019" == which_ssw:
-        ext_sign = 1
-        ext_symb = "max"
-        event_year = 2019
-    elif "jan2019" == which_ssw:
-        ext_sign = -1
-        ext_symb = "min"
-        event_year = 2019
-    elif "feb2018" == which_ssw:
-        ext_sign = -1
-        ext_symb = "min"
-        event_year = 2018
+    if todo['coarse_grain_space']:
+        for i_cgs_level,cgs_level in enumerate(cgs_levels):
+            cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+            ens_file_cgts = join(reduced_data_dir,f't2m_cgt1day_cgs{cgs_key}.nc')
+            if todo['coarse_grain_space']:
+                ds_cgts = pipeline_base.coarse_grain_space(ds_cgt, cgs_level, landmask)
+                ds_cgts.to_netcdf(ens_file_cgts)
+
+    # ------------- Sensitivity analysis with respect to onset date ------------
+    if todo['onset_date_sensitivity_analysis']:
+        for i_cgs_level,cgs_level in enumerate(cgs_levels):
+            cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+            ens_file_cgts = join(reduced_data_dir,f't2m_cgt1day_cgs{cgs_key}.nc')
+            da_cgts = xr.open_dataset(ens_file_cgts)['1xday']
+            pipeline_base.onset_date_sensitivity_analysis(
+                    da.sel(event_region), 
+                    fc_dates, onset_date_nominal, term_date, ext_sign, 
+                    figdir, f'cgs{cgs_key}', mem_special=2018
+                    )
+    # --------------------------------------------------------------------------
+
     ds_cgt_extt = ext_sign * (ext_sign*ds_cgt).max(dim='time')
     if todo['plot_t2m_sumstats_map']:
         for daily_stat in ['daily_mean']:
@@ -244,17 +258,12 @@ def reduce_era5(which_ssw):
             fig.savefig(join(figdir,f't2m_sumstats_map_{daily_stat}.png'), **pltkwargs)
             plt.close(fig)
 
+    # ---- Minimize in time -----------------------------
     daily_stat = 'daily_mean'
     for i_cgs_level,cgs_level in enumerate(cgs_levels):
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
         ens_file_cgts = join(reduced_data_dir,f't2m_cgt1day_cgs{cgs_key}.nc')
-        if todo['coarse_grain_space']:
-            print(f'before calling coarse_grain_space, {landmask.coords = }')
-            ds_cgts = pipeline_base.coarse_grain_space(ds_cgt, cgs_level, landmask)
-            ds_cgts.to_netcdf(ens_file_cgts)
-        else:
-            ds_cgts = xr.open_dataarray(ens_file_cgts)
-        # ---- Minimize in time -----------------------------
+        ds_cgts = xr.open_dataarray(ens_file_cgts)
         ds_cgts_extt = ext_sign * (ext_sign * ds_cgts).max(dim='time')
         print(f'{ds_cgts_extt.dims = }')
         # ----------- Perform GEV fitting (on negative temperature) --------------
@@ -341,7 +350,6 @@ def reduce_era5(which_ssw):
                         lo,hi = 2*risk_ratio[0,:]-boot_quant_hi, 2*risk_ratio[0,:]-boot_quant_lo
                     ax.fill_between(risk_levels, lo, hi, fc='gray', ec='none', alpha=0.3, zorder=-1)
                     ax.set_xscale('log')
-                    ineq_sign = "geq" if 1==ext_sign else "leq"
                     ax.set_xlabel(r'$\mathbb{P}\{\%s_t\langle T(t)\rangle_{\mathrm{region}}\%s T\}$'%(ext_symb,ineq_sign))
                     ax.set_ylabel(r'$T$')
                     ax.set_title(f'ERA5 at {lonlatstr}')

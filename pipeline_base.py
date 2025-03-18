@@ -1,5 +1,6 @@
 import numpy as np
 import xarray as xr 
+import datetime as dtlib
 from scipy.stats import genextreme as spgex
 import pdb
 from cartopy import crs as ccrs
@@ -19,7 +20,77 @@ from importlib import reload
 import utils; reload(utils)
 import stat_functions as stfu; reload(stfu)
 
+def dates_of_interest(which_ssw):
+    # onset dates are subject to adjustment 
+    if "feb2018" == which_ssw:
+        fc_dates = ['20180125','20180208']
+        onset_date_nominal = '20180221' 
+        term_date = '20180308'
+    elif "jan2019" == which_ssw:
+        fc_dates = ['20181213','20190108']
+        onset_date_nominal = '20190101'
+        term_date = '20190131'
+    elif "sep2019" == which_ssw:
+        fc_dates = ['20190829','20191001']
+        onset_date_nominal = '20191001'
+        term_date = '20191014'
+    # convert to datetime objects 
+    fc_dates_dt = [dtlib.datetime.strptime(fc_date, "%Y%m%d").replace(hour=0) for fc_date in fc_dates]
+    onset_date_nominal = dtlib.datetime.strptime(fc_date, "%Y%m%d").replace(hour=0)
+    term_date = dtlib.datetime.strptime(term_date, "%Y%m%d").replace(hour=22)
 
+    return fc_dates, onset_date_nominal, term_date
+
+def region_of_interest(which_ssw):
+    if "feb2018" == which_ssw:
+        lat_min, lat_max, lat_pad = 50, 65, 10
+        lon_min, lon_max, lon_pad = -10, 30, 10
+    elif "jan2019" == which_ssw:
+        lat_min, lat_max, lat_pad = 30, 45, 10
+        lon_min, lon_max, lon_pad - -95, -70, 10
+    elif "sep2019" == which_ssw:
+        lat_min, lat_max, lat_pad = -46, -10, 10
+        lon_min, lon_max, lon_pad = 112, 154, 10
+    # Of course we can add broader context to the region 
+    event_region = dict(lat=slice(lat_min,lat_max),lon=slice(lon_min,lon_max))
+    context_region = dict(lat=slice(lat_min-lat_pad,lat_max+lat_pad),lon=slice(lon_min-lon_pad,lon_max+lon_pad))
+    return event_region,context_region
+
+def onset_date_sensitivity_analysis(da, fc_dates, onset_date_nominal, term_date, ext_sign, figdir, figfile_suffix, mem_special=None):
+    # Plot the minimum over the time interval as a function of onset date, across ensemble members. 
+    onset_dates = [fc_dates[1]+dtlib.timedelta(dt) for dt in range(1, (onset_date_nominal-fc_dates[1]).days+1)]
+    severities = xr.DataArray(
+            coords = dict(
+                **{c: da.coords[c] for c in ['lon','lat','member']},
+                'fc_date': fc_dates,
+                'onset_date': onset_dates,
+                ),
+            dims = ['lon','lat','member','fc_date','onset_date'],
+            data = np.nan,
+            )
+    for (i_onset_date,onset_date) in enumerate(onset_dates):
+        severities[dict(onset_date=i_onset_date)] = ext_sign*(ext_sign*da.isel(time=slice(i_onset_date,None)).max(dim='time'))
+    Nlon,Nlat,Nmem = (severities[c].size for c in ['lon','lat','member'])
+    fig,axes = plt.subplots(nrows=Nlon*Nlat,ncols=1+len(fc_dates),figsize=(6*(1+len(fc_dates)),6*Nlon*Nlat)) # left column for the timeseries, right column for the distribution of minima as a function of start time 
+    i_reg = -1
+    for i_lon in range(Nlon):
+        for i_lat in range(Nlat):
+            i_reg += 1
+            ax1,ax2 = axes[i_reg,:]
+            for i_mem,mem in enumerate(da.coords['member']):
+                isel = dict(lon=i_lon,lat=i_lat,member=i_mem)
+                if mem_special and mem==mem_special:
+                    kwargs = dict(color='black', linestyle='--', zorder=1)
+                else:
+                    kwargs = dict(color='gray', alpha=0.5, linestyle='-', zorder=0)
+
+                xr.plot.plot(da.isel(isel), ax=ax1, x='time',**kwargs)
+                xr.plot.plot(severities.isel(isel), ax=ax2, x='onset_date', **kwargs) # TODO instead of plotting all the ensemble members, plot the mean
+    fig.savefig(join(figdir,'ODSA_{figfile_suffix}.png'), **pltkwargs)
+    fig.close()
+
+
+    return 
 
 def plot_sumstats_map(ds,loc_vmin,loc_vmax,scale_vmin,scale_vmax):
     # Summary stats for an ensemble 
