@@ -5,6 +5,7 @@ import xarray as xr
 from cartopy import crs as ccrs
 import netCDF4
 from matplotlib import pyplot as plt, rcParams, ticker
+import pdb
 pltkwargs = dict({
     'bbox_inches': 'tight',
     'pad_inches': 0.2,
@@ -26,7 +27,6 @@ from importlib import reload
 import utils; reload(utils)
 import pipeline_base; reload(pipeline_base)
 import stat_functions as stfu; reload(stfu)
-from pipeline_gcms import gcm_multiparams
 
 def analysis_multiparams(which_ssw):
     # lon/lat ratios are 6/1 at the bottom and 4/1 at the top; stick to 5/1 
@@ -59,7 +59,7 @@ def analysis_multiparams(which_ssw):
 
 def era5_workflow(which_ssw,verbose=False):
     print(f'Starting workflow setup')
-    analysis_date = '2025-02-22'
+    analysis_date = '2025-03-18'
     raw_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/era5'
     landmask_file = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/era5/land_sea_mask.nc'
     processed_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596'
@@ -68,11 +68,11 @@ def era5_workflow(which_ssw,verbose=False):
     reduced_data_dir = join(processed_data_dir,which_ssw,analysis_date,'era5')
     figdir = join('/home/users/ju26596/snapsi_analysis_figures',which_ssw,analysis_date,'era5')
     fc_dates,onset_date_nominal,term_date = pipeline_base.dates_of_interest(which_ssw)
+    event_region,context_region = pipeline_base.region_of_interest(which_ssw)
     if "feb2018" == which_ssw:
         event_year = 2018
         ext_sign = -1
         for year in years:
-            # TODO augment this with Decembers 
             year_filegroups.append(tuple(
                 [join(raw_data_dir,f't2m_{(year-1):04}-12.nc')] + 
                 [join(raw_data_dir,f't2m_{year:04}-{month:02}.nc') for month in [1,2,3]]
@@ -81,7 +81,6 @@ def era5_workflow(which_ssw,verbose=False):
         event_year = 2019
         ext_sign = -1
         for year in years:
-            # TODO augment this with Decembers 
             year_filegroups.append(tuple(
                 [join(raw_data_dir,f't2m_{(year-1):04}-12.nc')] + 
                 [join(raw_data_dir,f't2m_{year:04}-{month:02}.nc') for month in [1,2,3]]
@@ -90,7 +89,6 @@ def era5_workflow(which_ssw,verbose=False):
         event_year = 2019
         ext_sign = 1
         for year in years:
-            # TODO augment this with Decembers 
             year_filegroups.append(tuple(
                 [join(raw_data_dir,f't2m_{year:04}-{month:02}.nc') for month in [9,10,11]]
                 ))
@@ -104,7 +102,6 @@ def era5_workflow(which_ssw,verbose=False):
 
     select_points = ()
     risk_levels = np.exp(np.linspace(np.log(0.001),np.log(49/50),30))
-    # TODO specify temperature levels for relative risk 
     workflow = (
             years,
             event_year,ext_sign,
@@ -158,7 +155,6 @@ def coarse_grain_time(years, year_filegroups, region, init_date, term_date):
         print(f'{t2m_year.shape = }, {t2m_year.dims = }')
         t2m.append(t2m_year)
     t2m = xr.concat(t2m,dim='member') 
-    assert all([type(t) == type(tt[0]) for t in tt])
     # Take daily mean
     daily_mean = t2m.isel(time=range(0,t2m['time'].size,4))
     daily_min = t2m.isel(time=range(0,t2m['time'].size,4))
@@ -169,16 +165,15 @@ def coarse_grain_time(years, year_filegroups, region, init_date, term_date):
         daily_max = np.maximum(daily_max, t2m.isel(time=range(i,t2m['time'].size,4)).assign_coords({'time': daily_max['time']}))
     daily_mean /= 4
     t2m_cgt_1xday = xr.concat([daily_mean,daily_min,daily_max], dim='daily_stat').assign_coords(daily_stat=['daily_mean','daily_min','daily_max'])
-    print(f'{t2m_cgt.dims = }, {t2m_cgt.shape = }')
-    ds = xr.Dataset(data_vars=dict({'1xday': t2m_cgt, '4xday': t2m.rename({'time': 'time_6h'})}))
+    ds = xr.Dataset(data_vars=dict({'1xday': t2m_cgt_1xday, '4xday': t2m.rename({'time': 'time_6h'})}))
     return (ds, False)
 
 def reduce_era5(which_ssw):
     todo = dict({
-        'onset_date_sensitivity_analysis':  1,
         'coarse_grain_time':                0,
+        'coarse_grain_space':               1,
+        'onset_date_sensitivity_analysis':  1,
         'plot_t2m_sumstats_map':            0,
-        'coarse_grain_space':               0,
         'fit_gev':                          0,
         'plot_statpar_map':                 0,
         'compute_risk':                     0,
@@ -200,22 +195,22 @@ def reduce_era5(which_ssw):
 
     boot_type = 'percentile'
     ens_file_cgt = join(reduced_data_dir,f't2m_cgt1day.nc')
-    landmask = (
+    if todo['coarse_grain_time']:
+        ds_cgt,err_flag = coarse_grain_time(years, year_filegroups, event_region, fc_dates[0], term_date)
+        ds_cgt.to_netcdf(ens_file_cgt)
+    else:
+        ds_cgt = xr.open_dataset(ens_file_cgt)
+
+    landmask_full = (
             utils.rezero_lons(
                 xr.open_dataarray(landmask_file)
                 .isel(time=0,drop=True)
                 .isel(latitude=slice(None,None,-1)) # Flip lat to go in increasing order
                 .rename(dict(latitude='lat',longitude='lon'))
                 )
-            .sel(event_region)
+            #.sel(event_region)
             )
-    if todo['coarse_grain_time']:
-        ds_cgt,err_flag = coarse_grain_time(years, year_filegroups, event_region, [fc_dates[0],term_date])
-        ds_cgt.to_netcdf(ens_file_cgt)
-    else:
-        ds_cgt = xr.open_dataset(ens_file_cgt)
-
-    landmask = landmask.interp({'lat': ds_cgt.coords['lat'].values, 'lon': ds_cgt.coords['lon'].values})
+    landmask = landmask_full.interp({'lat': ds_cgt.coords['lat'].values, 'lon': ds_cgt.coords['lon'].values}).sel(event_region)
 
     assert np.all(np.isfinite(landmask))
 
@@ -229,15 +224,18 @@ def reduce_era5(which_ssw):
 
     # ------------- Sensitivity analysis with respect to onset date ------------
     if todo['onset_date_sensitivity_analysis']:
-        for i_cgs_level,cgs_level in enumerate(cgs_levels):
+        for i_cgs_level,cgs_level in enumerate(cgs_levels[:2]):
             cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
             ens_file_cgts = join(reduced_data_dir,f't2m_cgt1day_cgs{cgs_key}.nc')
             da_cgts = xr.open_dataset(ens_file_cgts)['1xday']
-            pipeline_base.onset_date_sensitivity_analysis(
-                    da.sel(event_region), 
+            onset_date_minsens = pipeline_base.onset_date_sensitivity_analysis(
+                    da_cgts,
+                    event_region,cgs_level, 
                     fc_dates, onset_date_nominal, term_date, ext_sign, 
-                    figdir, f'cgs{cgs_key}', mem_special=2018
+                    figdir, f'cgs{cgs_key}', "IFS", mem_special=2018
                     )
+    return
+    # choose an onset date based on this 
     # --------------------------------------------------------------------------
 
     ds_cgt_extt = ext_sign * (ext_sign*ds_cgt).max(dim='time')
@@ -263,7 +261,7 @@ def reduce_era5(which_ssw):
     for i_cgs_level,cgs_level in enumerate(cgs_levels):
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
         ens_file_cgts = join(reduced_data_dir,f't2m_cgt1day_cgs{cgs_key}.nc')
-        ds_cgts = xr.open_dataarray(ens_file_cgts)
+        ds_cgts = xr.open_dataset(ens_file_cgts)['1xday']
         ds_cgts_extt = ext_sign * (ext_sign * ds_cgts).max(dim='time')
         print(f'{ds_cgts_extt.dims = }')
         # ----------- Perform GEV fitting (on negative temperature) --------------
@@ -363,7 +361,7 @@ def reduce_era5(which_ssw):
 
 if __name__ == '__main__':
     print(f'Starting main')
-    for which_ssw in ["feb2018","jan2019","sep2019"]:
+    for which_ssw in ["feb2018","jan2019","sep2019"][:1]:
         result = reduce_era5(which_ssw)
 
 

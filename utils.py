@@ -11,6 +11,14 @@ def area_average(da):
     aa = xr.where(da_finite_fraction>0.5, aa, np.nan)
     return aa
 
+def lonlatstr(region,cgs_level,i_lon,i_lat):
+    dlon = (region['lon'].stop - region['lon'].start)/cgs_level[0]
+    dlat = (region['lat'].stop - region['lat'].start)/cgs_level[1]
+    clon = region['lon'].start + (i_lon+0.5)*dlon
+    clat = region['lat'].start + (i_lat+0.5)*dlat
+    label = r'$\lambda=%d\pm%d^\circ\text{E},\phi=%d\pm%d^\circ\text{N}$'%(clon,dlon/2,clat,dlat/2)
+    return label
+
 def spherical2cartesian(lon,lat):
     vec = np.array([
         np.cos(np.deg2rad(lon))*np.cos(np.deg2rad(lat)),

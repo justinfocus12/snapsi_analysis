@@ -14,7 +14,7 @@ rcParams.update({
     'font.size': 15,
     })
 pltkwargs = {"bbox_inches": "tight", "pad_inches": 0.2}
-import datetime
+import datetime as dtlib
 import sys
 from os import listdir, makedirs
 from os.path import join, exists, basename
@@ -80,18 +80,19 @@ def all_gcms_institutes():
     return gcm2institute
 
 
-def gcm_workflow(which_ssw, i_gcm, i_expt, i_init, verbose=False):
+def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
     # Sets out the folders necessary to ingest a chunk of data specified by the input arguments 
-    gcms,expts,inits,onset_date,term_date = gcm_multiparams(which_ssw)
+    gcms,expts,fc_dates,onset_date,term_date = gcm_multiparams(which_ssw)
     gcm = gcms[i_gcm]
     expt = expts[i_expt]
-    init = inits[i_init]
+    fc_date = fc_dates[i_fc_date]
 
     gcm2institute = all_gcms_institutes()
 
     # ----------- Files for each stage of analysis -------------
     # 1. Raw data
-    raw_data_dir = join('/badc/snap/data/post-cmip6/SNAPSI', gcm2institute[gcm], gcm, expt, 's'+init)
+    fc_date_abbrv = dtlib.datetime.strftime(fc_date,'s%Y%m%d')
+    raw_data_dir = join('/badc/snap/data/post-cmip6/SNAPSI', gcm2institute[gcm], gcm, expt, fc_date_abbrv)
     landmask_file = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/era5/land_sea_mask.nc'
     print(f'{raw_data_dir = }')
     ens_path_skeleton = join(raw_data_dir,'r*i*p*f*')
@@ -111,18 +112,19 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_init, verbose=False):
     assert len(raw_mem_files) == len(mem_labels)
     
 
-    analysis_date = '2025-02-22'
-    event_region, context_region = pipeline_base.region_of_interest(which_ssw)
+    analysis_date = '2025-03-18'
+    fc_dates,onset_date_nominal,term_date = pipeline_base.dates_of_interest(which_ssw)
+    event_region,context_region = pipeline_base.region_of_interest(which_ssw)
     # 2. Spatiotemporal sub-selection and coarse-graining (cg)
     if "feb2018" == which_ssw:
-        event_time_interval = [datetime.datetime(2018,2,21,0), datetime.datetime(2018,3,8,22)] # for the reference year 
-        event_region = dict(lat=slice(50,65),lon=slice(-10,130))
+        event_year = 2018
+        ext_sign = -1
     elif "jan2019" == which_ssw:
-        event_time_interval = [datetime.datetime(2019,1,1,0), datetime.datetime(2019,1,31,22)] # for the reference year 
-        event_region = dict(lat=slice(30,45),lon=slice(-95,-70))
+        event_year = 2019
+        ext_sign = -1
     elif "sep2019" == which_ssw:
-        event_time_interval = [datetime.datetime(2019,10,1,0), datetime.datetime(2019,10,14,22)]
-        event_region = dict(lat=slice(-46,-10), lon=slice(112,154))
+        event_year = 2019
+        ext_sign = 1
 
     processed_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596'
     reduced_data_dir = join(processed_data_dir,which_ssw,analysis_date,gcm)
@@ -140,9 +142,10 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_init, verbose=False):
     workflow = (
             gcm,
             expt,
-            init,
+            fc_date,
+            ext_sign,
             event_region,
-            event_time_interval,
+            fc_dates,onset_date_nominal,term_date,
             landmask_file,
             raw_mem_files,
             mem_labels,
@@ -161,9 +164,9 @@ def visualize_ensemble_spread(raw_mem_files,):
     return
 
 
-def coarse_grain_time(raw_mem_files, mem_labels, event_region, fcdate, event_time_interval, use_dask=False):
-    timesel = dict(time=slice(event_time_interval[0],event_time_interval[1]))
-    preprocess = lambda dsmem: preprocess_gcm_6hrPt(dsmem, fcdate, timesel, event_region)
+def coarse_grain_time(raw_mem_files, mem_labels, region, init_date, term_date, use_dask=False):
+    timesel = dict(time=slice(init_date,term_date))
+    preprocess = lambda dsmem: preprocess_gcm_6hrPt(dsmem, init_date, timesel, region)
     print(f'{all([exists(f) for f in raw_mem_files]) = }')
 
     if use_dask:
@@ -208,7 +211,7 @@ def preprocess_gcm_6hrPt(dsmem,fcdate,timesel,spacesel,verbose=False):
     dsmem_tas = (
             utils.rezero_lons(
                 dsmem['tas']
-                .assign_coords(time=np.arange(fcdate,fcdate+datetime.timedelta(hours=6*dsmem.time.size),datetime.timedelta(hours=6)))
+                .assign_coords(time=np.arange(fcdate,fcdate+dtlib.timedelta(hours=6*dsmem.time.size),dtlib.timedelta(hours=6)))
                 #.sel(timesel)
                 )
             )
@@ -254,7 +257,7 @@ def compare_statpar_maps_2expts(i_gcm,i0_expt,i1_expt,i_init):
         gevpar_0,gevpar_1 = (xr.open_dataarray(join(reduced_data_dir,f'gevpar_e{expt}_i{init}_cgs{cgs_key}.nc')).sel(daily_stat='daily_mean') for expt in (expt0,expt1))
         if todo['plot_param_diff_map']:
             fig_gaussian,axes_gaussian,fig_gev,axes_gev = pipeline_base.plot_statpar_map_difference(ds_cgts_mint_0,ds_cgts_mint_1,gevpar_0,gevpar_1,locsign=-1)
-            datestr = datetime.datetime.strptime(init,"%Y%m%d").strftime("%Y-%m-%d")
+            datestr = dtlib.datetime.strptime(init,"%Y%m%d").strftime("%Y-%m-%d")
             for (fig,distname) in [(fig_gaussian,'gaussian'),(fig_gev,'gev')]:
                 fig.suptitle(f'{expt1} - {expt0}, init {datestr}')
                 fig.savefig(join(figdir,f'statpar_diffmap_e0{expt0}_e1{expt1}_i{init}_cgs{cgs_key}_{distname}.png'), **pltkwargs)
@@ -378,7 +381,7 @@ def compare_gcms(which_ssw, idx_gcms):
         for (i_ax,ax) in enumerate(axes_dv):
             ax.set_ylim(ylims)
             ax.axvline(0.0, color='black', linestyle='--')
-            datestr = datetime.datetime.strptime(inits[i_ax],"%Y%m%d").strftime("%Y-%m-%d")
+            datestr = dtlib.datetime.strptime(inits[i_ax],"%Y%m%d").strftime("%Y-%m-%d")
             ax.set_title(f"init {datestr}")
             ax.set_xlabel(r'$T-T_{\mathrm{free}}$')
             for i_gcm2plot in range(len(idx_gcms)):
@@ -407,7 +410,7 @@ def compare_gcms(which_ssw, idx_gcms):
             ax.axvline(1.0, color='black', linestyle='--')
             ax.axvline(xlims[0], color='black', linestyle='--')
             ax.axvline(xlims[1], color='black', linestyle='--')
-            datestr = datetime.datetime.strptime(inits[i_ax],"%Y%m%d").strftime("%Y-%m-%d")
+            datestr = dtlib.datetime.strptime(inits[i_ax],"%Y%m%d").strftime("%Y-%m-%d")
             ax.set_title(f"init {datestr}")
             ax.set_xscale('log')
             xticks = [xlims[0], 1.0, xlims[1]]
@@ -453,7 +456,7 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 )
             .sel(event_region)
             )
-    datestr = datetime.datetime.strptime(init,"%Y%m%d").strftime("%Y-%m-%d")
+    datestr = dtlib.datetime.strptime(init,"%Y%m%d").strftime("%Y-%m-%d")
 
     if "sep2019" == which_ssw:
         ext_sign = 1
@@ -659,51 +662,68 @@ def compare_expts(which_ssw, i_gcm, i_init):
 def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
     todo = dict({
-        'coarse_grain_time':           0,
-        'plot_t2m_sumstats_map':       0,
-        'coarse_grain_space':          0,
-        'fit_gev':                     0,
-        'plot_statpar_map':            1,
-        'compute_risk':                0,
-        'compute_valatrisk':           0,
-        'plot_risk_map':               0,
-        'fit_gev_select_regions':      0,
-        'plot_gev_select_regions':     0,
+        'coarse_grain_time':                1,
+        'coarse_grain_space':               1,
+        'onset_date_sensitivity_analysis':  1,
+        'plot_t2m_sumstats_map':            0,
+        'fit_gev':                          0,
+        'plot_statpar_map':                 1,
+        'compute_risk':                     0,
+        'compute_valatrisk':                0,
+        'plot_risk_map':                    0,
+        'fit_gev_select_regions':           0,
+        'plot_gev_select_regions':          0,
         })
-    gcm,expt,init,event_region,event_time_interval,landmask_file,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(which_ssw,i_gcm,i_expt,i_init)
-    fcdate = datetime.datetime.strptime(init,'%Y%m%d')
-    datestr = fcdate.strftime("%Y-%m-%d")
+    gcm,expt,fc_date,ext_sign,event_region,fc_dates,onset_date_nominal,term_date,landmask_file,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(which_ssw,i_gcm,i_expt,i_init)
+    ext_symb = "max" if 1==ext_sign else "min"
+    ineq_sign = "geq" if 1==ext_sign else "leq"
+
+    datestr = fc_date.strftime("%Y-%m-%d")
+    fc_date_abbrv = dtlib.datetime.strftime(fc_date,'%Y%m%d')
 
     # ------------- Coarse-grain in time (cgt) and space (cgts) -------------
-    ens_file_cgt = join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day.nc')
+    ens_file_cgt = join(reduced_data_dir,f't2m_e{expt}_i{fc_date_abbrv}_cgt1day.nc')
     if todo['coarse_grain_time']:
-        ds_cgt = coarse_grain_time(raw_mem_files, mem_labels, event_region, fcdate, event_time_interval)
+        ds_cgt = coarse_grain_time(raw_mem_files, mem_labels, event_region, fc_date, term_date)
         ds_cgt.to_netcdf(ens_file_cgt)
     else:
-        ds_cgt = xr.open_dataarray(ens_file_cgt)
-    landmask = (
+        ds_cgt = xr.open_dataset(ens_file_cgt)
+    landmask_full = (
             utils.rezero_lons(
                 xr.open_dataarray(landmask_file)
                 .isel(time=0,drop=True)
                 .isel(latitude=slice(None,None,-1)) # Flip lat to go in increasing order
                 .rename(dict(latitude='lat',longitude='lon'))
                 )
-            .sel(event_region)
-            .interp({'lat': ds_cgt.coords['lat'].values, 'lon': ds_cgt.coords['lon'].values})
+            #.sel(event_region)
             )
+    landmask = landmask_full.interp({'lat': ds_cgt.coords['lat'].values, 'lon': ds_cgt.coords['lon'].values}).sel(event_region)
+    assert np.all(np.isfinite(landmask))
 
-    if "sep2019" == which_ssw:
-        ext_sign = 1
-        ext_symb = "max"
-        event_year = 2019
-    elif "jan2019" == which_ssw:
-        ext_sign = -1
-        ext_symb = "min"
-        event_year = 2019
-    elif "feb2018" == which_ssw:
-        ext_sign = -1
-        ext_symb = "min"
-        event_year = 2018
+
+    if todo['coarse_grain_space']:
+        for i_cgs_level,cgs_level in enumerate(cgs_levels):
+            cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+            ens_file_cgts = join(reduced_data_dir,f't2m_e{expt}_i{fc_date_abbrv}_cgt1day_cgs{cgs_key}.nc')
+            ds_cgts = pipeline_base.coarse_grain_space(ds_cgt, cgs_level, landmask)
+            ds_cgts.to_netcdf(ens_file_cgts)
+
+    # ------------- Sensitivity analysis with respect to onset date ------------
+    if todo['onset_date_sensitivity_analysis']:
+        for i_cgs_level,cgs_level in enumerate(cgs_levels[:2]):
+            cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+            exptstr = f'e{expt}_i{fc_date_abbrv}_cgt1day_cgs{cgs_key}'
+            ens_file_cgts = join(reduced_data_dir,f't2m_{exptstr}.nc')
+            da_cgts = xr.open_dataset(ens_file_cgts)['1xday']
+            onset_date_minsens = pipeline_base.onset_date_sensitivity_analysis(
+                    da_cgts,
+                    event_region,cgs_level, 
+                    fc_dates, onset_date_nominal, term_date, ext_sign, 
+                    figdir, exptstr, gcm, mem_special=None # 2018
+                    )
+    return
+    # choose an onset date based on this 
+    # --------------------------------------------------------------------------
 
     print(f'{ds_cgt.shape = }')
     ds_cgt_extt = ext_sign * (ext_sign*ds_cgt).max(dim='time')
