@@ -73,7 +73,8 @@ def onset_date_sensitivity_analysis(da, event_region, cgs_level, fc_dates, onset
         severities[dict(onset_date=i_onset_date)] = ext_sign*(ext_sign*da.sel(time=slice(onset_date,None))).max(dim='time')
     Nlon,Nlat,Nmem,Nfc = (severities[c].size for c in ['lon','lat','member','fc_date'])
     sel = dict(daily_stat='daily_min')
-    ylims = [np.nanmin(da), np.nanmax(da)]
+    ylims_intensity = [np.nanmin(da), np.nanmax(da)]
+    ylims_severity = [np.nanmin(severities),np.nanmax(severities)]
     def kwargsofmem(mem):
        if mem_special and mem==mem_special:
            kwargs = dict(color='black', linestyle='--', zorder=1)
@@ -82,57 +83,62 @@ def onset_date_sensitivity_analysis(da, event_region, cgs_level, fc_dates, onset
        return kwargs
     for i_lon in range(Nlon):
         for i_lat in range(Nlat):
-            fig,axes = plt.subplots(nrows=2,ncols=Nfc+1,figsize=(6*(Nfc+1),8),sharey='row', sharex=True,height_ratios=[3,1],gridspec_kw=dict(hspace=0.15,))
-            allaxes = (*axes[0,:], *axes[1,1:])
-            isel = dict(lat=i_lat,lon=i_lon)
-            for i_mem,mem in enumerate(da.coords['member']):
-                isel['member'] = i_mem
-                xr.plot.plot(da.isel(isel).sel(sel), ax=axes[0,0], x='time',**kwargsofmem(mem))
+            fig,axes = plt.subplots(nrows=3,ncols=Nfc,figsize=(6*Nfc,6+3+3),sharey='row', sharex=True,height_ratios=[2,1,1],gridspec_kw=dict(hspace=0.3,))
+            isel_intensity = dict(lat=i_lat,lon=i_lon)
+            isel_severity = dict(lat=i_lat,lon=i_lon)
+
             lonlatstr = utils.lonlatstr(event_region,cgs_level,i_lon,i_lat)
             fig.suptitle(r"%s, %s"%(figtitle_prefix,lonlatstr))
             for (i_fc_date,fc_date) in enumerate(fc_dates):
-                isel['fc_date'] = i_fc_date
+                isel_severity['fc_date'] = i_fc_date
+                if 'fc_date' in da.dims:
+                    isel_intensity['fc_date'] = i_fc_date
                 for i_mem,mem in enumerate(da.coords['member']):
-                    isel['member'] = i_mem
-                    xr.plot.plot(severities.isel(isel).sel(sel), ax=axes[0,i_fc_date+1], x='onset_date', **kwargsofmem(mem)) # TODO instead of plotting all the ensemble members, plot the mean
-                isel.pop('member')
+                    isel_severity['member'] = isel_intensity['member'] = i_mem
+                    xr.plot.plot(da.isel(isel_intensity).sel(sel), ax=axes[0,i_fc_date], x='time',**kwargsofmem(mem))
+                    xr.plot.plot(severities.isel(isel_severity).sel(sel), ax=axes[1,i_fc_date], x='onset_date', **kwargsofmem(mem)) # TODO instead of plotting all the ensemble members, plot the mean
+                isel_severity.pop('member')
+                isel_intensity.pop('member')
                 xr.plot.plot(
                         (0 != 
-                            severities.isel(isel).sel(sel)
+                            severities.isel(isel_severity).sel(sel)
                             .diff(dim='onset_date',label='lower')
                         ).sum(dim='member'),
-                        ax=axes[1,i_fc_date+1], x='onset_date', **kwargsofmem(mem)
+                        ax=axes[2,i_fc_date], x='onset_date', **kwargsofmem(mem)
                     ) 
-            for ax in axes[0,:]:
-                ax.set_ylim(ylims)
-            for ax in allaxes:
-                ax.axvline(onset_date_nominal, color="dodgerblue", linestyle="--")
+            for i_fcdate in range(len(fc_dates)):
+                axes[0,i_fcdate].set_ylim(ylims_intensity)
+                axes[1,i_fcdate].set_ylim(ylims_severity)
+            for ax in axes.flat:
+                ax.axvline(onset_date_nominal, color="black", linestyle="--")
                 for i_fc_date,fc_date in enumerate(fc_dates):
                     ax.axvline(fc_date, color="dodgerblue", linestyle="-")
             xticks = fc_dates + [onset_date_nominal,term_date]
-            for ax in (axes[0,0],*axes[1,1:]):
+            for ax in axes.flat:
                 xticklabels = [dtlib.datetime.strftime(date,"%m-%d") for date in xticks]
-                ax.set_xticks(xticks,xticklabels,rotation=90)
+                ax.set_xticks(xticks,xticklabels,rotation=0)
 
-            axes[0,0].set_title("Daily min T2M [K]")
-            axes[0,0].set_ylabel("")
-            axes[0,0].set_xlabel("Date")
+            axes[0,0].set_ylabel("Daily min T2M [K]")
+            axes[1,0].set_ylabel("min T2M past onset")
             for (i_fc_date,fc_date) in enumerate(fc_dates):
                 # Mark all the nominal dates
                 datestr = dtlib.datetime.strftime(fc_date, "%Y-%m-%d")
-                axes[0,i_fc_date+1].set_title("Severity, FC %s"%(datestr))
-                axes[0,i_fc_date+1].set_ylabel("")
-                axes[0,i_fc_date+1].set_xlabel("")
-                axes[1,i_fc_date+1].set_title("")
-                axes[1,i_fc_date+1].set_xlabel("Onset date")
+                if i_fc_date > 0: 
+                    axes[0,i_fc_date].set_ylabel("")
+                    axes[1,i_fc_date].set_ylabel("")
+                    axes[2,i_fc_date].set_ylabel("")
+                axes[0,i_fc_date].set_title("FC %s"%(datestr))
+                axes[0,i_fc_date].set_xlabel("Date")
+                axes[1,i_fc_date].set_title("")
+                axes[1,i_fc_date].set_xlabel("Onset date")
+                axes[2,i_fc_date].set_title(r"$\#\{\Delta\text{severity}/\Delta\text{onset date}\neq0\}$")
+                axes[2,i_fc_date].set_xlabel("Onset date")
                 yticks = range(0,Nmem,1+Nmem//4)
-                axes[1,i_fc_date+1].set_yticks(yticks, list(map(str,yticks)))
-                axes[1,i_fc_date+1].set_title(r"#{$\Delta$(severity)$\neq0$}")
-            for ax in (*axes[0,:], *axes[1,1:]):
-                ax.tick_params(axis='y', which='both',labelleft=True)
-            for ax in (axes[0,0], *axes[1,1:]):
-                ax.tick_params(axis='x', which='both',labelbottom=True)
-            axes[1,0].axis('off')
+                axes[2,i_fc_date].set_yticks(yticks, list(map(str,yticks)))
+            for i_row in range(3):
+                for i_col in range(len(fc_dates)):
+                    axes[i_row,i_col].tick_params(axis='y', which='both',labelleft=(i_col==0))
+                    axes[i_row,i_col].tick_params(axis='x', which='both',labelbottom=True)
             fig.savefig(join(figdir,f'ODSA_{figfile_suffix}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
             plt.close(fig)
     return 

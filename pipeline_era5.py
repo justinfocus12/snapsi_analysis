@@ -171,7 +171,7 @@ def coarse_grain_time(years, year_filegroups, region, init_date, term_date):
 def reduce_era5(which_ssw):
     todo = dict({
         'coarse_grain_time':                0,
-        'coarse_grain_space':               1,
+        'coarse_grain_space':               0,
         'onset_date_sensitivity_analysis':  1,
         'plot_t2m_sumstats_map':            0,
         'fit_gev':                          0,
