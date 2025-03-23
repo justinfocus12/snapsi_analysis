@@ -30,13 +30,13 @@ def gcm_multiparams(which_ssw):
     gcm2institute = all_gcms_institutes()
     gcms = list(gcm2institute.keys())
     expts = ['control','free','nudged']
-    fc_dates,onset_date,term_date = pipeline_base.dates_of_interest(which_ssw)
-    return gcms, expts, fc_dates, onset_date, term_date 
+    fc_dates,onset_date_nominal,term_date = pipeline_base.dates_of_interest(which_ssw)
+    return gcms, expts, fc_dates, onset_date_nominal, term_date 
 
 def analysis_multiparams(which_ssw):
     # lon/lat ratios are 6/1 at the bottom and 4/1 at the top; stick to 5/1 
     if "feb2018" == which_ssw:
-        cgs_levels = [(1,1),(5,1),(10,2),(20,4),(40,8),(141,16)]
+        cgs_levels = [(1,1),(5,1),(10,2),(20,4),(40,8),(80,16)]
         select_regions = ( # Indexed by cgs_level
                 ((0,0),), # level (1,1)
                 (), # level (5,1)
@@ -144,6 +144,7 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
             expt,
             fc_date,
             ext_sign,
+            event_year,
             event_region,
             fc_dates,onset_date_nominal,term_date,
             landmask_file,
@@ -656,6 +657,34 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 print(f'------------------ SAVED THE FIG -----------------')
     return
 
+#def get_intensity_bounds(which_ssw,i_gcm,i_expt,i_cgs_level,i_lon,i_lat):
+#    _,_,fc_dates,_,_ = gcm_multiparams(which_ssw)
+#    intens_min,intens_max = np.inf, -np.inf
+
+
+#def onset_date_sensitivity_analysis(which_ssw,i_gcm,i_expt):
+#    # Compare onset date severities etc. across different inits 
+#    _,_,fc_dates,_,_ = gcm_multiparams(which_ssw)
+#    # Figure out the axis limits 
+#    for i_cgs_level,cgs_level in enumerate(cgs_levels[:2]):
+#        das_cgts = []
+#        for (i_fc_date,fc_date) in enumerate(fc_dates):
+#            gcm,expt,fc_date,ext_sign,event_region,fc_dates,onset_date_nominal,term_date,landmask_file,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(which_ssw,i_gcm,i_expt,i_init)
+#            datestr = fc_date.strftime("%Y-%m-%d")
+#            fc_date_abbrv = dtlib.datetime.strftime(fc_date,'%Y%m%d')
+#            cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+#            da_cgts = []
+#            exptstr = f'e{expt}_i{fc_date_abbrv}_cgt1day_cgs{cgs_key}'
+#            ens_file_cgts = join(reduced_data_dir,f't2m_{exptstr}.nc')
+#            da_cgts = xr.open_dataset(ens_file_cgts)['1xday']
+#            das_cgts.append(da_cgts)
+#        
+#            onset_date_minsens = pipeline_base.onset_date_sensitivity_analysis(
+#                    da_cgts,
+#                    event_region,cgs_level, 
+#                    fc_dates, fc_date, onset_date_nominal, term_date, ext_sign, 
+#                    figdir, exptstr, gcm, mem_special=None, fc_date_special=fc_date
+#                    )
 
 
 
@@ -674,7 +703,8 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
         'fit_gev_select_regions':           0,
         'plot_gev_select_regions':          0,
         })
-    gcm,expt,fc_date,ext_sign,event_region,fc_dates,onset_date_nominal,term_date,landmask_file,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(which_ssw,i_gcm,i_expt,i_init)
+    _,_,fc_dates,_,_ = gcm_multiparams(which_ssw)
+    gcm,expt,fc_date,ext_sign,event_year,event_region,fc_dates,onset_date_nominal,term_date,landmask_file,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(which_ssw,i_gcm,i_expt,i_init)
     ext_symb = "max" if 1==ext_sign else "min"
     ineq_sign = "geq" if 1==ext_sign else "leq"
 
@@ -700,6 +730,11 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     landmask = landmask_full.interp({'lat': ds_cgt.coords['lat'].values, 'lon': ds_cgt.coords['lon'].values}).sel(event_region)
     assert np.all(np.isfinite(landmask))
 
+    # Load ERA5 for reference 
+    era5_file_cgt = join(reduced_data_dir_era5,f't2m_cgt1day.nc')
+    da_cgt_era5 = xr.open_dataset(era5_file_cgt)['1xday']
+    da_cgt_extt_era5 = ext_sign * (ext_sign*da_cgt_era5).max(dim='time')
+
 
     if todo['coarse_grain_space']:
         for i_cgs_level,cgs_level in enumerate(cgs_levels):
@@ -712,18 +747,34 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     if todo['onset_date_sensitivity_analysis']:
         for i_cgs_level,cgs_level in enumerate(cgs_levels[:2]):
             cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+            da_cgts_era5 = xr.open_dataset(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc'))['1xday']
             exptstr = f'e{expt}_i{fc_date_abbrv}_cgt1day_cgs{cgs_key}'
             ens_file_cgts = join(reduced_data_dir,f't2m_{exptstr}.nc')
             da_cgts = xr.open_dataset(ens_file_cgts)['1xday']
+
+            da_cgts_plus_era5 = xr.concat([
+                da_cgts
+                .assign_coords(lon=da_cgts_era5['lon'],lat=da_cgts_era5['lat'])
+                ,
+                da_cgts_era5
+                .sel(member=slice(event_year,event_year))
+                .assign_coords(member=['era5'])
+                ], dim='member')
+            e5min,e5max = np.nanmin(da_cgts_era5),np.nanmax(da_cgts_era5)
+            e5mid = 0.5*(e5min+e5max)
+            vmin,vmax = e5mid + 1.25*np.array([-1,1])*(e5max-e5min)/2
+            figtitle_prefix = f'{gcm} {expt}'
             onset_date_minsens = pipeline_base.onset_date_sensitivity_analysis(
-                    da_cgts,
+                    da_cgts_plus_era5,
                     event_region,cgs_level, 
-                    fc_dates, onset_date_nominal, term_date, ext_sign, 
-                    figdir, exptstr, gcm, mem_special=None # 2018
+                    fc_dates, fc_date, onset_date_nominal, term_date, ext_sign, 
+                    figdir, exptstr, figtitle_prefix, mem_special='era5', fc_date_special=fc_date,
+                    intensity_lims=[vmin,vmax]
                     )
     return
     # choose an onset date based on this 
     # --------------------------------------------------------------------------
+    onset_date = pipeline_base.least_sensible_onset_date(which_ssw)
 
     print(f'{ds_cgt.shape = }')
     ds_cgt_extt = ext_sign * (ext_sign*ds_cgt).max(dim='time')
@@ -941,13 +992,13 @@ if __name__ == "__main__":
     gcms2ignore = ["BCC-CSM2-HR","GLOBO","GEM-NEMO","CanESM5","SPEAR"]
 
     idx_gcms = [i for i in range(len(gcms)) if ((gcms[i] not in gcms2ignore))]
-    idx_gcms = [gcms.index(gcm) for gcm in ['IFS','CESM2-CAM6']]
+    idx_gcms = [gcms.index(gcm) for gcm in ['CESM2-CAM6','IFS']] #,'CESM2-CAM6']]
     print(f'{idx_gcms = }')
     print(f'{gcms[i] for i in idx_gcms = }')
     idx_expt = [0,1,2]
     idx_expt_pairs = [(1,0),(1,2)]
     idx_init = [0,1]
-    ssws = ['feb2018','jan2019','sep2019']
+    ssws = ['feb2018','jan2019','sep2019'][:1]
     procedures = sys.argv[1:]
     print(f'{procedures = }')
     for which_ssw in ssws:

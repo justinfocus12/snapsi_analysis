@@ -3,7 +3,7 @@ import xarray as xr
 import datetime as dtlib
 from scipy.stats import genextreme as spgex
 import pdb
-from cartopy import crs as ccrs
+from cartopy import crs as ccrs, feature as cfeature
 import netCDF4
 from os.path import join, exists
 from matplotlib import pyplot as plt, rcParams, ticker, colors as mplcolors, patches as mplpatches
@@ -20,6 +20,14 @@ pltkwargs = {"bbox_inches": "tight", "pad_inches": 0.2}
 from importlib import reload
 import utils; reload(utils)
 import stat_functions as stfu; reload(stfu)
+
+def least_sensible_onset_date(which_ssw):
+    if "feb2018" == which_ssw:
+        onset_date = '20180213'
+    else:
+        raise NotImplementedError(f"Still need to choose onset date for ssw {which_ssw}")
+    onset_date_dt = dtlib.datetime.strptime(onset_date,"%Y%m%d")
+    return onset_date_dt
 
 def dates_of_interest(which_ssw):
     # onset dates are subject to adjustment 
@@ -57,24 +65,27 @@ def region_of_interest(which_ssw):
     context_region = dict(lat=slice(lat_min-lat_pad,lat_max+lat_pad),lon=slice(lon_min-lon_pad,lon_max+lon_pad))
     return event_region,context_region
 
-def onset_date_sensitivity_analysis(da, event_region, cgs_level, fc_dates, onset_date_nominal, term_date, ext_sign, figdir, figfile_suffix, figtitle_prefix, mem_special=None):
+def onset_date_sensitivity_analysis(da, event_region, cgs_level, fc_dates, init_date, onset_date_nominal, term_date, ext_sign, figdir, figfile_suffix, figtitle_prefix, mem_special=None, fc_date_special=None, intensity_lims=None):
+    # init_date should coincide with the first entry of da.time, but time conversion headaches...
     # Plot the minimum over the time interval as a function of onset date, across ensemble members. 
-    onset_dates = [fc_dates[0]+dtlib.timedelta(dt) for dt in range(1, (term_date-fc_dates[0]).days+1)]
+    onset_dates = [init_date+dtlib.timedelta(days=dt) for dt in range(1, (term_date-init_date).days+1)]
     severities = xr.DataArray(
             coords = dict(
                 **{c: da.sel(event_region).coords[c] for c in ['lon','lat','member','daily_stat']},
-                fc_date=fc_dates,
                 onset_date=onset_dates,
                 ),
-            dims = ['lon','lat','member','fc_date','onset_date','daily_stat'],
+            dims = ['lon','lat','member','onset_date','daily_stat'],
             data = np.nan,
             )
     for (i_onset_date,onset_date) in enumerate(onset_dates):
+        # for some reason the slicing operation works fine 
         severities[dict(onset_date=i_onset_date)] = ext_sign*(ext_sign*da.sel(time=slice(onset_date,None))).max(dim='time')
-    Nlon,Nlat,Nmem,Nfc = (severities[c].size for c in ['lon','lat','member','fc_date'])
+    Nlon,Nlat,Nmem = (severities[c].size for c in ['lon','lat','member'])
+    if not (Nlon==cgs_level[0] and Nlat==cgs_level[1]):
+        pdb.set_trace()
     sel = dict(daily_stat='daily_min')
-    ylims_intensity = [np.nanmin(da), np.nanmax(da)]
-    ylims_severity = [np.nanmin(severities),np.nanmax(severities)]
+    if intensity_lims is None:
+        intensity_lims = [np.nanmin(da), np.nanmax(da)]
     def kwargsofmem(mem):
        if mem_special and mem==mem_special:
            kwargs = dict(color='black', linestyle='--', zorder=1)
@@ -83,32 +94,25 @@ def onset_date_sensitivity_analysis(da, event_region, cgs_level, fc_dates, onset
        return kwargs
     for i_lon in range(Nlon):
         for i_lat in range(Nlat):
-            fig,axes = plt.subplots(nrows=3,ncols=Nfc,figsize=(6*Nfc,6+3+3),sharey='row', sharex=True,height_ratios=[2,1,1],gridspec_kw=dict(hspace=0.3,))
-            isel_intensity = dict(lat=i_lat,lon=i_lon)
-            isel_severity = dict(lat=i_lat,lon=i_lon)
+            fig,axes = plt.subplots(nrows=3,figsize=(6,6+3+3), sharex=True,height_ratios=[2,1,1],gridspec_kw=dict(hspace=0.3,))
+            isel = dict(lat=i_lat,lon=i_lon)
 
             lonlatstr = utils.lonlatstr(event_region,cgs_level,i_lon,i_lat)
-            fig.suptitle(r"%s, %s"%(figtitle_prefix,lonlatstr))
-            for (i_fc_date,fc_date) in enumerate(fc_dates):
-                isel_severity['fc_date'] = i_fc_date
-                if 'fc_date' in da.dims:
-                    isel_intensity['fc_date'] = i_fc_date
-                for i_mem,mem in enumerate(da.coords['member']):
-                    isel_severity['member'] = isel_intensity['member'] = i_mem
-                    xr.plot.plot(da.isel(isel_intensity).sel(sel), ax=axes[0,i_fc_date], x='time',**kwargsofmem(mem))
-                    xr.plot.plot(severities.isel(isel_severity).sel(sel), ax=axes[1,i_fc_date], x='onset_date', **kwargsofmem(mem)) # TODO instead of plotting all the ensemble members, plot the mean
-                isel_severity.pop('member')
-                isel_intensity.pop('member')
-                xr.plot.plot(
-                        (0 != 
-                            severities.isel(isel_severity).sel(sel)
-                            .diff(dim='onset_date',label='lower')
-                        ).sum(dim='member'),
-                        ax=axes[2,i_fc_date], x='onset_date', **kwargsofmem(mem)
-                    ) 
-            for i_fcdate in range(len(fc_dates)):
-                axes[0,i_fcdate].set_ylim(ylims_intensity)
-                axes[1,i_fcdate].set_ylim(ylims_severity)
+            fig.suptitle(r"%s, %s"%(figtitle_prefix,lonlatstr), y=0.9, va='bottom')
+            for i_mem,mem in enumerate(da.coords['member']):
+                isel['member'] = i_mem
+                xr.plot.plot(da.isel(isel).sel(sel), ax=axes[0], x='time',**kwargsofmem(mem))
+                xr.plot.plot(severities.isel(isel).sel(sel), ax=axes[1], x='onset_date', **kwargsofmem(mem)) # TODO instead of plotting all the ensemble members, plot the mean
+            isel.pop('member')
+            xr.plot.plot(
+                    (0 != 
+                        severities.isel(isel).sel(sel)
+                        .diff(dim='onset_date',label='lower')
+                    ).sum(dim='member'),
+                    ax=axes[2], x='onset_date', color='black', linewidth=1
+                ) 
+            axes[0].set_ylim(intensity_lims)
+            axes[1].set_ylim(intensity_lims)
             for ax in axes.flat:
                 ax.axvline(onset_date_nominal, color="black", linestyle="--")
                 for i_fc_date,fc_date in enumerate(fc_dates):
@@ -118,30 +122,79 @@ def onset_date_sensitivity_analysis(da, event_region, cgs_level, fc_dates, onset
                 xticklabels = [dtlib.datetime.strftime(date,"%m-%d") for date in xticks]
                 ax.set_xticks(xticks,xticklabels,rotation=0)
 
-            axes[0,0].set_ylabel("Daily min T2M [K]")
-            axes[1,0].set_ylabel("min T2M past onset")
-            for (i_fc_date,fc_date) in enumerate(fc_dates):
-                # Mark all the nominal dates
-                datestr = dtlib.datetime.strftime(fc_date, "%Y-%m-%d")
-                if i_fc_date > 0: 
-                    axes[0,i_fc_date].set_ylabel("")
-                    axes[1,i_fc_date].set_ylabel("")
-                    axes[2,i_fc_date].set_ylabel("")
-                axes[0,i_fc_date].set_title("FC %s"%(datestr))
-                axes[0,i_fc_date].set_xlabel("Date")
-                axes[1,i_fc_date].set_title("")
-                axes[1,i_fc_date].set_xlabel("Onset date")
-                axes[2,i_fc_date].set_title(r"$\#\{\Delta\text{severity}/\Delta\text{onset date}\neq0\}$")
-                axes[2,i_fc_date].set_xlabel("Onset date")
-                yticks = range(0,Nmem,1+Nmem//4)
-                axes[2,i_fc_date].set_yticks(yticks, list(map(str,yticks)))
+            # Mark all the nominal dates
+            ax0title = "" if fc_date_special is None else "FC %s"%(dtlib.datetime.strftime(fc_date_special, "%Y-%m-%d"))
+            axes[0].set_title(ax0title)
+            axes[0].set_ylabel("Daily min T2M [K]")
+            axes[0].set_xlabel("Date")
+            axes[1].set_title("")
+            axes[1].set_ylabel("min T2M past onset")
+            axes[1].set_xlabel("Onset date")
+            axes[2].set_title("")
+            axes[2].set_ylabel(r"$\#\{\frac{\Delta\text{severity}}{\Delta(\text{onset date})}\neq0\}$", rotation=90, va='bottom')
+            axes[2].set_xlabel("Onset date")
+            yticks = range(0,Nmem,1+Nmem//4)
+            axes[2].set_yticks(yticks, list(map(str,yticks)))
             for i_row in range(3):
-                for i_col in range(len(fc_dates)):
-                    axes[i_row,i_col].tick_params(axis='y', which='both',labelleft=(i_col==0))
-                    axes[i_row,i_col].tick_params(axis='x', which='both',labelbottom=True)
+                axes[i_row].tick_params(axis='y', which='both',labelleft=True)
+                axes[i_row].tick_params(axis='x', which='both',labelbottom=True)
             fig.savefig(join(figdir,f'ODSA_{figfile_suffix}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
             plt.close(fig)
     return 
+
+def plot_sumstats_maps_flat(da_cgt_extt, mem_special, title_prefix):
+    # 1. ensemble-mean of time-min
+    # 2. ensemble-std of time-min
+    # 3. special member's time-min
+
+    # in figure, ERA5 will be on left, and GCM will be in 2nd and 3rd columns for early and late fc_date 
+
+
+
+    lons,lats = (da_cgt_extt[c].to_numpy() for c in ('lon','lat'))
+    dlon = lons[1]-lons[0]
+    dlat = lats[1]-lats[0]
+    lon_extent = lons[-1]-lons[0]+dlon
+    lat_extent = lats[-1]-lats[0]+dlon
+    aspect = lon_extent/lat_extent
+
+    fig,axes = plt.subplots(figsize=(3*aspect,3*3), nrows=3, gridspec_kw={'hspace': 0.2}, subplot_kw={'projection': ccrs.PlateCarree()})
+    axmean,axstd,axspecial = axes
+    xr.plot.pcolormesh(
+            da_cgt_extt
+            .mean(dim='member'),
+            cmap=plt.cm.RdYlBu_r,
+            x='lon', y='lat', ax=axmean
+            )
+    axmean.set_title(f"{title_prefix} Mean ")
+    axmean.set_xlabel("")
+    axmean.tick_params(axis='x',which='both',labelbottom=False)
+    axmean.set_ylabel("Lat")
+    axmean.coastlines()
+    axmean.add_feature(cfeature.BORDERS, linewidth=0.5, edgecolor='black')
+    xr.plot.pcolormesh(
+            da_cgt_extt
+            .std(dim='member'),
+            x='lon', y='lat', ax=axstd,
+            cmap=plt.cm.viridis,
+            )
+    axstd.set_title(f"{title_prefix} Std")
+    axstd.tick_params(axis='x',which='both',labelbottom=False)
+    axstd.set_ylabel("Lat")
+    axstd.coastlines()
+    axstd.add_feature(cfeature.BORDERS, linewidth=0.5, edgecolor='black')
+    xr.plot.pcolormesh(
+            da_cgt_extt
+            .sel(member=mem_special,drop=True),
+            cmap=plt.cm.RdYlBu_r,
+            x='lon', y='lat', ax=axspecial,
+            )
+    axspecial.set_title(f"{title_prefix}, {mem_special}")
+    axspecial.tick_params(axis='x',which='both',labelbottom=True)
+    axspecial.set_ylabel("Lat")
+    axspecial.coastlines()
+    axspecial.add_feature(cfeature.BORDERS, linewidth=0.5, edgecolor='black')
+    return fig,axes
 
 def plot_sumstats_map(ds,loc_vmin,loc_vmax,scale_vmin,scale_vmax):
     # Summary stats for an ensemble 
@@ -286,14 +339,17 @@ def coarse_grain_space(ds_cgt, cgs_level, landmask):
     coslat = np.cos(np.deg2rad(ds_cgt_trimmed['lat'])) * xr.ones_like(ds_cgt_trimmed)
     # trim land mask the same way 
     coarsen_kwargs = dict(dim=dim, boundary='trim', coord_func={'lon': 'mean', 'lat': 'mean'})
-    #pdb.set_trace()
-    numerator = (ds_cgt_trimmed * landmask_trimmed * coslat).coarsen(**coarsen_kwargs).sum() 
+    try:
+        numerator = (ds_cgt_trimmed * landmask_trimmed * coslat).coarsen(**coarsen_kwargs).sum() 
+    except ValueError:
+        pdb.set_trace()
     denominator = (landmask_trimmed * coslat).coarsen(**coarsen_kwargs).sum() 
     land_frac = denominator / (coslat.coarsen(**coarsen_kwargs)).sum() 
     ds_cgts = numerator / denominator 
     if cgs_level[0] > 1 or cgs_level[1] > 1:
         ds_cgts = ds_cgts.where(np.isfinite(ds_cgts)*(land_frac > 0.0), np.nan)
-    assert ds_cgts.lon.size == cgs_level[0] and ds_cgts.lat.size == cgs_level[1]
+    if not (ds_cgts.lon.size == cgs_level[0] and ds_cgts.lat.size == cgs_level[1]):
+        pdb.set_trace()
     return ds_cgts # awkward to put into a single dataset because of differing lon/lat coordinates between coarsening levels
 
 def plot_statpar_map(ds_cgts,gevpar,locsign=1):

@@ -31,7 +31,7 @@ import stat_functions as stfu; reload(stfu)
 def analysis_multiparams(which_ssw):
     # lon/lat ratios are 6/1 at the bottom and 4/1 at the top; stick to 5/1 
     if "feb2018" == which_ssw:
-        cgs_levels = [(1,1),(5,1),(10,2),(20,4),(40,8)] #,(141,16)]
+        cgs_levels = [(1,1),(5,1),(10,2),(20,4),(40,8),(80,16)] #,(141,16)]
         select_regions = ( # Indexed by cgs_level
                 ((0,0),), # level (1,1)
                 (), # level (5,1)
@@ -172,8 +172,8 @@ def reduce_era5(which_ssw):
     todo = dict({
         'coarse_grain_time':                0,
         'coarse_grain_space':               0,
-        'onset_date_sensitivity_analysis':  1,
-        'plot_t2m_sumstats_map':            0,
+        'onset_date_sensitivity_analysis':  0,
+        'plot_t2m_sumstats_map':            1,
         'fit_gev':                          0,
         'plot_statpar_map':                 0,
         'compute_risk':                     0,
@@ -228,34 +228,44 @@ def reduce_era5(which_ssw):
             cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
             ens_file_cgts = join(reduced_data_dir,f't2m_cgt1day_cgs{cgs_key}.nc')
             da_cgts = xr.open_dataset(ens_file_cgts)['1xday']
+            e5min,e5max = np.nanmin(da_cgts),np.nanmax(da_cgts)
+            e5mid = 0.5*(e5min+e5max)
+            vmin,vmax = e5mid + 1.25*np.array([-1,1])*(e5max-e5min)/2
             onset_date_minsens = pipeline_base.onset_date_sensitivity_analysis(
                     da_cgts,
                     event_region,cgs_level, 
-                    fc_dates, onset_date_nominal, term_date, ext_sign, 
-                    figdir, f'cgs{cgs_key}', "IFS", mem_special=2018
+                    fc_dates, fc_dates[0], onset_date_nominal, term_date, ext_sign, 
+                    figdir, f'cgs{cgs_key}', "ERA5", mem_special=2018, fc_date_special=None,
+                    intensity_lims=[vmin,vmax]
                     )
-    return
     # choose an onset date based on this 
     # --------------------------------------------------------------------------
+    onset_date = pipeline_base.least_sensible_onset_date(which_ssw)
+    da_cgt_extt = ext_sign * (ext_sign*ds_cgt['1xday'].sel(time=slice(onset_date,term_date))).max(dim='time')
 
-    ds_cgt_extt = ext_sign * (ext_sign*ds_cgt).max(dim='time')
     if todo['plot_t2m_sumstats_map']:
-        for daily_stat in ['daily_mean']:
-            loc_vmin = ds_cgt_extt.sel(daily_stat=daily_stat).mean('member').min().item()
-            loc_vmax = ds_cgt_extt.sel(daily_stat=daily_stat).mean('member').max().item()
-            loc_vdiff = (loc_vmax - loc_vmin)
-            loc_vmin -= 0.25*loc_vdiff
-            loc_vmax += 0.25*loc_vdiff
-            scale_vmin = ds_cgt_extt.sel(daily_stat=daily_stat).std('member').min().item()
-            scale_vmax = ds_cgt_extt.sel(daily_stat=daily_stat).std('member').max().item()
-            scale_vdiff = (scale_vmax - scale_vmin)
-            scale_vmin -= 0.25*scale_vdiff
-            scale_vmax += 0.25*scale_vdiff
-            fig,axes = pipeline_base.plot_sumstats_map(ds_cgt_extt.sel(daily_stat=daily_stat),loc_vmin,loc_vmax,scale_vmin,scale_vmax)
-            fig.suptitle(f'ERA5 severity')
-            fig.savefig(join(figdir,f't2m_sumstats_map_{daily_stat}.png'), **pltkwargs)
-            plt.close(fig)
+        for daily_stat in ['daily_min']:
+            title_prefix = f"ERA5 daily min, {years[0]}-{years[-1]}"
+            fig,axes = pipeline_base.plot_sumstats_maps_flat(da_cgt_extt.sel(daily_stat=daily_stat), event_year, title_prefix)
+            fig.savefig(join(figdir,f'sumstats_map_{daily_stat}.png'), **pltkwargs)
+        if False:
+            for daily_stat in ['daily_min']:
+                loc_vmin = ds_cgt_extt.sel(daily_stat=daily_stat).mean('member').min().item()
+                loc_vmax = ds_cgt_extt.sel(daily_stat=daily_stat).mean('member').max().item()
+                loc_vdiff = (loc_vmax - loc_vmin)
+                loc_vmin -= 0.25*loc_vdiff
+                loc_vmax += 0.25*loc_vdiff
+                scale_vmin = ds_cgt_extt.sel(daily_stat=daily_stat).std('member').min().item()
+                scale_vmax = ds_cgt_extt.sel(daily_stat=daily_stat).std('member').max().item()
+                scale_vdiff = (scale_vmax - scale_vmin)
+                scale_vmin -= 0.25*scale_vdiff
+                scale_vmax += 0.25*scale_vdiff
+                #fig,axes = pipeline_base.plot_sumstats_map(ds_cgt_extt.sel(daily_stat=daily_stat),loc_vmin,loc_vmax,scale_vmin,scale_vmax)
+                fig.suptitle(f'ERA5 severity')
+                fig.savefig(join(figdir,f't2m_sumstats_map_{daily_stat}.png'), **pltkwargs)
+                plt.close(fig)
 
+    return
     # ---- Minimize in time -----------------------------
     daily_stat = 'daily_mean'
     for i_cgs_level,cgs_level in enumerate(cgs_levels):
