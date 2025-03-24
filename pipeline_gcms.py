@@ -784,22 +784,38 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     ds_cgt_era5 = xr.open_dataarray(era5_file_cgt)
     ds_cgt_extt_era5 = ext_sign * (ext_sign*ds_cgt_era5).max(dim='time')
     if todo['plot_t2m_sumstats_map']:
-        for daily_stat in ['daily_mean']:
-            # Adjust for common scale
-            loc_vmin = ds_cgt_extt_era5.sel(daily_stat=daily_stat).mean('member').min().item()
-            loc_vmax = ds_cgt_extt_era5.sel(daily_stat=daily_stat).mean('member').max().item()
-            loc_vdiff = (loc_vmax - loc_vmin)
-            loc_vmin -= 0.25*loc_vdiff
-            loc_vmax += 0.25*loc_vdiff
-            scale_vmin = ds_cgt_extt_era5.sel(daily_stat=daily_stat).std('member').min().item()
-            scale_vmax = ds_cgt_extt_era5.sel(daily_stat=daily_stat).std('member').max().item()
-            scale_vdiff = (scale_vmax - scale_vmin)
-            scale_vmin -= 0.25*scale_vdiff
-            scale_vmax += 0.25*scale_vdiff
-            fig,axes = pipeline_base.plot_sumstats_map(ds_cgt_extt.sel(daily_stat=daily_stat),loc_vmin,loc_vmax,scale_vmin,scale_vmax)
-            fig.suptitle(f'{gcm}, {expt}, init {datestr} severity')
-            fig.savefig(join(figdir,f't2m_sumstats_map_{daily_stat}_e{expt}_i{init}_cgt1day.png'),**pltkwargs)
-            plt.close(fig)
+        # TODO finish switching this from the EAR5 version
+        titles = [
+                r"%s, FC %s, $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-%d mean"%(fc_date,gcm,ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1]),
+                r"%s $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-%d std. dev."%(fc_date,gcm,ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1]),
+                r"%s $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, member %s standardized anomaly"%(gcm, ext_symb, fmtfun(onset_date), fmtfun(term_date), ds_cgt_extt['member'][0].item())
+                ]
+        fig,axes = pipeline_base.plot_sumstats_maps_flat(
+                *((da_cgt_extt.sel(daily_stat=daily_stat),)*2), 
+                landmask,
+                event_year, 
+                titles, 
+                cgs_levels[2]
+                )
+        fig.savefig(join(figdir,f'sumstats_map_{daily_stat}.png'), **pltkwargs)
+        plt.close(fig)
+        if False:
+            for daily_stat in ['daily_min']:
+                # Adjust for common scale
+                loc_vmin = ds_cgt_extt_era5.sel(daily_stat=daily_stat).mean('member').min().item()
+                loc_vmax = ds_cgt_extt_era5.sel(daily_stat=daily_stat).mean('member').max().item()
+                loc_vdiff = (loc_vmax - loc_vmin)
+                loc_vmin -= 0.25*loc_vdiff
+                loc_vmax += 0.25*loc_vdiff
+                scale_vmin = ds_cgt_extt_era5.sel(daily_stat=daily_stat).std('member').min().item()
+                scale_vmax = ds_cgt_extt_era5.sel(daily_stat=daily_stat).std('member').max().item()
+                scale_vdiff = (scale_vmax - scale_vmin)
+                scale_vmin -= 0.25*scale_vdiff
+                scale_vmax += 0.25*scale_vdiff
+                fig,axes = pipeline_base.plot_sumstats_map(ds_cgt_extt.sel(daily_stat=daily_stat),loc_vmin,loc_vmax,scale_vmin,scale_vmax)
+                fig.suptitle(f'{gcm}, {expt}, init {datestr} severity')
+                fig.savefig(join(figdir,f't2m_sumstats_map_{daily_stat}_e{expt}_i{init}_cgt1day.png'),**pltkwargs)
+                plt.close(fig)
 
     daily_stat = 'daily_mean'
     for i_cgs_level,cgs_level in enumerate(cgs_levels):

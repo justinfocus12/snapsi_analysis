@@ -142,7 +142,7 @@ def onset_date_sensitivity_analysis(da, event_region, cgs_level, fc_dates, init_
             plt.close(fig)
     return 
 
-def plot_sumstats_maps_flat(da_cgt_extt, mem_special, title_prefix):
+def plot_sumstats_maps_flat(da_cgt_extt, da_cgt_extt_ref, landmask, mem_special, titles, cgs_level_2show):
     # 1. ensemble-mean of time-min
     # 2. ensemble-std of time-min
     # 3. special member's time-min
@@ -154,46 +154,67 @@ def plot_sumstats_maps_flat(da_cgt_extt, mem_special, title_prefix):
     lons,lats = (da_cgt_extt[c].to_numpy() for c in ('lon','lat'))
     dlon = lons[1]-lons[0]
     dlat = lats[1]-lats[0]
+    Nlon = len(lons)
+    Nlat = len(lats)
     lon_extent = lons[-1]-lons[0]+dlon
     lat_extent = lats[-1]-lats[0]+dlon
     aspect = lon_extent/lat_extent
 
+    masksea = lambda da: xr.where(landmask>0, da, np.nan)
+
+    da_cgt_extt_ensmean_ref = masksea(da_cgt_extt_ref.mean('member'))
+    da_cgt_extt_ensstd_ref = masksea(da_cgt_extt_ref.std('member'))
+    da_cgt_extt_special_ref = masksea((da_cgt_extt_ref.sel(member=mem_special, drop=True)-da_cgt_extt_ensmean_ref)/da_cgt_extt_ensstd_ref)
+
+    # Compute the summary stats 
+    da_cgt_extt_ensmean = masksea(da_cgt_extt.mean('member'))
+    da_cgt_extt_ensstd = masksea(da_cgt_extt.std('member'))
+    da_cgt_extt_special = masksea((da_cgt_extt.sel(member=mem_special, drop=True)-da_cgt_extt_ensmean_ref)/da_cgt_extt_ensstd_ref)
+
+    def padded_bounds(arr):
+        arrmin,arrmax = np.nanmin(arr),np.nanmax(arr)
+        alpha = 0.25
+        pb = [(1+alpha)*arrmin-alpha*arrmax, (1+alpha)*arrmax-alpha*arrmin]
+        return pb
+
+    bounds_ensmean,bounds_ensstd,bounds_special = list(map(padded_bounds, (da_cgt_extt_ensmean_ref,da_cgt_extt_ensstd_ref,da_cgt_extt_special_ref)))
+
     fig,axes = plt.subplots(figsize=(3*aspect,3*3), nrows=3, gridspec_kw={'hspace': 0.2}, subplot_kw={'projection': ccrs.PlateCarree()})
     axmean,axstd,axspecial = axes
+
     xr.plot.pcolormesh(
-            da_cgt_extt
-            .mean(dim='member'),
+            da_cgt_extt_ensmean,
             cmap=plt.cm.RdYlBu_r,
-            x='lon', y='lat', ax=axmean
+            vmin = bounds_ensmean[0], vmax=bounds_ensmean[1], 
+            x='lon', y='lat', ax=axmean,
+            cbar_kwargs={'label': '[K]'}
             )
-    axmean.set_title(f"{title_prefix} Mean ")
-    axmean.set_xlabel("")
-    axmean.tick_params(axis='x',which='both',labelbottom=False)
-    axmean.set_ylabel("Lat")
-    axmean.coastlines()
-    axmean.add_feature(cfeature.BORDERS, linewidth=0.5, edgecolor='black')
+    axmean.set_title(titles[0])
     xr.plot.pcolormesh(
-            da_cgt_extt
-            .std(dim='member'),
+            da_cgt_extt_ensstd,
             x='lon', y='lat', ax=axstd,
             cmap=plt.cm.viridis,
+            vmin = 0, vmax=bounds_ensstd[1], 
+            cbar_kwargs={'label': ''}
             )
-    axstd.set_title(f"{title_prefix} Std")
-    axstd.tick_params(axis='x',which='both',labelbottom=False)
-    axstd.set_ylabel("Lat")
-    axstd.coastlines()
-    axstd.add_feature(cfeature.BORDERS, linewidth=0.5, edgecolor='black')
+    axstd.set_title(titles[1])
     xr.plot.pcolormesh(
-            da_cgt_extt
-            .sel(member=mem_special,drop=True),
+            da_cgt_extt_special,
             cmap=plt.cm.RdYlBu_r,
+            vmin=-np.max(np.abs(bounds_special)), vmax=np.max(np.abs(bounds_special)),
             x='lon', y='lat', ax=axspecial,
+            cbar_kwargs={'label': ''}
             )
-    axspecial.set_title(f"{title_prefix}, {mem_special}")
-    axspecial.tick_params(axis='x',which='both',labelbottom=True)
-    axspecial.set_ylabel("Lat")
-    axspecial.coastlines()
-    axspecial.add_feature(cfeature.BORDERS, linewidth=0.5, edgecolor='black')
+    axspecial.set_title(titles[2])
+    for ax in axes:
+        #ax.tick_params(axis='x',which='both',labelbottom=True)
+        #ax.set_ylabel("Lat")
+        ax.coastlines()
+        ax.add_feature(cfeature.BORDERS, linewidth=1.0, edgecolor='purple')
+        gl = ax.gridlines(draw_labels=True, color="black")
+        gl.top_labels = gl.right_labels = False
+        gl.xlocator = ticker.FixedLocator(np.linspace(lons[0]-dlon/2, lons[-1]+dlon/2, cgs_level_2show[0]+1).astype(int))
+        gl.ylocator = ticker.FixedLocator(np.linspace(lats[0]-dlat/2, lats[-1]+dlat/2, cgs_level_2show[1]+1).astype(int))
     return fig,axes
 
 def plot_sumstats_map(ds,loc_vmin,loc_vmax,scale_vmin,scale_vmax):

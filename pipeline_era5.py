@@ -243,11 +243,24 @@ def reduce_era5(which_ssw):
     onset_date = pipeline_base.least_sensible_onset_date(which_ssw)
     da_cgt_extt = ext_sign * (ext_sign*ds_cgt['1xday'].sel(time=slice(onset_date,term_date))).max(dim='time')
 
+    fmtfun = lambda date: dtlib.datetime.strftime(date, "%m/%d")
+
     if todo['plot_t2m_sumstats_map']:
         for daily_stat in ['daily_min']:
-            title_prefix = f"ERA5 daily min, {years[0]}-{years[-1]}"
-            fig,axes = pipeline_base.plot_sumstats_maps_flat(da_cgt_extt.sel(daily_stat=daily_stat), event_year, title_prefix)
+            titles = [
+                    r"ERA5 $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-%d mean"%(ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1]),
+                    r"ERA5 $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-%d std. dev."%(ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1]),
+                    r"ERA5 $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d standardized anomaly"%(ext_symb, fmtfun(onset_date), fmtfun(term_date), event_year)
+                    ]
+            fig,axes = pipeline_base.plot_sumstats_maps_flat(
+                    *((da_cgt_extt.sel(daily_stat=daily_stat),)*2), 
+                    landmask,
+                    event_year, 
+                    titles, 
+                    cgs_levels[2]
+                    )
             fig.savefig(join(figdir,f'sumstats_map_{daily_stat}.png'), **pltkwargs)
+            plt.close(fig)
         if False:
             for daily_stat in ['daily_min']:
                 loc_vmin = ds_cgt_extt.sel(daily_stat=daily_stat).mean('member').min().item()
