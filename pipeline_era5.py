@@ -241,11 +241,11 @@ def reduce_era5(which_ssw):
     # choose an onset date based on this 
     # --------------------------------------------------------------------------
     onset_date = pipeline_base.least_sensible_onset_date(which_ssw)
-    da_cgt_extt = ext_sign * (ext_sign*ds_cgt['1xday'].sel(time=slice(onset_date,term_date))).max(dim='time')
 
-    fmtfun = lambda date: dtlib.datetime.strftime(date, "%m/%d")
 
     if todo['plot_t2m_sumstats_map']:
+        da_cgt_extt = ext_sign * (ext_sign*ds_cgt['1xday'].sel(time=slice(onset_date,term_date))).max(dim='time')
+        fmtfun = lambda date: dtlib.datetime.strftime(date, "%m/%d")
         for daily_stat in ['daily_min']:
             titles = [
                     r"ERA5 $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-%d mean"%(ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1]),
@@ -255,45 +255,28 @@ def reduce_era5(which_ssw):
             fig,axes = pipeline_base.plot_sumstats_maps_flat(
                     *((da_cgt_extt.sel(daily_stat=daily_stat),)*2), 
                     landmask,
-                    event_year, 
+                    event_year, event_year,
                     titles, 
                     cgs_levels[2]
                     )
             fig.savefig(join(figdir,f'sumstats_map_{daily_stat}.png'), **pltkwargs)
             plt.close(fig)
-        if False:
-            for daily_stat in ['daily_min']:
-                loc_vmin = ds_cgt_extt.sel(daily_stat=daily_stat).mean('member').min().item()
-                loc_vmax = ds_cgt_extt.sel(daily_stat=daily_stat).mean('member').max().item()
-                loc_vdiff = (loc_vmax - loc_vmin)
-                loc_vmin -= 0.25*loc_vdiff
-                loc_vmax += 0.25*loc_vdiff
-                scale_vmin = ds_cgt_extt.sel(daily_stat=daily_stat).std('member').min().item()
-                scale_vmax = ds_cgt_extt.sel(daily_stat=daily_stat).std('member').max().item()
-                scale_vdiff = (scale_vmax - scale_vmin)
-                scale_vmin -= 0.25*scale_vdiff
-                scale_vmax += 0.25*scale_vdiff
-                #fig,axes = pipeline_base.plot_sumstats_map(ds_cgt_extt.sel(daily_stat=daily_stat),loc_vmin,loc_vmax,scale_vmin,scale_vmax)
-                fig.suptitle(f'ERA5 severity')
-                fig.savefig(join(figdir,f't2m_sumstats_map_{daily_stat}.png'), **pltkwargs)
-                plt.close(fig)
-
-    return
     # ---- Minimize in time -----------------------------
-    daily_stat = 'daily_mean'
-    for i_cgs_level,cgs_level in enumerate(cgs_levels):
-        cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
-        ens_file_cgts = join(reduced_data_dir,f't2m_cgt1day_cgs{cgs_key}.nc')
-        ds_cgts = xr.open_dataset(ens_file_cgts)['1xday']
-        ds_cgts_extt = ext_sign * (ext_sign * ds_cgts).max(dim='time')
-        print(f'{ds_cgts_extt.dims = }')
-        # ----------- Perform GEV fitting (on negative temperature) --------------
-        gev_param_file = join(reduced_data_dir,f'gevpar_cgs{cgs_key}.nc')
-        if todo['fit_gev']:
-            gevpar = pipeline_base.fit_gev_exttemp(ds_cgts_extt,ext_sign,method='PWM')
-            gevpar.to_netcdf(gev_param_file)
-        else:
-            gevpar = xr.open_dataarray(gev_param_file)
+    daily_stat = 'daily_min'
+    if todo['fit_gev']:
+        for i_cgs_level,cgs_level in enumerate(cgs_levels):
+            cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+            ens_file_cgts = join(reduced_data_dir,f't2m_cgt1day_cgs{cgs_key}.nc')
+            da_cgts = xr.open_dataset(ens_file_cgts)['1xday']
+            da_cgts_extt = ext_sign * (ext_sign * ds_cgts).max(dim='time')
+            print(f'{ds_cgts_extt.dims = }')
+            # ----------- Perform GEV fitting (on negative temperature) --------------
+            gev_param_file = join(reduced_data_dir,f'gevpar_cgs{cgs_key}.nc')
+            if todo['fit_gev']:
+                gevpar = pipeline_base.fit_gev_exttemp(ds_cgts_extt,ext_sign,method='PWM')
+                gevpar.to_netcdf(gev_param_file)
+            else:
+                gevpar = xr.open_dataarray(gev_param_file)
         # ----------------- Compute risk w.r.t. the event year ---------------
         risk_file = join(reduced_data_dir,f'risk_wrt{event_year}.nc')
         if todo['compute_risk']:

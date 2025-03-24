@@ -142,7 +142,7 @@ def onset_date_sensitivity_analysis(da, event_region, cgs_level, fc_dates, init_
             plt.close(fig)
     return 
 
-def plot_sumstats_maps_flat(da_cgt_extt, da_cgt_extt_ref, landmask, mem_special, titles, cgs_level_2show):
+def plot_sumstats_maps_flat(da_cgt_extt, da_cgt_extt_ref, landmask, mem_special, mem_special_ref, titles, cgs_level_2show):
     # 1. ensemble-mean of time-min
     # 2. ensemble-std of time-min
     # 3. special member's time-min
@@ -164,7 +164,7 @@ def plot_sumstats_maps_flat(da_cgt_extt, da_cgt_extt_ref, landmask, mem_special,
 
     da_cgt_extt_ensmean_ref = masksea(da_cgt_extt_ref.mean('member'))
     da_cgt_extt_ensstd_ref = masksea(da_cgt_extt_ref.std('member'))
-    da_cgt_extt_special_ref = masksea((da_cgt_extt_ref.sel(member=mem_special, drop=True)-da_cgt_extt_ensmean_ref)/da_cgt_extt_ensstd_ref)
+    da_cgt_extt_special_ref = masksea((da_cgt_extt_ref.sel(member=mem_special_ref, drop=True)-da_cgt_extt_ensmean_ref)/da_cgt_extt_ensstd_ref)
 
     # Compute the summary stats 
     da_cgt_extt_ensmean = masksea(da_cgt_extt.mean('member'))

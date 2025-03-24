@@ -167,7 +167,8 @@ def visualize_ensemble_spread(raw_mem_files,):
 
 def coarse_grain_time(raw_mem_files, mem_labels, region, init_date, term_date, use_dask=False):
     timesel = dict(time=slice(init_date,term_date))
-    preprocess = lambda dsmem: preprocess_gcm_6hrPt(dsmem, init_date, timesel, region)
+    region_padded = dict(lat=slice(region['lat'].start-2,region['lat'].stop+2), lon=slice(region['lon'].start-2, region['lon'].stop+2)) 
+    preprocess = lambda dsmem: preprocess_gcm_6hrPt(dsmem, init_date, timesel, region_padded)
     print(f'{all([exists(f) for f in raw_mem_files]) = }')
 
     if use_dask:
@@ -691,12 +692,12 @@ def compare_expts(which_ssw, i_gcm, i_init):
 def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
     todo = dict({
-        'coarse_grain_time':                1,
-        'coarse_grain_space':               1,
-        'onset_date_sensitivity_analysis':  1,
-        'plot_t2m_sumstats_map':            0,
+        'coarse_grain_time':                0,
+        'coarse_grain_space':               0,
+        'onset_date_sensitivity_analysis':  0,
+        'plot_t2m_sumstats_map':            1,
         'fit_gev':                          0,
-        'plot_statpar_map':                 1,
+        'plot_statpar_map':                 0,
         'compute_risk':                     0,
         'compute_valatrisk':                0,
         'plot_risk_map':                    0,
@@ -712,12 +713,20 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     fc_date_abbrv = dtlib.datetime.strftime(fc_date,'%Y%m%d')
 
     # ------------- Coarse-grain in time (cgt) and space (cgts) -------------
+    # Load ERA5 as well
+    era5_file_cgt = join(reduced_data_dir_era5,f't2m_cgt1day.nc')
+    ds_cgt_era5 = xr.open_dataset(era5_file_cgt)
     ens_file_cgt = join(reduced_data_dir,f't2m_e{expt}_i{fc_date_abbrv}_cgt1day.nc')
     if todo['coarse_grain_time']:
+        # the coarse_grain_time function deliberately pads the event region so it can be interpolated without nans
         ds_cgt = coarse_grain_time(raw_mem_files, mem_labels, event_region, fc_date, term_date)
+        #pdb.set_trace()
+        ds_cgt = ds_cgt.interp({'lon': ds_cgt_era5['lon'], 'lat': ds_cgt_era5['lat']})
+        #pdb.set_trace()
         ds_cgt.to_netcdf(ens_file_cgt)
     else:
         ds_cgt = xr.open_dataset(ens_file_cgt)
+    # INTERPOLATE 
     landmask_full = (
             utils.rezero_lons(
                 xr.open_dataarray(landmask_file)
@@ -730,9 +739,15 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     landmask = landmask_full.interp({'lat': ds_cgt.coords['lat'].values, 'lon': ds_cgt.coords['lon'].values}).sel(event_region)
     assert np.all(np.isfinite(landmask))
 
+    # Ensure everything is interpolated right 
+    coords_agree = True
+    for coordname in ('lat','lon'):
+        for ds in (ds_cgt, ds_cgt_era5):
+            coords_agree *= np.all(ds[coordname].values == landmask[coordname].values)
+    assert coords_agree
+
     # Load ERA5 for reference 
-    era5_file_cgt = join(reduced_data_dir_era5,f't2m_cgt1day.nc')
-    da_cgt_era5 = xr.open_dataset(era5_file_cgt)['1xday']
+    da_cgt_era5 = ds_cgt_era5['1xday']
     da_cgt_extt_era5 = ext_sign * (ext_sign*da_cgt_era5).max(dim='time')
 
 
@@ -771,34 +786,35 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                     figdir, exptstr, figtitle_prefix, mem_special='era5', fc_date_special=fc_date,
                     intensity_lims=[vmin,vmax]
                     )
-    return
     # choose an onset date based on this 
     # --------------------------------------------------------------------------
     onset_date = pipeline_base.least_sensible_onset_date(which_ssw)
 
-    print(f'{ds_cgt.shape = }')
-    ds_cgt_extt = ext_sign * (ext_sign*ds_cgt).max(dim='time')
-    print(f'{ds_cgt_extt.shape = }')
-    # Load ERA5 as well
-    era5_file_cgt = join(reduced_data_dir_era5,f't2m_cgt1day.nc')
-    ds_cgt_era5 = xr.open_dataarray(era5_file_cgt)
-    ds_cgt_extt_era5 = ext_sign * (ext_sign*ds_cgt_era5).max(dim='time')
+    da_cgt_extt = ext_sign * (ext_sign*ds_cgt['1xday'].sel(time=slice(onset_date,term_date))).max(dim='time')
+    da_cgt_extt_era5 = ext_sign * (ext_sign*ds_cgt_era5['1xday'].sel(time=slice(onset_date,term_date))).max(dim='time')
     if todo['plot_t2m_sumstats_map']:
-        # TODO finish switching this from the EAR5 version
-        titles = [
-                r"%s, FC %s, $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-%d mean"%(fc_date,gcm,ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1]),
-                r"%s $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-%d std. dev."%(fc_date,gcm,ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1]),
-                r"%s $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, member %s standardized anomaly"%(gcm, ext_symb, fmtfun(onset_date), fmtfun(term_date), ds_cgt_extt['member'][0].item())
-                ]
-        fig,axes = pipeline_base.plot_sumstats_maps_flat(
-                *((da_cgt_extt.sel(daily_stat=daily_stat),)*2), 
-                landmask,
-                event_year, 
-                titles, 
-                cgs_levels[2]
-                )
-        fig.savefig(join(figdir,f'sumstats_map_{daily_stat}.png'), **pltkwargs)
-        plt.close(fig)
+        fmtfun = lambda date: dtlib.datetime.strftime(date, "%Y/%m/%d")
+        mem_special = da_cgt_extt['member'][0].item()
+        mem_special_ref = event_year
+        for daily_stat in ['daily_min']:
+            titles = [
+                    r"%s, %s, FC %s, $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-member mean"%(
+                        gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date), da_cgt_extt['member'].size),
+                    r"%s, %s, FC %s, $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-member std. dev."%(
+                        gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date), da_cgt_extt['member'].size),
+                    r"%s, %s, FC %s, $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, member %s standardized anomaly"%(
+                        gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date), mem_special)
+                    ]
+            fig,axes = pipeline_base.plot_sumstats_maps_flat(
+                    da_cgt_extt.sel(daily_stat=daily_stat), 
+                    da_cgt_extt_era5.sel(daily_stat=daily_stat), 
+                    landmask,
+                    mem_special, mem_special_ref,
+                    titles, 
+                    cgs_levels[2]
+                    )
+            fig.savefig(join(figdir,f'sumstats_map_{daily_stat}_e{expt}_i{fc_date_abbrv}_cgt1day.png'), **pltkwargs)
+            plt.close(fig)
         if False:
             for daily_stat in ['daily_min']:
                 # Adjust for common scale
@@ -817,6 +833,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                 fig.savefig(join(figdir,f't2m_sumstats_map_{daily_stat}_e{expt}_i{init}_cgt1day.png'),**pltkwargs)
                 plt.close(fig)
 
+    return
     daily_stat = 'daily_mean'
     for i_cgs_level,cgs_level in enumerate(cgs_levels):
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
