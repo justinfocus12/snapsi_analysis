@@ -63,6 +63,7 @@ def era5_workflow(which_ssw,verbose=False):
     raw_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/era5'
     landmask_file = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/era5/land_sea_mask.nc'
     processed_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596'
+    daily_stat = 'daily_min'
     years = np.arange(1980,2020,dtype=int)
     year_filegroups = []
     reduced_data_dir = join(processed_data_dir,which_ssw,analysis_date,'era5')
@@ -108,7 +109,7 @@ def era5_workflow(which_ssw,verbose=False):
             event_region,context_region,
             fc_dates,onset_date_nominal,term_date,
             landmask_file,year_filegroups,reduced_data_dir,figdir,
-            cgs_levels,select_regions,
+            cgs_levels,select_regions,daily_stat,
             risk_levels,n_boot,confint_width
             )
     print(f'Finished setting up workflow')
@@ -173,9 +174,9 @@ def reduce_era5(which_ssw):
         'coarse_grain_time':                0,
         'coarse_grain_space':               0,
         'onset_date_sensitivity_analysis':  0,
-        'plot_t2m_sumstats_map':            1,
-        'fit_gev':                          0,
-        'plot_statpar_map':                 0,
+        'plot_t2m_sumstats_map':            0,
+        'fit_gev':                          1,
+        'plot_gevpar_map':                  1,
         'compute_risk':                     0,
         'plot_risk_map':                    0,
         'fit_gev_select_regions':           0,
@@ -187,7 +188,7 @@ def reduce_era5(which_ssw):
         event_region,context_region,
         fc_dates,onset_date_nominal,term_date,
         landmask_file, year_filegroups, reduced_data_dir, figdir,
-        cgs_levels,select_regions,
+        cgs_levels,select_regions,daily_stat,
         risk_levels,n_boot,confint_width
     ) = era5_workflow(which_ssw)
     ext_symb = "max" if 1==ext_sign else "min"
@@ -198,8 +199,9 @@ def reduce_era5(which_ssw):
     if todo['coarse_grain_time']:
         ds_cgt,err_flag = coarse_grain_time(years, year_filegroups, event_region, fc_dates[0], term_date)
         ds_cgt.to_netcdf(ens_file_cgt)
-    else:
-        ds_cgt = xr.open_dataset(ens_file_cgt)
+
+    ds_cgt = xr.open_dataset(ens_file_cgt)
+    da_cgt = ds_cgt['1xday'].sel(daily_stat=daily_stat)
 
     landmask_full = (
             utils.rezero_lons(
@@ -210,7 +212,7 @@ def reduce_era5(which_ssw):
                 )
             #.sel(event_region)
             )
-    landmask = landmask_full.interp({'lat': ds_cgt.coords['lat'].values, 'lon': ds_cgt.coords['lon'].values}).sel(event_region)
+    landmask = landmask_full.interp({'lat': da_cgt.coords['lat'].values, 'lon': da_cgt.coords['lon'].values}).sel(event_region)
 
     assert np.all(np.isfinite(landmask))
 
@@ -227,7 +229,7 @@ def reduce_era5(which_ssw):
         for i_cgs_level,cgs_level in enumerate(cgs_levels[:2]):
             cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
             ens_file_cgts = join(reduced_data_dir,f't2m_cgt1day_cgs{cgs_key}.nc')
-            da_cgts = xr.open_dataset(ens_file_cgts)['1xday']
+            da_cgts = xr.open_dataset(ens_file_cgts)['1xday'].sel(daily_stat=daily_stat)
             e5min,e5max = np.nanmin(da_cgts),np.nanmax(da_cgts)
             e5mid = 0.5*(e5min+e5max)
             vmin,vmax = e5mid + 1.25*np.array([-1,1])*(e5max-e5min)/2
@@ -241,43 +243,71 @@ def reduce_era5(which_ssw):
     # choose an onset date based on this 
     # --------------------------------------------------------------------------
     onset_date = pipeline_base.least_sensible_onset_date(which_ssw)
-
+    da_cgt_extt = ext_sign * (ext_sign*da_cgt.sel(time=slice(onset_date,term_date))).max(dim='time')
+    # Set global bounds on plots (sign might flip)
+    param_bounds = dict({
+        'loc': utils.padded_bounds(ext_sign*da_cgt_extt.where(landmask>0, np.nan).mean(dim='member')),
+        'scale': utils.padded_bounds(da_cgt_extt.where(landmask>0, np.nan).std(dim='member')),
+        'shape': np.array([-0.5,0.1]),
+        })
 
     if todo['plot_t2m_sumstats_map']:
-        da_cgt_extt = ext_sign * (ext_sign*ds_cgt['1xday'].sel(time=slice(onset_date,term_date))).max(dim='time')
         fmtfun = lambda date: dtlib.datetime.strftime(date, "%m/%d")
-        for daily_stat in ['daily_min']:
-            titles = [
-                    r"ERA5 $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-%d mean"%(ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1]),
-                    r"ERA5 $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-%d std. dev."%(ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1]),
-                    r"ERA5 $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d standardized anomaly"%(ext_symb, fmtfun(onset_date), fmtfun(term_date), event_year)
-                    ]
-            fig,axes = pipeline_base.plot_sumstats_maps_flat(
-                    *((da_cgt_extt.sel(daily_stat=daily_stat),)*2), 
-                    landmask,
-                    event_year, event_year,
-                    titles, 
-                    cgs_levels[2]
-                    )
-            fig.savefig(join(figdir,f'sumstats_map_{daily_stat}.png'), **pltkwargs)
-            plt.close(fig)
-    # ---- Minimize in time -----------------------------
-    daily_stat = 'daily_min'
+        titles = [
+                r"ERA5 $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-%d mean"%(ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1]),
+                r"ERA5 $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-%d std. dev."%(ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1]),
+                r"ERA5 $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d standardized anomaly"%(ext_symb, fmtfun(onset_date), fmtfun(term_date), event_year)
+                ]
+        fig,axes = pipeline_base.plot_sumstats_maps_flat(
+                *((da_cgt_extt,)*2),
+                landmask,
+                event_year, event_year,
+                titles, 
+                cgs_levels[2],
+                ext_sign=ext_sign,
+                param_bounds=param_bounds
+                )
+        fig.savefig(join(figdir,f'sumstats_map_{daily_stat}.png'), **pltkwargs)
+        plt.close(fig)
     if todo['fit_gev']:
+        # Also do it for the un-coarsened data
+        gevpar_cgt = pipeline_base.fit_gev_exttemp(da_cgt_extt, ext_sign, method='PWM')
+        gevpar_file_cgt = join(reduced_data_dir,f'gevpar_cgt1xday.nc')
+        gevpar_cgt.to_netcdf(gevpar_file_cgt)
+
         for i_cgs_level,cgs_level in enumerate(cgs_levels):
             cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
             ens_file_cgts = join(reduced_data_dir,f't2m_cgt1day_cgs{cgs_key}.nc')
-            da_cgts = xr.open_dataset(ens_file_cgts)['1xday']
-            da_cgts_extt = ext_sign * (ext_sign * ds_cgts).max(dim='time')
-            print(f'{ds_cgts_extt.dims = }')
+            da_cgts = xr.open_dataset(ens_file_cgts)['1xday'].sel(daily_stat=daily_stat)
+            da_cgts_extt = ext_sign * (ext_sign * da_cgts.sel(time=slice(onset_date,term_date))).max(dim='time')
+            print(f'{da_cgts_extt.dims = }')
             # ----------- Perform GEV fitting (on negative temperature) --------------
-            gev_param_file = join(reduced_data_dir,f'gevpar_cgs{cgs_key}.nc')
-            if todo['fit_gev']:
-                gevpar = pipeline_base.fit_gev_exttemp(ds_cgts_extt,ext_sign,method='PWM')
-                gevpar.to_netcdf(gev_param_file)
-            else:
-                gevpar = xr.open_dataarray(gev_param_file)
+            gevpar_file_cgts = join(reduced_data_dir,f'gevpar_cgt1xday_cgs{cgs_key}.nc')
+            gevpar_cgts = pipeline_base.fit_gev_exttemp(da_cgts_extt,ext_sign,method='PWM')
+            gevpar_cgts.to_netcdf(gevpar_file_cgts)
         # ----------------- Compute risk w.r.t. the event year ---------------
+    if todo['plot_gevpar_map']:
+        # First the non-coarse-grained version
+        gevpar_file_cgt = join(reduced_data_dir,f'gevpar_cgt1xday.nc')
+        gevpar_cgt = xr.open_dataarray(gevpar_file_cgt)
+        fmtfun = lambda date: dtlib.datetime.strftime(date, "%m/%d")
+        titles = [
+                r"ERA5 $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-%d location $\mu$"%(ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1]),
+                r"ERA5 $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-%d scale $\sigma$"%(ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1]),
+                r"ERA5 $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-%d shape $\xi$"%(ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1])
+                ]
+        fig,axes = pipeline_base.plot_gevpar_maps_flat(
+                gevpar_cgt,
+                titles, 
+                cgs_levels[2],
+                ext_sign=ext_sign,
+                landmask=landmask,
+                param_bounds=param_bounds,
+                )
+        fig.savefig(join(figdir,f'gevpar_map_{daily_stat}.png'), **pltkwargs)
+        plt.close(fig)
+    return
+    if todo['compute_risk']:
         risk_file = join(reduced_data_dir,f'risk_wrt{event_year}.nc')
         if todo['compute_risk']:
             dskwargs = dict(daily_stat=daily_stat,drop=True)
@@ -298,14 +328,6 @@ def reduce_era5(which_ssw):
             plt.close(fig)
             print(f'Just plotted risk map with {cgs_key = }')
 
-        if todo['plot_statpar_map'] and min(cgs_level) > 1:
-            fig_gaussian,axes_gaussian,fig_gev,axes_gev = pipeline_base.plot_statpar_map(ds_cgts_extt.sel(daily_stat=daily_stat,drop=True),gevpar.sel(daily_stat=daily_stat,drop=True),locsign=ext_sign)
-            fig_gaussian.suptitle(r"ERA5 severity")
-            fig_gaussian.savefig(join(figdir,f'statpar_map_gaussian_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
-            fig_gev.savefig(join(figdir,f'statpar_map_gev_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
-            fig_gev.suptitle(r"ERA5 severity")
-            plt.close(fig_gaussian)
-            plt.close(fig_gev)
 
 
         # Do a more thorough uncertainty quantification at a specific site or region, using bootstrap analysis and goodness-of-fit etc. Maybe parallelize over all sites too

@@ -71,10 +71,10 @@ def onset_date_sensitivity_analysis(da, event_region, cgs_level, fc_dates, init_
     onset_dates = [init_date+dtlib.timedelta(days=dt) for dt in range(1, (term_date-init_date).days+1)]
     severities = xr.DataArray(
             coords = dict(
-                **{c: da.sel(event_region).coords[c] for c in ['lon','lat','member','daily_stat']},
+                **{c: da.sel(event_region).coords[c] for c in ['lon','lat','member',]},
                 onset_date=onset_dates,
                 ),
-            dims = ['lon','lat','member','onset_date','daily_stat'],
+            dims = ['lon','lat','member','onset_date',],
             data = np.nan,
             )
     for (i_onset_date,onset_date) in enumerate(onset_dates):
@@ -83,7 +83,6 @@ def onset_date_sensitivity_analysis(da, event_region, cgs_level, fc_dates, init_
     Nlon,Nlat,Nmem = (severities[c].size for c in ['lon','lat','member'])
     if not (Nlon==cgs_level[0] and Nlat==cgs_level[1]):
         pdb.set_trace()
-    sel = dict(daily_stat='daily_min')
     if intensity_lims is None:
         intensity_lims = [np.nanmin(da), np.nanmax(da)]
     def kwargsofmem(mem):
@@ -94,26 +93,28 @@ def onset_date_sensitivity_analysis(da, event_region, cgs_level, fc_dates, init_
        return kwargs
     for i_lon in range(Nlon):
         for i_lat in range(Nlat):
-            fig,axes = plt.subplots(nrows=3,figsize=(6,6+3+3), sharex=True,height_ratios=[2,1,1],gridspec_kw=dict(hspace=0.3,))
+            fig,axes = plt.subplots(nrows=2,figsize=(6,6+3), sharex=True,height_ratios=[2,1],gridspec_kw=dict(hspace=0.3,))
+            axintensity,axseverity = axes
+            axnumchange = axintensity.twinx()
             isel = dict(lat=i_lat,lon=i_lon)
 
             lonlatstr = utils.lonlatstr(event_region,cgs_level,i_lon,i_lat)
-            fig.suptitle(r"%s, %s"%(figtitle_prefix,lonlatstr), y=0.9, va='bottom')
+            fig.suptitle(r"%s, %s"%(figtitle_prefix,lonlatstr), y=0.93, va='bottom')
             for i_mem,mem in enumerate(da.coords['member']):
                 isel['member'] = i_mem
-                xr.plot.plot(da.isel(isel).sel(sel), ax=axes[0], x='time',**kwargsofmem(mem))
-                xr.plot.plot(severities.isel(isel).sel(sel), ax=axes[1], x='onset_date', **kwargsofmem(mem)) # TODO instead of plotting all the ensemble members, plot the mean
+                xr.plot.plot(da.isel(isel), ax=axintensity, x='time',**kwargsofmem(mem))
+                xr.plot.plot(severities.isel(isel), ax=axseverity, x='onset_date', **kwargsofmem(mem)) # TODO instead of plotting all the ensemble members, plot the mean
             isel.pop('member')
             xr.plot.plot(
                     (0 != 
-                        severities.isel(isel).sel(sel)
+                        severities.isel(isel)
                         .diff(dim='onset_date',label='lower')
                     ).sum(dim='member'),
-                    ax=axes[2], x='onset_date', color='black', linewidth=1
+                    ax=axnumchange, x='onset_date', color='red', linewidth=1
                 ) 
-            axes[0].set_ylim(intensity_lims)
-            axes[1].set_ylim(intensity_lims)
-            for ax in axes.flat:
+            axintensity.set_ylim(intensity_lims)
+            axseverity.set_ylim(intensity_lims)
+            for ax in (axintensity,axseverity):
                 ax.axvline(onset_date_nominal, color="black", linestyle="--")
                 for i_fc_date,fc_date in enumerate(fc_dates):
                     ax.axvline(fc_date, color="dodgerblue", linestyle="-")
@@ -123,26 +124,25 @@ def onset_date_sensitivity_analysis(da, event_region, cgs_level, fc_dates, init_
                 ax.set_xticks(xticks,xticklabels,rotation=0)
 
             # Mark all the nominal dates
-            ax0title = "" if fc_date_special is None else "FC %s"%(dtlib.datetime.strftime(fc_date_special, "%Y-%m-%d"))
-            axes[0].set_title(ax0title)
-            axes[0].set_ylabel("Daily min T2M [K]")
-            axes[0].set_xlabel("Date")
-            axes[1].set_title("")
-            axes[1].set_ylabel("min T2M past onset")
-            axes[1].set_xlabel("Onset date")
-            axes[2].set_title("")
-            axes[2].set_ylabel(r"$\#\{\frac{\Delta\text{severity}}{\Delta(\text{onset date})}\neq0\}$", rotation=90, va='bottom')
-            axes[2].set_xlabel("Onset date")
+            axintensitytitle = "" if fc_date_special is None else "FC %s"%(dtlib.datetime.strftime(fc_date_special, "%Y-%m-%d"))
+            axintensity.set_title(axintensitytitle)
+            axintensity.set_ylabel("Daily min T2M [K]")
+            axintensity.set_xlabel("Date")
+            axseverity.set_title("")
+            axseverity.set_ylabel("min T2M past onset")
+            axseverity.set_xlabel("Onset date")
+            axnumchange.set_title("")
+            axnumchange.set_ylabel(r"$\#\{\frac{\Delta\text{severity}}{\Delta(\text{onset date})}\neq0\}$", rotation=90, va='bottom', color='red', labelpad=30)
             yticks = range(0,Nmem,1+Nmem//4)
-            axes[2].set_yticks(yticks, list(map(str,yticks)))
-            for i_row in range(3):
-                axes[i_row].tick_params(axis='y', which='both',labelleft=True)
-                axes[i_row].tick_params(axis='x', which='both',labelbottom=True)
+            axnumchange.set_yticks(yticks, list(map(str,yticks)), color='red')
+            for ax in axes:
+                ax.tick_params(axis='y', which='both',labelleft=True)
+                ax.tick_params(axis='x', which='both',labelbottom=True)
             fig.savefig(join(figdir,f'ODSA_{figfile_suffix}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
             plt.close(fig)
     return 
 
-def plot_sumstats_maps_flat(da_cgt_extt, da_cgt_extt_ref, landmask, mem_special, mem_special_ref, titles, cgs_level_2show):
+def plot_sumstats_maps_flat(da_cgt_extt, da_cgt_extt_ref, landmask, mem_special, mem_special_ref, titles, cgs_level_2show, ext_sign=1, param_bounds=None):
     # 1. ensemble-mean of time-min
     # 2. ensemble-std of time-min
     # 3. special member's time-min
@@ -171,13 +171,11 @@ def plot_sumstats_maps_flat(da_cgt_extt, da_cgt_extt_ref, landmask, mem_special,
     da_cgt_extt_ensstd = masksea(da_cgt_extt.std('member'))
     da_cgt_extt_special = masksea((da_cgt_extt.sel(member=mem_special, drop=True)-da_cgt_extt_ensmean_ref)/da_cgt_extt_ensstd_ref)
 
-    def padded_bounds(arr):
-        arrmin,arrmax = np.nanmin(arr),np.nanmax(arr)
-        alpha = 0.25
-        pb = [(1+alpha)*arrmin-alpha*arrmax, (1+alpha)*arrmax-alpha*arrmin]
-        return pb
-
-    bounds_ensmean,bounds_ensstd,bounds_special = list(map(padded_bounds, (da_cgt_extt_ensmean_ref,da_cgt_extt_ensstd_ref,da_cgt_extt_special_ref)))
+    if param_bounds is not None:
+        bounds_loc,bounds_scale = (param_bounds[p] for p in ['loc','scale'])
+    else:
+        bounds_loc,bounds_scale = list(map(utils.padded_bounds, (ext_sign*da_cgt_extt_ensmean_ref,da_cgt_extt_ensstd_ref)))
+    bounds_special = utils.padded_bounds(da_cgt_extt_special_ref)
 
     fig,axes = plt.subplots(figsize=(3*aspect,3*3), nrows=3, gridspec_kw={'hspace': 0.2}, subplot_kw={'projection': ccrs.PlateCarree()})
     axmean,axstd,axspecial = axes
@@ -185,17 +183,19 @@ def plot_sumstats_maps_flat(da_cgt_extt, da_cgt_extt_ref, landmask, mem_special,
     xr.plot.pcolormesh(
             da_cgt_extt_ensmean,
             cmap=plt.cm.RdYlBu_r,
-            vmin = bounds_ensmean[0], vmax=bounds_ensmean[1], 
+            vmin = np.min(ext_sign*bounds_loc), vmax=np.max(ext_sign*bounds_loc),
             x='lon', y='lat', ax=axmean,
             cbar_kwargs={'label': '[K]'}
             )
+    vmin = np.min(ext_sign*bounds_loc)
+    vmax=np.max(ext_sign*bounds_loc)
     axmean.set_title(titles[0])
     xr.plot.pcolormesh(
             da_cgt_extt_ensstd,
             x='lon', y='lat', ax=axstd,
             cmap=plt.cm.viridis,
-            vmin = 0, vmax=bounds_ensstd[1], 
-            cbar_kwargs={'label': ''}
+            vmin = 0, vmax=np.max(bounds_scale[1]),
+            cbar_kwargs={'label': '[K]'}
             )
     axstd.set_title(titles[1])
     xr.plot.pcolormesh(
@@ -203,7 +203,7 @@ def plot_sumstats_maps_flat(da_cgt_extt, da_cgt_extt_ref, landmask, mem_special,
             cmap=plt.cm.RdYlBu_r,
             vmin=-np.max(np.abs(bounds_special)), vmax=np.max(np.abs(bounds_special)),
             x='lon', y='lat', ax=axspecial,
-            cbar_kwargs={'label': ''}
+            cbar_kwargs={'label': '[K]'}
             )
     axspecial.set_title(titles[2])
     for ax in axes:
@@ -372,6 +372,68 @@ def coarse_grain_space(ds_cgt, cgs_level, landmask):
     if not (ds_cgts.lon.size == cgs_level[0] and ds_cgts.lat.size == cgs_level[1]):
         pdb.set_trace()
     return ds_cgts # awkward to put into a single dataset because of differing lon/lat coordinates between coarsening levels
+
+
+def plot_gevpar_maps_flat(gevpar, titles, cgs_level_2show, ext_sign, landmask=None, gevpar_ref=None, param_bounds=None):
+    lons,lats = (gevpar[c].to_numpy() for c in ('lon','lat'))
+    dlon = lons[1]-lons[0]
+    dlat = lats[1]-lats[0]
+    Nlon = len(lons)
+    Nlat = len(lats)
+    lon_extent = lons[-1]-lons[0]+dlon
+    lat_extent = lats[-1]-lats[0]+dlon
+    aspect = lon_extent/lat_extent
+
+    def masksea(da):
+        if landmask is None:
+            return da
+        return xr.where(landmask>0, da, np.nan)
+
+
+    if param_bounds is not None:
+        bounds_loc,bounds_scale,bounds_shape = (param_bounds[p] for p in ['loc','scale','shape'])
+    elif gevpar_ref is not None:
+        bounds_loc,bounds_scale,bounds_shape = list(map(utils.padded_bounds, (gevpar_ref.sel(param=p) for p in ['loc','scale','shape'])))
+    else:
+        bounds_loc,bounds_scale,bounds_shape = list(map(utils.padded_bounds, (gevpar.sel(param=p) for p in ['loc','scale','shape'])))
+
+    fig,axes = plt.subplots(figsize=(3*aspect,3*3), nrows=3, gridspec_kw={'hspace': 0.2}, subplot_kw={'projection': ccrs.PlateCarree()})
+    axloc,axscale,axshape = axes
+
+    xr.plot.pcolormesh(
+            masksea(ext_sign*gevpar.sel(param='loc')),
+            cmap=plt.cm.RdYlBu_r,
+            vmin = np.min(ext_sign*bounds_loc), vmax=np.max(ext_sign*bounds_loc),
+            x='lon', y='lat', ax=axloc,
+            cbar_kwargs={'label': '[K]'}
+            )
+    axloc.set_title(titles[0])
+    xr.plot.pcolormesh(
+            masksea(gevpar.sel(param='scale')),
+            x='lon', y='lat', ax=axscale,
+            cmap=plt.cm.viridis,
+            vmin = 0, vmax=np.max(bounds_scale[1]), 
+            cbar_kwargs={'label': '[K]'}
+            )
+    axscale.set_title(titles[1])
+    xr.plot.pcolormesh(
+            masksea(gevpar.sel(param='shape')),
+            cmap=plt.cm.RdYlBu_r,
+            vmin=-np.max(np.abs(bounds_shape)), vmax=np.max(np.abs(bounds_shape)),
+            x='lon', y='lat', ax=axshape,
+            cbar_kwargs={'label': ''}
+            )
+    axshape.set_title(titles[2])
+    for ax in axes:
+        #ax.tick_params(axis='x',which='both',labelbottom=True)
+        #ax.set_ylabel("Lat")
+        ax.coastlines()
+        ax.add_feature(cfeature.BORDERS, linewidth=1.0, edgecolor='purple')
+        gl = ax.gridlines(draw_labels=True, color="black")
+        gl.top_labels = gl.right_labels = False
+        gl.xlocator = ticker.FixedLocator(np.linspace(lons[0]-dlon/2, lons[-1]+dlon/2, cgs_level_2show[0]+1).astype(int))
+        gl.ylocator = ticker.FixedLocator(np.linspace(lats[0]-dlat/2, lats[-1]+dlat/2, cgs_level_2show[1]+1).astype(int))
+    return fig,axes
 
 def plot_statpar_map(ds_cgts,gevpar,locsign=1):
     # Essentially Gaussian parameters next to GEV parameters

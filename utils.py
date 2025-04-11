@@ -2,6 +2,11 @@
 import numpy as np
 import xarray as xr
 
+def padded_bounds(arr, alpha=0.25):
+    arrmin,arrmax = np.nanmin(arr),np.nanmax(arr)
+    pb = np.array([(1+alpha)*arrmin-alpha*arrmax, (1+alpha)*arrmax-alpha*arrmin])
+    return pb
+
 def area_average(da):
     coslat = np.cos(np.deg2rad(da["lat"]))
     print(f'computed coslat')
