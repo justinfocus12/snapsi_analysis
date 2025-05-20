@@ -125,10 +125,22 @@ def coarse_grain_time_fulltime_solo(which_ssw, i_init):
     return ds_cgt_era5
 
 
-def coarse_grain_time(years, year_filegroups, region, init_date, term_date):
+def coarse_grain_time(years, year_filegroups, region, context_region, init_date, term_date):
     print(f'Starting to coarse-grain time')
     t2m = []
     duration = term_date - init_date
+    # Regrid to an easily divisible size 
+    # The physical aspect ratio ranges from 6/1 at the lower boundary to 4/1 at the top, so we settle on a ratio of 5/1
+    Nlon_interp = 80
+    Nlat_interp = 16 
+
+    dlon = (region['lon'].stop - region['lon'].start)/Nlon_interp
+    dlat = (region['lat'].stop - region['lat'].start)/Nlat_interp
+
+    lon_interp = np.linspace(region['lon'].start+dlon/2, region['lon'].stop-dlon/2, Nlon_interp)
+    lat_interp = np.linspace(region['lat'].start+dlat/2, region['lat'].stop-dlat/2, Nlat_interp)
+
+
     for i_year,year in enumerate(years):
         print(f'Ingesting year {year}')
         print(f'{year_filegroups[i_year] = }')
@@ -150,6 +162,8 @@ def coarse_grain_time(years, year_filegroups, region, init_date, term_date):
                     .sel(time=slice(t0,t1))
                     .assign_coords(time=np.arange(init_date,term_date,dtlib.timedelta(hours=6)))
                     )
+                .sel(context_region)
+                .interp(lon=lon_interp, lat=lat_interp, method="linear")
                 .sel(region)
                 .expand_dims(member=[year])
                 )
@@ -177,7 +191,7 @@ def reduce_era5(which_ssw):
         'plot_sumstats_map':                0,
         'fit_gev':                          0,
         'plot_gevpar_map':                  0,
-        'compute_risk':                     1,
+        'compute_risk':                     0,
         'plot_risk_map':                    1,
         'fit_gev_select_regions':           0,
         'plot_gev_select_regions':          0,
@@ -197,7 +211,7 @@ def reduce_era5(which_ssw):
     boot_type = 'percentile'
     ens_file_cgt = join(reduced_data_dir,f't2m_cgt1day.nc')
     if todo['coarse_grain_time']:
-        ds_cgt,err_flag = coarse_grain_time(years, year_filegroups, event_region, fc_dates[0], term_date)
+        ds_cgt,err_flag = coarse_grain_time(years, year_filegroups, event_region, context_region, fc_dates[0], term_date)
         ds_cgt.to_netcdf(ens_file_cgt)
 
     ds_cgt = xr.open_dataset(ens_file_cgt)
@@ -324,11 +338,16 @@ def reduce_era5(which_ssw):
                     gevpar,
                     locsign=ext_sign)
             risk.to_netcdf(risk_file)
-    if todo['plot_risk_map'] and min(cgs_level) > 1:
+    if todo['plot_risk_map']:
         for i_cgs_level,cgs_level in enumerate(cgs_levels):
+            if min(cgs_level) < 2:
+                continue
             cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
             risk_file = join(reduced_data_dir,f'risk_wrt{event_year}_cgs{cgs_key}.nc')
-            fig,ax = pipeline_base.plot_risk_map(risk,locsign=ext_sign)
+            risk = xr.open_dataarray(risk_file)
+            fig,ax = pipeline_base.plot_risk_map(risk,locsign=ext_sign,projection='mercator')
+            if False and cgs_level[1] == 16:
+                pdb.set_trace()
             ineq_sign = "geq" if ext_sign==1 else "leq"
             ax.set_title(r"$\mathbb{P}_{\mathrm{ERA5}}\{\%s_t\langle T(t)\rangle\%s \%s_t\langle T(t)\rangle_{\mathrm{ERA5,%s}}\}$"%(ext_symb,ineq_sign,ext_symb,event_year))
             fig.savefig(join(figdir,f'risk_map_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)

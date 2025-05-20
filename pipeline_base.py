@@ -266,6 +266,8 @@ def compute_risk(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
             paramdict = dict({pn: np.array([gevpar.isel(lon=i_lon,lat=i_lat).sel(param=pn)]) for pn in gevpar.coords['param'].values})
             risk[dict(lon=i_lon,lat=i_lat)] = stfu.absolute_risk_parametric('gev', paramdict, thresh=thresh).item()
             # TODO correct for directionality 
+    if False and Nlon == 80:
+        pdb.set_trace()
     return risk
 
 def compute_valatrisk(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
@@ -284,11 +286,28 @@ def compute_valatrisk(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
     # TODO obtain a whole range of quantile shifts to plot as a function of probability ("value at risk"? )
     return risk_valatrisk
 
-
-def plot_risk_map(risk, locsign=1, **other_pcmargs):
+def plot_risk_map(risk, locsign=1, projection='mercator', **other_pcmargs):
+    lons,lats = (risk[c].to_numpy() for c in ('lon','lat'))
+    clon,clat = np.mean(lons),np.mean(lats)
+    dlon = lons[1]-lons[0]
+    dlat = lats[1]-lats[0]
+    Nlon = len(lons)
+    Nlat = len(lats)
+    lon_extent = lons[-1]-lons[0]+dlon
+    lat_extent = lats[-1]-lats[0]+dlon
+    minlon = 1.5*lons[0]-lons[1]
+    maxlon = 1.5*lons[-1]-lons[-2]
+    minlat = 1.5*lats[0]-lats[1]
+    maxlat = 1.5*lats[-1]-lats[-2]
+    aspect = lon_extent/lat_extent
     # the reference ds_cgts is ERA5, and should only have one year asociated with it 
-    clon,clat = (risk.coords[coordname].mean().item() for coordname in ('lon','lat'))
-    fig,ax = plt.subplots(subplot_kw={'projection': ccrs.Orthographic(central_longitude=clon,central_latitude=clat)})
+    if projection == 'orthographic':
+        subplot_kw = {'projection': ccrs.Orthographic(central_longitude=clon,central_latitude=clat)}
+    elif projection == 'mercator':
+        subplot_kw = {'projection': ccrs.Mercator(central_longitude=clon,)}
+    else:
+        print("Not supported projection")
+        return
     pcmargs = dict(
             x='lon',y='lat', transform=ccrs.PlateCarree(),
             cmap=plt.cm.RdYlBu if locsign==-1 else plt.cm.RdYlBu_r,
@@ -300,10 +319,15 @@ def plot_risk_map(risk, locsign=1, **other_pcmargs):
                 'format': ticker.FixedFormatter(['0', '0.25', '0.5', '0.75', '1'])
                 })
             )
+    fig,ax = plt.subplots(figsize=(3*aspect,3), subplot_kw=subplot_kw)
     pcmargs.update(other_pcmargs)
     xr.plot.pcolormesh(risk, **pcmargs, ax=ax)
     ax.coastlines()
-    ax.gridlines()
+    ax.add_feature(cfeature.BORDERS, linewidth=1.0, edgecolor='purple')
+    gl = ax.gridlines(draw_labels=True, color="black")
+    gl.top_labels = gl.right_labels = False
+    gl.xlocator = ticker.FixedLocator(np.linspace(lons[0]-dlon/2, lons[-1]+dlon/2, Nlon+1))
+    gl.ylocator = ticker.FixedLocator(np.linspace(lats[0]-dlat/2, lats[-1]+dlat/2, Nlat+1))
     return fig,ax
 
 def plot_relative_risk_map(risk0, risk1, locsign=1, **other_pcmargs):
@@ -366,6 +390,7 @@ def coarse_grain_space(ds_cgt, cgs_level, landmask):
     denominator = (landmask_trimmed * coslat).coarsen(**coarsen_kwargs).sum() 
     land_frac = denominator / (coslat.coarsen(**coarsen_kwargs)).sum() 
     ds_cgts = numerator / denominator 
+    #pdb.set_trace()
     if cgs_level[0] > 1 or cgs_level[1] > 1:
         ds_cgts = ds_cgts.where(np.isfinite(ds_cgts)*(land_frac > 0.0), np.nan)
     if not (ds_cgts.lon.size == cgs_level[0] and ds_cgts.lat.size == cgs_level[1]):
