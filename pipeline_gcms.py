@@ -695,10 +695,10 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
     todo = dict({
         'coarse_grain_time':                0,
-        'coarse_grain_space':               0,
-        'onset_date_sensitivity_analysis':  0,
-        'plot_t2m_sumstats_map':            0,
-        'fit_gev':                          0,
+        'coarse_grain_space':               1,
+        'onset_date_sensitivity_analysis':  1,
+        'plot_t2m_sumstats_map':            1,
+        'fit_gev':                          1,
         'plot_gevpar_map':                  1,
         'compute_risk':                     0,
         'compute_valatrisk':                0,
@@ -883,16 +883,18 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                 param_bounds=param_bounds,
                 )
         fig.savefig(join(figdir,f'gevpar_map_e{expt}_i{fc_date_abbrv}.png'), **pltkwargs)
-        for cgs_level in cgs_levels[2:]:
-            cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
-            gevpar_cgts = xr.open_dataarray(join(reduced_data_dir, f'gevpar_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}.nc'))
-            fig,axes = pipeline_base.plot_gevpar_maps_flat(
-                    gevpar_cgts,
-                    titles,cgs_levels[2],
-                    ext_sign,
-                    param_bounds=param_bounds
-                    )
-            fig.savefig(join(figdir,f'gevpar_map_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}.png'), **pltkwargs)
+        # TODO fix this up 
+        if False:
+            for cgs_level in cgs_levels[2:]:
+                cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+                gevpar_cgts = xr.open_dataarray(join(reduced_data_dir, f'gevpar_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}.nc'))
+                fig,axes = pipeline_base.plot_gevpar_maps_flat(
+                        gevpar_cgts,
+                        titles,cgs_levels[2],
+                        ext_sign,
+                        param_bounds=param_bounds
+                        )
+                fig.savefig(join(figdir,f'gevpar_map_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}.png'), **pltkwargs)
         
     return
     # ----------------- Compute risk w.r.t. ERA5 ---------------

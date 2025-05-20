@@ -59,7 +59,7 @@ def analysis_multiparams(which_ssw):
 
 def era5_workflow(which_ssw,verbose=False):
     print(f'Starting workflow setup')
-    analysis_date = '2025-03-18'
+    analysis_date = '2025-05-20'
     raw_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/era5'
     landmask_file = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/era5/land_sea_mask.nc'
     processed_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596'
@@ -174,11 +174,11 @@ def reduce_era5(which_ssw):
         'coarse_grain_time':                0,
         'coarse_grain_space':               0,
         'onset_date_sensitivity_analysis':  0,
-        'plot_t2m_sumstats_map':            0,
-        'fit_gev':                          1,
-        'plot_gevpar_map':                  1,
-        'compute_risk':                     0,
-        'plot_risk_map':                    0,
+        'plot_sumstats_map':                0,
+        'fit_gev':                          0,
+        'plot_gevpar_map':                  0,
+        'compute_risk':                     1,
+        'plot_risk_map':                    1,
         'fit_gev_select_regions':           0,
         'plot_gev_select_regions':          0,
         })
@@ -251,7 +251,7 @@ def reduce_era5(which_ssw):
         'shape': np.array([-0.5,0.1]),
         })
 
-    if todo['plot_t2m_sumstats_map']:
+    if todo['plot_sumstats_map']:
         fmtfun = lambda date: dtlib.datetime.strftime(date, "%m/%d")
         titles = [
                 r"ERA5 $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-%d mean"%(ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1]),
@@ -296,37 +296,45 @@ def reduce_era5(which_ssw):
                 r"ERA5 $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-%d scale $\sigma$"%(ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1]),
                 r"ERA5 $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-%d shape $\xi$"%(ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1])
                 ]
+        # TODO plot a map for each level of coarse-graining, not just the full un-coarsened map 
         fig,axes = pipeline_base.plot_gevpar_maps_flat(
                 gevpar_cgt,
                 titles, 
                 cgs_levels[2],
-                ext_sign=ext_sign,
+                ext_sign,
                 landmask=landmask,
                 param_bounds=param_bounds,
                 )
         fig.savefig(join(figdir,f'gevpar_map_{daily_stat}.png'), **pltkwargs)
         plt.close(fig)
-    return
     if todo['compute_risk']:
-        risk_file = join(reduced_data_dir,f'risk_wrt{event_year}.nc')
-        if todo['compute_risk']:
+        for i_cgs_level,cgs_level in enumerate(cgs_levels):
+            cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+            ens_file_cgts = join(reduced_data_dir,f't2m_cgt1day_cgs{cgs_key}.nc')
+            da_cgts = xr.open_dataset(ens_file_cgts)['1xday']
+            da_cgts_extt = ext_sign * (ext_sign*da_cgts.sel(time=slice(onset_date,term_date))).max(dim='time')
+            gevpar_file_cgts = join(reduced_data_dir,f'gevpar_cgt1xday_cgs{cgs_key}.nc')
+            gevpar = xr.open_dataarray(gevpar_file_cgts)
+            risk_file = join(reduced_data_dir,f'risk_wrt{event_year}_cgs{cgs_key}.nc')
             dskwargs = dict(daily_stat=daily_stat,drop=True)
             risk = pipeline_base.compute_risk(
-                    ds_cgts_extt.sel(**dskwargs),
-                    ds_cgts_extt.sel(member=event_year,**dskwargs),
-                    gevpar.sel(**dskwargs),
-                    gevpar.sel(**dskwargs),
+                    da_cgts_extt.sel(**dskwargs),
+                    da_cgts_extt.sel(member=event_year,**dskwargs),
+                    gevpar,
+                    gevpar,
                     locsign=ext_sign)
             risk.to_netcdf(risk_file)
-        else:
-            risk = xr.open_dataarray(risk_file)
-        if todo['plot_risk_map'] and min(cgs_level) > 1:
+    if todo['plot_risk_map'] and min(cgs_level) > 1:
+        for i_cgs_level,cgs_level in enumerate(cgs_levels):
+            cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+            risk_file = join(reduced_data_dir,f'risk_wrt{event_year}_cgs{cgs_key}.nc')
             fig,ax = pipeline_base.plot_risk_map(risk,locsign=ext_sign)
             ineq_sign = "geq" if ext_sign==1 else "leq"
             ax.set_title(r"$\mathbb{P}_{\mathrm{ERA5}}\{\%s_t\langle T(t)\rangle\%s \%s_t\langle T(t)\rangle_{\mathrm{ERA5,%s}}\}$"%(ext_symb,ineq_sign,ext_symb,event_year))
             fig.savefig(join(figdir,f'risk_map_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
             plt.close(fig)
             print(f'Just plotted risk map with {cgs_key = }')
+        return
 
 
 

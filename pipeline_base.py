@@ -189,24 +189,21 @@ def plot_sumstats_maps_flat(da_cgt_extt, da_cgt_extt_ref, landmask, mem_special,
             )
     vmin = np.min(ext_sign*bounds_loc)
     vmax=np.max(ext_sign*bounds_loc)
-    axmean.set_title(titles[0])
     xr.plot.pcolormesh(
             da_cgt_extt_ensstd,
-            x='lon', y='lat', ax=axstd,
+            x='lon', y='lat', ax=axstd, 
             cmap=plt.cm.viridis,
             vmin = 0, vmax=np.max(bounds_scale[1]),
             cbar_kwargs={'label': '[K]'}
             )
-    axstd.set_title(titles[1])
     xr.plot.pcolormesh(
             da_cgt_extt_special,
             cmap=plt.cm.RdYlBu_r,
             vmin=-np.max(np.abs(bounds_special)), vmax=np.max(np.abs(bounds_special)),
-            x='lon', y='lat', ax=axspecial,
+            x='lon', y='lat', ax=axspecial, 
             cbar_kwargs={'label': '[K]'}
             )
-    axspecial.set_title(titles[2])
-    for ax in axes:
+    for (i_ax,ax) in enumerate(axes):
         #ax.tick_params(axis='x',which='both',labelbottom=True)
         #ax.set_ylabel("Lat")
         ax.coastlines()
@@ -215,6 +212,8 @@ def plot_sumstats_maps_flat(da_cgt_extt, da_cgt_extt_ref, landmask, mem_special,
         gl.top_labels = gl.right_labels = False
         gl.xlocator = ticker.FixedLocator(np.linspace(lons[0]-dlon/2, lons[-1]+dlon/2, cgs_level_2show[0]+1).astype(int))
         gl.ylocator = ticker.FixedLocator(np.linspace(lats[0]-dlat/2, lats[-1]+dlat/2, cgs_level_2show[1]+1).astype(int))
+        ax.set_title("")
+        ax.set_title(titles[i_ax], loc='left')
     return fig,axes
 
 def plot_sumstats_map(ds,loc_vmin,loc_vmax,scale_vmin,scale_vmax):
@@ -404,10 +403,9 @@ def plot_gevpar_maps_flat(gevpar, titles, cgs_level_2show, ext_sign, landmask=No
             masksea(ext_sign*gevpar.sel(param='loc')),
             cmap=plt.cm.RdYlBu_r,
             vmin = np.min(ext_sign*bounds_loc), vmax=np.max(ext_sign*bounds_loc),
-            x='lon', y='lat', ax=axloc,
+            x='lon', y='lat', ax=axloc, 
             cbar_kwargs={'label': '[K]'}
             )
-    axloc.set_title(titles[0])
     xr.plot.pcolormesh(
             masksea(gevpar.sel(param='scale')),
             x='lon', y='lat', ax=axscale,
@@ -415,7 +413,6 @@ def plot_gevpar_maps_flat(gevpar, titles, cgs_level_2show, ext_sign, landmask=No
             vmin = 0, vmax=np.max(bounds_scale[1]), 
             cbar_kwargs={'label': '[K]'}
             )
-    axscale.set_title(titles[1])
     xr.plot.pcolormesh(
             masksea(gevpar.sel(param='shape')),
             cmap=plt.cm.RdYlBu_r,
@@ -423,8 +420,7 @@ def plot_gevpar_maps_flat(gevpar, titles, cgs_level_2show, ext_sign, landmask=No
             x='lon', y='lat', ax=axshape,
             cbar_kwargs={'label': ''}
             )
-    axshape.set_title(titles[2])
-    for ax in axes:
+    for (i_ax,ax) in enumerate(axes):
         #ax.tick_params(axis='x',which='both',labelbottom=True)
         #ax.set_ylabel("Lat")
         ax.coastlines()
@@ -433,6 +429,8 @@ def plot_gevpar_maps_flat(gevpar, titles, cgs_level_2show, ext_sign, landmask=No
         gl.top_labels = gl.right_labels = False
         gl.xlocator = ticker.FixedLocator(np.linspace(lons[0]-dlon/2, lons[-1]+dlon/2, cgs_level_2show[0]+1).astype(int))
         gl.ylocator = ticker.FixedLocator(np.linspace(lats[0]-dlat/2, lats[-1]+dlat/2, cgs_level_2show[1]+1).astype(int))
+        ax.set_title("")
+        ax.set_title(titles[i_ax], loc='left')
     return fig,axes
 
 def plot_statpar_map(ds_cgts,gevpar,locsign=1):
