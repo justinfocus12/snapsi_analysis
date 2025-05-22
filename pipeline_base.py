@@ -4,6 +4,7 @@ import datetime as dtlib
 from scipy.stats import genextreme as spgex
 import pdb
 from cartopy import crs as ccrs, feature as cfeature
+from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 import netCDF4
 from os.path import join, exists
 from matplotlib import pyplot as plt, rcParams, ticker, colors as mplcolors, patches as mplpatches
@@ -266,8 +267,6 @@ def compute_risk(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
             paramdict = dict({pn: np.array([gevpar.isel(lon=i_lon,lat=i_lat).sel(param=pn)]) for pn in gevpar.coords['param'].values})
             risk[dict(lon=i_lon,lat=i_lat)] = stfu.absolute_risk_parametric('gev', paramdict, thresh=thresh).item()
             # TODO correct for directionality 
-    if False and Nlon == 80:
-        pdb.set_trace()
     return risk
 
 def compute_valatrisk(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
@@ -294,12 +293,12 @@ def plot_risk_map(risk, locsign=1, projection='mercator', **other_pcmargs):
     Nlon = len(lons)
     Nlat = len(lats)
     lon_extent = lons[-1]-lons[0]+dlon
-    lat_extent = lats[-1]-lats[0]+dlon
-    minlon = 1.5*lons[0]-lons[1]
-    maxlon = 1.5*lons[-1]-lons[-2]
-    minlat = 1.5*lats[0]-lats[1]
-    maxlat = 1.5*lats[-1]-lats[-2]
-    aspect = lon_extent/lat_extent
+    lat_extent = lats[-1]-lats[0]+dlat
+    minlon = 1.5*lons[0]-0.5*lons[1]
+    maxlon = 1.5*lons[-1]-0.5*lons[-2]
+    minlat = 1.5*lats[0]-0.5*lats[1]
+    maxlat = 1.5*lats[-1]-0.5*lats[-2]
+    aspect = lon_extent/lat_extent * np.cos(np.deg2rad((lons[0]+lons[-1])/2))
     # the reference ds_cgts is ERA5, and should only have one year asociated with it 
     if projection == 'orthographic':
         subplot_kw = {'projection': ccrs.Orthographic(central_longitude=clon,central_latitude=clat)}
@@ -312,6 +311,7 @@ def plot_risk_map(risk, locsign=1, projection='mercator', **other_pcmargs):
             x='lon',y='lat', transform=ccrs.PlateCarree(),
             cmap=plt.cm.RdYlBu if locsign==-1 else plt.cm.RdYlBu_r,
             vmin=0.0, vmax=1.0,
+            add_labels=False,
             #norm=mplcolors.LogNorm(vmin=0.2,vmax=5),
             cbar_kwargs=dict({
                 'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 
@@ -322,12 +322,23 @@ def plot_risk_map(risk, locsign=1, projection='mercator', **other_pcmargs):
     fig,ax = plt.subplots(figsize=(3*aspect,3), subplot_kw=subplot_kw)
     pcmargs.update(other_pcmargs)
     xr.plot.pcolormesh(risk, **pcmargs, ax=ax)
+    xticks = np.linspace(minlon,maxlon,5)
+    xticklabels = [r"$%.0f^\circ$"%(lon) for lon in xticks] 
+    #ax.set_xticks(xticks)
+    #ax.set_xticklabels(xticklabels)
+    #yticks = np.linspace(minlat,maxlat,3)
+    #yticklabels = [r"$%.0f^\circ$"%(lat) for lat in yticks] 
+    #ax.set_yticks(yticks)
+    #ax.set_yticklabels(yticklabels)
     ax.coastlines()
     ax.add_feature(cfeature.BORDERS, linewidth=1.0, edgecolor='purple')
     gl = ax.gridlines(draw_labels=True, color="black")
     gl.top_labels = gl.right_labels = False
-    gl.xlocator = ticker.FixedLocator(np.linspace(lons[0]-dlon/2, lons[-1]+dlon/2, Nlon+1))
-    gl.ylocator = ticker.FixedLocator(np.linspace(lats[0]-dlat/2, lats[-1]+dlat/2, Nlat+1))
+    gl.xlocator = ticker.FixedLocator(np.linspace(lons[0]+dlon/2, lons[-1]-dlon/2, 10))
+    gl.ylocator = ticker.FixedLocator(np.linspace(lats[0]+dlat/2, lats[-1]-dlat/2, 2))
+    gl.xformatter = LongitudeFormatter(number_format='.0f')
+    gl.yformatter = LatitudeFormatter(number_format='.0f')
+    #pdb.set_trace()
     return fig,ax
 
 def plot_relative_risk_map(risk0, risk1, locsign=1, **other_pcmargs):
@@ -406,7 +417,7 @@ def plot_gevpar_maps_flat(gevpar, titles, cgs_level_2show, ext_sign, landmask=No
     Nlat = len(lats)
     lon_extent = lons[-1]-lons[0]+dlon
     lat_extent = lats[-1]-lats[0]+dlon
-    aspect = lon_extent/lat_extent
+    aspect = lon_extent/lat_extent * np.cos(np.deg2rad((lons[0]+lons[-1])/2))
 
     def masksea(da):
         if landmask is None:

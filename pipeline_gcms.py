@@ -113,7 +113,7 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
     
     daily_stat = 'daily_min'
 
-    analysis_date = '2025-03-18'
+    analysis_date = '2025-05-20'
     fc_dates,onset_date_nominal,term_date = pipeline_base.dates_of_interest(which_ssw)
     event_region,context_region = pipeline_base.region_of_interest(which_ssw)
     # 2. Spatiotemporal sub-selection and coarse-graining (cg)
@@ -147,6 +147,7 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
             ext_sign,
             event_year,
             event_region,
+            context_region,
             daily_stat,
             fc_dates,onset_date_nominal,term_date,
             landmask_file,
@@ -243,8 +244,8 @@ def compare_statpar_maps_2expts(i_gcm,i0_expt,i1_expt,i_init):
         'plot_gev_select_regions_diff':    1,
         })
     # Assumes both have been reduced
-    gcm,expt0,init,event_region,event_time_interval,landmask_file,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(i_gcm,i0_expt,i_init)
-    _,expt1,_,_,_,_,_,_,_,_,_,_,_,_,_,_ = gcm_workflow(i_gcm,i1_expt,i_init)
+    gcm,expt0,init,event_region,context_region,event_time_interval,landmask_file,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(i_gcm,i0_expt,i_init)
+    _,expt1,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_ = gcm_workflow(i_gcm,i1_expt,i_init)
     ds_cgt_0,ds_cgt_1 = (xr.open_dataarray(join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day.nc')) for expt in (expt0,expt1))
     landmask = (
             utils.rezero_lons(
@@ -287,7 +288,7 @@ def compare_gcms(which_ssw, idx_gcms):
     print(f'{gcms = }')
     colors = dict({'era5': 'black', 'control': 'dodgerblue', 'free': 'limegreen', 'nudged': 'red'})
     yoffsets = dict({'control': 1/3, 'free': 0.0, 'nudged': -1/3})
-    figdir = f'/home/users/ju26596/snapsi_analysis_figures/{which_ssw}/2025-02-22/multimodel'
+    figdir = f'/home/users/ju26596/snapsi_analysis_figures/{which_ssw}/2025-05-20/multimodel'
     print(f'{figdir = }')
     xlims = [0.2, 5.0]
     ylims = [-0.5, len(idx_gcms)-0.5]
@@ -315,10 +316,10 @@ def compare_gcms(which_ssw, idx_gcms):
                 ax_rr = axes_rr[i_init]
                 ax_dv = axes_dv[i_init]
                 workflow = gcm_workflow(which_ssw,i_gcm,0,i_init)
-                reduced_data_dir = workflow[8]
-                reduced_data_dir_era5 = workflow[9]
-                risk_levels = workflow[13]
-                confint_width = workflow[15]
+                reduced_data_dir = workflow[9]
+                reduced_data_dir_era5 = workflow[10]
+                risk_levels = workflow[14]
+                confint_width = workflow[16]
                 event_region = workflow[3]
                 for (expt0,expt1) in (('free','free'),('free','control'),('free','nudged')):
                     print(f'{expt0 = }, {expt1 = }')
@@ -450,7 +451,7 @@ def compare_expts(which_ssw, i_gcm, i_init):
     expts = []
     gcms,expts,inits = gcm_multiparams(which_ssw)
     #for i_expt in range(3):
-    gcm,_,init,event_region,event_time_interval,landmask_file,_,_,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(which_ssw, i_gcm,0,i_init)
+    gcm,_,init,event_region,context_region,event_time_interval,landmask_file,_,_,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(which_ssw, i_gcm,0,i_init)
     landmask = (
             utils.rezero_lons(
                 xr.open_dataarray(landmask_file)
@@ -695,14 +696,14 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
     todo = dict({
         'coarse_grain_time':                0,
-        'coarse_grain_space':               1,
-        'onset_date_sensitivity_analysis':  1,
-        'plot_t2m_sumstats_map':            1,
-        'fit_gev':                          1,
-        'plot_gevpar_map':                  1,
+        'coarse_grain_space':               0,
+        'onset_date_sensitivity_analysis':  0,
+        'plot_t2m_sumstats_map':            0,
+        'fit_gev':                          0,
+        'plot_gevpar_map':                  0,
         'compute_risk':                     0,
+        'plot_risk_map':                    1,
         'compute_valatrisk':                0,
-        'plot_risk_map':                    0,
         'fit_gev_select_regions':           0,
         'plot_gev_select_regions':          0,
         })
@@ -714,6 +715,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
             ext_sign,
             event_year,
             event_region,
+            context_region,
             daily_stat,
             fc_dates,onset_date_nominal,term_date,
             landmask_file,
@@ -741,7 +743,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     ens_file_cgt = join(reduced_data_dir,f't2m_e{expt}_i{fc_date_abbrv}_cgt1day.nc')
     if todo['coarse_grain_time']:
         # the coarse_grain_time function deliberately pads the event region so it can be interpolated without nans
-        ds_cgt = coarse_grain_time(raw_mem_files, mem_labels, event_region, fc_date, term_date)
+        ds_cgt = coarse_grain_time(raw_mem_files, mem_labels, context_region, fc_date, term_date)
         #pdb.set_trace()
         ds_cgt = ds_cgt.interp({'lon': ds_cgt_era5['lon'], 'lat': ds_cgt_era5['lat']})
         #pdb.set_trace()
@@ -813,14 +815,14 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     # Load ERA5 for reference 
     da_cgt_era5 = ds_cgt_era5['1xday'].sel(daily_stat=daily_stat)
     da_cgt_extt_era5 = ext_sign * (ext_sign*da_cgt_era5).max(dim='time')
+    #da_cgt_extt_era5 = ext_sign * (ext_sign*ds_cgt_era5['1xday'].sel(daily_stat=daily_stat).sel(time=slice(onset_date,term_date))).max(dim='time')
+    da_cgt_extt = ext_sign * (ext_sign*ds_cgt['1xday'].sel(daily_stat=daily_stat).sel(time=slice(onset_date,term_date))).max(dim='time')
     param_bounds = dict({
         'loc': utils.padded_bounds(ext_sign*da_cgt_extt_era5.where(landmask>0, np.nan).mean(dim='member')),
         'scale': utils.padded_bounds(da_cgt_extt_era5.where(landmask>0, np.nan).std(dim='member')),
         'shape': np.array([-0.5,0.1]),
         })
 
-    da_cgt_extt = ext_sign * (ext_sign*ds_cgt['1xday'].sel(daily_stat=daily_stat).sel(time=slice(onset_date,term_date))).max(dim='time')
-    da_cgt_extt_era5 = ext_sign * (ext_sign*ds_cgt_era5['1xday'].sel(daily_stat=daily_stat).sel(time=slice(onset_date,term_date))).max(dim='time')
     if todo['plot_t2m_sumstats_map']:
         fmtfun = lambda date: dtlib.datetime.strftime(date, "%Y/%m/%d")
         mem_special = da_cgt_extt['member'][0].item()
@@ -870,9 +872,9 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
         gevpar_cgt = xr.open_dataarray(gevpar_file_cgt)
         fmtfun = lambda date: dtlib.datetime.strftime(date, "%m/%d")
         titles = [
-                r"%s, %s, FC %s, $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, location $\mu$"%(gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date)),
-                r"%s, %s, FC %s, $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, scale $\sigma$"%(gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date)),
-                r"%s, %s, FC %s, $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, shape $\xi$"%(gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date))
+                r"%s, %s, FC %s, %s {T2M(t): %s<=t<=%s}$, location mu"%(gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date)),
+                r"%s, %s, FC %s, \%s {T2M(t): %s<=t<=%s}, scale sigma"%(gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date)),
+                r"%s, %s, FC %s, \%s {T2M(t): %s<=t<=%s\}, shape xi"%(gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date))
                 ]
         fig,axes = pipeline_base.plot_gevpar_maps_flat(
                 gevpar_cgt,
@@ -883,35 +885,45 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                 param_bounds=param_bounds,
                 )
         fig.savefig(join(figdir,f'gevpar_map_e{expt}_i{fc_date_abbrv}.png'), **pltkwargs)
-        # TODO fix this up 
-        if False:
-            for cgs_level in cgs_levels[2:]:
-                cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
-                gevpar_cgts = xr.open_dataarray(join(reduced_data_dir, f'gevpar_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}.nc'))
-                fig,axes = pipeline_base.plot_gevpar_maps_flat(
-                        gevpar_cgts,
-                        titles,cgs_levels[2],
-                        ext_sign,
-                        param_bounds=param_bounds
-                        )
-                fig.savefig(join(figdir,f'gevpar_map_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}.png'), **pltkwargs)
         
-    return
     # ----------------- Compute risk w.r.t. ERA5 ---------------
     if todo['compute_risk']:
         for (i_cgs_level,cgs_level) in enumerate(cgs_levels): 
             cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
-            risk_file = join(reduced_data_dir,f'risk_e{expt}_i{init}_cgs{cgs_key}.nc')
-            dskwargs = dict(daily_stat=daily_stat,drop=True)
+            # Load the ensemble data
+            ens_file_cgts = join(reduced_data_dir,f't2m_e{expt}_i{fc_date_abbrv}_cgt1day_cgs{cgs_key}.nc')
+            da_cgts = xr.open_dataset(ens_file_cgts)['1xday'].sel(daily_stat=daily_stat)
+            da_cgts_era5 = xr.open_dataset(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc'))['1xday'].sel(daily_stat=daily_stat)
+            da_cgts_extt = ext_sign * (ext_sign*da_cgts.sel(time=slice(onset_date,term_date))).max(dim='time')
+            da_cgts_extt_era5 = ext_sign * (ext_sign*da_cgts_era5.sel(time=slice(onset_date,term_date))).max(dim='time')
+            # Loat the computed GEV parameters
+            gevpar_file_cgt = join(reduced_data_dir,f'gevpar_e{expt}_i{fc_date_abbrv}.nc')
+            gevpar_cgt_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_cgt1xday.nc'))
+            gevpar_cgt = xr.open_dataarray(gevpar_file_cgt)
+            # Specify the output file for risk
+            risk_file = join(reduced_data_dir,f'risk_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}.nc')
+            # compute the risk
             risk = pipeline_base.compute_risk(
-                    ds_cgts_extt.sel(**dskwargs),
-                    ds_cgts_extt_era5.sel(member=event_year,**dskwargs),
-                    gevpar.sel(**dskwargs),
-                    gevpar_era5.sel(**dskwargs),
+                    da_cgts_extt,
+                    da_cgts_extt_era5.sel(member=event_year),
+                    gevpar_cgt,
+                    gevpar_cgt_era5,
                     locsign=ext_sign)
             risk.to_netcdf(risk_file)
-        else:
+    if todo['plot_risk_map']: 
+        for (i_cgs_level,cgs_level) in enumerate(cgs_levels): 
+            if min(cgs_level) == 1:
+                continue
+            cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+            risk_file = join(reduced_data_dir,f'risk_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}.nc')
             risk = xr.open_dataarray(risk_file)
+            fig,ax = pipeline_base.plot_risk_map(risk, locsign=ext_sign)
+            fmtfun = lambda date: dtlib.datetime.strftime(date, "%m/%d")
+            ineq_symb = r"geq" if 1==ext_sign else r"leq"
+            title = r'%s, %s, FC %s, P[%s {T2M(t): %s<=t<=%s} %s ERA5]'%(gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date), ineq_symb),
+            ax.set_title(title, loc='left')
+            fig.savefig(join(figdir,f'risk_map_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
+            plt.close(fig)
 
         # TODO compute quantile shift associated with the same probability as the observed event was relative to the historical record
     if todo['compute_valatrisk']:
@@ -932,29 +944,6 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
             risk_valatrisk = xr.open_dataarray(risk_valatrisk_file)
             print(f'Loaded valatrisk')
 
-        if todo['plot_risk_map'] and min(cgs_level) > 1:
-            fig,ax = pipeline_base.plot_risk_map(risk, locsign=ext_sign)
-            ax.set_title(f'Risk ({gcm}) \n {expt}, init {datestr})')
-            fig.savefig(join(figdir,f'risk_map_e{expt}_i{init}_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
-            plt.close(fig)
-        if todo['plot_gevpar_map'] and min(cgs_level) > 1:
-            statsel = dict(daily_stat=daily_stat)
-            # Maps as-is
-            fig_gaussian,axes_gaussian,fig_gev,axes_gev = pipeline_base.plot_statpar_map(ds_cgts_extt.sel(statsel), gevpar.sel(statsel), locsign=ext_sign)
-            for (fig,axes,paramfam) in ((fig_gaussian,axes_gaussian,'gaussian'),(fig_gev,axes_gev,'gev')):
-                fig.suptitle(f'{gcm} {expt}, init {datestr}')
-                fig.savefig(join(figdir,f'statpar_map_e{expt}_i{init}_cgs{cgs_key}_{daily_stat}_{paramfam}.png'), **pltkwargs)
-                plt.close(fig)
-            # Differences from ERA5
-            print(f'{ds_cgts_extt_era5.shape = }')
-            print(f'{ds_cgts_extt.shape = }')
-            print(f'{gevpar_era5.shape = }')
-            print(f'{gevpar.shape = }')
-            fig_gaussian,axes_gaussian,fig_gev,axes_gev = pipeline_base.plot_statpar_map_difference(ds_cgts_extt_era5.sel(statsel),ds_cgts_extt.sel(statsel),gevpar_era5.sel(statsel),gevpar.sel(statsel),locsign=ext_sign)
-            for (fig,distname) in [(fig_gaussian,'gaussian'),(fig_gev,'gev')]:
-                fig.suptitle(f'({gcm} {expt}, init {datestr}) - ERA5')
-                fig.savefig(join(figdir,f'statpar_map_e{expt}_i{init}_cgs{cgs_key}_{daily_stat}_minusera5_{distname}.png'), **pltkwargs)
-                plt.close(fig)
 
                     
         # Do a more thorough uncertainty quantification at a specific site or region, using bootstrap analysis and goodness-of-fit etc. Maybe parallelize over all sites too
@@ -1041,7 +1030,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                 ax.fill_between(risk_levels, np.quantile(exttemp_levels_reg_era5, 0.25, axis=0), np.quantile(exttemp_levels_reg_era5, 0.75, axis=0), fc='gray', ec='none', alpha=0.3, zorder=-1)
                 ax.legend(handles=[hera5,hgcm])
                 ax.set_xscale('log')
-                ineq_symb = "geq" if 1==ext_symb else "leq"
+                ineq_symb = "geq" if 1==ext_sign else "leq"
                 ax.set_xlabel(r'$\mathbb{P}\{\%s_t\langle T(t)\rangle_{\mathrm{region}}\%s T\}$'%(ext_symb,ineq_symb))
                 ax.set_ylabel(r'$T$')
                 ax.set_title(f'{gcm} {expt}, init {datestr} at {lonlatstr}')
