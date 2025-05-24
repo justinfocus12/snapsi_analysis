@@ -701,9 +701,10 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
         'plot_t2m_sumstats_map':            0,
         'fit_gev':                          0,
         'plot_gevpar_map':                  0,
-        'compute_risk':                     0,
+        'compute_risk':                     1,
         'plot_risk_map':                    1,
         'compute_valatrisk':                0,
+        'plot_valatrisk_map':               0,
         'fit_gev_select_regions':           0,
         'plot_gev_select_regions':          0,
         })
@@ -867,24 +868,29 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
             gevpar = pipeline_base.fit_gev_exttemp(da_cgts_extt,ext_sign,method='PWM')
             gevpar.to_netcdf(gev_param_file)
     if todo['plot_gevpar_map']:
-        gevpar_file_cgt = join(reduced_data_dir,f'gevpar_e{expt}_i{fc_date_abbrv}.nc')
-        gevpar_cgt_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_cgt1xday.nc'))
-        gevpar_cgt = xr.open_dataarray(gevpar_file_cgt)
-        fmtfun = lambda date: dtlib.datetime.strftime(date, "%m/%d")
-        titles = [
-                r"%s, %s, FC %s, %s {T2M(t): %s<=t<=%s}$, location mu"%(gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date)),
-                r"%s, %s, FC %s, \%s {T2M(t): %s<=t<=%s}, scale sigma"%(gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date)),
-                r"%s, %s, FC %s, \%s {T2M(t): %s<=t<=%s\}, shape xi"%(gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date))
-                ]
-        fig,axes = pipeline_base.plot_gevpar_maps_flat(
-                gevpar_cgt,
-                titles,
-                cgs_levels[2],
-                ext_sign,
-                landmask=landmask,
-                param_bounds=param_bounds,
-                )
-        fig.savefig(join(figdir,f'gevpar_map_e{expt}_i{fc_date_abbrv}.png'), **pltkwargs)
+        for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
+            if min(cgs_level) <= 1:
+                continue
+            cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+            gevpar_file_cgts = join(reduced_data_dir,f'gevpar_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}.nc')
+            gevpar_cgts_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_cgt1xday_cgs{cgs_key}.nc'))
+            gevpar_cgts = xr.open_dataarray(gevpar_file_cgts)
+            fmtfun = lambda date: dtlib.datetime.strftime(date, "%m/%d")
+            titles = [
+                    r"%s, %s, FC %s, %s {T2M(t): %s$\leq t\leq$%s}, location $\mu$"%(gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date)),
+                    r"%s, %s, FC %s, %s {T2M(t): %s$\leq t\leq$%s}, scale $\sigma$"%(gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date)),
+                    r"%s, %s, FC %s, %s {T2M($t$): %s$\leq t\leq$%s}, shape $\xi$"%(gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date))
+                    ]
+            fig,axes = pipeline_base.plot_gevpar_maps_flat(
+                    gevpar_cgts,
+                    titles,
+                    cgs_levels[2],
+                    ext_sign,
+                    landmask=landmask if i_cgs_level==0 else None,
+                    param_bounds=param_bounds,
+                    )
+            fig.savefig(join(figdir,f'gevpar_map_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}.png'), **pltkwargs)
+            plt.close(fig)
         
     # ----------------- Compute risk w.r.t. ERA5 ---------------
     if todo['compute_risk']:
@@ -896,18 +902,18 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
             da_cgts_era5 = xr.open_dataset(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc'))['1xday'].sel(daily_stat=daily_stat)
             da_cgts_extt = ext_sign * (ext_sign*da_cgts.sel(time=slice(onset_date,term_date))).max(dim='time')
             da_cgts_extt_era5 = ext_sign * (ext_sign*da_cgts_era5.sel(time=slice(onset_date,term_date))).max(dim='time')
-            # Loat the computed GEV parameters
-            gevpar_file_cgt = join(reduced_data_dir,f'gevpar_e{expt}_i{fc_date_abbrv}.nc')
-            gevpar_cgt_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_cgt1xday.nc'))
-            gevpar_cgt = xr.open_dataarray(gevpar_file_cgt)
+            # Load the computed GEV parameters
+            gevpar_file_cgts = join(reduced_data_dir,f'gevpar_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}.nc')
+            gevpar_cgts_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_cgt1xday_cgs{cgs_key}.nc'))
+            gevpar_cgts = xr.open_dataarray(gevpar_file_cgts)
             # Specify the output file for risk
             risk_file = join(reduced_data_dir,f'risk_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}.nc')
             # compute the risk
             risk = pipeline_base.compute_risk(
                     da_cgts_extt,
                     da_cgts_extt_era5.sel(member=event_year),
-                    gevpar_cgt,
-                    gevpar_cgt_era5,
+                    gevpar_cgts,
+                    gevpar_cgts_era5,
                     locsign=ext_sign)
             risk.to_netcdf(risk_file)
     if todo['plot_risk_map']: 
@@ -919,8 +925,8 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
             risk = xr.open_dataarray(risk_file)
             fig,ax = pipeline_base.plot_risk_map(risk, locsign=ext_sign)
             fmtfun = lambda date: dtlib.datetime.strftime(date, "%m/%d")
-            ineq_symb = r"geq" if 1==ext_sign else r"leq"
-            title = r'%s, %s, FC %s, P[%s {T2M(t): %s<=t<=%s} %s ERA5]'%(gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date), ineq_symb),
+            ineq_symb = "\u2265" if 1==ext_sign else "\u2264"
+            title = "%s, %s, FC %s, P{%s{T2M(t):%s\u2264t\u2264%s}%s(ERA5 value)"%(gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date), ineq_symb)
             ax.set_title(title, loc='left')
             fig.savefig(join(figdir,f'risk_map_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
             plt.close(fig)
@@ -929,28 +935,42 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     if todo['compute_valatrisk']:
         for (i_cgs_level,cgs_level) in enumerate(cgs_levels): 
             cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
-            risk_valatrisk_file = join(reduced_data_dir,f'risk_valatrisk_e{expt}_i{init}_cgs{cgs_key}.nc')
-            dskwargs = dict(daily_stat=daily_stat,drop=True)
+            # Load the pre-computed stuff
+            ens_file_cgts = join(reduced_data_dir,f't2m_e{expt}_i{fc_date_abbrv}_cgt1day_cgs{cgs_key}.nc')
+            da_cgts = xr.open_dataset(ens_file_cgts)['1xday'].sel(daily_stat=daily_stat)
+            da_cgts_era5 = xr.open_dataset(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc'))['1xday'].sel(daily_stat=daily_stat)
+            da_cgts_extt = ext_sign * (ext_sign*da_cgts.sel(time=slice(onset_date,term_date))).max(dim='time')
+            da_cgts_extt_era5 = ext_sign * (ext_sign*da_cgts_era5.sel(time=slice(onset_date,term_date))).max(dim='time')
+            gevpar_file_cgt = join(reduced_data_dir,f'gevpar_e{expt}_i{fc_date_abbrv}.nc')
+            gevpar_cgt_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_cgt1xday.nc'))
+            gevpar_cgt = xr.open_dataarray(gevpar_file_cgt)
+            # Specify output file 
+            risk_valatrisk_file = join(reduced_data_dir,f'risk_valatrisk_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}.nc')
             risk_valatrisk = pipeline_base.compute_valatrisk(
-                    ds_cgts_extt, 
-                    ds_cgts_extt_era5.sel(member=event_year, **dskwargs),
-                    gevpar.sel(**dskwargs),
-                    gevpar_era5.sel(**dskwargs), 
+                    da_cgts_extt, 
+                    da_cgts_extt_era5.sel(member=event_year),
+                    gevpar_cgt,
+                    gevpar_cgt_era5,
                     locsign=ext_sign)
-            #pdb.set_trace()
             risk_valatrisk.to_netcdf(risk_valatrisk_file)
             print(f'Computed valatrisk')
-        else:
-            risk_valatrisk = xr.open_dataarray(risk_valatrisk_file)
-            print(f'Loaded valatrisk')
-
-
-                    
+            pdb.set_trace()
+    if todo['plot_valatrisk_map']:
+        # TODO
+        pass
+    if todo['fit_gev_select_regions']:
         # Do a more thorough uncertainty quantification at a specific site or region, using bootstrap analysis and goodness-of-fit etc. Maybe parallelize over all sites too
         print(f'Starting loop over select regions')
         print(f'{select_regions[i_cgs_level] = }')
 
+
         for (i_lon,i_lat) in select_regions[i_cgs_level]:
+            # Load the ERA5 GEV results  
+            print(f'About to load era5 stuff')
+            exttemp_levels_reg_era5 = np.load(join(reduced_data_dir_era5,f'exttemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
+            gevpar_reg_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
+            print(f'{exttemp_levels_reg_era5.shape = }')
+            print(f'{gevpar_reg_era5.shape = }')
             print(f'{i_lon = }, {i_lat = }')
             exttemp = ds_cgts_extt.sel(daily_stat=daily_stat).isel(lon=i_lon,lat=i_lat).to_numpy()
             exttemp_era5 = ds_cgts_extt_era5.sel(daily_stat=daily_stat).isel(lon=i_lon,lat=i_lat)
@@ -962,19 +982,11 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
             if cgs_level == (1,1):
                 lonlatstr = r'%s (whole region)'%(lonlatstr)
 
-            if todo['fit_gev_select_regions']:
-                gevpar_reg,exttemp_levels_reg = pipeline_base.fit_gev_exttemp_1d_uq(exttemp,risk_levels, ext_sign, method='PWM', n_boot=n_boot)
-                gevpar_reg.to_netcdf(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
-                np.save(join(reduced_data_dir,f'exttemp_levels_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'), exttemp_levels_reg)
-            else:
-                exttemp_levels_reg = np.load(join(reduced_data_dir,f'exttemp_levels_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
-                gevpar_reg = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
-                # Also load the ERA5 data 
-            print(f'About to load era5 stuff')
-            exttemp_levels_reg_era5 = np.load(join(reduced_data_dir_era5,f'exttemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
-            gevpar_reg_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
-            print(f'{exttemp_levels_reg_era5.shape = }')
-            print(f'{gevpar_reg_era5.shape = }')
+            gevpar_reg,exttemp_levels_reg = pipeline_base.fit_gev_exttemp_1d_uq(exttemp,risk_levels, ext_sign, method='PWM', n_boot=n_boot)
+            gevpar_reg.to_netcdf(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
+            np.save(join(reduced_data_dir,f'exttemp_levels_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'), exttemp_levels_reg)
+            exttemp_levels_reg = np.load(join(reduced_data_dir,f'exttemp_levels_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
+            gevpar_reg = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
 
 
             if todo['plot_gev_select_regions']:

@@ -190,11 +190,11 @@ def reduce_era5(which_ssw):
         'onset_date_sensitivity_analysis':  0,
         'plot_sumstats_map':                0,
         'fit_gev':                          0,
-        'plot_gevpar_map':                  0,
+        'plot_gevpar_map':                  1,
         'compute_risk':                     0,
         'plot_risk_map':                    0,
         'fit_gev_select_regions':           0,
-        'plot_gev_select_regions':          1,
+        'plot_gev_select_regions':          0,
         })
     (
         years,
@@ -268,9 +268,9 @@ def reduce_era5(which_ssw):
     if todo['plot_sumstats_map']:
         fmtfun = lambda date: dtlib.datetime.strftime(date, "%m/%d")
         titles = [
-                r"ERA5 $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-%d mean"%(ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1]),
-                r"ERA5 $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-%d std. dev."%(ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1]),
-                r"ERA5 $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d standardized anomaly"%(ext_symb, fmtfun(onset_date), fmtfun(term_date), event_year)
+                r"ERA5 %s {T2M($t$): %s$\leq t\leq$%s}, %d-%d mean"%(ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1]),
+                r"ERA5 %s {T2M($t$): %s$\leq t\leq$%s}, %d-%d std. dev."%(ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1]),
+                r"ERA5 %s {T2M($t$): %s$\leq t\leq$%s}, %d standardized anomaly"%(ext_symb, fmtfun(onset_date), fmtfun(term_date), event_year)
                 ]
         fig,axes = pipeline_base.plot_sumstats_maps_flat(
                 *((da_cgt_extt,)*2),
@@ -302,25 +302,29 @@ def reduce_era5(which_ssw):
         # ----------------- Compute risk w.r.t. the event year ---------------
     if todo['plot_gevpar_map']:
         # First the non-coarse-grained version
-        gevpar_file_cgt = join(reduced_data_dir,f'gevpar_cgt1xday.nc')
-        gevpar_cgt = xr.open_dataarray(gevpar_file_cgt)
-        fmtfun = lambda date: dtlib.datetime.strftime(date, "%m/%d")
-        titles = [
-                r"ERA5 $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-%d location $\mu$"%(ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1]),
-                r"ERA5 $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-%d scale $\sigma$"%(ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1]),
-                r"ERA5 $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-%d shape $\xi$"%(ext_symb, fmtfun(onset_date), fmtfun(term_date), years[0], years[-1])
-                ]
-        # TODO plot a map for each level of coarse-graining, not just the full un-coarsened map 
-        fig,axes = pipeline_base.plot_gevpar_maps_flat(
-                gevpar_cgt,
-                titles, 
-                cgs_levels[2],
-                ext_sign,
-                landmask=landmask,
-                param_bounds=param_bounds,
-                )
-        fig.savefig(join(figdir,f'gevpar_map_{daily_stat}.png'), **pltkwargs)
-        plt.close(fig)
+        for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
+            if min(cgs_level) <= 1:
+                continue
+            cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+            gevpar_file_cgts = join(reduced_data_dir,f'gevpar_cgt1xday_cgs{cgs_key}.nc')
+            gevpar_cgts = xr.open_dataarray(gevpar_file_cgts)
+            fmtfun = lambda date: dtlib.datetime.strftime(date, "%m/%d")
+            titles = [
+                    r"ERA5, %s {T2M(t): %s$\leq t\leq$%s}, location $\mu$"%(ext_symb, fmtfun(onset_date), fmtfun(term_date)),
+                    r"ERA5, %s {T2M(t): %s$\leq t\leq$%s}, scale $\sigma$"%(ext_symb, fmtfun(onset_date), fmtfun(term_date)),
+                    r"ERA5, %s {T2M($t$): %s$\leq t\leq$%s}, shape $\xi$"%(ext_symb, fmtfun(onset_date), fmtfun(term_date))
+                    ]
+            # TODO plot a map for each level of coarse-graining, not just the full un-coarsened map 
+            fig,axes = pipeline_base.plot_gevpar_maps_flat(
+                    gevpar_cgts,
+                    titles, 
+                    cgs_levels[2],
+                    ext_sign,
+                    landmask=landmask if i_cgs_level==0 else None,
+                    param_bounds=param_bounds,
+                    )
+            fig.savefig(join(figdir,f'gevpar_map_{daily_stat}_cgs{cgs_key}.png'), **pltkwargs)
+            plt.close(fig)
     if todo['compute_risk']:
         for i_cgs_level,cgs_level in enumerate(cgs_levels):
             cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])

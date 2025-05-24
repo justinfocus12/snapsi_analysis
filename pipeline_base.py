@@ -158,8 +158,8 @@ def plot_sumstats_maps_flat(da_cgt_extt, da_cgt_extt_ref, landmask, mem_special,
     Nlon = len(lons)
     Nlat = len(lats)
     lon_extent = lons[-1]-lons[0]+dlon
-    lat_extent = lats[-1]-lats[0]+dlon
-    aspect = lon_extent/lat_extent
+    lat_extent = lats[-1]-lats[0]+dlat
+    aspect = lon_extent/lat_extent * np.cos(np.deg2rad((lats[0]+lats[-1])/2))
 
     masksea = lambda da: xr.where(landmask>0, da, np.nan)
 
@@ -178,41 +178,53 @@ def plot_sumstats_maps_flat(da_cgt_extt, da_cgt_extt_ref, landmask, mem_special,
         bounds_loc,bounds_scale = list(map(utils.padded_bounds, (ext_sign*da_cgt_extt_ensmean_ref,da_cgt_extt_ensstd_ref)))
     bounds_special = utils.padded_bounds(da_cgt_extt_special_ref)
 
-    fig,axes = plt.subplots(figsize=(3*aspect,3*3), nrows=3, gridspec_kw={'hspace': 0.2}, subplot_kw={'projection': ccrs.PlateCarree()})
+    fig,axes = plt.subplots(figsize=(3*aspect,3*3), nrows=3, gridspec_kw={'hspace': 0.3}, subplot_kw={'projection': ccrs.Mercator(central_longitude=(lons[0]+lons[-1])/2)})
     axmean,axstd,axspecial = axes
 
+    pcmargs = dict(
+            x='lon',y='lat', transform=ccrs.PlateCarree(),
+            add_labels=False,
+            #norm=mplcolors.LogNorm(vmin=0.2,vmax=5),
+            cbar_kwargs=dict({
+                'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 
+                })
+            )
+
+    pcmargs['cbar_kwargs']['label'] = '[K]'
     xr.plot.pcolormesh(
             da_cgt_extt_ensmean,
             cmap=plt.cm.RdYlBu_r,
             vmin = np.min(ext_sign*bounds_loc), vmax=np.max(ext_sign*bounds_loc),
-            x='lon', y='lat', ax=axmean,
-            cbar_kwargs={'label': '[K]'}
+            ax=axmean,
+            **pcmargs,
             )
     vmin = np.min(ext_sign*bounds_loc)
     vmax=np.max(ext_sign*bounds_loc)
     xr.plot.pcolormesh(
             da_cgt_extt_ensstd,
-            x='lon', y='lat', ax=axstd, 
+            ax=axstd, 
             cmap=plt.cm.viridis,
             vmin = 0, vmax=np.max(bounds_scale[1]),
-            cbar_kwargs={'label': '[K]'}
+            **pcmargs,
             )
     xr.plot.pcolormesh(
             da_cgt_extt_special,
             cmap=plt.cm.RdYlBu_r,
             vmin=-np.max(np.abs(bounds_special)), vmax=np.max(np.abs(bounds_special)),
-            x='lon', y='lat', ax=axspecial, 
-            cbar_kwargs={'label': '[K]'}
+            ax=axspecial, 
+            **pcmargs,
             )
     for (i_ax,ax) in enumerate(axes):
         #ax.tick_params(axis='x',which='both',labelbottom=True)
         #ax.set_ylabel("Lat")
-        ax.coastlines()
         ax.add_feature(cfeature.BORDERS, linewidth=1.0, edgecolor='purple')
+        ax.coastlines(color='black')
         gl = ax.gridlines(draw_labels=True, color="black")
         gl.top_labels = gl.right_labels = False
-        gl.xlocator = ticker.FixedLocator(np.linspace(lons[0]-dlon/2, lons[-1]+dlon/2, cgs_level_2show[0]+1).astype(int))
-        gl.ylocator = ticker.FixedLocator(np.linspace(lats[0]-dlat/2, lats[-1]+dlat/2, cgs_level_2show[1]+1).astype(int))
+        gl.xlocator = ticker.FixedLocator(np.linspace(lons[0]+dlon/2, lons[-1]-dlon/2, 10))
+        gl.ylocator = ticker.FixedLocator(np.linspace(lats[0]+dlat/2, lats[-1]-dlat/2, 2))
+        gl.xformatter = LongitudeFormatter(number_format='.0f')
+        gl.yformatter = LatitudeFormatter(number_format='.0f')
         ax.set_title("")
         ax.set_title(titles[i_ax], loc='left')
     return fig,axes
@@ -250,6 +262,7 @@ def plot_sumstats_map(ds,loc_vmin,loc_vmax,scale_vmin,scale_vmax):
 
 def compute_risk(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
     Nlon,Nlat = (ds_cgts[d].size for d in ('lon','lat'))
+    assert gevpar['lon'].size == gevpar_ref['lon'].size == Nlon and gevpar['lat'].size == gevpar_ref['lat'].size == Nlat
     print(f'{gevpar.dims = }')
     print(f'{gevpar_ref.dims = }')
     print(f'{gevpar.param = }')
@@ -298,7 +311,7 @@ def plot_risk_map(risk, locsign=1, projection='mercator', **other_pcmargs):
     maxlon = 1.5*lons[-1]-0.5*lons[-2]
     minlat = 1.5*lats[0]-0.5*lats[1]
     maxlat = 1.5*lats[-1]-0.5*lats[-2]
-    aspect = lon_extent/lat_extent * np.cos(np.deg2rad((lons[0]+lons[-1])/2))
+    aspect = lon_extent/lat_extent * np.cos(np.deg2rad((lats[0]+lats[-1])/2))
     # the reference ds_cgts is ERA5, and should only have one year asociated with it 
     if projection == 'orthographic':
         subplot_kw = {'projection': ccrs.Orthographic(central_longitude=clon,central_latitude=clat)}
@@ -416,8 +429,8 @@ def plot_gevpar_maps_flat(gevpar, titles, cgs_level_2show, ext_sign, landmask=No
     Nlon = len(lons)
     Nlat = len(lats)
     lon_extent = lons[-1]-lons[0]+dlon
-    lat_extent = lats[-1]-lats[0]+dlon
-    aspect = lon_extent/lat_extent * np.cos(np.deg2rad((lons[0]+lons[-1])/2))
+    lat_extent = lats[-1]-lats[0]+dlat
+    aspect = lon_extent/lat_extent * np.cos(np.deg2rad((lats[0]+lats[-1])/2))
 
     def masksea(da):
         if landmask is None:
@@ -432,40 +445,50 @@ def plot_gevpar_maps_flat(gevpar, titles, cgs_level_2show, ext_sign, landmask=No
     else:
         bounds_loc,bounds_scale,bounds_shape = list(map(utils.padded_bounds, (gevpar.sel(param=p) for p in ['loc','scale','shape'])))
 
-    fig,axes = plt.subplots(figsize=(3*aspect,3*3), nrows=3, gridspec_kw={'hspace': 0.2}, subplot_kw={'projection': ccrs.PlateCarree()})
+    fig,axes = plt.subplots(figsize=(3*aspect,3*3), nrows=3, gridspec_kw={'hspace': 0.3}, subplot_kw={'projection': ccrs.Mercator(central_longitude=(lons[0]+lons[-1])/2)})
     axloc,axscale,axshape = axes
 
+    pcmargs = dict(
+            x='lon',y='lat', transform=ccrs.PlateCarree(),
+            add_labels=False,
+            #norm=mplcolors.LogNorm(vmin=0.2,vmax=5),
+            cbar_kwargs=dict({
+                'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 
+                })
+            )
+
+    pcmargs['cbar_kwargs']['label'] = '[K]'
     xr.plot.pcolormesh(
             masksea(ext_sign*gevpar.sel(param='loc')),
             cmap=plt.cm.RdYlBu_r,
             vmin = np.min(ext_sign*bounds_loc), vmax=np.max(ext_sign*bounds_loc),
-            x='lon', y='lat', ax=axloc, 
-            cbar_kwargs={'label': '[K]'}
+            ax=axloc, 
+            **pcmargs,
             )
     xr.plot.pcolormesh(
             masksea(gevpar.sel(param='scale')),
-            x='lon', y='lat', ax=axscale,
+            ax=axscale,
             cmap=plt.cm.viridis,
             vmin = 0, vmax=np.max(bounds_scale[1]), 
-            cbar_kwargs={'label': '[K]'}
+            **pcmargs,
             )
+    pcmargs['cbar_kwargs']['label'] = ''
     xr.plot.pcolormesh(
             masksea(gevpar.sel(param='shape')),
             cmap=plt.cm.RdYlBu_r,
             vmin=-np.max(np.abs(bounds_shape)), vmax=np.max(np.abs(bounds_shape)),
-            x='lon', y='lat', ax=axshape,
-            cbar_kwargs={'label': ''}
+            ax=axshape,
+            **pcmargs,
             )
     for (i_ax,ax) in enumerate(axes):
-        #ax.tick_params(axis='x',which='both',labelbottom=True)
-        #ax.set_ylabel("Lat")
-        ax.coastlines()
         ax.add_feature(cfeature.BORDERS, linewidth=1.0, edgecolor='purple')
+        ax.coastlines(color='black')
         gl = ax.gridlines(draw_labels=True, color="black")
         gl.top_labels = gl.right_labels = False
-        gl.xlocator = ticker.FixedLocator(np.linspace(lons[0]-dlon/2, lons[-1]+dlon/2, cgs_level_2show[0]+1).astype(int))
-        gl.ylocator = ticker.FixedLocator(np.linspace(lats[0]-dlat/2, lats[-1]+dlat/2, cgs_level_2show[1]+1).astype(int))
-        ax.set_title("")
+        gl.xlocator = ticker.FixedLocator(np.linspace(lons[0]+dlon/2, lons[-1]-dlon/2, 10))
+        gl.ylocator = ticker.FixedLocator(np.linspace(lats[0]+dlat/2, lats[-1]-dlat/2, 2))
+        gl.xformatter = LongitudeFormatter(number_format='.0f')
+        gl.yformatter = LatitudeFormatter(number_format='.0f')
         ax.set_title(titles[i_ax], loc='left')
     return fig,axes
 
