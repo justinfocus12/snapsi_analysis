@@ -190,11 +190,11 @@ def reduce_era5(which_ssw):
         'onset_date_sensitivity_analysis':  0,
         'plot_sumstats_map':                0,
         'fit_gev':                          0,
-        'plot_gevpar_map':                  1,
+        'plot_gevpar_map':                  0,
         'compute_risk':                     0,
         'plot_risk_map':                    0,
-        'fit_gev_select_regions':           0,
-        'plot_gev_select_regions':          0,
+        'fit_gev_select_regions':           1,
+        'plot_gev_select_regions':          1,
         })
     (
         years,
@@ -329,7 +329,7 @@ def reduce_era5(which_ssw):
         for i_cgs_level,cgs_level in enumerate(cgs_levels):
             cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
             ens_file_cgts = join(reduced_data_dir,f't2m_cgt1day_cgs{cgs_key}.nc')
-            da_cgts = xr.open_dataset(ens_file_cgts)['1xday']
+            da_cgts = xr.open_dataset(ens_file_cgts)['1xday'].sel(daily_stat=daily_stat)
             da_cgts_extt = ext_sign * (ext_sign*da_cgts.sel(time=slice(onset_date,term_date))).max(dim='time')
             gevpar_file_cgts = join(reduced_data_dir,f'gevpar_cgt1xday_cgs{cgs_key}.nc')
             gevpar = xr.open_dataarray(gevpar_file_cgts)
@@ -363,11 +363,11 @@ def reduce_era5(which_ssw):
         for i_cgs_level,cgs_level in enumerate(cgs_levels):
             cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
             ens_file_cgts = join(reduced_data_dir,f't2m_cgt1day_cgs{cgs_key}.nc')
-            da_cgts = xr.open_dataset(ens_file_cgts)['1xday']
+            da_cgts = xr.open_dataset(ens_file_cgts)['1xday'].sel(daily_stat=daily_stat)
             da_cgts_extt = ext_sign * (ext_sign*da_cgts.sel(time=slice(onset_date,term_date))).max(dim='time')
 
             for (i_lon,i_lat) in select_regions[i_cgs_level]:
-                exttemp = da_cgts_extt.sel(daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).to_numpy()
+                exttemp = da_cgts_extt.isel(lon=i_lon,lat=i_lat).to_numpy()
                 gevpar_reg,exttemp_levels_reg = pipeline_base.fit_gev_exttemp_1d_uq(exttemp,risk_levels,ext_sign,method='PWM')
                 gevpar_reg.to_netcdf(join(reduced_data_dir,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
                 np.save(join(reduced_data_dir,f'exttemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'), exttemp_levels_reg)
@@ -378,12 +378,12 @@ def reduce_era5(which_ssw):
                 continue
             cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
             ens_file_cgts = join(reduced_data_dir,f't2m_cgt1day_cgs{cgs_key}.nc')
-            da_cgts = xr.open_dataset(ens_file_cgts)['1xday']
+            da_cgts = xr.open_dataset(ens_file_cgts)['1xday'].sel(daily_stat=daily_stat)
             da_cgts_extt = ext_sign * (ext_sign*da_cgts.sel(time=slice(onset_date,term_date))).max(dim='time')
             # Location labeling 
             lon_blocksize,lat_blocksize = ((event_region[d].stop - event_region[d].start)/cgs_level[i_d] for (i_d,d) in enumerate(('lon','lat')))
             for (i_lon,i_lat) in select_regions[i_cgs_level]:
-                exttemp = da_cgts_extt.sel(daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).to_numpy()
+                exttemp = da_cgts_extt.isel(lon=i_lon,lat=i_lat).to_numpy()
                 gevpar_reg = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
                 exttemp_levels_reg = np.load(join(reduced_data_dir,f'exttemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy')) 
                 center_lon = event_region['lon'].start + (i_lon+0.5)*lon_blocksize

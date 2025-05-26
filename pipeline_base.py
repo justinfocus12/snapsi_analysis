@@ -298,8 +298,8 @@ def compute_valatrisk(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
     # TODO obtain a whole range of quantile shifts to plot as a function of probability ("value at risk"? )
     return risk_valatrisk
 
-def plot_risk_map(risk, locsign=1, projection='mercator', **other_pcmargs):
-    lons,lats = (risk[c].to_numpy() for c in ('lon','lat'))
+def plot_risk_or_valatrisk_map(riskorvar, is_risk=False, locsign=1, projection='mercator', **other_pcmargs):
+    lons,lats = (riskorvar[c].to_numpy() for c in ('lon','lat'))
     clon,clat = np.mean(lons),np.mean(lats)
     dlon = lons[1]-lons[0]
     dlat = lats[1]-lats[0]
@@ -322,19 +322,28 @@ def plot_risk_map(risk, locsign=1, projection='mercator', **other_pcmargs):
         return
     pcmargs = dict(
             x='lon',y='lat', transform=ccrs.PlateCarree(),
-            cmap=plt.cm.RdYlBu if locsign==-1 else plt.cm.RdYlBu_r,
-            vmin=0.0, vmax=1.0,
             add_labels=False,
-            #norm=mplcolors.LogNorm(vmin=0.2,vmax=5),
             cbar_kwargs=dict({
                 'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 
-                'ticks': [0, 0.25, 0.5, 0.75, 1], 
-                'format': ticker.FixedFormatter(['0', '0.25', '0.5', '0.75', '1'])
                 })
             )
+    if is_risk:
+        pcmargs.update(dict(
+            cmap=plt.cm.RdYlBu if locsign==-1 else plt.cm.RdYlBu_r,
+            vmin=0.0, vmax=1.0,
+            #norm=mplcolors.LogNorm(vmin=0.2,vmax=5),
+            ))
+        pcmargs['cbar_kwargs'].update(dict({
+            'ticks': [0, 0.25, 0.5, 0.75, 1], 
+            'format': ticker.FixedFormatter(['0', '0.25', '0.5', '0.75', '1'])
+            }))
+    else:
+        pcmargs.update(dict(
+            cmap=plt.cm.RdYlBu_r if locsign==-1 else plt.cm.RdYlBu,
+            ))
     fig,ax = plt.subplots(figsize=(3*aspect,3), subplot_kw=subplot_kw)
     pcmargs.update(other_pcmargs)
-    xr.plot.pcolormesh(risk, **pcmargs, ax=ax)
+    xr.plot.pcolormesh(riskorvar, **pcmargs, ax=ax)
     xticks = np.linspace(minlon,maxlon,5)
     xticklabels = [r"$%.0f^\circ$"%(lon) for lon in xticks] 
     #ax.set_xticks(xticks)

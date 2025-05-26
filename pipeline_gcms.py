@@ -701,12 +701,12 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
         'plot_t2m_sumstats_map':            0,
         'fit_gev':                          0,
         'plot_gevpar_map':                  0,
-        'compute_risk':                     1,
-        'plot_risk_map':                    1,
+        'compute_risk':                     0,
+        'plot_risk_map':                    0,
         'compute_valatrisk':                0,
         'plot_valatrisk_map':               0,
         'fit_gev_select_regions':           0,
-        'plot_gev_select_regions':          0,
+        'plot_gev_select_regions':          1,
         })
     _,_,fc_dates,_,_ = gcm_multiparams(which_ssw)
     (
@@ -923,7 +923,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
             cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
             risk_file = join(reduced_data_dir,f'risk_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}.nc')
             risk = xr.open_dataarray(risk_file)
-            fig,ax = pipeline_base.plot_risk_map(risk, locsign=ext_sign)
+            fig,ax = pipeline_base.plot_risk_or_valatrisk_map(risk, is_risk=True, locsign=ext_sign)
             fmtfun = lambda date: dtlib.datetime.strftime(date, "%m/%d")
             ineq_symb = "\u2265" if 1==ext_sign else "\u2264"
             title = "%s, %s, FC %s, P{%s{T2M(t):%s\u2264t\u2264%s}%s(ERA5 value)"%(gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date), ineq_symb)
@@ -941,66 +941,97 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
             da_cgts_era5 = xr.open_dataset(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc'))['1xday'].sel(daily_stat=daily_stat)
             da_cgts_extt = ext_sign * (ext_sign*da_cgts.sel(time=slice(onset_date,term_date))).max(dim='time')
             da_cgts_extt_era5 = ext_sign * (ext_sign*da_cgts_era5.sel(time=slice(onset_date,term_date))).max(dim='time')
-            gevpar_file_cgt = join(reduced_data_dir,f'gevpar_e{expt}_i{fc_date_abbrv}.nc')
-            gevpar_cgt_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_cgt1xday.nc'))
-            gevpar_cgt = xr.open_dataarray(gevpar_file_cgt)
+            gevpar_cgts_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_cgt1xday_cgs{cgs_key}.nc'))
+            gevpar_cgts = xr.open_dataarray(join(reduced_data_dir,f'gevpar_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}.nc'))
             # Specify output file 
             risk_valatrisk_file = join(reduced_data_dir,f'risk_valatrisk_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}.nc')
             risk_valatrisk = pipeline_base.compute_valatrisk(
                     da_cgts_extt, 
                     da_cgts_extt_era5.sel(member=event_year),
-                    gevpar_cgt,
-                    gevpar_cgt_era5,
+                    gevpar_cgts,
+                    gevpar_cgts_era5,
                     locsign=ext_sign)
             risk_valatrisk.to_netcdf(risk_valatrisk_file)
             print(f'Computed valatrisk')
-            pdb.set_trace()
     if todo['plot_valatrisk_map']:
-        # TODO
-        pass
+        for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
+            if min(cgs_level) <= 1:
+                continue
+            cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+            # Plot a map of the severity occurring at the same frequency that 2018 appeared within ERA5
+            fmtfun = lambda date: dtlib.datetime.strftime(date, "%m/%d")
+            risk_valatrisk = xr.open_dataarray(join(reduced_data_dir,f'risk_valatrisk_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}.nc'))
+            fig,ax = pipeline_base.plot_risk_or_valatrisk_map(risk_valatrisk.sel(quantity='valatrisk',drop=True), is_risk=False, locsign=ext_sign)
+            title = "%s, %s, FC %s, severity [K] at ERA5-equivalent risk"%(gcm, expt, fmtfun(fc_date),)
+            ax.set_title(title, loc='left')
+            fig.savefig(join(figdir,f'valatrisk_map_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
+            plt.close(fig)
+
     if todo['fit_gev_select_regions']:
         # Do a more thorough uncertainty quantification at a specific site or region, using bootstrap analysis and goodness-of-fit etc. Maybe parallelize over all sites too
         print(f'Starting loop over select regions')
-        print(f'{select_regions[i_cgs_level] = }')
+
+        for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
+            cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+            ens_file_cgts = join(reduced_data_dir,f't2m_e{expt}_i{fc_date_abbrv}_cgt1day_cgs{cgs_key}.nc')
+            da_cgts = xr.open_dataset(ens_file_cgts)['1xday'].sel(daily_stat=daily_stat)
+            da_cgts_era5 = xr.open_dataset(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc'))['1xday'].sel(daily_stat=daily_stat)
+            da_cgts_extt = ext_sign * (ext_sign*da_cgts.sel(time=slice(onset_date,term_date))).max(dim='time')
+            da_cgts_extt_era5 = ext_sign * (ext_sign*da_cgts_era5.sel(time=slice(onset_date,term_date))).max(dim='time')
+            lon_blocksize,lat_blocksize = ((event_region[d].stop - event_region[d].start)/cgs_level[i_d] for (i_d,d) in enumerate(('lon','lat')))
+            for (i_lon,i_lat) in select_regions[i_cgs_level]:
+                # Load the ERA5 GEV results  
+                print(f'About to load era5 stuff')
+                exttemp_levels_reg_era5 = np.load(join(reduced_data_dir_era5,f'exttemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
+                gevpar_reg_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
+                print(f'{exttemp_levels_reg_era5.shape = }')
+                print(f'{gevpar_reg_era5.shape = }')
+                print(f'{i_lon = }, {i_lat = }')
+                exttemp = da_cgts_extt.isel(lon=i_lon,lat=i_lat).to_numpy()
+                exttemp_era5 = da_cgts_extt_era5.isel(lon=i_lon,lat=i_lat)
+                if not (np.all(np.isfinite(exttemp)) and np.all(np.isfinite(exttemp_era5))):
+                    continue
+                center_lon = event_region['lon'].start + (i_lon+0.5)*lon_blocksize
+                center_lat = event_region['lat'].start + (i_lat+0.5)*lat_blocksize
+                lonlatstr = r'$\lambda=%d\pm%d,\phi=%d\pm%d$'%(center_lon,lon_blocksize/2,center_lat,lat_blocksize/2)
+                exttemp_era5 = exttemp_era5.to_numpy()
+                if cgs_level == (1,1):
+                    lonlatstr = r'%s (whole region)'%(lonlatstr)
+
+                gevpar_reg,exttemp_levels_reg = pipeline_base.fit_gev_exttemp_1d_uq(exttemp,risk_levels, ext_sign, method='PWM', n_boot=n_boot)
+                gevpar_reg.to_netcdf(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
+                np.save(join(reduced_data_dir,f'exttemp_levels_reg_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'), exttemp_levels_reg)
+                #exttemp_levels_reg = np.load(join(reduced_data_dir,f'exttemp_levels_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
+                #gevpar_reg = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
 
 
-        for (i_lon,i_lat) in select_regions[i_cgs_level]:
-            # Load the ERA5 GEV results  
-            print(f'About to load era5 stuff')
-            exttemp_levels_reg_era5 = np.load(join(reduced_data_dir_era5,f'exttemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
-            gevpar_reg_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
-            print(f'{exttemp_levels_reg_era5.shape = }')
-            print(f'{gevpar_reg_era5.shape = }')
-            print(f'{i_lon = }, {i_lat = }')
-            exttemp = ds_cgts_extt.sel(daily_stat=daily_stat).isel(lon=i_lon,lat=i_lat).to_numpy()
-            exttemp_era5 = ds_cgts_extt_era5.sel(daily_stat=daily_stat).isel(lon=i_lon,lat=i_lat)
-            if not (np.all(np.isfinite(exttemp)) and np.all(np.isfinite(exttemp_era5))):
-                continue
-            center_lon,center_lat = exttemp_era5.lon.item(),exttemp_era5.lat.item()
-            exttemp_era5 = exttemp_era5.to_numpy()
-            lonlatstr = r'$\lambda=%d\pm%d,\phi=%d\pm%d$'%(center_lon,lon_blocksize/2,center_lat,lat_blocksize/2)
-            if cgs_level == (1,1):
-                lonlatstr = r'%s (whole region)'%(lonlatstr)
-
-            gevpar_reg,exttemp_levels_reg = pipeline_base.fit_gev_exttemp_1d_uq(exttemp,risk_levels, ext_sign, method='PWM', n_boot=n_boot)
-            gevpar_reg.to_netcdf(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
-            np.save(join(reduced_data_dir,f'exttemp_levels_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'), exttemp_levels_reg)
-            exttemp_levels_reg = np.load(join(reduced_data_dir,f'exttemp_levels_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
-            gevpar_reg = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
-
-
-            if todo['plot_gev_select_regions']:
+    if todo['plot_gev_select_regions']:
+        for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
+            cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+            ens_file_cgts = join(reduced_data_dir,f't2m_e{expt}_i{fc_date_abbrv}_cgt1day_cgs{cgs_key}.nc')
+            da_cgts = xr.open_dataset(ens_file_cgts)['1xday'].sel(daily_stat=daily_stat)
+            da_cgts_era5 = xr.open_dataset(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc'))['1xday'].sel(daily_stat=daily_stat)
+            da_cgts_extt = ext_sign * (ext_sign*da_cgts.sel(time=slice(onset_date,term_date))).max(dim='time')
+            da_cgts_extt_era5 = ext_sign * (ext_sign*da_cgts_era5.sel(time=slice(onset_date,term_date))).max(dim='time')
+            lon_blocksize,lat_blocksize = ((event_region[d].stop - event_region[d].start)/cgs_level[i_d] for (i_d,d) in enumerate(('lon','lat')))
+            for (i_lon,i_lat) in select_regions[i_cgs_level]:
+                exttemp = da_cgts_extt.isel(lon=i_lon,lat=i_lat).to_numpy()
+                exttemp_era5 = da_cgts_extt_era5.isel(lon=i_lon,lat=i_lat).to_numpy()
+                gevpar_reg = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
+                exttemp_levels_reg = np.load(join(reduced_data_dir,f'exttemp_levels_reg_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
+                gevpar_reg_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
+                exttemp_levels_reg_era5 = np.load(join(reduced_data_dir_era5,f'exttemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
                 fig,axes = plt.subplots(ncols=2,figsize=(12,6),sharey=True)
 
                 # Plot timeseries on right
                 ax = axes[1]
-                for i_mem in range(ds_cgts.member.size):
-                    temp_gcm = ds_cgts.sel(daily_stat=daily_stat).isel(lat=i_lat,lon=i_lon,member=i_mem)
+                for i_mem in range(da_cgts.member.size):
+                    temp_gcm = da_cgts.isel(lat=i_lat,lon=i_lon,member=i_mem)
                     #print(f'{temp_gcm.time = }')
                     ax.plot(np.arange(len(temp_gcm)),temp_gcm.values)
                     ax.axhline(ext_sign * np.max(ext_sign*temp_gcm.values),color='red',linestyle='--')
-                for i_mem in range(ds_cgts_era5.member.size):
-                    temp_era5 = ds_cgts_era5.sel(daily_stat=daily_stat).isel(lat=i_lat,lon=i_lon,member=i_mem).to_numpy()
+                for i_mem in range(da_cgts_era5.member.size):
+                    temp_era5 = da_cgts_era5.isel(lat=i_lat,lon=i_lon,member=i_mem).to_numpy()
                     ax.plot(np.arange(len(temp_era5)), temp_era5,color='black')
                     ax.axhline(ext_sign * np.max(ext_sign*temp_era5),color='black',linestyle='--')
                 shape,loc,scale = (gevpar_reg.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
@@ -1035,7 +1066,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                     risk_empirical = np.arange(len(exttemp_era5),0,-1)/len(exttemp_era5)
                 ax.scatter(risk_empirical, exttemp_era5[order], color='black', marker='+')
                 # Special marker for the year of interest
-                i_mem_event_year = np.where(ds_cgts_extt_era5.member == event_year)[0][0]
+                i_mem_event_year = np.where(da_cgts_extt_era5.member == event_year)[0][0]
 
                 ax.scatter(risk_empirical[rank[i_mem_event_year]], exttemp_era5[i_mem_event_year], color='black', marker='o')
                 hera5, = ax.plot(risk_levels,exttemp_levels_reg_era5[0,:],color='black',label=r'ERA5 (%s)'%(param_label_era5))
@@ -1044,17 +1075,19 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                 ax.set_xscale('log')
                 ineq_symb = "geq" if 1==ext_sign else "leq"
                 ax.set_xlabel(r'$\mathbb{P}\{\%s_t\langle T(t)\rangle_{\mathrm{region}}\%s T\}$'%(ext_symb,ineq_symb))
+
+                center_lon = event_region['lon'].start + (i_lon+0.5)*lon_blocksize
+                center_lat = event_region['lat'].start + (i_lat+0.5)*lat_blocksize
+                lonlatstr = r'$\lambda=%d\pm%d,\phi=%d\pm%d$'%(center_lon,lon_blocksize/2,center_lat,lat_blocksize/2)
                 ax.set_ylabel(r'$T$')
                 ax.set_title(f'{gcm} {expt}, init {datestr} at {lonlatstr}')
 
-                filename = f'riskplot_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'
-                print(f'{filename = }')
-                fig.savefig(join(figdir,f'riskplot_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
+                fig.savefig(join(figdir,f'riskplot_reg_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
                 plt.close(fig)
                 #sys.exit()
-        print(f'Finished the loop over select regions')
-        #ds_cgts.close()
-        print(f'closed ds_cgts')
+    print(f'Finished the loop over select regions')
+    #ds_cgts.close()
+    print(f'closed ds_cgts')
     #ds_cgt.close()
     print(f'closed ds_cgt')
     print(psutil.virtual_memory())
