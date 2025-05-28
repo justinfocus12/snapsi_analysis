@@ -35,7 +35,7 @@ def analysis_multiparams(which_ssw):
         select_regions = ( # Indexed by cgs_level
                 [(0,0),], # level (1,1)
                 [], # level (5,1)
-                [(i,j) for i in range(10) for j in range(2)],
+                ((2*i,2*i//5) for i in range(5)),
                 [], # level (20,4)
                 [], # level (40,8)
                 [], # level (80,16)

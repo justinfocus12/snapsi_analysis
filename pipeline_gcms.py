@@ -4,7 +4,7 @@ import pdb
 import psutil
 from cartopy import crs as ccrs
 import netCDF4
-from matplotlib import pyplot as plt, rcParams, ticker, colors as mplcolors, patches as mplpatches
+from matplotlib import pyplot as plt, rcParams, ticker, colors as mplcolors, patches as mplpatches, gridspec
 pltkwargs = dict({
     'bbox_inches': 'tight',
     'pad_inches': 0.2,
@@ -40,7 +40,7 @@ def analysis_multiparams(which_ssw):
         select_regions = ( # Indexed by cgs_level
                 ((0,0),), # level (1,1)
                 (), # level (5,1)
-                ((i,j) for i in range(10) for j in range(2)),
+                ((2*i,2*i//5) for i in range(5)),
                 (), # level (20,4)
                 (), # level (40,8)
                 (), # level (141,16)
@@ -764,12 +764,16 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     landmask = landmask_full.interp({'lat': ds_cgt.coords['lat'].values, 'lon': ds_cgt.coords['lon'].values}).sel(event_region)
     assert np.all(np.isfinite(landmask))
 
+    
+
     # Ensure everything is interpolated right 
     coords_agree = True
     for coordname in ('lat','lon'):
         for ds in (ds_cgt, ds_cgt_era5):
             coords_agree *= np.all(ds[coordname].values == landmask[coordname].values)
     assert coords_agree
+
+    print(f'************ About to coarse-grain space *******')
 
 
     if todo['coarse_grain_space']:
@@ -780,6 +784,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
             ds_cgts.to_netcdf(ens_file_cgts)
 
     # ------------- Sensitivity analysis with respect to onset date ------------
+    print(f'************ About to do ODSA *******')
     if todo['onset_date_sensitivity_analysis']:
         for i_cgs_level,cgs_level in enumerate(cgs_levels[:2]):
             cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
@@ -824,6 +829,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
         'shape': np.array([-0.5,0.1]),
         })
 
+    print(f'********** About to plot_t2m_sumstats_map ***********')
     if todo['plot_t2m_sumstats_map']:
         fmtfun = lambda date: dtlib.datetime.strftime(date, "%Y/%m/%d")
         mem_special = da_cgt_extt['member'][0].item()
@@ -848,6 +854,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                 )
         fig.savefig(join(figdir,f'sumstats_map_{daily_stat}_e{expt}_i{fc_date_abbrv}_cgt1day.png'), **pltkwargs)
         plt.close(fig)
+    print(f'********** About to fit_gev ***********')
     if todo['fit_gev']:
         # Un-coarsened
         gevpar_cgt = pipeline_base.fit_gev_exttemp(da_cgt_extt, ext_sign, method='PWM')
@@ -867,6 +874,8 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
             gev_param_file = join(reduced_data_dir,f'gevpar_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}.nc')
             gevpar = pipeline_base.fit_gev_exttemp(da_cgts_extt,ext_sign,method='PWM')
             gevpar.to_netcdf(gev_param_file)
+
+    print(f'********** About to plot_gevpar_map ***********')
     if todo['plot_gevpar_map']:
         for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
             if min(cgs_level) <= 1:
@@ -893,6 +902,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
             plt.close(fig)
         
     # ----------------- Compute risk w.r.t. ERA5 ---------------
+    print(f'********** About to compute_risk ***********')
     if todo['compute_risk']:
         for (i_cgs_level,cgs_level) in enumerate(cgs_levels): 
             cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
@@ -916,6 +926,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                     gevpar_cgts_era5,
                     locsign=ext_sign)
             risk.to_netcdf(risk_file)
+    print(f'********** About to plot_risk_map ***********')
     if todo['plot_risk_map']: 
         for (i_cgs_level,cgs_level) in enumerate(cgs_levels): 
             if min(cgs_level) == 1:
@@ -926,12 +937,13 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
             fig,ax = pipeline_base.plot_risk_or_valatrisk_map(risk, is_risk=True, locsign=ext_sign)
             fmtfun = lambda date: dtlib.datetime.strftime(date, "%m/%d")
             ineq_symb = "\u2265" if 1==ext_sign else "\u2264"
-            title = "%s, %s, FC %s, P{%s{T2M(t):%s\u2264t\u2264%s}%s(ERA5 value)"%(gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date), ineq_symb)
+            title = "%s, %s, FC %s, P{%s{T2M(t):%s\u2264t\u2264%s}%s(ERA5 value)}"%(gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date), ineq_symb)
             ax.set_title(title, loc='left')
             fig.savefig(join(figdir,f'risk_map_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
             plt.close(fig)
 
         # TODO compute quantile shift associated with the same probability as the observed event was relative to the historical record
+    print(f'********** About to compute_valatrisk ***********')
     if todo['compute_valatrisk']:
         for (i_cgs_level,cgs_level) in enumerate(cgs_levels): 
             cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
@@ -953,6 +965,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                     locsign=ext_sign)
             risk_valatrisk.to_netcdf(risk_valatrisk_file)
             print(f'Computed valatrisk')
+    print(f'********** About to plot_valatrisk_map ***********')
     if todo['plot_valatrisk_map']:
         for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
             if min(cgs_level) <= 1:
@@ -967,6 +980,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
             fig.savefig(join(figdir,f'valatrisk_map_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
             plt.close(fig)
 
+    print(f'********** About to fit_gev_select_regions***********')
     if todo['fit_gev_select_regions']:
         # Do a more thorough uncertainty quantification at a specific site or region, using bootstrap analysis and goodness-of-fit etc. Maybe parallelize over all sites too
         print(f'Starting loop over select regions')
@@ -1005,8 +1019,9 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                 #gevpar_reg = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
 
 
+    print(f'********** About to plot_gev_select_regions ***********')
     if todo['plot_gev_select_regions']:
-        for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
+        for (i_cgs_level,cgs_level) in enumerate(cgs_levels[:1]):
             cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
             ens_file_cgts = join(reduced_data_dir,f't2m_e{expt}_i{fc_date_abbrv}_cgt1day_cgs{cgs_key}.nc')
             da_cgts = xr.open_dataset(ens_file_cgts)['1xday'].sel(daily_stat=daily_stat)
@@ -1014,26 +1029,44 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
             da_cgts_extt = ext_sign * (ext_sign*da_cgts.sel(time=slice(onset_date,term_date))).max(dim='time')
             da_cgts_extt_era5 = ext_sign * (ext_sign*da_cgts_era5.sel(time=slice(onset_date,term_date))).max(dim='time')
             lon_blocksize,lat_blocksize = ((event_region[d].stop - event_region[d].start)/cgs_level[i_d] for (i_d,d) in enumerate(('lon','lat')))
+            print(f' --- Starting loop over lons and lats')
             for (i_lon,i_lat) in select_regions[i_cgs_level]:
-                exttemp = da_cgts_extt.isel(lon=i_lon,lat=i_lat).to_numpy()
-                exttemp_era5 = da_cgts_extt_era5.isel(lon=i_lon,lat=i_lat).to_numpy()
+                exttemp = da_cgts_extt.isel(lon=i_lon,lat=i_lat) #.to_numpy()
+                exttemp_era5 = da_cgts_extt_era5.isel(lon=i_lon,lat=i_lat) #.to_numpy()
                 gevpar_reg = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
                 exttemp_levels_reg = np.load(join(reduced_data_dir,f'exttemp_levels_reg_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
                 gevpar_reg_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
                 exttemp_levels_reg_era5 = np.load(join(reduced_data_dir_era5,f'exttemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
-                fig,axes = plt.subplots(ncols=2,figsize=(12,6),sharey=True)
+                print(f'      --- Loaded the exttemps and gevpars')
+                fig = plt.figure(figsize=(12,8))
+                gs = gridspec.GridSpec(figure=fig, nrows=2, ncols=2, height_ratios=[1,18])
+                ax_title = fig.add_subplot(gs[0,0:2])
+                ax_gev = fig.add_subplot(gs[1,0])
+                ax_timeseries = fig.add_subplot(gs[1,1], sharey=ax_gev)
+
 
                 # Plot timeseries on right
-                ax = axes[1]
+                ax = ax_timeseries
                 for i_mem in range(da_cgts.member.size):
                     temp_gcm = da_cgts.isel(lat=i_lat,lon=i_lon,member=i_mem)
                     #print(f'{temp_gcm.time = }')
-                    ax.plot(np.arange(len(temp_gcm)),temp_gcm.values)
-                    ax.axhline(ext_sign * np.max(ext_sign*temp_gcm.values),color='red',linestyle='--')
-                for i_mem in range(da_cgts_era5.member.size):
-                    temp_era5 = da_cgts_era5.isel(lat=i_lat,lon=i_lon,member=i_mem).to_numpy()
-                    ax.plot(np.arange(len(temp_era5)), temp_era5,color='black')
-                    ax.axhline(ext_sign * np.max(ext_sign*temp_era5),color='black',linestyle='--')
+                    xr.plot.plot(temp_gcm, x='time', ax=ax, color='red', alpha=0.25)
+                    i_t_argmax = (ext_sign*temp_gcm).argmax(dim='time').item()
+                    idx_argmax = range(max(i_t_argmax,0),min(i_t_argmax+1,temp_gcm['time'].size))
+                    xr.plot.plot(temp_gcm.isel(time=idx_argmax), x='time', ax=ax, color='purple', marker='.', linestyle='-')
+                for (i_mem,mem) in enumerate(da_cgts_era5.member.to_numpy()):
+                    temp_era5 = da_cgts_era5.isel(lat=i_lat,lon=i_lon,member=i_mem)
+                    xr.plot.plot(temp_era5, x='time', ax=ax, color='gray', alpha=0.25) 
+                    if mem == event_year:
+                        xr.plot.plot(temp_era5, x='time', ax=ax, color='black', linestyle='--', linewidth=2) 
+                    i_t_argmax = (ext_sign*temp_era5).argmax(dim='time').item()
+                    idx_argmax = range(max(i_t_argmax,0),min(i_t_argmax+1,temp_era5.time.size))
+                    xr.plot.plot(temp_era5.isel(time=idx_argmax), x='time', ax=ax, color='black', marker='.', linestyle='-')
+                ax.set_title('')
+                ax.set_xlabel('Time')
+                ax.yaxis.set_tick_params(which='both', labelbottom=True)
+                ax.set_ylabel('')
+
                 shape,loc,scale = (gevpar_reg.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
                 shape_era5,loc_era5,scale_era5 = (gevpar_reg_era5.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
                 param_label = ','.join([
@@ -1046,29 +1079,29 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                     r'$\sigma=%d$'%(scale_era5),
                     r'$\xi=%.2f$'%(shape_era5)
                     ])
-                ax = axes[0]
+                ax = ax_gev
                 # GCM data
-                order = np.argsort(exttemp)
+                order = np.argsort(exttemp.to_numpy())
                 
                 if ext_sign == -1:
                     risk_empirical = np.arange(1,len(exttemp)+1)/len(exttemp)
                 else:
                     risk_empirical = np.arange(len(exttemp),0,-1)/len(exttemp)
-                ax.scatter(risk_empirical, exttemp[order], color='red', marker='+')
+                ax.scatter(risk_empirical, exttemp.isel(member=order).to_numpy(), color='red', marker='+')
                 hgcm, = ax.plot(risk_levels,exttemp_levels_reg[0,:],color='red',label=r'%s (%s)'%(gcm,param_label))
                 ax.fill_between(risk_levels, np.quantile(exttemp_levels_reg[1:], 0.25, axis=0), np.quantile(exttemp_levels_reg[1:], 0.75, axis=0), fc='red', ec='none', alpha=0.3, zorder=-1)
                 # Now ERA5
-                order = np.argsort(exttemp_era5)
+                order = np.argsort(exttemp_era5.to_numpy())
                 rank = np.argsort(order)
                 if ext_sign == -1:
-                    risk_empirical = np.arange(1,len(exttemp_era5)+1)/len(exttemp_era5)
+                    risk_empirical = np.arange(1,exttemp_era5.member.size+1)/exttemp_era5.member.size
                 else:
-                    risk_empirical = np.arange(len(exttemp_era5),0,-1)/len(exttemp_era5)
-                ax.scatter(risk_empirical, exttemp_era5[order], color='black', marker='+')
+                    risk_empirical = np.arange(exttemp_era5.member.size,0,-1)/exttemp_era5.member.size
+                ax.scatter(risk_empirical, exttemp_era5.isel(member=order).to_numpy(), color='black', marker='+')
                 # Special marker for the year of interest
                 i_mem_event_year = np.where(da_cgts_extt_era5.member == event_year)[0][0]
 
-                ax.scatter(risk_empirical[rank[i_mem_event_year]], exttemp_era5[i_mem_event_year], color='black', marker='o')
+                ax.scatter(risk_empirical[rank[i_mem_event_year]], exttemp_era5.isel(member=i_mem_event_year).item(), color='black', marker='o')
                 hera5, = ax.plot(risk_levels,exttemp_levels_reg_era5[0,:],color='black',label=r'ERA5 (%s)'%(param_label_era5))
                 ax.fill_between(risk_levels, np.quantile(exttemp_levels_reg_era5, 0.25, axis=0), np.quantile(exttemp_levels_reg_era5, 0.75, axis=0), fc='gray', ec='none', alpha=0.3, zorder=-1)
                 ax.legend(handles=[hera5,hgcm])
@@ -1079,8 +1112,10 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                 center_lon = event_region['lon'].start + (i_lon+0.5)*lon_blocksize
                 center_lat = event_region['lat'].start + (i_lat+0.5)*lat_blocksize
                 lonlatstr = r'$\lambda=%d\pm%d,\phi=%d\pm%d$'%(center_lon,lon_blocksize/2,center_lat,lat_blocksize/2)
+                # Title 
+                ax_title.text(0.5, 0.5, f'{gcm} {expt}, init {datestr} at {lonlatstr}', transform=ax_title.transAxes, ha='center', va='center')
                 ax.set_ylabel(r'$T$')
-                ax.set_title(f'{gcm} {expt}, init {datestr} at {lonlatstr}')
+                ax.set_title('')
 
                 fig.savefig(join(figdir,f'riskplot_reg_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
                 plt.close(fig)
@@ -1099,7 +1134,7 @@ if __name__ == "__main__":
     gcms2ignore = ["BCC-CSM2-HR","GLOBO","GEM-NEMO","CanESM5","SPEAR"]
 
     idx_gcms = [i for i in range(len(gcms)) if ((gcms[i] not in gcms2ignore))]
-    idx_gcms = [gcms.index(gcm) for gcm in ['CESM2-CAM6','IFS']] #,'CESM2-CAM6']]
+    idx_gcms = [gcms.index(gcm) for gcm in ['CESM2-CAM6','IFS'][1:]] #,'CESM2-CAM6']]
     print(f'{idx_gcms = }')
     print(f'{gcms[i] for i in idx_gcms = }')
     idx_expt = [0,1,2]
