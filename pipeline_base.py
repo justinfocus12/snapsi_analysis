@@ -24,7 +24,7 @@ import stat_functions as stfu; reload(stfu)
 
 def least_sensible_onset_date(which_ssw):
     if "feb2018" == which_ssw:
-        onset_date = '20180213'
+        onset_date = '20180221'
     else:
         raise NotImplementedError(f"Still need to choose onset date for ssw {which_ssw}")
     onset_date_dt = dtlib.datetime.strptime(onset_date,"%Y%m%d")
@@ -176,7 +176,7 @@ def plot_sumstats_maps_flat(da_cgt_extt, da_cgt_extt_ref, landmask, mem_special,
         bounds_loc,bounds_scale = (param_bounds[p] for p in ['loc','scale'])
     else:
         bounds_loc,bounds_scale = list(map(utils.padded_bounds, (ext_sign*da_cgt_extt_ensmean_ref,da_cgt_extt_ensstd_ref)))
-    bounds_special = utils.padded_bounds(da_cgt_extt_special_ref)
+    bounds_special = utils.padded_bounds(da_cgt_extt_special_ref, 0.05)
 
     fig,axes = plt.subplots(figsize=(3*aspect,3*3), nrows=3, gridspec_kw={'hspace': 0.3}, subplot_kw={'projection': ccrs.Mercator(central_longitude=(lons[0]+lons[-1])/2)})
     axmean,axstd,axspecial = axes

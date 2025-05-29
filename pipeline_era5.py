@@ -188,13 +188,13 @@ def reduce_era5(which_ssw):
         'coarse_grain_time':                0,
         'coarse_grain_space':               0,
         'onset_date_sensitivity_analysis':  0,
-        'plot_sumstats_map':                0,
+        'plot_sumstats_map':                1,
         'fit_gev':                          0,
-        'plot_gevpar_map':                  0,
+        'plot_gevpar_map':                  1,
         'compute_risk':                     0,
         'plot_risk_map':                    0,
-        'fit_gev_select_regions':           1,
-        'plot_gev_select_regions':          1,
+        'fit_gev_select_regions':           0,
+        'plot_gev_select_regions':          0,
         })
     (
         years,
@@ -261,7 +261,7 @@ def reduce_era5(which_ssw):
     # Set global bounds on plots (sign might flip)
     param_bounds = dict({
         'loc': utils.padded_bounds(ext_sign*da_cgt_extt.where(landmask>0, np.nan).mean(dim='member')),
-        'scale': utils.padded_bounds(da_cgt_extt.where(landmask>0, np.nan).std(dim='member')),
+        'scale': utils.padded_bounds(da_cgt_extt.where(landmask>0, np.nan).std(dim='member'), 0.1),
         'shape': np.array([-0.5,0.1]),
         })
 
@@ -336,8 +336,8 @@ def reduce_era5(which_ssw):
             risk_file = join(reduced_data_dir,f'risk_wrt{event_year}_cgs{cgs_key}.nc')
             dskwargs = dict(daily_stat=daily_stat,drop=True)
             risk = pipeline_base.compute_risk(
-                    da_cgts_extt.sel(**dskwargs),
-                    da_cgts_extt.sel(member=event_year,**dskwargs),
+                    da_cgts_extt,
+                    da_cgts_extt.sel(member=event_year),
                     gevpar,
                     gevpar,
                     locsign=ext_sign)
@@ -349,7 +349,7 @@ def reduce_era5(which_ssw):
             cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
             risk_file = join(reduced_data_dir,f'risk_wrt{event_year}_cgs{cgs_key}.nc')
             risk = xr.open_dataarray(risk_file)
-            fig,ax = pipeline_base.plot_risk_map(risk,locsign=ext_sign,projection='mercator')
+            fig,ax = pipeline_base.plot_risk_or_valatrisk_map(risk,is_risk=True,locsign=ext_sign,projection='mercator')
             ineq_sign = "geq" if ext_sign==1 else "leq"
             ax.set_title(r"$\mathbb{P}_{\mathrm{ERA5}}\{\%s_t\langle T(t)\rangle\%s \%s_t\langle T(t)\rangle_{\mathrm{ERA5,%s}}\}$"%(ext_symb,ineq_sign,ext_symb,event_year))
             fig.savefig(join(figdir,f'risk_map_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)

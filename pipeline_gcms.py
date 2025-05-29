@@ -820,12 +820,12 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
 
     # Load ERA5 for reference 
     da_cgt_era5 = ds_cgt_era5['1xday'].sel(daily_stat=daily_stat)
-    da_cgt_extt_era5 = ext_sign * (ext_sign*da_cgt_era5).max(dim='time')
+    da_cgt_extt_era5 = ext_sign * (ext_sign*da_cgt_era5.sel(time=slice(onset_date,term_date))).max(dim='time')
     #da_cgt_extt_era5 = ext_sign * (ext_sign*ds_cgt_era5['1xday'].sel(daily_stat=daily_stat).sel(time=slice(onset_date,term_date))).max(dim='time')
     da_cgt_extt = ext_sign * (ext_sign*ds_cgt['1xday'].sel(daily_stat=daily_stat).sel(time=slice(onset_date,term_date))).max(dim='time')
     param_bounds = dict({
         'loc': utils.padded_bounds(ext_sign*da_cgt_extt_era5.where(landmask>0, np.nan).mean(dim='member')),
-        'scale': utils.padded_bounds(da_cgt_extt_era5.where(landmask>0, np.nan).std(dim='member')),
+        'scale': utils.padded_bounds(da_cgt_extt_era5.where(landmask>0, np.nan).std(dim='member'), 0.1),
         'shape': np.array([-0.5,0.1]),
         })
 
@@ -1030,6 +1030,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
             da_cgts_extt_era5 = ext_sign * (ext_sign*da_cgts_era5.sel(time=slice(onset_date,term_date))).max(dim='time')
             lon_blocksize,lat_blocksize = ((event_region[d].stop - event_region[d].start)/cgs_level[i_d] for (i_d,d) in enumerate(('lon','lat')))
             print(f' --- Starting loop over lons and lats')
+            fmtfun = lambda date: dtlib.datetime.strftime(date, "%Y/%m/%d")
             for (i_lon,i_lat) in select_regions[i_cgs_level]:
                 exttemp = da_cgts_extt.isel(lon=i_lon,lat=i_lat) #.to_numpy()
                 exttemp_era5 = da_cgts_extt_era5.isel(lon=i_lon,lat=i_lat) #.to_numpy()
@@ -1051,19 +1052,28 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                     temp_gcm = da_cgts.isel(lat=i_lat,lon=i_lon,member=i_mem)
                     #print(f'{temp_gcm.time = }')
                     xr.plot.plot(temp_gcm, x='time', ax=ax, color='red', alpha=0.25)
-                    i_t_argmax = (ext_sign*temp_gcm).argmax(dim='time').item()
-                    idx_argmax = range(max(i_t_argmax,0),min(i_t_argmax+1,temp_gcm['time'].size))
-                    xr.plot.plot(temp_gcm.isel(time=idx_argmax), x='time', ax=ax, color='purple', marker='.', linestyle='-')
+                    i_onset_date = (onset_date - fc_date).days
+                    i_t_argmax = (ext_sign*temp_gcm.isel(time=slice(i_onset_date,None))).argmax(dim='time').item() + i_onset_date
+                    t_peak = fc_date + dtlib.timedelta(days=i_t_argmax)
+                    ax.scatter(t_peak, temp_gcm.isel(time=i_t_argmax).item(),color='red', marker='+')
+                    #idx_argmax = range(max(i_t_argmax,0),min(i_t_argmax+1,temp_gcm['time'].size))
+                    #xr.plot.plot(temp_gcm.isel(time=idx_argmax), x='time', ax=ax, color='purple', marker='.', linestyle='-')
                 for (i_mem,mem) in enumerate(da_cgts_era5.member.to_numpy()):
                     temp_era5 = da_cgts_era5.isel(lat=i_lat,lon=i_lon,member=i_mem)
                     xr.plot.plot(temp_era5, x='time', ax=ax, color='gray', alpha=0.25) 
                     if mem == event_year:
                         xr.plot.plot(temp_era5, x='time', ax=ax, color='black', linestyle='--', linewidth=2) 
-                    i_t_argmax = (ext_sign*temp_era5).argmax(dim='time').item()
-                    idx_argmax = range(max(i_t_argmax,0),min(i_t_argmax+1,temp_era5.time.size))
-                    xr.plot.plot(temp_era5.isel(time=idx_argmax), x='time', ax=ax, color='black', marker='.', linestyle='-')
+                    i_onset_date = (onset_date - fc_dates[0]).days
+                    i_t_argmax = (ext_sign*temp_era5.isel(time=slice(i_onset_date,None))).argmax(dim='time').item() + i_onset_date
+                    t_peak = fc_dates[0] + dtlib.timedelta(days=i_t_argmax)
+                    ax.scatter(t_peak, temp_era5.isel(time=i_t_argmax).item(), color='black', marker='+')
+                    #idx_argmax = range(max(i_t_argmax,0),min(i_t_argmax+1,temp_era5.time.size))
+                    #xr.plot.plot(temp_era5.isel(time=idx_argmax), x='time', ax=ax, color='black', marker='.', linestyle='-')
+                ax.axvline(fc_dates[0], color='dodgerblue')
+                ax.axvline(fc_dates[1], color='dodgerblue')
+                ax.axvline(onset_date, color='black', linestyle='--')
                 ax.set_title('')
-                ax.set_xlabel('Time')
+                ax.set_xlabel('')
                 ax.yaxis.set_tick_params(which='both', labelbottom=True)
                 ax.set_ylabel('')
 
@@ -1113,9 +1123,14 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                 center_lat = event_region['lat'].start + (i_lat+0.5)*lat_blocksize
                 lonlatstr = r'$\lambda=%d\pm%d,\phi=%d\pm%d$'%(center_lon,lon_blocksize/2,center_lat,lat_blocksize/2)
                 # Title 
-                ax_title.text(0.5, 0.5, f'{gcm} {expt}, init {datestr} at {lonlatstr}', transform=ax_title.transAxes, ha='center', va='center')
+                ax_title.text(0.5, 0.5, f'{gcm} {expt}, FC {fmtfun(fc_date)} at {lonlatstr}', transform=ax_title.transAxes, ha='center', va='center')
+                ax_title.axis('off')
                 ax.set_ylabel(r'$T$')
                 ax.set_title('')
+
+                # bounds
+                for ax in (ax_gev,ax_timeseries):
+                    ax.set_ylim([da_cgts_era5.isel(lon=i_lon,lat=i_lat).min().item(), da_cgts_era5.isel(lon=i_lon,lat=i_lat).max().item()])
 
                 fig.savefig(join(figdir,f'riskplot_reg_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
                 plt.close(fig)
