@@ -448,10 +448,31 @@ def compare_expts(which_ssw, i_gcm, i_init):
         # TODO add an option for 'plot_qshift_map'
         'plot_gev_select_regions':         0,
         })
-    expts = []
-    gcms,expts,inits = gcm_multiparams(which_ssw)
+    gcms,expts,fc_dates,_,term_date = gcm_multiparams(which_ssw)
+    (
+            gcm,
+            _, # expt
+            fc_date,
+            ext_sign,
+            event_year,
+            event_region,
+            context_region,
+            daily_stat,
+            fc_dates,onset_date_nominal,term_date,
+            landmask_file,
+            raw_mem_files,
+            mem_labels,
+            reduced_data_dir,
+            reduced_data_dir_era5,
+            figdir,
+            cgs_levels,
+            select_regions,
+            risk_levels,
+            n_boot,
+            confint_width
+            ) = gcm_workflow(which_ssw,i_gcm,0,i_init)
+    onset_date = pipeline_base.least_sensible_onset_date(which_ssw)
     #for i_expt in range(3):
-    gcm,_,init,event_region,context_region,event_time_interval,landmask_file,_,_,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(which_ssw, i_gcm,0,i_init)
     landmask = (
             utils.rezero_lons(
                 xr.open_dataarray(landmask_file)
@@ -461,7 +482,8 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 )
             .sel(event_region)
             )
-    datestr = dtlib.datetime.strptime(init,"%Y%m%d").strftime("%Y-%m-%d")
+    datestr = fc_date.strftime("%Y/%m/%d")
+    fc_date_abbrv = dtlib.datetime.strftime(fc_date,'%Y%m%d')
 
     if "sep2019" == which_ssw:
         ext_sign = 1
@@ -478,31 +500,39 @@ def compare_expts(which_ssw, i_gcm, i_init):
 
     daily_stat = 'daily_min'
     boot_type = 'percentile'
-    for i_cgs_level,cgs_level in enumerate(cgs_levels):
-        cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
-        ds_cgts_extts = dict()
-        gevpars = dict()
-        for expt in expts:
-            ds_cgts_extts[expt] = (
-                    xr.open_dataarray(join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day_cgs{cgs_key}.nc'))
-                    * ext_sign
-                    ).max('time') * ext_sign
-            gevpars[expt] = xr.open_dataarray(join(reduced_data_dir,f'gevpar_e{expt}_i{init}_cgs{cgs_key}.nc'))
-        ds_cgts_extts['era5'] = (
-                xr.open_dataarray(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc'))
-                    * ext_sign
-                    ).max('time') * ext_sign
-        lon_blocksize,lat_blocksize = ((event_region[d].stop - event_region[d].start)/cgs_level[i_d] for (i_d,d) in enumerate(('lon','lat')))
-        if todo['plot_statpar_map_diff'] and min(cgs_level) > 1:
+    if todo['plot_statpar_map_diff']:
+        for i_cgs_level,cgs_level in enumerate(cgs_levels):
+            if min(cgs_level) <= 1:
+                continue
+            cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+            lon_blocksize,lat_blocksize = ((event_region[d].stop - event_region[d].start)/cgs_level[i_d] for (i_d,d) in enumerate(('lon','lat')))
+            da_cgts_extts = dict()
+            gevpars = dict()
+            for expt in expts:
+                da_cgts_extts[expt] = ext_sign * (ext_sign * 
+                        xr.open_dataset(join(reduced_data_dir,f't2m_e{expt}_i{fc_date_abbrv}_cgt1day_cgs{cgs_key}.nc'))['1xday']
+                        .sel(daily_stat=daily_stat)
+                        .sel(time=slice(onset_date,term_date))
+                        ).max(dim='time')
+                gevpars[expt] = xr.open_dataarray(join(reduced_data_dir,f'gevpar_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}.nc'))
+            da_cgts_extts['era5'] = ext_sign * (ext_sign * 
+                    xr.open_dataset(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc'))['1xday']
+                    .sel(daily_stat=daily_stat)
+                    .sel(time=slice(onset_date,term_date))
+                    ).max(dim='time')
             # control-free, nudged-free
-            statsel = dict(daily_stat=daily_stat)
             for (expt0,expt1) in (('free','control'),('free','nudged')):
-                fig_gaussian,axes_gaussian,fig_gev,axes_gev = pipeline_base.plot_statpar_map_difference(ds_cgts_extts[expt0].sel(statsel),ds_cgts_extts[expt1].sel(statsel), gevpars[expt0].sel(statsel), gevpars[expt1].sel(statsel), locsign=ext_sign)
-                for (fig,distname) in [(fig_gaussian,'gaussian'),(fig_gev,'gev')]:
-                    fig.suptitle(f'{gcm} ({expt1} - {expt0}), init {datestr}')
-                    fig.savefig(join(figdir,f'statpar_map_e{expt1}minus{expt0}_i{init}_cgs{cgs_key}_{daily_stat}_{distname}.png'), **pltkwargs)
-                    plt.close(fig)
-        if todo['plot_relrisk_map'] and min(cgs_level) > 1:
+                fig,axes = pipeline_base.plot_gevpar_difference_maps_flat(gevpars[expt0], gevpars[expt1], ['dloc','dscale','dshape'], cgs_levels[2], ext_sign=ext_sign)
+                fig.savefig(join(figdir,f'gevpar_diff_map_e{expt0}to{expt1}_i{fc_date_abbrv}_cgs{cgs_key}_{daily_stat}'), **pltkwargs)
+                plt.close(fig)
+    return
+                #fig_gaussian,axes_gaussian,fig_gev,axes_gev = pipeline_base.plot_statpar_map_difference(da_cgts_extts[expt0],da_cgts_extts[expt1], gevpars[expt0], gevpars[expt1], locsign=ext_sign)
+                #for (fig,distname) in [(fig_gaussian,'gaussian'),(fig_gev,'gev')]:
+                #    fig.suptitle(f'{gcm} ({expt1} - {expt0}), init {datestr}')
+                #    fig.savefig(join(figdir,f'statpar_map_e{expt1}minus{expt0}_i{init}_cgs{cgs_key}_{daily_stat}_{distname}.png'), **pltkwargs)
+                #    plt.close(fig)
+    if todo['plot_relrisk_map'] and min(cgs_level) > 1:
+        for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
             print(f'----------------\ngot into relrisk_map block\n---------------')
             # control-free, nudged-free
             statsel = dict(daily_stat=daily_stat)

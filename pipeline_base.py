@@ -207,6 +207,7 @@ def plot_sumstats_maps_flat(da_cgt_extt, da_cgt_extt_ref, landmask, mem_special,
             vmin = 0, vmax=np.max(bounds_scale[1]),
             **pcmargs,
             )
+    pcmargs['cbar_kwargs']['label'] = ''
     xr.plot.pcolormesh(
             da_cgt_extt_special,
             cmap=plt.cm.RdYlBu_r,
@@ -430,6 +431,76 @@ def coarse_grain_space(ds_cgt, cgs_level, landmask):
         pdb.set_trace()
     return ds_cgts # awkward to put into a single dataset because of differing lon/lat coordinates between coarsening levels
 
+def plot_gevpar_difference_maps_flat(gevpar0, gevpar1, titles, cgs_level_2show, ext_sign, landmask=None, gevpar_diff_ref=None, param_bounds=None):
+    lons,lats = (gevpar0[c].to_numpy() for c in ('lon','lat'))
+    dlon = lons[1]-lons[0]
+    dlat = lats[1]-lats[0]
+    Nlon = len(lons)
+    Nlat = len(lats)
+    lon_extent = lons[-1]-lons[0]+dlon
+    lat_extent = lats[-1]-lats[0]+dlat
+    aspect = lon_extent/lat_extent * np.cos(np.deg2rad((lats[0]+lats[-1])/2))
+
+    def masksea(da):
+        if landmask is None:
+            return da
+        return xr.where(landmask>0, da, np.nan)
+
+    gevpar_diff = gevpar1 - gevpar0 
+
+    if param_bounds is not None:
+        bounds_loc,bounds_scale,bounds_shape = (param_bounds[p] for p in ['loc','scale','shape'])
+    elif gevpar_diff_ref is not None:
+        bounds_loc,bounds_scale,bounds_shape = list(map(utils.padded_bounds, (gevpar_diff_ref.sel(param=p) for p in ['loc','scale','shape'])))
+    else:
+        bounds_loc,bounds_scale,bounds_shape = list(map(utils.padded_bounds, (gevpar_diff.sel(param=p) for p in ['loc','scale','shape'])))
+
+    fig,axes = plt.subplots(figsize=(3*aspect,3*3), nrows=3, gridspec_kw={'hspace': 0.3}, subplot_kw={'projection': ccrs.Mercator(central_longitude=(lons[0]+lons[-1])/2)})
+    axloc,axscale,axshape = axes
+
+    pcmargs = dict(
+            x='lon',y='lat', transform=ccrs.PlateCarree(),
+            add_labels=False,
+            #norm=mplcolors.LogNorm(vmin=0.2,vmax=5),
+            cbar_kwargs=dict({
+                'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 
+                })
+            )
+
+    pcmargs['cbar_kwargs']['label'] = '[K]'
+    xr.plot.pcolormesh(
+            masksea(ext_sign*gevpar_diff.sel(param='loc')),
+            cmap=plt.cm.RdYlBu if ext_sign==1 else plt.cm.RdYlBu_r,
+            vmin=-np.max(np.abs(ext_sign*bounds_loc)), vmax=np.max(np.abs(ext_sign*bounds_loc)),
+            ax=axloc, 
+            **pcmargs,
+            )
+    xr.plot.pcolormesh(
+            masksea(gevpar_diff.sel(param='scale')),
+            ax=axscale,
+            cmap=plt.cm.RdYlBu_r if ext_sign==1 else plt.cm.RdYlBu,
+            vmin=-np.max(np.abs(bounds_scale)), vmax=np.max(np.abs(bounds_scale)),
+            **pcmargs,
+            )
+    pcmargs['cbar_kwargs']['label'] = ''
+    xr.plot.pcolormesh(
+            masksea(gevpar_diff.sel(param='shape')),
+            cmap=plt.cm.RdYlBu_r if ext_sign==1 else plt.cm.RdYlBu,
+            vmin=-np.max(np.abs(bounds_shape)), vmax=np.max(np.abs(bounds_shape)),
+            ax=axshape,
+            **pcmargs,
+            )
+    for (i_ax,ax) in enumerate(axes):
+        ax.add_feature(cfeature.BORDERS, linewidth=1.0, edgecolor='purple')
+        ax.coastlines(color='black')
+        gl = ax.gridlines(draw_labels=True, color="black")
+        gl.top_labels = gl.right_labels = False
+        gl.xlocator = ticker.FixedLocator(np.linspace(lons[0]+dlon/2, lons[-1]-dlon/2, 10))
+        gl.ylocator = ticker.FixedLocator(np.linspace(lats[0]+dlat/2, lats[-1]-dlat/2, 2))
+        gl.xformatter = LongitudeFormatter(number_format='.0f')
+        gl.yformatter = LatitudeFormatter(number_format='.0f')
+        ax.set_title(titles[i_ax], loc='left')
+    return fig,axes
 
 def plot_gevpar_maps_flat(gevpar, titles, cgs_level_2show, ext_sign, landmask=None, gevpar_ref=None, param_bounds=None):
     lons,lats = (gevpar[c].to_numpy() for c in ('lon','lat'))
@@ -570,20 +641,18 @@ def plot_statpar_map(ds_cgts,gevpar,locsign=1):
     return fig_gaussian,axes_gaussian,fig_gev,axes_gev
 
 
-def plot_statpar_map_difference(ds_cgts_0,ds_cgts_1,gevpar_0,gevpar_1,locsign=1):
+def plot_statpar_map_difference(da_cgts_0,da_cgts_1,gevpar_0,gevpar_1,locsign=1):
+    # TODO turn this into a flat view (or with flexible projection) and make the GEV / Gaussian parameters diferent.
     # NOTE this is only for mintemp where we care about NEGATIVE extremes
     def dsdiff(ds0,ds1):
-        #diff_interp = ds1.interp_like(ds0,bounds_error=False) - ds0
-        #print(f'{diff_interp.shape = }')
-        #return diff_interp
-        return ds1.assign_coords(coords=ds0.coords) - ds0
+        return ds1 - ds0 #ds1.assign_coords(coords=ds0.coords) - ds0
     # Essentially Gaussian parameters next to GEV parameters
-    clon,clat = (ds_cgts_0.coords[coordname].mean().item() for coordname in ('lon','lat'))
+    clon,clat = (da_cgts_0.coords[coordname].mean().item() for coordname in ('lon','lat'))
     pcmargs = dict(x='lon',y='lat',cmap=plt.cm.coolwarm,transform=ccrs.PlateCarree(),cbar_kwargs={'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 'ticks': ticker.LinearLocator(numticks=3)})
-    loc_fields = (dsdiff(ds_cgts_0.mean('member'),ds_cgts_1.mean('member')), dsdiff(locsign*gevpar_0.sel(param='loc'), locsign*gevpar_1.sel(param='loc')))
+    loc_fields = (dsdiff(da_cgts_0.mean('member'),da_cgts_1.mean('member')), dsdiff(locsign*gevpar_0.sel(param='loc'), locsign*gevpar_1.sel(param='loc')))
     loc_vmax = tuple(np.abs(da).max().item() for da in loc_fields)
     loc_titles = [r'$\Delta$(mean)',r'$\Delta$(GEV location)']
-    scale_fields = (dsdiff(ds_cgts_0.std('member'),ds_cgts_1.std('member')), dsdiff(gevpar_0.sel(param='scale'), gevpar_1.sel(param='scale')))
+    scale_fields = (dsdiff(da_cgts_0.std('member'),da_cgts_1.std('member')), dsdiff(gevpar_0.sel(param='scale'), gevpar_1.sel(param='scale')))
     scale_vmax = tuple(np.abs(da).max().item() for da in scale_fields)
     scale_titles = [r'$\Delta$(std. dev.)',r'$\Delta$(GEV scale)']
     shape_fields = (None,dsdiff(gevpar_0.sel(param='shape'),gevpar_1.sel(param='shape')))
