@@ -290,7 +290,7 @@ def compare_gcms(which_ssw, idx_gcms):
     yoffsets = dict({'control': 1/3, 'free': 0.0, 'nudged': -1/3})
     figdir = f'/home/users/ju26596/snapsi_analysis_figures/{which_ssw}/2025-05-20/multimodel'
     print(f'{figdir = }')
-    xlims = [0.2, 5.0]
+    xlims = [0.25, 4.0]
     ylims = [-0.5, len(idx_gcms)-0.5]
     slims = (np.array([1.0, 4.0])*rcParams['lines.markersize']) # bounds on the marker size 
     makedirs(figdir, exist_ok=True)
@@ -443,8 +443,8 @@ def compare_gcms(which_ssw, idx_gcms):
 
 def compare_expts(which_ssw, i_gcm, i_init):
     todo = dict({
-        'plot_statpar_map_diff':           1,
-        'plot_relrisk_map':                0,
+        'plot_statpar_map_diff':           0,
+        'plot_relrisk_map':                1,
         # TODO add an option for 'plot_qshift_map'
         'plot_gev_select_regions':         0,
         })
@@ -525,25 +525,31 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 fig,axes = pipeline_base.plot_gevpar_difference_maps_flat(gevpars[expt0], gevpars[expt1], ['dloc','dscale','dshape'], cgs_levels[2], ext_sign=ext_sign)
                 fig.savefig(join(figdir,f'gevpar_diff_map_e{expt0}to{expt1}_i{fc_date_abbrv}_cgs{cgs_key}_{daily_stat}'), **pltkwargs)
                 plt.close(fig)
-    return
                 #fig_gaussian,axes_gaussian,fig_gev,axes_gev = pipeline_base.plot_statpar_map_difference(da_cgts_extts[expt0],da_cgts_extts[expt1], gevpars[expt0], gevpars[expt1], locsign=ext_sign)
                 #for (fig,distname) in [(fig_gaussian,'gaussian'),(fig_gev,'gev')]:
                 #    fig.suptitle(f'{gcm} ({expt1} - {expt0}), init {datestr}')
                 #    fig.savefig(join(figdir,f'statpar_map_e{expt1}minus{expt0}_i{init}_cgs{cgs_key}_{daily_stat}_{distname}.png'), **pltkwargs)
                 #    plt.close(fig)
-    if todo['plot_relrisk_map'] and min(cgs_level) > 1:
+    if todo['plot_relrisk_map']:
+        print(f'----------------\ngot into relrisk_map block\n---------------')
+        fmtfun = lambda date: dtlib.datetime.strftime(date, "%Y/%m/%d")
         for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
-            print(f'----------------\ngot into relrisk_map block\n---------------')
-            # control-free, nudged-free
-            statsel = dict(daily_stat=daily_stat)
-            for (expt0,expt1) in (('free','control'),('free','nudged')):
-                risk0_file,risk1_file = (join(reduced_data_dir,f'risk_e{expt}_i{init}_cgs{cgs_key}.nc') for expt in (expt0,expt1))
+            if min(cgs_level) <= 1:
+                continue
+            cgs_key = "%dx%d"%(cgs_level[0],cgs_level[1])
+            print(f' --- %s '%(cgs_key))
+            # control/free, nudged/free
+            for (expt0,expt1) in (('free','free'),('free','control'),('free','nudged')):
+                risk0_file,risk1_file = (join(reduced_data_dir,f'risk_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}.nc') for expt in (expt0,expt1))
                 risk0,risk1 = (xr.open_dataarray(risk_file) for risk_file in (risk0_file,risk1_file))
-                rr = risk1/risk0
-                #logrr = xr.where(np.isfinite(logrr), logrr, np.nan)
-                fig,ax = pipeline_base.plot_relative_risk_map(risk0, risk1, locsign=1)
-                ax.set_title(f'{gcm} RR ({expt1}/{expt0})\ninit {datestr}')
-                figfile = join(figdir,f'relrisk_map_e{expt1}over{expt0}_i{init}_cgs{cgs_key}_{daily_stat}.png')
+                # Interpolate 
+                lon_interp,lat_interp = [np.linspace(risk0.coords[c][0].item(), risk0.coords[c][-1].item(), 200) for c in ['lon','lat']]
+                risk0,risk1 = [risk.interp(lon=lon_interp, lat=lat_interp, method='linear') for risk in [risk0,risk1]]
+                fig,ax = pipeline_base.plot_relative_risk_map_flat(risk0, risk1, event_region, ext_sign=ext_sign, plot_contour_ratio=(expt0!=expt1))
+                ineq_symb = "\u2265" if 1==ext_sign else "\u2264"
+                title = "%s, FC %s, %s\n\u2119{%s{T2M(t):%s\u2264t\u2264%s}%s(ERA5 value)}"%(gcm, fmtfun(fc_date), expt1, ext_symb, fmtfun(onset_date), fmtfun(term_date), ineq_symb)
+                ax.set_title(title, loc='left')
+                figfile = join(figdir,f'relrisk_map_e{expt1}over{expt0}_i{fc_date_abbrv}_cgs{cgs_key}_{daily_stat}.png')
                 print(f'About to save figfile')
                 fig.savefig(figfile, **pltkwargs)
                 plt.close(fig)
@@ -671,8 +677,8 @@ def compare_expts(which_ssw, i_gcm, i_init):
                     ax.get_xaxis().set_major_formatter(ticker.NullFormatter())
                     ax.get_xaxis().set_minor_formatter(ticker.NullFormatter())
                     ax.set_xscale('log')
-                    ax.set_xlim([0.2,5.0])
-                    xticks = np.array([0.2,1.0,5.0])
+                    ax.set_xlim([0.25,4.0])
+                    xticks = np.array([0.25,1.0,4.0])
                     ax.set_xticks(xticks, np.array([r'%g'%(xtick) for xtick in xticks]))
                     #ax.legend(handles=handles)
                     ax.set_xlabel(r'$\mathrm{risk}/\mathrm{risk}_{\mathrm{free}}$')

@@ -364,6 +364,78 @@ def plot_risk_or_valatrisk_map(riskorvar, is_risk=False, locsign=1, projection='
     #pdb.set_trace()
     return fig,ax
 
+def plot_relative_risk_map_flat(risk0, risk1, event_region, landmask=None, ext_sign=1, plot_contour_ratio=True, **other_pcmargs):
+    lons,lats = (risk0[c].to_numpy() for c in ('lon','lat'))
+    dlon = lons[1]-lons[0]
+    dlat = lats[1]-lats[0]
+    Nlon = len(lons)
+    Nlat = len(lats)
+    lon_extent = lons[-1]-lons[0]+dlon
+    lat_extent = lats[-1]-lats[0]+dlat
+    aspect = lon_extent/lat_extent * np.cos(np.deg2rad((lats[0]+lats[-1])/2))
+
+    def masksea(da):
+        if landmask is None:
+            return da
+        return xr.where(landmask>0, da, np.nan)
+
+    # the reference ds_cgts is ERA5, and should only have one year asociated with it 
+    clon,clat = (risk0.coords[coordname].mean().item() for coordname in ('lon','lat'))
+    fig,ax = plt.subplots(figsize=(3*aspect,3), gridspec_kw={'hspace': 0.3}, subplot_kw={'projection': ccrs.Mercator(central_longitude=(lons[0]+lons[-1])/2)})
+    pcmargs_relrisk = dict(
+            x='lon',y='lat', transform=ccrs.PlateCarree(),
+            cmap=plt.cm.RdYlBu_r if ext_sign==1 else plt.cm.RdYlBu,
+            norm=mplcolors.LogNorm(vmin=0.25,vmax=4),
+            cbar_kwargs=dict({
+                'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 
+                'ticks': [0.25,0.5,1,2,4], 
+                "format": ticker.FixedFormatter(["\u2264 0.25", "0.5", "1", "2", "\u2265 4"])
+                })
+            )
+    pcmargs_absrisk = dict(
+            x='lon',y='lat', transform=ccrs.PlateCarree(),
+            cmap=plt.cm.RdYlBu_r if ext_sign==1 else plt.cm.RdYlBu,
+            vmin=0, vmax=1,
+            cbar_kwargs=dict({
+                'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 
+                'ticks': [0, 1/4, 1/2, 3/4, 1], 
+                "format": ticker.FixedFormatter(["0", "1/4", "1/2", "3/4", "1"]),
+                })
+            )
+    pcmargs_absrisk.update(other_pcmargs)
+    pcmargs_relrisk.update(other_pcmargs)
+    rel_risk = risk1 / risk0
+    print(f'About to pcolormesh')
+    xr.plot.pcolormesh(risk1, **pcmargs_absrisk, ax=ax)
+    if plot_contour_ratio:
+        # contour plot for baseline risk  
+        contour_levels_absrisk = np.array([0.1, 0.3, 0.5, 0.7, 0.9])
+        contour_linestyles_absrisk = list(map(lambda lev: 'dotted' if lev<0.5 else ('dashed' if lev==0.5 else 'solid'), contour_levels_absrisk))
+        contour_levels_relrisk = np.array([1/2, 3/4, 1.0, 4/3, 2])
+        contour_linestyles_relrisk = list(map(lambda lev: 'dotted' if lev<1.0 else ('dashed' if lev==1.0 else 'solid'), contour_levels_relrisk))
+        contour_linewidths_relrisk = np.array([2, 1, 1, 1, 2])
+        xr.plot.contour(rel_risk, x="lon", y="lat", ax=ax, transform=ccrs.PlateCarree(), levels=contour_levels_relrisk, linestyles=contour_linestyles_relrisk, colors='black', linewidths=contour_linewidths_relrisk, add_labels=False,)
+
+    else:
+        ax.add_feature(cfeature.BORDERS, linewidth=1.0, edgecolor='black')
+        ax.coastlines(color='black')
+    gl = ax.gridlines(draw_labels=True, linewidth=0.5, alpha=1.0*(not plot_contour_ratio), color="black")
+    gl.top_labels = gl.right_labels = False
+    if aspect > 1:
+        ngridlines = {'lat': 2, 'lon': int(round(aspect*2))}
+    else:
+        ngridlines = {'lat': int(round(aspect*2)), 'lon': 2}
+    gllocs = {
+            c: [event_region[c].start*a + event_region[c].stop*(1-a) for a in [1-1/(2+ngridlines[c]), 1/(2+ngridlines[c])]] 
+            for c in ('lon','lat')
+            }
+    gl.xlocator = ticker.FixedLocator(np.linspace(*gllocs['lon'], ngridlines['lon']))
+    gl.ylocator = ticker.FixedLocator(np.linspace(*gllocs['lat'], ngridlines['lat']))
+    gl.xformatter = LongitudeFormatter(number_format='.0f')
+    gl.yformatter = LatitudeFormatter(number_format='.0f')
+    return fig,ax
+
+
 def plot_relative_risk_map(risk0, risk1, locsign=1, **other_pcmargs):
     # the reference ds_cgts is ERA5, and should only have one year asociated with it 
     clon,clat = (risk0.coords[coordname].mean().item() for coordname in ('lon','lat'))
@@ -371,10 +443,10 @@ def plot_relative_risk_map(risk0, risk1, locsign=1, **other_pcmargs):
     pcmargs = dict(
             x='lon',y='lat', transform=ccrs.PlateCarree(),
             cmap=plt.cm.RdYlBu,
-            norm=mplcolors.LogNorm(vmin=0.2,vmax=5),
+            norm=mplcolors.LogNorm(vmin=0.25,vmax=4),
             cbar_kwargs=dict({
                 'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 
-                'ticks': [0.2,0.5,1,2,5], 
+                'ticks': [0.25,0.5,1,2,4], 
                 'format': ticker.FixedFormatter(['<0.2', '0.5', '1', '2', '>5'])
                 })
             )
