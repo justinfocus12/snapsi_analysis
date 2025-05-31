@@ -93,7 +93,6 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
     # 1. Raw data
     fc_date_abbrv = dtlib.datetime.strftime(fc_date,'s%Y%m%d')
     raw_data_dir = join('/badc/snap/data/post-cmip6/SNAPSI', gcm2institute[gcm], gcm, expt, fc_date_abbrv)
-    landmask_file = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/era5/land_sea_mask.nc'
     print(f'{raw_data_dir = }')
     ens_path_skeleton = join(raw_data_dir,'r*i*p*f*')
     mem_labels = [basename(p) for p in glob.glob(ens_path_skeleton)]
@@ -128,6 +127,8 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
         ext_sign = 1
 
     processed_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596'
+    landmask_file_full = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/era5/land_sea_mask.nc'
+    landmask_file_interp = join(processed_data_dir,'land_sea_mask_interp.nc')
     reduced_data_dir = join(processed_data_dir,which_ssw,analysis_date,gcm)
     reduced_data_dir_era5 = join(processed_data_dir,which_ssw,analysis_date,'era5')
     figdir = join('/home/users/ju26596/snapsi_analysis_figures',which_ssw,analysis_date,gcm)
@@ -135,32 +136,39 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
     makedirs(figdir,exist_ok=True)
     # spatial coarse graining (cgs)
     cgs_levels,select_regions = analysis_multiparams(which_ssw)
+    ens_file_cgt = join(reduced_data_dir,f't2m_e{expt}_i{fc_date_abbrv}_cgt1day.nc')
+    era5_file_cgt = join(reduced_data_dir_era5,f't2m_cgt1day.nc')
 
     # bootstrap parameters
     n_boot = 1000
     confint_width = 0.5
     risk_levels = np.exp(np.linspace(np.log(0.001),np.log(49/50),30))
-    workflow = (
-            gcm,
-            expt,
-            fc_date,
-            ext_sign,
-            event_year,
-            event_region,
-            context_region,
-            daily_stat,
-            fc_dates,onset_date_nominal,term_date,
-            landmask_file,
-            raw_mem_files,
-            mem_labels,
-            reduced_data_dir,
-            reduced_data_dir_era5,
-            figdir,
-            cgs_levels,
-            select_regions,
-            risk_levels,
-            n_boot,
-            confint_width
+    workflow = dict(
+            gcm=gcm,
+            expt=expt,
+            fc_date=fc_date,
+            ext_sign=ext_sign,
+            event_year=event_year,
+            event_region=event_region,
+            context_region=context_region,
+            daily_stat=daily_stat,
+            fc_dates=fc_dates,
+            onset_date_nominal=onset_date_nominal,
+            term_date=term_date,
+            landmask_file_full=landmask_file_full,
+            landmask_file_interp=landmask_file_interp,
+            raw_mem_files=raw_mem_files,
+            mem_labels=mem_labels,
+            reduced_data_dir=reduced_data_dir,
+            reduced_data_dir_era5=reduced_data_dir_era5,
+            figdir=figdir,
+            cgs_levels=cgs_levels,
+            ens_file_cgt=ens_file_cgt,
+            era5_file_cgt=era5_file_cgt,
+            select_regions=select_regions,
+            risk_levels=risk_levels,
+            n_boot=n_boot,
+            confint_width=confint_width,
             )
     return workflow
 
@@ -168,7 +176,7 @@ def visualize_ensemble_spread(raw_mem_files,):
     return
 
 
-def coarse_grain_time(raw_mem_files, mem_labels, region, init_date, term_date, use_dask=False):
+def coarse_grain_time(raw_mem_files, mem_labels, region, init_date, term_date, era5_file_cgt, use_dask=False):
     timesel = dict(time=slice(init_date,term_date))
     region_padded = dict(lat=slice(region['lat'].start-2,region['lat'].stop+2), lon=slice(region['lon'].start-2, region['lon'].stop+2)) 
     preprocess = lambda dsmem: preprocess_gcm_6hrPt(dsmem, init_date, timesel, region_padded)
@@ -203,7 +211,8 @@ def coarse_grain_time(raw_mem_files, mem_labels, region, init_date, term_date, u
     ds_ens_cgt = xr.concat([daily_mean,daily_min,daily_max], dim='daily_stat').assign_coords(daily_stat=['daily_mean','daily_min','daily_max'])
     # also just include the full dataset
     ds = xr.Dataset(data_vars=dict({'1xday': ds_ens_cgt, '4xday': ds_ens.rename({'time': 'time_6h'})}))
-    return ds
+    ds = ds.interp(lon=ds
+    return #ds
 
 
 
@@ -758,7 +767,17 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
         'fit_gev_select_regions':           1,
         'plot_gev_select_regions':          1,
         })
-    _,_,fc_dates,_,_ = gcm_multiparams(which_ssw)
+
+    # In this main function, specify only the inputs and outputs as files 
+    wkf = gcm_workflow(which_ssw,i_gcm,i_expt,i_init)
+    if todo['coarse_grain_time']:
+        coarse_grain_time(wkf['raw_mem_files'], wkf['mem_labels'], wkf['context_region'], wkf['fc_date'], wkf['term_date'], wkf['era5_file_cgt'])
+
+    if todo['coarse_grain_space']:
+        pipeline_base.coarse_grain_space(wkf['ens_file_cgt'], wkf['landmask_file_full'], wkf['landmask_file_interp'], wkf['event_region'], wkf['cgs_levels'])
+
+
+
     (
             gcm,
             expt,

@@ -478,8 +478,26 @@ def plot_relative_risk_map(risk0, risk1, locsign=1, **other_pcmargs):
     print(f'Drew gridlines')
     return fig,ax
 
+def interpolate_landmask(landmask_file_full, landmask_file_interp, lons_ref, lats_ref, event_region):
+    landmask_full = (
+            utils.rezero_lons(
+                xr.open_dataarray(landmask_file_full)
+                .isel(time=0,drop=True)
+                .isel(latitude=slice(None,None,-1)) # Flip lat to go in increasing order
+                .rename(dict(latitude='lat',longitude='lon'))
+                )
+            #.sel(event_region)
+            )
+    landmask = landmask_full.interp({'lat': ds_cgt.coords['lat'].values, 'lon': ds_cgt.coords['lon'].values}).sel(event_region)
+    assert np.all(np.isfinite(landmask))
+    landmask.to_netcdf(landmask_file_interp)
+    return
 
-def coarse_grain_space(ds_cgt, cgs_level, landmask):
+def coarse_grain_space(ens_file_cgt, landmask_file_full, landmask_file_interp, event_region, cgs_level):
+
+    ds_cgt = xr.open_dataset(ens_file_cgt)
+
+
     data_vars = dict()
     Nlon,Nlat = (ds_cgt[d].size for d in ('lon','lat'))        
     dim = {'lon': Nlon//cgs_level[0], 'lat': Nlat//cgs_level[1]}
