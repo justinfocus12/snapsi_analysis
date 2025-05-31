@@ -714,9 +714,6 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 print(f'------------------ SAVED THE FIG -----------------')
     return
 
-#def get_intensity_bounds(which_ssw,i_gcm,i_expt,i_cgs_level,i_lon,i_lat):
-#    _,_,fc_dates,_,_ = gcm_multiparams(which_ssw)
-#    intens_min,intens_max = np.inf, -np.inf
 
 
 #def onset_date_sensitivity_analysis(which_ssw,i_gcm,i_expt):
@@ -748,17 +745,17 @@ def compare_expts(which_ssw, i_gcm, i_init):
 def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
     todo = dict({
-        'coarse_grain_time':                0,
-        'coarse_grain_space':               0,
-        'onset_date_sensitivity_analysis':  0,
-        'plot_t2m_sumstats_map':            0,
-        'fit_gev':                          0,
-        'plot_gevpar_map':                  0,
-        'compute_risk':                     0,
-        'plot_risk_map':                    0,
-        'compute_valatrisk':                0,
-        'plot_valatrisk_map':               0,
-        'fit_gev_select_regions':           0,
+        'coarse_grain_time':                1,
+        'coarse_grain_space':               1,
+        'onset_date_sensitivity_analysis':  1,
+        'plot_t2m_sumstats_map':            1,
+        'fit_gev':                          1,
+        'plot_gevpar_map':                  1,
+        'compute_risk':                     1,
+        'plot_risk_map':                    1,
+        'compute_valatrisk':                1,
+        'plot_valatrisk_map':               1,
+        'fit_gev_select_regions':           1,
         'plot_gev_select_regions':          1,
         })
     _,_,fc_dates,_,_ = gcm_multiparams(which_ssw)
@@ -955,6 +952,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
             plt.close(fig)
         
     # ----------------- Compute risk w.r.t. ERA5 ---------------
+    pdb.set_trace()
     print(f'********** About to compute_risk ***********')
     if todo['compute_risk']:
         for (i_cgs_level,cgs_level) in enumerate(cgs_levels): 
@@ -1203,7 +1201,7 @@ if __name__ == "__main__":
     gcms2ignore = ["BCC-CSM2-HR","GLOBO","GEM-NEMO","CanESM5","SPEAR"]
 
     idx_gcms = [i for i in range(len(gcms)) if ((gcms[i] not in gcms2ignore))]
-    idx_gcms = [gcms.index(gcm) for gcm in ['CESM2-CAM6','IFS'][1:]] #,'CESM2-CAM6']]
+    idx_gcms = [gcms.index(gcm) for gcm in ['CESM2-CAM6','IFS'][:1]] #,'CESM2-CAM6']]
     print(f'{idx_gcms = }')
     print(f'{gcms[i] for i in idx_gcms = }')
     idx_expt = [0,1,2]
