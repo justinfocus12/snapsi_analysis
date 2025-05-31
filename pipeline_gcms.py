@@ -444,9 +444,9 @@ def compare_gcms(which_ssw, idx_gcms):
 def compare_expts(which_ssw, i_gcm, i_init):
     todo = dict({
         'plot_statpar_map_diff':           0,
-        'plot_relrisk_map':                1,
+        'plot_relrisk_map':                0,
         # TODO add an option for 'plot_qshift_map'
-        'plot_gev_select_regions':         0,
+        'plot_gev_select_regions':         1,
         })
     gcms,expts,fc_dates,_,term_date = gcm_multiparams(which_ssw)
     (
@@ -555,31 +555,48 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 plt.close(fig)
                 print(f'Saved the figure to {figfile}')
 
-        if todo['plot_gev_select_regions']:
-            # Interpolate every bootstrap
-            # exttemp_levels_common has to have the right order!!!
-            if -1 == ext_sign:
-                ordering_for_interp = np.arange(0,len(risk_levels),1)
-            else:
-                ordering_for_interp = np.arange(len(risk_levels)-1,-1,-1)
+    if todo['plot_gev_select_regions']:
+        print(f'Plotting GEV select regions')
+        fmtfun = lambda date: dtlib.datetime.strftime(date, "%Y/%m/%d")
+        # Interpolate every bootstrap
+        # exttemp_levels_common has to have the right order!!!
+        # risk_levels should be an increasing array from 0 to 1; low risk means very extreme which means very (cold if ext_sign == -1 else warm)
+        if -1 == ext_sign:
+            ordering_for_interp = np.arange(0,len(risk_levels),1)
+        else:
+            ordering_for_interp = np.arange(len(risk_levels)-1,-1,-1)
+        for (i_cgs_level, cgs_level) in enumerate(cgs_levels):
+            cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+            # Load the temperature data for all experiments 
+            das_cgts = dict()
+            das_cgts_extt = dict()
+            for expt in expts:
+                ens_file_cgts = join(reduced_data_dir,f't2m_e{expt}_i{fc_date_abbrv}_cgt1day_cgs{cgs_key}.nc')
+                das_cgts[expt] = xr.open_dataset(ens_file_cgts)['1xday'].sel(daily_stat=daily_stat)
+                das_cgts_extt[expt] = ext_sign * (ext_sign*das_cgts[expt].sel(time=slice(onset_date,term_date))).max(dim='time')
+            # Load temperature data from ERA5
+            das_cgts['era5'] = xr.open_dataset(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc'))['1xday'].sel(daily_stat=daily_stat)
+            das_cgts_extt['era5'] = ext_sign * (ext_sign*das_cgts['era5'].sel(time=slice(onset_date,term_date))).max(dim='time')
+
+            lon_blocksize,lat_blocksize = ((event_region[d].stop - event_region[d].start)/cgs_level[i_d] for (i_d,d) in enumerate(('lon','lat')))
+            print(f' --- Starting loop over lons and lats')
             for (i_lon,i_lat) in select_regions[i_cgs_level]:
-                if not np.all([np.all(np.isfinite(ds_cgts_extts[expt].isel(lon=i_lon,lat=i_lat))) for expt in expts+['era5']]):
+                if not np.all([np.all(np.isfinite(das_cgts_extt[expt].isel(lon=i_lon,lat=i_lat))) for expt in expts+['era5']]):
                     continue
                 exttemps = dict()
                 gevpar_regs = dict()
                 exttemp_levels_regs = dict()
                 for expt in expts:
-                    exttemps[expt] = ds_cgts_extts[expt].sel(daily_stat=daily_stat).isel(lon=i_lon,lat=i_lat)
-                    exttemp_levels_regs[expt] = np.load(join(reduced_data_dir,f'exttemp_levels_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
-                    gevpar_regs[expt] = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
-                exttemps['era5'] = ds_cgts_extts['era5'].sel(daily_stat=daily_stat).isel(lon=i_lon,lat=i_lat)
+                    exttemps[expt] = das_cgts_extt[expt].isel(lon=i_lon,lat=i_lat)
+                    exttemp_levels_regs[expt] = np.load(join(reduced_data_dir,f'exttemp_levels_reg_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
+                    gevpar_regs[expt] = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
+                exttemps['era5'] = das_cgts_extt['era5'].isel(lon=i_lon,lat=i_lat)
                 exttemp_levels_regs['era5'] = np.load(join(reduced_data_dir_era5,f'exttemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
                 gevpar_regs['era5'] = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
                 center_lon,center_lat = (exttemps['era5'].coords[d].item() for d in ('lon','lat'))
                 lonlatstr = r'$\lambda=%d\pm%d,\phi=%d\pm%d$'%(center_lon,lon_blocksize/2,center_lat,lat_blocksize/2)
                 if max(cgs_level) == 1:
                     lonlatstr = r'%s (whole region)'%(lonlatstr)
-                print(f'Plotting GEV select regions')
                 # Plot all four curves on one plot (ERA5, free, control, nudged)
                 colors = dict({'era5': 'black', 'control': 'dodgerblue', 'free': 'limegreen', 'nudged': 'red'})
 
@@ -692,7 +709,7 @@ def compare_expts(which_ssw, i_gcm, i_init):
 
                 axes[1,1].axis('off')
 
-                fig.savefig(join(figdir,f'riskplot_reg_eall_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
+                fig.savefig(join(figdir,f'riskplot_reg_eall_i{fc_date_abbrv}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
                 plt.close(fig)
                 print(f'------------------ SAVED THE FIG -----------------')
     return
@@ -1058,6 +1075,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     print(f'********** About to plot_gev_select_regions ***********')
     if todo['plot_gev_select_regions']:
         for (i_cgs_level,cgs_level) in enumerate(cgs_levels[:1]):
+            #TODO  Gotta make a function for this super-repetitive code 
             cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
             ens_file_cgts = join(reduced_data_dir,f't2m_e{expt}_i{fc_date_abbrv}_cgt1day_cgs{cgs_key}.nc')
             da_cgts = xr.open_dataset(ens_file_cgts)['1xday'].sel(daily_stat=daily_stat)
