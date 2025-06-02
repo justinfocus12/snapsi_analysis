@@ -493,32 +493,34 @@ def interpolate_landmask(landmask_file_full, landmask_file_interp, lons_ref, lat
     landmask.to_netcdf(landmask_file_interp)
     return
 
-def coarse_grain_space(ens_file_cgt, landmask_file_full, landmask_file_interp, event_region, cgs_level):
+
+def coarse_grain_space(ens_file_cgt, ens_files_cgts, cgs_levels, landmask_interp_file, event_region):
 
     ds_cgt = xr.open_dataset(ens_file_cgt)
-
-
+    landmask = xr.open_dataarray(landmask_interp_file)
     data_vars = dict()
     Nlon,Nlat = (ds_cgt[d].size for d in ('lon','lat'))        
-    dim = {'lon': Nlon//cgs_level[0], 'lat': Nlat//cgs_level[1]}
-    trim_kwargs = dict(lon=slice(None,cgs_level[0]*dim['lon']),lat=slice(None,cgs_level[1]*dim['lat']))
-    ds_cgt_trimmed = ds_cgt.isel(**trim_kwargs)
-    landmask_trimmed = landmask.isel(**trim_kwargs) #* xr.ones_like(ds_cgt_trimmed)
-    coslat = np.cos(np.deg2rad(ds_cgt_trimmed['lat'])) * xr.ones_like(ds_cgt_trimmed)
-    # trim land mask the same way 
-    coarsen_kwargs = dict(dim=dim, boundary='trim', coord_func={'lon': 'mean', 'lat': 'mean'})
-    try:
-        numerator = (ds_cgt_trimmed * landmask_trimmed * coslat).coarsen(**coarsen_kwargs).sum() 
-    except ValueError:
-        pdb.set_trace()
-    denominator = (landmask_trimmed * coslat).coarsen(**coarsen_kwargs).sum() 
-    land_frac = denominator / (coslat.coarsen(**coarsen_kwargs)).sum() 
-    ds_cgts = numerator / denominator 
-    #pdb.set_trace()
-    if cgs_level[0] > 1 or cgs_level[1] > 1:
-        ds_cgts = ds_cgts.where(np.isfinite(ds_cgts)*(land_frac > 0.0), np.nan)
-    if not (ds_cgts.lon.size == cgs_level[0] and ds_cgts.lat.size == cgs_level[1]):
-        pdb.set_trace()
+    for i_cgs_level,cgs_level in enumerate(cgs_levels):
+        dim = {'lon': Nlon//cgs_level[0], 'lat': Nlat//cgs_level[1]}
+        trim_kwargs = dict(lon=slice(None,cgs_level[0]*dim['lon']),lat=slice(None,cgs_level[1]*dim['lat']))
+        ds_cgt_trimmed = ds_cgt.isel(**trim_kwargs)
+        landmask_trimmed = landmask.isel(**trim_kwargs) #* xr.ones_like(ds_cgt_trimmed)
+        coslat = np.cos(np.deg2rad(ds_cgt_trimmed['lat'])) * xr.ones_like(ds_cgt_trimmed)
+        # trim land mask the same way 
+        coarsen_kwargs = dict(dim=dim, boundary='trim', coord_func={'lon': 'mean', 'lat': 'mean'})
+        try:
+            numerator = (ds_cgt_trimmed * landmask_trimmed * coslat).coarsen(**coarsen_kwargs).sum() 
+        except ValueError:
+            pdb.set_trace()
+        denominator = (landmask_trimmed * coslat).coarsen(**coarsen_kwargs).sum() 
+        land_frac = denominator / (coslat.coarsen(**coarsen_kwargs)).sum() 
+        ds_cgts = numerator / denominator 
+        #pdb.set_trace()
+        if cgs_level[0] > 1 or cgs_level[1] > 1:
+            ds_cgts = ds_cgts.where(np.isfinite(ds_cgts)*(land_frac > 0.0), np.nan)
+        if not (ds_cgts.lon.size == cgs_level[0] and ds_cgts.lat.size == cgs_level[1]):
+            pdb.set_trace()
+        ds_cgts.to_netcdf(ens_files_cgts[i_cgs_level])
     return ds_cgts # awkward to put into a single dataset because of differing lon/lat coordinates between coarsening levels
 
 def plot_gevpar_difference_maps_flat(gevpar0, gevpar1, titles, cgs_level_2show, ext_sign, landmask=None, gevpar_diff_ref=None, param_bounds=None):

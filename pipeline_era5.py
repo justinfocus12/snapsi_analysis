@@ -61,12 +61,19 @@ def era5_workflow(which_ssw,verbose=False):
     print(f'Starting workflow setup')
     analysis_date = '2025-05-20'
     raw_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/era5'
-    landmask_file = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/era5/land_sea_mask.nc'
     processed_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596'
+    cgs_levels,select_regions = analysis_multiparams(which_ssw)
+    landmask_full_file = join(processed_data_dir,'era5/land_sea_mask.nc')
     daily_stat = 'daily_min'
     years = np.arange(1980,2020,dtype=int)
     year_filegroups = []
     reduced_data_dir = join(processed_data_dir,which_ssw,analysis_date,'era5')
+    landmask_interp_file = join(reduced_data_dir,'land_sea_mask_interp.nc')
+    ens_file_cgt = join(reduced_data_dir,f't2m_cgt1day.nc')
+    ens_files_cgts = []
+    for i_cgs_level,cgs_level in enumerate(cgs_levels):
+        ens_files_cgts.append(join(reduced_data_dir,'t2m_cgt1day_cgs%dx%d.nc'%(cgs_level[0],cgs_level[1])))
+
     figdir = join('/home/users/ju26596/snapsi_analysis_figures',which_ssw,analysis_date,'era5')
     fc_dates,onset_date_nominal,term_date = pipeline_base.dates_of_interest(which_ssw)
     event_region,context_region = pipeline_base.region_of_interest(which_ssw)
@@ -78,6 +85,8 @@ def era5_workflow(which_ssw,verbose=False):
                 [join(raw_data_dir,f't2m_{(year-1):04}-12.nc')] + 
                 [join(raw_data_dir,f't2m_{year:04}-{month:02}.nc') for month in [1,2,3]]
                 ))
+        Nlon_interp = 80
+        Nlat_interp = 16
     elif "jan2019" == which_ssw:
         event_year = 2019
         ext_sign = -1
@@ -95,44 +104,75 @@ def era5_workflow(which_ssw,verbose=False):
                 ))
     makedirs(reduced_data_dir,exist_ok=True)
     # spatial coarse graining (cgs)
-    cgs_levels,select_regions = analysis_multiparams(which_ssw)
     n_boot = 1000
     confint_width = 0.5
+    boot_type = 'percentile'
+
+    ext_symb = "max" if 1==ext_sign else "min"
+    ineq_symb = "\u2265" if 1==ext_sign else "\u2264"
 
     makedirs(figdir,exist_ok=True)
 
     select_points = ()
     risk_levels = np.exp(np.linspace(np.log(0.001),np.log(49/50),30))
-    workflow = (
-            years,
-            event_year,ext_sign,
-            event_region,context_region,
-            fc_dates,onset_date_nominal,term_date,
-            landmask_file,year_filegroups,reduced_data_dir,figdir,
-            cgs_levels,select_regions,daily_stat,
-            risk_levels,n_boot,confint_width
+    workflow = dict(
+            years             =years,
+            event_year        =event_year,
+            ext_sign          =ext_sign,
+            ext_symb = ext_symb,
+            ineq_symb = ineq_symb,
+            event_region      =event_region,
+            context_region    =context_region,
+            Nlon_interp = Nlon_interp,
+            Nlat_interp = Nlat_interp,
+            fc_dates          =fc_dates,
+            onset_date_nominal=onset_date_nominal,
+            term_date         =term_date,
+            landmask_full_file     =landmask_full_file,
+            landmask_interp_file     =landmask_interp_file,
+            ens_file_cgt = ens_file_cgt, 
+            ens_files_cgts = ens_files_cgts,
+            year_filegroups   =year_filegroups,
+            reduced_data_dir  =reduced_data_dir,
+            figdir            =figdir,
+            cgs_levels        =cgs_levels,
+            select_regions    =select_regions,
+            daily_stat        =daily_stat,
+            risk_levels       =risk_levels,
+            n_boot            =n_boot,
+            confint_width     =confint_width,
+            boot_type = 'percentile', 
             )
     print(f'Finished setting up workflow')
     return workflow
 
-def coarse_grain_time_fulltime_solo(which_ssw, i_init): 
-    years,event_region,event_time_interval,landmask_file,year_filegroups,reduced_data_dir,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = era5_workflow(which_ssw)
-    inits,fin = pipeline_base.dates_of_interest(which_ssw)
-    event_region = pipeline_base.region_of_interest(which_ssw)
-    fcdate = dtlib.datetime.strptime(inits[i_init],'%Y%m%d')
-    full_time_interval = [fcdate, event_time_interval[1]]
-    ds_cgt_era5,_ = coarse_grain_time(years, year_filegroups, event_region, full_time_interval)
-    return ds_cgt_era5
+def interpolate_landmask(landmask_full_file, landmask_interp_file, Nlon_interp, Nlat_interp, event_region):
+    landmask_full = (
+            utils.rezero_lons(
+                xr.open_dataarray(landmask_full_file)
+                .isel(time=0,drop=True)
+                .isel(latitude=slice(None,None,-1)) # Flip lat to go in increasing order
+                .rename(dict(latitude='lat',longitude='lon'))
+                )
+            #.sel(event_region)
+            )
+    dlon = (event_region['lon'].stop - event_region['lon'].start)/Nlon_interp
+    dlat = (event_region['lat'].stop - event_region['lat'].start)/Nlat_interp
+    lons_interp = np.linspace(event_region['lon'].start+dlon/2, event_region['lon'].stop-dlon/2, Nlon_interp)
+    lats_interp = np.linspace(event_region['lat'].start+dlat/2, event_region['lat'].stop-dlat/2, Nlat_interp)
+    landmask_interp = landmask_full.interp({'lat': lats_interp, 'lon': lons_interp}).sel(event_region)
+    assert np.all(np.isfinite(landmask_interp))
+    landmask_interp.to_netcdf(landmask_interp_file)
+    return 
 
 
-def coarse_grain_time(years, year_filegroups, region, context_region, init_date, term_date):
+
+def coarse_grain_time(years, year_filegroups, region, context_region, Nlon_interp, Nlat_interp, init_date, term_date, ens_file_cgt):
     print(f'Starting to coarse-grain time')
     t2m = []
     duration = term_date - init_date
     # Regrid to an easily divisible size 
     # The physical aspect ratio ranges from 6/1 at the lower boundary to 4/1 at the top, so we settle on a ratio of 5/1
-    Nlon_interp = 80
-    Nlat_interp = 16 
 
     dlon = (region['lon'].stop - region['lon'].start)/Nlon_interp
     dlat = (region['lat'].stop - region['lat'].start)/Nlat_interp
@@ -180,63 +220,32 @@ def coarse_grain_time(years, year_filegroups, region, context_region, init_date,
         daily_max = np.maximum(daily_max, t2m.isel(time=range(i,t2m['time'].size,4)).assign_coords({'time': daily_max['time']}))
     daily_mean /= 4
     t2m_cgt_1xday = xr.concat([daily_mean,daily_min,daily_max], dim='daily_stat').assign_coords(daily_stat=['daily_mean','daily_min','daily_max'])
-    ds = xr.Dataset(data_vars=dict({'1xday': t2m_cgt_1xday, '4xday': t2m.rename({'time': 'time_6h'})}))
-    return (ds, False)
+    ds_cgt = xr.Dataset(data_vars=dict({'1xday': t2m_cgt_1xday, '4xday': t2m.rename({'time': 'time_6h'})}))
+    ds_cgt.to_netcdf(ens_file_cgt)
+    return 
 
 def reduce_era5(which_ssw):
     todo = dict({
+        'interpolate_landmask':             0,
         'coarse_grain_time':                0,
-        'coarse_grain_space':               0,
-        'onset_date_sensitivity_analysis':  0,
+        'coarse_grain_space':               1,
+        'onset_date_sensitivity_analysis':  1,
         'plot_sumstats_map':                1,
-        'fit_gev':                          0,
+        'fit_gev':                          1,
         'plot_gevpar_map':                  1,
-        'compute_risk':                     0,
-        'plot_risk_map':                    0,
-        'fit_gev_select_regions':           0,
-        'plot_gev_select_regions':          0,
+        'compute_risk':                     1,
+        'plot_risk_map':                    1,
+        'fit_gev_select_regions':           1,
+        'plot_gev_select_regions':          1,
         })
-    (
-        years,
-        event_year, ext_sign, 
-        event_region,context_region,
-        fc_dates,onset_date_nominal,term_date,
-        landmask_file, year_filegroups, reduced_data_dir, figdir,
-        cgs_levels,select_regions,daily_stat,
-        risk_levels,n_boot,confint_width
-    ) = era5_workflow(which_ssw)
-    ext_symb = "max" if 1==ext_sign else "min"
-    ineq_sign = "geq" if 1==ext_sign else "leq"
-
-    boot_type = 'percentile'
-    ens_file_cgt = join(reduced_data_dir,f't2m_cgt1day.nc')
+    wkf = era5_workflow(which_ssw)
+    if todo['interpolate_landmask']:
+        interpolate_landmask(wkf['landmask_full_file'], wkf['landmask_interp_file'], wkf['Nlon_interp'], wkf['Nlat_interp'], wkf['event_region'])
     if todo['coarse_grain_time']:
-        ds_cgt,err_flag = coarse_grain_time(years, year_filegroups, event_region, context_region, fc_dates[0], term_date)
-        ds_cgt.to_netcdf(ens_file_cgt)
-
-    ds_cgt = xr.open_dataset(ens_file_cgt)
-    da_cgt = ds_cgt['1xday'].sel(daily_stat=daily_stat)
-
-    landmask_full = (
-            utils.rezero_lons(
-                xr.open_dataarray(landmask_file)
-                .isel(time=0,drop=True)
-                .isel(latitude=slice(None,None,-1)) # Flip lat to go in increasing order
-                .rename(dict(latitude='lat',longitude='lon'))
-                )
-            #.sel(event_region)
-            )
-    landmask = landmask_full.interp({'lat': da_cgt.coords['lat'].values, 'lon': da_cgt.coords['lon'].values}).sel(event_region)
-
-    assert np.all(np.isfinite(landmask))
-
+        coarse_grain_time(wkf['years'], wkf['year_filegroups'], wkf['event_region'], wkf['context_region'], wkf['Nlon_interp'], wkf['Nlat_interp'], wkf['fc_dates'][0], wkf['term_date'], wkf['ens_file_cgt'])
     if todo['coarse_grain_space']:
-        for i_cgs_level,cgs_level in enumerate(cgs_levels):
-            cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
-            ens_file_cgts = join(reduced_data_dir,f't2m_cgt1day_cgs{cgs_key}.nc')
-            if todo['coarse_grain_space']:
-                ds_cgts = pipeline_base.coarse_grain_space(ds_cgt, cgs_level, landmask)
-                ds_cgts.to_netcdf(ens_file_cgts)
+        pipeline_base.coarse_grain_space(wkf['ens_file_cgt'], wkf['ens_files_cgts'], wkf['cgs_levels'], wkf['landmask_interp_file'], wkf['event_region'])
+    return
 
     # ------------- Sensitivity analysis with respect to onset date ------------
     if todo['onset_date_sensitivity_analysis']:
