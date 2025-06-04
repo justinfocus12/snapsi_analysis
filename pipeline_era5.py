@@ -35,7 +35,7 @@ def analysis_multiparams(which_ssw):
         select_regions = ( # Indexed by cgs_level
                 [(0,0),], # level (1,1)
                 [], # level (5,1)
-                ((2*i,2*i//5) for i in range(5)),
+                [(2*i,2*i//5) for i in range(5)],
                 [], # level (20,4)
                 [], # level (40,8)
                 [], # level (80,16)
@@ -74,11 +74,15 @@ def era5_workflow(which_ssw,verbose=False):
     ens_files_cgts_extt = [] # extremized in time 
     gevpar_files = []
     risk_files = []
+    gevsevlev_files = []
     for i_cgs_level,cgs_level in enumerate(cgs_levels):
         ens_files_cgts.append(join(reduced_data_dir,'t2m_cgt1day_cgs%dx%d.nc'%(cgs_level[0],cgs_level[1])))
         ens_files_cgts_extt.append(join(reduced_data_dir,'t2m_cgt1day_cgs%dx%d_extt.nc'%(cgs_level[0],cgs_level[1])))
         gevpar_files.append(join(reduced_data_dir,'gevpar_cgs%dx%d.nc'%(cgs_level[0],cgs_level[1])))
         risk_files.append(join(reduced_data_dir,'risk_cgs%dx%d.nc'%(cgs_level[0],cgs_level[1])))
+        gevsevlev_files.append([])
+        for (i_lon,i_lat) in select_regions[i_cgs_level]:
+            gevsevlev_files[i_cgs_level].append(join(reduced_data_dir,'gevsevlev_cgs%dx%d_ilon%d_ilat%d.nc'%(cgs_level[0],cgs_level[1],i_lon,i_lat)))
     param_bounds_file = join(reduced_data_dir, 'param_bounds.nc')
 
     figdir = join('/home/users/ju26596/snapsi_analysis_figures',which_ssw,analysis_date,'era5')
@@ -144,8 +148,9 @@ def era5_workflow(which_ssw,verbose=False):
             ens_files_cgts = ens_files_cgts,
             ens_files_cgts_extt = ens_files_cgts_extt,
             gevpar_files = gevpar_files,
-            risk_files = risk_files,
             param_bounds_file = param_bounds_file,
+            risk_files = risk_files,
+            gevsevlev_files = gevsevlev_files,
             year_filegroups   =year_filegroups,
             reduced_data_dir  =reduced_data_dir,
             figdir            =figdir,
@@ -249,9 +254,9 @@ def reduce_era5(which_ssw):
         'fit_gev':                          0,
         'plot_gevpar_map':                  0,
         'compute_risk':                     0,
-        'plot_risk_map':                    1,
-        'fit_gev_select_regions':           1,
-        'plot_gev_select_regions':          1,
+        'plot_risk_map':                    0,
+        'fit_gev_select_regions':           0,
+        'plot_gev_select_regions':          0,
         })
     wkf = era5_workflow(which_ssw)
     if todo['interpolate_landmask']:
@@ -324,92 +329,25 @@ def reduce_era5(which_ssw):
                 '''.split(',')),
                 True,
                 )
-        #for i_cgs_level,cgs_level in enumerate(cgs_levels):
-        #    if min(cgs_level) < 2:
-        #        continue
-        #    cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
-        #    risk_file = join(reduced_data_dir,f'risk_wrt{event_year}_cgs{cgs_key}.nc')
-        #    risk = xr.open_dataarray(risk_file)
-        #    fig,ax = pipeline_base.plot_risk_or_valatrisk_map(risk,is_risk=True,locsign=ext_sign,projection='mercator')
-        #    ineq_sign = "geq" if ext_sign==1 else "leq"
-        #    ax.set_title(r"$\mathbb{P}_{\mathrm{ERA5}}\{\%s_t\langle T(t)\rangle\%s \%s_t\langle T(t)\rangle_{\mathrm{ERA5,%s}}\}$"%(ext_symb,ineq_sign,ext_symb,event_year))
-        #    fig.savefig(join(figdir,f'risk_map_cgs{cgs_key}_{daily_stat}.png'), **pltkwargs)
-        #    plt.close(fig)
-        #    print(f'Just plotted risk map with {cgs_key = }')
-    return
-
-
-
     # Do a more thorough uncertainty quantification at a specific site or region, using bootstrap analysis and goodness-of-fit etc. Maybe parallelize over all sites too
     if todo['fit_gev_select_regions']:
-        for i_cgs_level,cgs_level in enumerate(cgs_levels):
-            cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
-            ens_file_cgts = join(reduced_data_dir,f't2m_cgt1day_cgs{cgs_key}.nc')
-            da_cgts = xr.open_dataset(ens_file_cgts)['1xday'].sel(daily_stat=daily_stat)
-            da_cgts_extt = ext_sign * (ext_sign*da_cgts.sel(time=slice(onset_date,term_date))).max(dim='time')
-
-            for (i_lon,i_lat) in select_regions[i_cgs_level]:
-                exttemp = da_cgts_extt.isel(lon=i_lon,lat=i_lat).to_numpy()
-                gevpar_reg,exttemp_levels_reg = pipeline_base.fit_gev_exttemp_1d_uq(exttemp,risk_levels,ext_sign,method='PWM')
-                gevpar_reg.to_netcdf(join(reduced_data_dir,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
-                np.save(join(reduced_data_dir,f'exttemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'), exttemp_levels_reg)
+        pipeline_base.fit_regional_gevpars(
+                *(wkf[key.strip()] for key in '''
+                ens_files_cgts_extt, risk_levels, 
+                cgs_levels, select_regions,
+                ext_sign,reduced_data_dir 
+                '''.split(',')),
+                )
 
     if todo['plot_gev_select_regions']:
-        for i_cgs_level,cgs_level in enumerate(cgs_levels):
-            if max(cgs_level) > 10:
-                continue
-            cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
-            ens_file_cgts = join(reduced_data_dir,f't2m_cgt1day_cgs{cgs_key}.nc')
-            da_cgts = xr.open_dataset(ens_file_cgts)['1xday'].sel(daily_stat=daily_stat)
-            da_cgts_extt = ext_sign * (ext_sign*da_cgts.sel(time=slice(onset_date,term_date))).max(dim='time')
-            # Location labeling 
-            lon_blocksize,lat_blocksize = ((event_region[d].stop - event_region[d].start)/cgs_level[i_d] for (i_d,d) in enumerate(('lon','lat')))
-            for (i_lon,i_lat) in select_regions[i_cgs_level]:
-                exttemp = da_cgts_extt.isel(lon=i_lon,lat=i_lat).to_numpy()
-                gevpar_reg = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
-                exttemp_levels_reg = np.load(join(reduced_data_dir,f'exttemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy')) 
-                center_lon = event_region['lon'].start + (i_lon+0.5)*lon_blocksize
-                center_lat = event_region['lat'].start + (i_lat+0.5)*lat_blocksize
-                lonlatstr = r'$\lambda=%d\pm%d,\phi=%d\pm%d$'%(center_lon,lon_blocksize/2,center_lat,lat_blocksize/2)
-                if max(cgs_level) == 1:
-                    lonlatstr = r'%s (whole region)'%(lonlatstr)
-
-                order = np.argsort(exttemp)
-                rank = np.argsort(order)
-                if ext_sign == -1:
-                    risk_empirical = np.arange(1,len(exttemp)+1)/len(exttemp)
-                else:
-                    risk_empirical = np.arange(len(exttemp),0,-1)/len(exttemp)
-                shape,loc,scale = (gevpar_reg.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
-                if np.all([np.isfinite(p) for p in [shape,loc,scale]]):
-                    fig,ax = plt.subplots()
-                    ax.scatter(risk_empirical, exttemp[order], color='black', marker='+')
-                    param_label = '\n'.join([
-                        r'$\mu=%.1f$'%(ext_sign*loc),
-                        r'$\sigma=%.1f$'%(scale),
-                        r'$\xi=%+.2f$'%(shape)
-                        ])
-                    # Special marker for the year 
-                    i_mem_event_year = np.where(da_cgts_extt.member == event_year)[0][0]
-
-                    ax.scatter(risk_empirical[rank[i_mem_event_year]], exttemp[i_mem_event_year], color='black', marker='o')
-                    h, = ax.plot(risk_levels,exttemp_levels_reg[0,:],color='black', label=param_label)
-                    boot_quant_lo,boot_quant_hi = (np.quantile(exttemp_levels_reg[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
-                    if boot_type == 'percentile':
-                        lo,hi = boot_quant_lo,boot_quant_hi
-                    else:
-                        lo,hi = 2*risk_ratio[0,:]-boot_quant_hi, 2*risk_ratio[0,:]-boot_quant_lo
-                    ax.fill_between(risk_levels, lo, hi, fc='gray', ec='none', alpha=0.3, zorder=-1)
-                    ax.set_xscale('log')
-                    ax.set_xlabel(r'$\mathbb{P}\{\%s_t\langle T(t)\rangle_{\mathrm{region}}\%s T\}$'%(ext_symb,ineq_sign))
-                    ax.set_ylabel(r'$T$')
-                    ax.set_title(f'ERA5 at {lonlatstr}')
-                    ax.legend(handles=[h])
-
-                    fig.savefig(join(figdir,f'riskplot_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
-                    plt.close(fig)
-    #ds_cgt.close()
-    #ds_cgt_extt.close()
+        pipeline_base.plot_regional_gevsevlev(
+                *(wkf[key.strip()] for key in '''
+                ens_files_cgts_extt, gevsevlev_files, cgs_levels, 
+                event_region, select_regions, event_year, 
+                boot_type, confint_width,
+                figdir, ext_sign, ext_symb, ineq_symb
+                '''.split(',')),
+                )
     return 
 
 if __name__ == '__main__':

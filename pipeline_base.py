@@ -819,15 +819,87 @@ def fit_gev_exttemp(ens_files_cgts_extt,gevpar_files,ext_sign,cgs_levels,method=
         gevpar.to_netcdf(gevpar_files[i_cgs_level])
     return 
 
-def fit_gev_exttemp_1d_uq(exttemp, risk_levels, ext_sign, method='MLE', n_boot=1000):
+def fit_gev_exttemp_1d_uq(exttemp, risks, ext_sign, method='PWM', n_boot=1000):
     # do bootstrapping to get confidence intervals on return levels, etc. 
     gevpar_dict = stfu.fit_statistical_model(ext_sign*exttemp, 'gev', n_boot=n_boot, method=method)
     gevpar = xr.DataArray(coords={'param': ['shape','loc','scale'], 'boot': np.arange(n_boot+1)}, data=np.array([gevpar_dict[p] for p in ['shape','loc','scale']]))
     # Compute quantiles corresponding to risk levels 
-    levels = ext_sign*stfu.complementary_quantile_parametric('gev', gevpar_dict, risk_levels)
+    levels = ext_sign*stfu.complementary_quantile_parametric('gev', gevpar_dict, risks)
+    sevlev = xr.DataArray(coords={'boot': np.arange(n_boot+1), 'risk': risks}, dims=['boot','risk'], data=levels) # for severity levels
+    gevsevlev = xr.Dataset(data_vars={'gevpar': gevpar, 'sevlev': sevlev})
     # levels should get progressively less eextreme as risk_levels increases, because less-extreme levels have a higher risk of being exceeded
 
-    return gevpar, levels
+    return gevsevlev
+
+
+def fit_regional_gevsevlev(ens_files_cgts_extt, gevsevlev_files, risk_levels, cgs_levels, select_regions, ext_sign, ):
+    for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
+        da_cgts_extt = xr.open_dataarray(ens_files_cgts_extt[i_cgs_level])
+        for (i_region,(i_lon,i_lat)) in enumerate(select_regions[i_cgs_level]):
+            gevsevlev = fit_gev_exttemp_1d_uq(
+                    da_cgts_extt.isel(lon=i_lon,lat=i_lat).to_numpy().flatten(),
+                    risk_levels, ext_sign, method='PWM', n_boot=1000
+                    )
+            gevsevlev.to_netcdf(gevsevlev_files[i_cgs_level][i_region])
+    return
+
+def plot_regional_gevsevlev(ens_files_cgts_extt, gevsevlev_files, cgs_levels, event_region, select_regions, mem_special, boot_type, confint_width, figdir, ext_sign, ext_symb, ineq_symb):
+
+    for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
+        da_cgts_extt = xr.open_dataarray(ens_files_cgts_extt[i_cgs_level])
+        lon_blocksize,lat_blocksize = ((event_region[d].stop - event_region[d].start)/cgs_level[i_d] for (i_d,d) in enumerate(('lon','lat')))
+        for (i_region,(i_lon,i_lat)) in enumerate(select_regions[i_cgs_level]):
+            gevsevlev = xr.open_dataset(gevsevlev_files[i_cgs_level][i_region])
+            exttemp_levels_reg = gevsevlev['sevlev'].to_numpy() # n_boot x n_lev
+            exttemp = da_cgts_extt.isel(lon=i_lon,lat=i_lat).to_numpy().flatten()
+            risk_levels = gevsevlev.coords['risk'].to_numpy()
+            gevpar_reg = gevsevlev['gevpar']
+            center_lon = event_region['lon'].start + (i_lon+0.5)*lon_blocksize
+            center_lat = event_region['lat'].start + (i_lat+0.5)*lat_blocksize
+            lonlatstr = r'$\lambda=%d\pm%d,\phi=%d\pm%d$'%(center_lon,lon_blocksize/2,center_lat,lat_blocksize/2)
+            if max(cgs_level) == 1:
+                lonlatstr = r'%s (whole region)'%(lonlatstr)
+
+            order = np.argsort(exttemp)
+            rank = np.argsort(order)
+            if ext_sign == -1:
+                risk_empirical = np.arange(1,len(exttemp)+1)/len(exttemp)
+            else:
+                risk_empirical = np.arange(len(exttemp),0,-1)/len(exttemp)
+            shape,loc,scale = (gevpar_reg.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
+            if not np.all([np.isfinite(p) for p in [shape,loc,scale]]):
+                pdb.set_trace()
+            fig,ax = plt.subplots()
+            ax.scatter(risk_empirical, exttemp[order], color='black', marker='+')
+            param_label = '\n'.join([
+                r'$\mu=%.1f$'%(ext_sign*loc),
+                r'$\sigma=%.1f$'%(scale),
+                r'$\xi=%+.2f$'%(shape)
+                ])
+            # Special marker for the year 
+            i_mem_special = np.where(da_cgts_extt.member == mem_special)[0][0]
+
+            ax.scatter(risk_empirical[rank[i_mem_special]], exttemp[i_mem_special], color='black', marker='o')
+            h, = ax.plot(risk_levels,exttemp_levels_reg[0,:],color='black', label=param_label)
+            boot_quant_lo,boot_quant_hi = (np.quantile(exttemp_levels_reg[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
+            if boot_type == 'percentile':
+                lo,hi = boot_quant_lo,boot_quant_hi
+            else:
+                lo,hi = 2*risk_ratio[0,:]-boot_quant_hi, 2*risk_ratio[0,:]-boot_quant_lo
+            ax.fill_between(risk_levels, lo, hi, fc='gray', ec='none', alpha=0.3, zorder=-1)
+            ax.set_xscale('log')
+            ax.set_xlabel('Prob. worse than %s'%(mem_special))
+            ax.set_ylabel('T')
+            ax.set_title('ERA5 at %s'%(lonlatstr))
+            ax.legend(handles=[h])
+
+            fig.savefig(join(figdir,f'gevsevlev_cgs{cgs_level[0]}x{cgs_level[1]}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
+            plt.close(fig)
+            
+
+            
+
+
 
 
 
