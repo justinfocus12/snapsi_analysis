@@ -66,169 +66,206 @@ def region_of_interest(which_ssw):
     context_region = dict(lat=slice(lat_min-lat_pad,lat_max+lat_pad),lon=slice(lon_min-lon_pad,lon_max+lon_pad))
     return event_region,context_region
 
-def onset_date_sensitivity_analysis(da, event_region, cgs_level, fc_dates, init_date, onset_date_nominal, term_date, ext_sign, figdir, figfile_suffix, figtitle_prefix, mem_special=None, fc_date_special=None, intensity_lims=None):
+def onset_date_sensitivity_analysis(ens_files_cgts, event_region, cgs_levels_for_odsa, fc_dates, init_date, onset_date_nominal, term_date, daily_stat, ext_sign, figdir, figtitle_prefix, mem_special=None, fc_date_special=None, ):
     # init_date should coincide with the first entry of da.time, but time conversion headaches...
     # Plot the minimum over the time interval as a function of onset date, across ensemble members. 
-    onset_dates = [init_date+dtlib.timedelta(days=dt) for dt in range(1, (term_date-init_date).days+1)]
-    severities = xr.DataArray(
-            coords = dict(
-                **{c: da.sel(event_region).coords[c] for c in ['lon','lat','member',]},
-                onset_date=onset_dates,
-                ),
-            dims = ['lon','lat','member','onset_date',],
-            data = np.nan,
-            )
-    for (i_onset_date,onset_date) in enumerate(onset_dates):
-        # for some reason the slicing operation works fine 
-        severities[dict(onset_date=i_onset_date)] = ext_sign*(ext_sign*da.sel(time=slice(onset_date,None))).max(dim='time')
-    Nlon,Nlat,Nmem = (severities[c].size for c in ['lon','lat','member'])
-    if not (Nlon==cgs_level[0] and Nlat==cgs_level[1]):
-        pdb.set_trace()
-    if intensity_lims is None:
-        intensity_lims = [np.nanmin(da), np.nanmax(da)]
-    def kwargsofmem(mem):
-       if mem_special and mem==mem_special:
-           kwargs = dict(color='black', linestyle='--', zorder=1)
-       else:
-           kwargs = dict(color='gray', alpha=0.5, linestyle='-', zorder=0)
-       return kwargs
-    for i_lon in range(Nlon):
-        for i_lat in range(Nlat):
-            fig,axes = plt.subplots(nrows=2,figsize=(6,6+3), sharex=True,height_ratios=[2,1],gridspec_kw=dict(hspace=0.3,))
-            axintensity,axseverity = axes
-            axnumchange = axintensity.twinx()
-            isel = dict(lat=i_lat,lon=i_lon)
 
-            lonlatstr = utils.lonlatstr(event_region,cgs_level,i_lon,i_lat)
-            fig.suptitle(r"%s, %s"%(figtitle_prefix,lonlatstr), y=0.93, va='bottom')
-            for i_mem,mem in enumerate(da.coords['member']):
-                isel['member'] = i_mem
-                xr.plot.plot(da.isel(isel), ax=axintensity, x='time',**kwargsofmem(mem))
-                xr.plot.plot(severities.isel(isel), ax=axseverity, x='onset_date', **kwargsofmem(mem)) # TODO instead of plotting all the ensemble members, plot the mean
-            isel.pop('member')
-            xr.plot.plot(
-                    (0 != 
-                        severities.isel(isel)
-                        .diff(dim='onset_date',label='lower')
-                    ).sum(dim='member'),
-                    ax=axnumchange, x='onset_date', color='red', linewidth=1
-                ) 
-            axintensity.set_ylim(intensity_lims)
-            axseverity.set_ylim(intensity_lims)
-            for ax in (axintensity,axseverity):
-                ax.axvline(onset_date_nominal, color="black", linestyle="--")
-                for i_fc_date,fc_date in enumerate(fc_dates):
-                    ax.axvline(fc_date, color="dodgerblue", linestyle="-")
-            xticks = fc_dates + [onset_date_nominal,term_date]
-            for ax in axes.flat:
-                xticklabels = [dtlib.datetime.strftime(date,"%m-%d") for date in xticks]
-                ax.set_xticks(xticks,xticklabels,rotation=0)
+    for (i_cgs_level,cgs_level) in enumerate(cgs_levels_for_odsa):
+        cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+        da_cgts = xr.open_dataset(ens_files_cgts[i_cgs_level])['1xday'].sel(daily_stat=daily_stat)
+        intensity_lims = utils.padded_bounds(da_cgts)
+        onset_dates = [init_date+dtlib.timedelta(days=dt) for dt in range(1, (term_date-init_date).days+1)]
+        severities = xr.DataArray(
+                coords = dict(
+                    **{c: da_cgts.sel(event_region).coords[c] for c in ['lon','lat','member',]},
+                    onset_date=onset_dates,
+                    ),
+                dims = ['lon','lat','member','onset_date',],
+                data = np.nan,
+                )
+        for (i_onset_date,onset_date) in enumerate(onset_dates):
+            # for some reason the slicing operation works fine 
+            severities[dict(onset_date=i_onset_date)] = ext_sign*(ext_sign*da_cgts.sel(time=slice(onset_date,None))).max(dim='time')
+        Nlon,Nlat,Nmem = (severities[c].size for c in ['lon','lat','member'])
+        if not (Nlon==cgs_level[0] and Nlat==cgs_level[1]):
+            pdb.set_trace()
+        def kwargsofmem(mem):
+           if mem_special and mem==mem_special:
+               kwargs = dict(color='black', linestyle='--', zorder=1)
+           else:
+               kwargs = dict(color='gray', alpha=0.5, linestyle='-', zorder=0)
+           return kwargs
+        for i_lon in range(Nlon):
+            for i_lat in range(Nlat):
+                fig,axes = plt.subplots(nrows=2,figsize=(6,6+3), sharex=True,height_ratios=[2,1],gridspec_kw=dict(hspace=0.3,))
+                axintensity,axseverity = axes
+                axnumchange = axintensity.twinx()
+                isel = dict(lat=i_lat,lon=i_lon)
 
-            # Mark all the nominal dates
-            axintensitytitle = "" if fc_date_special is None else "FC %s"%(dtlib.datetime.strftime(fc_date_special, "%Y-%m-%d"))
-            axintensity.set_title(axintensitytitle)
-            axintensity.set_ylabel("Daily min T2M [K]")
-            axintensity.set_xlabel("Date")
-            axseverity.set_title("")
-            axseverity.set_ylabel("min T2M past onset")
-            axseverity.set_xlabel("Onset date")
-            axnumchange.set_title("")
-            axnumchange.set_ylabel(r"$\#\{\frac{\Delta\text{severity}}{\Delta(\text{onset date})}\neq0\}$", rotation=90, va='bottom', color='red', labelpad=30)
-            yticks = range(0,Nmem,1+Nmem//4)
-            axnumchange.set_yticks(yticks, list(map(str,yticks)), color='red')
-            for ax in axes:
-                ax.tick_params(axis='y', which='both',labelleft=True)
-                ax.tick_params(axis='x', which='both',labelbottom=True)
-            fig.savefig(join(figdir,f'ODSA_{figfile_suffix}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
-            plt.close(fig)
+                lonlatstr = utils.lonlatstr(event_region,cgs_level,i_lon,i_lat)
+                fig.suptitle(r"%s, %s"%(figtitle_prefix,lonlatstr), y=0.93, va='bottom')
+                for i_mem,mem in enumerate(da_cgts.coords['member']):
+                    isel['member'] = i_mem
+                    xr.plot.plot(da_cgts.isel(isel), ax=axintensity, x='time',**kwargsofmem(mem))
+                    xr.plot.plot(severities.isel(isel), ax=axseverity, x='onset_date', **kwargsofmem(mem)) # TODO instead of plotting all the ensemble members, plot the mean
+                isel.pop('member')
+                xr.plot.plot(
+                        (0 != 
+                            severities.isel(isel)
+                            .diff(dim='onset_date',label='lower')
+                        ).sum(dim='member'),
+                        ax=axnumchange, x='onset_date', color='red', linewidth=1
+                    ) 
+                axintensity.set_ylim(intensity_lims)
+                axseverity.set_ylim(intensity_lims)
+                for ax in (axintensity,axseverity):
+                    ax.axvline(onset_date_nominal, color="black", linestyle="--")
+                    for i_fc_date,fc_date in enumerate(fc_dates):
+                        ax.axvline(fc_date, color="dodgerblue", linestyle="-")
+                xticks = fc_dates + [onset_date_nominal,term_date]
+                for ax in axes.flat:
+                    xticklabels = [dtlib.datetime.strftime(date,"%m-%d") for date in xticks]
+                    ax.set_xticks(xticks,xticklabels,rotation=0)
+
+                # Mark all the nominal dates
+                axintensitytitle = "" if fc_date_special is None else "FC %s"%(dtlib.datetime.strftime(fc_date_special, "%Y-%m-%d"))
+                axintensity.set_title(axintensitytitle)
+                axintensity.set_ylabel("Daily min T2M [K]")
+                axintensity.set_xlabel("Date")
+                axseverity.set_title("")
+                axseverity.set_ylabel("min T2M past onset")
+                axseverity.set_xlabel("Onset date")
+                axnumchange.set_title("")
+                axnumchange.set_ylabel(r"$\#\{\frac{\Delta\text{severity}}{\Delta(\text{onset date})}\neq0\}$", rotation=90, va='bottom', color='red', labelpad=30)
+                yticks = range(0,Nmem,1+Nmem//4)
+                axnumchange.set_yticks(yticks, list(map(str,yticks)), color='red')
+                for ax in axes:
+                    ax.tick_params(axis='y', which='both',labelleft=True)
+                    ax.tick_params(axis='x', which='both',labelbottom=True)
+                fig.savefig(join(figdir,f'ODSA_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
+                plt.close(fig)
     return 
 
-def plot_sumstats_maps_flat(da_cgt_extt, da_cgt_extt_ref, landmask, mem_special, mem_special_ref, titles, cgs_level_2show, ext_sign=1, param_bounds=None):
+def compute_severity_from_intensity(ens_file_cgt, ens_files_cgts, ens_files_cgts_extt, cgs_levels, ext_sign, onset_date, term_date, daily_stat, param_bounds_file, landmask_file):
+    # First get parameter bounds for all plots 
+    da_cgt = xr.open_dataset(ens_file_cgt)['1xday'].sel(daily_stat=daily_stat)
+    da_cgt_extt = ext_sign * (ext_sign*da_cgt.sel(time=slice(onset_date,term_date))).max(dim='time')
+    landmask = xr.open_dataarray(landmask_file)
+    # Set global bounds on plots (sign might flip)
+    param_bounds = xr.DataArray(coords={'param': ['loc','scale','shape'], 'side': ['lo','hi']}, dims=['param','side'], data=np.nan)
+    param_bounds.loc[dict(param='loc')][:] = utils.padded_bounds(ext_sign*da_cgt_extt.where(landmask>0, np.nan).mean(dim='member'))
+    param_bounds.loc[dict(param='scale')][:] = utils.padded_bounds(da_cgt_extt.where(landmask>0, np.nan).std(dim='member'), 0.1)
+    param_bounds.loc[dict(param='shape')][:] = np.array([-0.5, 0.1])
+    param_bounds.to_netcdf(param_bounds_file)
+
+    for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
+        da_cgts = xr.open_dataset(ens_files_cgts[i_cgs_level])['1xday'].sel(daily_stat=daily_stat)
+        da_cgts_extt = ext_sign * (ext_sign * da_cgts.sel(time=slice(onset_date,term_date))).max(dim='time')
+        da_cgts_extt.to_netcdf(ens_files_cgts_extt[i_cgs_level])
+    return
+
+def plot_sumstats_maps_flat(
+        ens_files_cgts_extt, ens_files_cgts_extt_ref, 
+        mem_special, mem_special_ref, 
+        ext_sign, param_bounds_file, cgs_levels, 
+        ext_symb,onset_date,term_date,figdir,title_prefix=''
+        ):
     # 1. ensemble-mean of time-min
     # 2. ensemble-std of time-min
     # 3. special member's time-min
 
     # in figure, ERA5 will be on left, and GCM will be in 2nd and 3rd columns for early and late fc_date 
 
+    param_bounds = xr.open_dataarray(param_bounds_file)
+    for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
+        if min(cgs_level) <= 1:
+            continue
+        da_cgts_extt = xr.open_dataarray(ens_files_cgts_extt[i_cgs_level])
+        da_cgts_extt_ref = xr.open_dataarray(ens_files_cgts_extt_ref[i_cgs_level])
+        lons,lats = (da_cgts_extt[c].to_numpy() for c in ('lon','lat'))
+        dlon = lons[1]-lons[0]
+        dlat = lats[1]-lats[0]
+        Nlon = len(lons)
+        Nlat = len(lats)
+        lonmin = lons[0]-dlon/2
+        lonmax = lons[-1]+dlon/2
+        latmin = lats[0]-dlat/2
+        latmax = lats[-1]+dlat/2
+        lon_extent = lonmax-lonmin
+        lat_extent = latmax-latmin
+        aspect = lon_extent/lat_extent * np.cos(np.deg2rad((lats[0]+lats[-1])/2))
 
+        masksea = lambda da: da # we probably don't even need this #xr.where(landmask>0, da, np.nan)
+        da_cgts_extt_ensmean_ref = masksea(da_cgts_extt_ref.mean('member'))
+        da_cgts_extt_ensstd_ref = masksea(da_cgts_extt_ref.std('member'))
+        da_cgts_extt_special_anom_ref = masksea((da_cgts_extt_ref.sel(member=mem_special_ref, drop=True)-da_cgts_extt_ensmean_ref)/da_cgts_extt_ensstd_ref)
 
-    lons,lats = (da_cgt_extt[c].to_numpy() for c in ('lon','lat'))
-    dlon = lons[1]-lons[0]
-    dlat = lats[1]-lats[0]
-    Nlon = len(lons)
-    Nlat = len(lats)
-    lon_extent = lons[-1]-lons[0]+dlon
-    lat_extent = lats[-1]-lats[0]+dlat
-    aspect = lon_extent/lat_extent * np.cos(np.deg2rad((lats[0]+lats[-1])/2))
+        # Compute the summary stats 
+        da_cgts_extt_ensmean = masksea(da_cgts_extt.mean('member'))
+        da_cgts_extt_ensstd = masksea(da_cgts_extt.std('member'))
+        da_cgts_extt_special_anom = masksea((da_cgts_extt.sel(member=mem_special, drop=True)-da_cgts_extt_ensmean_ref)/da_cgts_extt_ensstd_ref)
 
-    masksea = lambda da: xr.where(landmask>0, da, np.nan)
+        bounds_special_anom = utils.padded_bounds(da_cgts_extt_special_anom_ref, 0.05)
 
-    da_cgt_extt_ensmean_ref = masksea(da_cgt_extt_ref.mean('member'))
-    da_cgt_extt_ensstd_ref = masksea(da_cgt_extt_ref.std('member'))
-    da_cgt_extt_special_ref = masksea((da_cgt_extt_ref.sel(member=mem_special_ref, drop=True)-da_cgt_extt_ensmean_ref)/da_cgt_extt_ensstd_ref)
+        fig,axes = plt.subplots(figsize=(3*aspect,3*3), nrows=3, gridspec_kw={'hspace': 0.3}, subplot_kw={'projection': ccrs.Mercator(central_longitude=(lons[0]+lons[-1])/2)})
+        axmean,axstd,axanomspecial = axes
 
-    # Compute the summary stats 
-    da_cgt_extt_ensmean = masksea(da_cgt_extt.mean('member'))
-    da_cgt_extt_ensstd = masksea(da_cgt_extt.std('member'))
-    da_cgt_extt_special = masksea((da_cgt_extt.sel(member=mem_special, drop=True)-da_cgt_extt_ensmean_ref)/da_cgt_extt_ensstd_ref)
+        pcmargs = dict(
+                x='lon',y='lat', transform=ccrs.PlateCarree(),
+                add_labels=False,
+                #norm=mplcolors.LogNorm(vmin=0.2,vmax=5),
+                cbar_kwargs=dict({
+                    'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 
+                    })
+                )
 
-    if param_bounds is not None:
-        bounds_loc,bounds_scale = (param_bounds[p] for p in ['loc','scale'])
-    else:
-        bounds_loc,bounds_scale = list(map(utils.padded_bounds, (ext_sign*da_cgt_extt_ensmean_ref,da_cgt_extt_ensstd_ref)))
-    bounds_special = utils.padded_bounds(da_cgt_extt_special_ref, 0.05)
+        pcmargs['cbar_kwargs']['label'] = '[K]'
+        xr.plot.pcolormesh(
+                da_cgts_extt_ensmean,
+                cmap=plt.cm.RdYlBu_r,
+                vmin = np.min(ext_sign*param_bounds.sel(param='loc')).item(), vmax=np.max(ext_sign*param_bounds.sel(param='loc')).item(),
+                ax=axmean,
+                **pcmargs,
+                )
+        xr.plot.pcolormesh(
+                da_cgts_extt_ensstd,
+                ax=axstd, 
+                cmap=plt.cm.viridis,
+                vmin = 0, vmax=param_bounds.sel(param='scale',side='hi').item(),
+                **pcmargs,
+                )
+        pcmargs['cbar_kwargs']['label'] = ''
+        xr.plot.pcolormesh(
+                da_cgts_extt_special_anom,
+                cmap=plt.cm.RdYlBu_r,
+                vmin=-np.max(np.abs(bounds_special_anom)), vmax=np.max(np.abs(bounds_special_anom)),
+                ax=axanomspecial, 
+                **pcmargs,
+                )
+        fmtfun = lambda date: dtlib.datetime.strftime(date, "%m/%d")
+        titles = [
+                r"%s {T2M($t$): %s$\leq t\leq$%s}, %s mean"%(ext_symb, fmtfun(onset_date), fmtfun(term_date), title_prefix),
+                r"%s {T2M($t$): %s$\leq t\leq$%s}, %s std. dev."%(ext_symb, fmtfun(onset_date), fmtfun(term_date), title_prefix),
+                r"%s {T2M($t$): %s$\leq t\leq$%s}, %s %s norm. anom."%(ext_symb, fmtfun(onset_date), fmtfun(term_date), title_prefix, mem_special)
+                ]
+        for (i_ax,ax) in enumerate(axes):
+            decorate_mercator_axis(ax, lonmin, lonmax, latmin, latmax)
+            ax.set_title(titles[i_ax], loc='left')
+        fig.savefig(join(figdir,'sumstats_map_%dx%d.png'%(cgs_level[0],cgs_level[1])), **pltkwargs)
+        plt.close(fig)
+    return 
 
-    fig,axes = plt.subplots(figsize=(3*aspect,3*3), nrows=3, gridspec_kw={'hspace': 0.3}, subplot_kw={'projection': ccrs.Mercator(central_longitude=(lons[0]+lons[-1])/2)})
-    axmean,axstd,axspecial = axes
-
-    pcmargs = dict(
-            x='lon',y='lat', transform=ccrs.PlateCarree(),
-            add_labels=False,
-            #norm=mplcolors.LogNorm(vmin=0.2,vmax=5),
-            cbar_kwargs=dict({
-                'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 
-                })
-            )
-
-    pcmargs['cbar_kwargs']['label'] = '[K]'
-    xr.plot.pcolormesh(
-            da_cgt_extt_ensmean,
-            cmap=plt.cm.RdYlBu_r,
-            vmin = np.min(ext_sign*bounds_loc), vmax=np.max(ext_sign*bounds_loc),
-            ax=axmean,
-            **pcmargs,
-            )
-    vmin = np.min(ext_sign*bounds_loc)
-    vmax=np.max(ext_sign*bounds_loc)
-    xr.plot.pcolormesh(
-            da_cgt_extt_ensstd,
-            ax=axstd, 
-            cmap=plt.cm.viridis,
-            vmin = 0, vmax=np.max(bounds_scale[1]),
-            **pcmargs,
-            )
-    pcmargs['cbar_kwargs']['label'] = ''
-    xr.plot.pcolormesh(
-            da_cgt_extt_special,
-            cmap=plt.cm.RdYlBu_r,
-            vmin=-np.max(np.abs(bounds_special)), vmax=np.max(np.abs(bounds_special)),
-            ax=axspecial, 
-            **pcmargs,
-            )
-    for (i_ax,ax) in enumerate(axes):
-        #ax.tick_params(axis='x',which='both',labelbottom=True)
-        #ax.set_ylabel("Lat")
-        ax.add_feature(cfeature.BORDERS, linewidth=1.0, edgecolor='purple')
-        ax.coastlines(color='black')
-        gl = ax.gridlines(draw_labels=True, color="black")
-        gl.top_labels = gl.right_labels = False
-        gl.xlocator = ticker.FixedLocator(np.linspace(lons[0]+dlon/2, lons[-1]-dlon/2, 10))
-        gl.ylocator = ticker.FixedLocator(np.linspace(lats[0]+dlat/2, lats[-1]-dlat/2, 2))
-        gl.xformatter = LongitudeFormatter(number_format='.0f')
-        gl.yformatter = LatitudeFormatter(number_format='.0f')
-        ax.set_title("")
-        ax.set_title(titles[i_ax], loc='left')
-    return fig,axes
+def decorate_mercator_axis(ax, lonmin, lonmax, latmin, latmax):
+    ax.add_feature(cfeature.BORDERS, linewidth=1.0, edgecolor='black')
+    ax.coastlines(color='black')
+    gl = ax.gridlines(draw_labels=True, color="black")
+    gl.top_labels = gl.right_labels = False
+    gl_xlocs,gl_ylocs = format_mercator_gridlines(lonmin,lonmax,latmin,latmax)
+    gl.xlocator = ticker.FixedLocator(gl_xlocs)
+    gl.ylocator = ticker.FixedLocator(gl_ylocs)
+    gl.xformatter = LongitudeFormatter(number_format='.0f')
+    gl.yformatter = LatitudeFormatter(number_format='.0f')
+    return
 
 def plot_sumstats_map(ds,loc_vmin,loc_vmax,scale_vmin,scale_vmax):
     # Summary stats for an ensemble 
@@ -261,27 +298,29 @@ def plot_sumstats_map(ds,loc_vmin,loc_vmax,scale_vmin,scale_vmax):
         ax.gridlines()
     return fig,axes
 
-def compute_risk(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
-    Nlon,Nlat = (ds_cgts[d].size for d in ('lon','lat'))
-    assert gevpar['lon'].size == gevpar_ref['lon'].size == Nlon and gevpar['lat'].size == gevpar_ref['lat'].size == Nlat
-    print(f'{gevpar.dims = }')
-    print(f'{gevpar_ref.dims = }')
-    print(f'{gevpar.param = }')
-    risk = xr.DataArray(
-            coords={'lon': ds_cgts_ref.lon, 'lat': ds_cgts_ref.lat},
-            dims=['lon','lat'],
-            data=np.nan,
-            )
-    # TODO fill in the rest of this risk array by simply looping over spatial regions 
-    for i_lon in range(Nlon):
-        for i_lat in range(Nlat):
-            thresh = np.array([locsign*ds_cgts_ref.isel(lon=i_lon,lat=i_lat).item()])
-            if not np.isfinite(thresh):
-                continue
-            paramdict = dict({pn: np.array([gevpar.isel(lon=i_lon,lat=i_lat).sel(param=pn)]) for pn in gevpar.coords['param'].values})
-            risk[dict(lon=i_lon,lat=i_lat)] = stfu.absolute_risk_parametric('gev', paramdict, thresh=thresh).item()
-            # TODO correct for directionality 
-    return risk
+def compute_risk(gevpar_files, ens_files_cgts_extt, risk_files, mem_special, ext_sign, cgs_levels):
+    for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
+        if min(cgs_level) <= 1:
+            continue
+        gevpar = xr.open_dataarray(gevpar_files[i_cgs_level])
+        da_cgts_extt = xr.open_dataarray(ens_files_cgts_extt[i_cgs_level]).sel(member=mem_special)
+        risk = xr.DataArray(
+                coords={'lon': da_cgts_extt.lon, 'lat': da_cgts_extt.lat},
+                dims=['lon','lat'],
+                data=np.nan,
+                )
+        # TODO fill in the rest of this risk array by simply looping over spatial regions 
+        Nlon,Nlat = (da_cgts_extt.coords[c].size for c in ('lon','lat'))
+        for i_lon in range(Nlon):
+            for i_lat in range(Nlat):
+                thresh = np.array([ext_sign*da_cgts_extt.isel(lon=i_lon,lat=i_lat).item()])
+                if not np.isfinite(thresh):
+                    continue
+                paramdict = dict({pn: np.array([gevpar.isel(lon=i_lon,lat=i_lat).sel(param=pn)]) for pn in gevpar.coords['param'].values})
+                risk[dict(lon=i_lon,lat=i_lat)] = stfu.absolute_risk_parametric('gev', paramdict, thresh=thresh).item()
+                # TODO correct for directionality 
+        risk.to_netcdf(risk_files[i_cgs_level])
+    return 
 
 def compute_valatrisk(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
     # Calculate the change in the level corresponding to an exceedance probability ccdf
@@ -299,70 +338,54 @@ def compute_valatrisk(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
     # TODO obtain a whole range of quantile shifts to plot as a function of probability ("value at risk"? )
     return risk_valatrisk
 
-def plot_risk_or_valatrisk_map(riskorvar, is_risk=False, locsign=1, projection='mercator', **other_pcmargs):
-    lons,lats = (riskorvar[c].to_numpy() for c in ('lon','lat'))
-    clon,clat = np.mean(lons),np.mean(lats)
-    dlon = lons[1]-lons[0]
-    dlat = lats[1]-lats[0]
-    Nlon = len(lons)
-    Nlat = len(lats)
-    lon_extent = lons[-1]-lons[0]+dlon
-    lat_extent = lats[-1]-lats[0]+dlat
-    minlon = 1.5*lons[0]-0.5*lons[1]
-    maxlon = 1.5*lons[-1]-0.5*lons[-2]
-    minlat = 1.5*lats[0]-0.5*lats[1]
-    maxlat = 1.5*lats[-1]-0.5*lats[-2]
-    aspect = lon_extent/lat_extent * np.cos(np.deg2rad((lats[0]+lats[-1])/2))
-    # the reference ds_cgts is ERA5, and should only have one year asociated with it 
-    if projection == 'orthographic':
-        subplot_kw = {'projection': ccrs.Orthographic(central_longitude=clon,central_latitude=clat)}
-    elif projection == 'mercator':
-        subplot_kw = {'projection': ccrs.Mercator(central_longitude=clon,)}
-    else:
-        print("Not supported projection")
-        return
-    pcmargs = dict(
-            x='lon',y='lat', transform=ccrs.PlateCarree(),
-            add_labels=False,
-            cbar_kwargs=dict({
-                'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 
-                })
-            )
-    if is_risk:
-        pcmargs.update(dict(
-            cmap=plt.cm.RdYlBu if locsign==-1 else plt.cm.RdYlBu_r,
-            vmin=0.0, vmax=1.0,
-            #norm=mplcolors.LogNorm(vmin=0.2,vmax=5),
-            ))
-        pcmargs['cbar_kwargs'].update(dict({
-            'ticks': [0, 0.25, 0.5, 0.75, 1], 
-            'format': ticker.FixedFormatter(['0', '0.25', '0.5', '0.75', '1'])
-            }))
-    else:
-        pcmargs.update(dict(
-            cmap=plt.cm.RdYlBu_r if locsign==-1 else plt.cm.RdYlBu,
-            ))
-    fig,ax = plt.subplots(figsize=(3*aspect,3), subplot_kw=subplot_kw)
-    pcmargs.update(other_pcmargs)
-    xr.plot.pcolormesh(riskorvar, **pcmargs, ax=ax)
-    xticks = np.linspace(minlon,maxlon,5)
-    xticklabels = [r"$%.0f^\circ$"%(lon) for lon in xticks] 
-    #ax.set_xticks(xticks)
-    #ax.set_xticklabels(xticklabels)
-    #yticks = np.linspace(minlat,maxlat,3)
-    #yticklabels = [r"$%.0f^\circ$"%(lat) for lat in yticks] 
-    #ax.set_yticks(yticks)
-    #ax.set_yticklabels(yticklabels)
-    ax.coastlines()
-    ax.add_feature(cfeature.BORDERS, linewidth=1.0, edgecolor='purple')
-    gl = ax.gridlines(draw_labels=True, color="black")
-    gl.top_labels = gl.right_labels = False
-    gl.xlocator = ticker.FixedLocator(np.linspace(lons[0]+dlon/2, lons[-1]-dlon/2, 10))
-    gl.ylocator = ticker.FixedLocator(np.linspace(lats[0]+dlat/2, lats[-1]-dlat/2, 2))
-    gl.xformatter = LongitudeFormatter(number_format='.0f')
-    gl.yformatter = LatitudeFormatter(number_format='.0f')
-    #pdb.set_trace()
-    return fig,ax
+def plot_risk_or_valatrisk_map(riskorvar_files, cgs_levels, ext_sign, figdir, is_risk):
+    for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
+        if min(cgs_level) <= 1:
+            continue
+
+        riskorvar = xr.open_dataarray(riskorvar_files[i_cgs_level])
+        lons,lats = (riskorvar[c].to_numpy() for c in ('lon','lat'))
+        clon,clat = np.mean(lons),np.mean(lats)
+        dlon = lons[1]-lons[0]
+        dlat = lats[1]-lats[0]
+        Nlon = len(lons)
+        Nlat = len(lats)
+        lon_extent = lons[-1]-lons[0]+dlon
+        lat_extent = lats[-1]-lats[0]+dlat
+        minlon = 1.5*lons[0]-0.5*lons[1]
+        maxlon = 1.5*lons[-1]-0.5*lons[-2]
+        minlat = 1.5*lats[0]-0.5*lats[1]
+        maxlat = 1.5*lats[-1]-0.5*lats[-2]
+        aspect = lon_extent/lat_extent * np.cos(np.deg2rad((lats[0]+lats[-1])/2))
+        # the reference ds_cgts is ERA5, and should only have one year asociated with it 
+        subplot_kw = {'projection': ccrs.Mercator(central_longitude=clon,min_latitude=minlat,max_latitude=maxlat)}
+        pcmargs = dict(
+                x='lon',y='lat', transform=ccrs.PlateCarree(),
+                add_labels=False,
+                cbar_kwargs=dict({
+                    'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 
+                    })
+                )
+        if is_risk:
+            pcmargs.update(dict(
+                cmap=plt.cm.RdYlBu if ext_sign==-1 else plt.cm.RdYlBu_r,
+                vmin=0.0, vmax=1.0,
+                #norm=mplcolors.LogNorm(vmin=0.2,vmax=5),
+                ))
+            pcmargs['cbar_kwargs'].update(dict({
+                'ticks': [0, 0.25, 0.5, 0.75, 1], 
+                'format': ticker.FixedFormatter(['0', '0.25', '0.5', '0.75', '1'])
+                }))
+        else:
+            pcmargs.update(dict(
+                cmap=plt.cm.RdYlBu_r if ext_sign==-1 else plt.cm.RdYlBu,
+                ))
+        fig,ax = plt.subplots(figsize=(3*aspect,3), subplot_kw=subplot_kw)
+        xr.plot.pcolormesh(riskorvar, **pcmargs, ax=ax)
+        decorate_mercator_axis(ax, minlon, maxlon, minlat, maxlat)
+        fig.savefig(join(figdir, "risk_map_cgs%dx%d"%(cgs_level[0],cgs_level[1])))
+        plt.close(fig)
+    return 
 
 def plot_relative_risk_map_flat(risk0, risk1, event_region, landmask=None, ext_sign=1, plot_contour_ratio=True, **other_pcmargs):
     lons,lats = (risk0[c].to_numpy() for c in ('lon','lat'))
@@ -434,6 +457,20 @@ def plot_relative_risk_map_flat(risk0, risk1, event_region, landmask=None, ext_s
     gl.xformatter = LongitudeFormatter(number_format='.0f')
     gl.yformatter = LatitudeFormatter(number_format='.0f')
     return fig,ax
+
+def format_mercator_gridlines(lonmin,lonmax,latmin,latmax):
+    aspect = (lonmax-lonmin)/(latmax-latmin) * np.cos(np.deg2rad((latmin+latmax)/2))
+    if aspect > 1:
+        Nlat = 2
+        Nlon = int(round(aspect*2))
+    else:
+        Nlon = 2
+        Nlat = int(round(aspect*2))
+    fraclon = 1 / (2 + Nlon)
+    fraclat = 1 / (2 + Nlat)
+    gridlon = np.linspace((1-fraclon)*lonmin + fraclon*lonmax, fraclon*lonmin+(1-fraclon)*lonmax, Nlon)
+    gridlat = np.linspace((1-fraclat)*latmin + fraclat*latmax, fraclat*latmin+(1-fraclat)*latmax, Nlat)
+    return gridlon,gridlat
 
 
 def plot_relative_risk_map(risk0, risk1, locsign=1, **other_pcmargs):
@@ -583,7 +620,7 @@ def plot_gevpar_difference_maps_flat(gevpar0, gevpar1, titles, cgs_level_2show, 
             **pcmargs,
             )
     for (i_ax,ax) in enumerate(axes):
-        ax.add_feature(cfeature.BORDERS, linewidth=1.0, edgecolor='purple')
+        ax.add_feature(cfeature.BORDERS, linewidth=1.0, edgecolor='black')
         ax.coastlines(color='black')
         gl = ax.gridlines(draw_labels=True, color="black")
         gl.top_labels = gl.right_labels = False
@@ -594,75 +631,67 @@ def plot_gevpar_difference_maps_flat(gevpar0, gevpar1, titles, cgs_level_2show, 
         ax.set_title(titles[i_ax], loc='left')
     return fig,axes
 
-def plot_gevpar_maps_flat(gevpar, titles, cgs_level_2show, ext_sign, landmask=None, gevpar_ref=None, param_bounds=None):
-    lons,lats = (gevpar[c].to_numpy() for c in ('lon','lat'))
-    dlon = lons[1]-lons[0]
-    dlat = lats[1]-lats[0]
-    Nlon = len(lons)
-    Nlat = len(lats)
-    lon_extent = lons[-1]-lons[0]+dlon
-    lat_extent = lats[-1]-lats[0]+dlat
-    aspect = lon_extent/lat_extent * np.cos(np.deg2rad((lats[0]+lats[-1])/2))
+def plot_gevpar_maps_flat(gevpar_files, ext_sign, cgs_levels, figdir, param_bounds_file, title_suffix,):
+    for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
+        if min(cgs_level) <= 1:
+            continue
+        gevpar = xr.open_dataarray(gevpar_files[i_cgs_level])
+        lons,lats = (gevpar[c].to_numpy() for c in ('lon','lat'))
+        dlon = lons[1]-lons[0]
+        dlat = lats[1]-lats[0]
+        Nlon = len(lons)
+        Nlat = len(lats)
+        lonmin,lonmax,latmin,latmax = lons[0]-dlon/2, lons[-1]+dlon/2, lats[0]-dlat/2,lats[-1]+dlat/2
+        lon_extent = lonmax-lonmin
+        lat_extent = latmax-latmin
+        aspect = lon_extent/lat_extent * np.cos(np.deg2rad((lats[0]+lats[-1])/2))
+    
+        param_bounds = xr.open_dataarray(param_bounds_file)
+        bounds_loc,bounds_scale,bounds_shape = (param_bounds.sel(param=p).to_numpy().flatten() for p in ['loc','scale','shape'])
 
-    def masksea(da):
-        if landmask is None:
-            return da
-        return xr.where(landmask>0, da, np.nan)
+        fig,axes = plt.subplots(figsize=(3*aspect,3*3), nrows=3, gridspec_kw={'hspace': 0.3}, subplot_kw={'projection': ccrs.Mercator(central_longitude=(lons[0]+lons[-1])/2)})
+        axloc,axscale,axshape = axes
 
+        pcmargs = dict(
+                x='lon',y='lat', transform=ccrs.PlateCarree(),
+                add_labels=False,
+                #norm=mplcolors.LogNorm(vmin=0.2,vmax=5),
+                cbar_kwargs=dict({
+                    'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 
+                    })
+                )
 
-    if param_bounds is not None:
-        bounds_loc,bounds_scale,bounds_shape = (param_bounds[p] for p in ['loc','scale','shape'])
-    elif gevpar_ref is not None:
-        bounds_loc,bounds_scale,bounds_shape = list(map(utils.padded_bounds, (gevpar_ref.sel(param=p) for p in ['loc','scale','shape'])))
-    else:
-        bounds_loc,bounds_scale,bounds_shape = list(map(utils.padded_bounds, (gevpar.sel(param=p) for p in ['loc','scale','shape'])))
-
-    fig,axes = plt.subplots(figsize=(3*aspect,3*3), nrows=3, gridspec_kw={'hspace': 0.3}, subplot_kw={'projection': ccrs.Mercator(central_longitude=(lons[0]+lons[-1])/2)})
-    axloc,axscale,axshape = axes
-
-    pcmargs = dict(
-            x='lon',y='lat', transform=ccrs.PlateCarree(),
-            add_labels=False,
-            #norm=mplcolors.LogNorm(vmin=0.2,vmax=5),
-            cbar_kwargs=dict({
-                'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 
-                })
-            )
-
-    pcmargs['cbar_kwargs']['label'] = '[K]'
-    xr.plot.pcolormesh(
-            masksea(ext_sign*gevpar.sel(param='loc')),
-            cmap=plt.cm.RdYlBu_r,
-            vmin = np.min(ext_sign*bounds_loc), vmax=np.max(ext_sign*bounds_loc),
-            ax=axloc, 
-            **pcmargs,
-            )
-    xr.plot.pcolormesh(
-            masksea(gevpar.sel(param='scale')),
-            ax=axscale,
-            cmap=plt.cm.viridis,
-            vmin = 0, vmax=np.max(bounds_scale[1]), 
-            **pcmargs,
-            )
-    pcmargs['cbar_kwargs']['label'] = ''
-    xr.plot.pcolormesh(
-            masksea(gevpar.sel(param='shape')),
-            cmap=plt.cm.RdYlBu_r,
-            vmin=-np.max(np.abs(bounds_shape)), vmax=np.max(np.abs(bounds_shape)),
-            ax=axshape,
-            **pcmargs,
-            )
-    for (i_ax,ax) in enumerate(axes):
-        ax.add_feature(cfeature.BORDERS, linewidth=1.0, edgecolor='purple')
-        ax.coastlines(color='black')
-        gl = ax.gridlines(draw_labels=True, color="black")
-        gl.top_labels = gl.right_labels = False
-        gl.xlocator = ticker.FixedLocator(np.linspace(lons[0]+dlon/2, lons[-1]-dlon/2, 10))
-        gl.ylocator = ticker.FixedLocator(np.linspace(lats[0]+dlat/2, lats[-1]-dlat/2, 2))
-        gl.xformatter = LongitudeFormatter(number_format='.0f')
-        gl.yformatter = LatitudeFormatter(number_format='.0f')
-        ax.set_title(titles[i_ax], loc='left')
-    return fig,axes
+        pcmargs['cbar_kwargs']['label'] = '[K]'
+        xr.plot.pcolormesh(
+                ext_sign*gevpar.sel(param='loc'),
+                cmap=plt.cm.RdYlBu_r,
+                vmin = np.min(ext_sign*bounds_loc), vmax=np.max(ext_sign*bounds_loc),
+                ax=axloc, 
+                **pcmargs,
+                )
+        axloc.set_title(r"Location $\mu$ %s"%(title_suffix), loc='left')
+        xr.plot.pcolormesh(
+                gevpar.sel(param='scale'),
+                ax=axscale,
+                cmap=plt.cm.viridis,
+                vmin = 0, vmax=np.max(bounds_scale[1]), 
+                **pcmargs,
+                )
+        axscale.set_title(r"Scale $\sigma$ %s"%(title_suffix), loc='left')
+        pcmargs['cbar_kwargs']['label'] = ''
+        xr.plot.pcolormesh(
+                gevpar.sel(param='shape'),
+                cmap=plt.cm.RdYlBu_r,
+                vmin=-np.max(np.abs(bounds_shape)), vmax=np.max(np.abs(bounds_shape)),
+                ax=axshape,
+                **pcmargs,
+                )
+        axshape.set_title(r"Shape $\xi$ %s"%(title_suffix), loc='left')
+        for (i_ax,ax) in enumerate(axes):
+            decorate_mercator_axis(ax, lonmin, lonmax, latmin, latmax)
+        fig.savefig(join(figdir,"gevpar_map_cgs%dx%d.png"%(cgs_level[0],cgs_level[1])), **pltkwargs)
+        plt.close(fig)
+    return 
 
 def plot_statpar_map(ds_cgts,gevpar,locsign=1):
     # Essentially Gaussian parameters next to GEV parameters
@@ -769,23 +798,26 @@ def plot_statpar_map_difference(da_cgts_0,da_cgts_1,gevpar_0,gevpar_1,locsign=1)
         ax.gridlines()
     return fig_gaussian,axes_gaussian,fig_gev,axes_gev
 
-def fit_gev_exttemp(ds_cgts_extt,ext_sign,method='MLE'):
+def fit_gev_exttemp(ens_files_cgts_extt,gevpar_files,ext_sign,cgs_levels,method='PWM'):
     # ext_sign = 1 means hot; -1 means cold
     # Take care of negative signs appropriately 
-    memdim = ds_cgts_extt.dims.index('member')
-    print(f'{memdim = }')
-    func = lambda X: stfu.fit_gev_single(X, method=method)
-    gevpar_array = np.apply_along_axis(func, memdim, ext_sign*ds_cgts_extt.to_numpy())
-    gevpar_dims = list(ds_cgts_extt.dims).copy()
-    gevpar_dims[memdim] = 'param'
-    gevpar_coords = dict(ds_cgts_extt.coords).copy()
-    gevpar_coords.pop('member')
-    gevpar_coords['param'] = ['shape','loc','scale']
-    gevpar = xr.DataArray(
-            coords=gevpar_coords,
-            dims=gevpar_dims,
-            data=gevpar_array)
-    return gevpar
+    for i_cgs_level,cgs_level in enumerate(cgs_levels):
+        da_cgts_extt = xr.open_dataarray(ens_files_cgts_extt[i_cgs_level])
+        memdim = da_cgts_extt.dims.index('member')
+        print(f'{memdim = }')
+        func = lambda X: stfu.fit_gev_single(X, method=method)
+        gevpar_array = np.apply_along_axis(func, memdim, ext_sign*da_cgts_extt.to_numpy())
+        gevpar_dims = list(da_cgts_extt.dims).copy()
+        gevpar_dims[memdim] = 'param'
+        gevpar_coords = dict(da_cgts_extt.coords).copy()
+        gevpar_coords.pop('member')
+        gevpar_coords['param'] = ['shape','loc','scale']
+        gevpar = xr.DataArray(
+                coords=gevpar_coords,
+                dims=gevpar_dims,
+                data=gevpar_array)
+        gevpar.to_netcdf(gevpar_files[i_cgs_level])
+    return 
 
 def fit_gev_exttemp_1d_uq(exttemp, risk_levels, ext_sign, method='MLE', n_boot=1000):
     # do bootstrapping to get confidence intervals on return levels, etc. 
