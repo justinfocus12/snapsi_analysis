@@ -62,6 +62,7 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
     gcm = gcms[i_gcm]
     expt = expts[i_expt]
     fc_date = fc_dates[i_fc_date]
+    init_date = fc_dates[0]
     gcm2institute = all_gcms_institutes()
     onset_date = pipeline_base.least_sensible_onset_date(which_ssw)
 
@@ -111,6 +112,8 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
             expt=expt,
             fc_date=fc_date,
             fc_dates=fc_dates,
+            fc_date_abbrv=fc_date_abbrv,
+            init_date = fc_dates[0],
             onset_date_nominal=onset_date_nominal,
             onset_date=onset_date, 
             term_date=term_date,
@@ -759,8 +762,9 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     todo = dict({
         'coarse_grain_time':                0,
         'coarse_grain_space':               0,
-        'onset_date_sensitivity_analysis':  1,
-        'plot_t2m_sumstats_map':            0,
+        'onset_date_sensitivity_analysis':  0,
+        'compute_severities':               1,
+        'plot_sumstats_map':                1,
         'fit_gev':                          0,
         'plot_gevpar_map':                  0,
         'compute_risk':                     0,
@@ -792,6 +796,52 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                 event_region
                 '''.split(','))
                 )
+    if todo['onset_date_sensitivity_analysis']:
+        pipeline_base.onset_date_sensitivity_analysis( #arg0, arg1) 
+                *dtoa(wkf, '''
+                ens_files_cgts, event_region, cgs_levels, fc_dates,
+                init_date, onset_date_nominal, term_date, daily_stat,
+                ext_sign, figdir, gcm, expt, fc_date_abbrv,
+                '''),
+                *dtoa(wkf_era5, '''
+                ens_files_cgts, event_year, 
+                '''),
+                idx_cgs_levels = [0,1]
+                )
+    if todo['plot_sumstats_map']:
+        pipeline_base.plot_sumstats_maps_flat(
+                *dtoa(wkf,'''
+                ens_files_cgts_extt,ens_files_cgts_extt,
+                event_year,event_year,
+                ext_sign,param_bounds_file,cgs_levels,
+                ext_symb,onset_date,term_date,
+                figdir
+                '''.split(',')),
+                "ERA5",
+                )
+        fmtfun = lambda date: dtlib.datetime.strftime(date, "%Y/%m/%d")
+        mem_special = da_cgt_extt['member'][0].item()
+        mem_special_ref = event_year
+        titles = [
+                r"%s, %s, FC %s, $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-member mean"%(
+                    gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date), da_cgt_extt['member'].size),
+                r"%s, %s, FC %s, $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-member std. dev."%(
+                    gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date), da_cgt_extt['member'].size),
+                r"%s, %s, FC %s, $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, member %s standardized anomaly"%(
+                    gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date), mem_special)
+                ]
+        fig,axes = pipeline_base.plot_sumstats_maps_flat(
+                da_cgt_extt,
+                da_cgt_extt_era5,
+                landmask,
+                mem_special, mem_special_ref,
+                titles, 
+                cgs_levels[2],
+                param_bounds=param_bounds,
+                ext_sign=ext_sign,
+                )
+        fig.savefig(join(figdir,f'sumstats_map_{daily_stat}_e{expt}_i{fc_date_abbrv}_cgt1day.png'), **pltkwargs)
+        plt.close(fig)
     return
 
 
@@ -843,27 +893,11 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
 
     # ------------- Sensitivity analysis with respect to onset date ------------
     print(f'************ About to do ODSA *******')
-    if todo['onset_date_sensitivity_analysis']:
-        pipeline_base.onset_date_sensitivity_analysis(
-        onset_date_sensitivity_analysis(
-                *dtoa(wkf, '''
-                ens_files_cgts, fc_dates, onset_date_nominal, term_date,
-                cgs_levels, ext_sign, figdir,
-                '''),
-                *dtoa(wkf_era5, '''
-                ens_files_cgts, event_year, 
-                '''),
-                )
+    if False:
 
 
 
         # TODO need to make an intermediate helper 
-        pipeline_base.onset_date_sensitivity_analysis(
-                wkf['ens_files_cgts'],
-                wkf['event_region'],wkf['cgs_levels'][:2], 
-                wkf['fc_dates'], wkf['fc_dates'][0], wkf['onset_date_nominal'], wkf['term_date'], wkf['daily_stat'], wkf['ext_sign'], 
-                wkf['figdir'], gcm, mem_special=None, fc_date_special=None,
-                )
         for i_cgs_level,cgs_level in enumerate(cgs_levels[:2]):
             cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
             da_cgts_era5 = xr.open_dataset(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc'))['1xday'].sel(daily_stat=daily_stat)
@@ -907,8 +941,8 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
         'shape': np.array([-0.5,0.1]),
         })
 
-    print(f'********** About to plot_t2m_sumstats_map ***********')
-    if todo['plot_t2m_sumstats_map']:
+    print(f'********** About to plot_sumstats_map ***********')
+    if todo['plot_sumstats_map']:
         fmtfun = lambda date: dtlib.datetime.strftime(date, "%Y/%m/%d")
         mem_special = da_cgt_extt['member'][0].item()
         mem_special_ref = event_year
@@ -1230,7 +1264,7 @@ if __name__ == "__main__":
     idx_gcms = [i for i in range(len(gcms)) if ((gcms[i] not in gcms2ignore))]
     idx_gcms = [gcms.index(gcm) for gcm in ['CESM2-CAM6','IFS'][:1]] #,'CESM2-CAM6']]
     print(f'{idx_gcms = }')
-    print(f'{gcms[i] for i in idx_gcms = }')
+    print(f'{[gcms[i] for i in idx_gcms] = }')
     idx_expt = [0,1,2]
     idx_expt_pairs = [(1,0),(1,2)]
     idx_init = [0,1]

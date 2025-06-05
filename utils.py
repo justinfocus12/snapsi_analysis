@@ -1,6 +1,7 @@
 # Commonly used functions for spatial analysis
 import numpy as np
 import xarray as xr
+import pdb
 
 def padded_bounds(arr, alpha=0.25):
     arrmin,arrmax = np.nanmin(arr),np.nanmax(arr)
@@ -24,11 +25,11 @@ def lonlatstr(region,cgs_level,i_lon,i_lat):
     label = r'$\lambda=%d\pm%d^\circ\text{E},\phi=%d\pm%d^\circ\text{N}$'%(clon,dlon/2,clat,dlat/2)
     return label
 
-def dict2args(bag_of_args, sep=','):
-    args = bag_of_args.split(sep)
+def dict2args(D, bag_of_args, sep=','):
+    args = list(map(str.strip, bag_of_args.split(sep)))
     if (len(args[-1]) == 0) or (not any(map(str.isalnum, args[-1]))):
         args.pop()
-    return args
+    return [D[a] for a in args]
 
 
 

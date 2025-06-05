@@ -96,11 +96,14 @@ def analysis_multiparams(which_ssw):
     return cgs_levels,select_regions
 
 
-def onset_date_sensitivity_analysis(ens_files_cgts, event_region, cgs_levels_for_odsa, fc_dates, init_date, onset_date_nominal, term_date, daily_stat, ext_sign, figdir, figtitle_prefix, ens_files_cgts_ref=None, mem_special_ref=None, fc_date_special=None, ):
+def onset_date_sensitivity_analysis(ens_files_cgts, event_region, cgs_levels, fc_dates, init_date, onset_date_nominal, term_date, daily_stat, ext_sign, figdir, figtitle_prefix, expt, fc_date_abbrv, ens_files_cgts_ref=None, mem_special_ref=None, fc_date_special=None, idx_cgs_levels=None):
     # init_date should coincide with the first entry of da.time, but time conversion headaches...
     # Plot the minimum over the time interval as a function of onset date, across ensemble members. 
+    if idx_cgs_levels is None:
+        idx_cgs_levels = range(len(cgs_levels))
 
-    for (i_cgs_level,cgs_level) in enumerate(cgs_levels_for_odsa):
+    for i_cgs_level in idx_cgs_levels:
+        cgs_level = cgs_levels[i_cgs_level]
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
         da_cgts = xr.open_dataset(ens_files_cgts[i_cgs_level])['1xday'].sel(daily_stat=daily_stat)
         intensity_lims = utils.padded_bounds(da_cgts)
@@ -114,7 +117,7 @@ def onset_date_sensitivity_analysis(ens_files_cgts, event_region, cgs_levels_for
                 data = np.nan,
                 )
         if ens_files_cgts_ref is not None:
-           da_cgts_ref = xr.open_dataset(ens_files_cgts_ref[i_cgs_level])['1xday'].sel(daily_stat=daily_stat)
+            da_cgts_ref = xr.open_dataset(ens_files_cgts_ref[i_cgs_level])['1xday'].sel(daily_stat=daily_stat)
             severities_ref = xr.DataArray(
                     coords = dict(
                         **{c: da_cgts_ref.sel(event_region).coords[c] for c in ['lon','lat','member',]},
@@ -125,6 +128,7 @@ def onset_date_sensitivity_analysis(ens_files_cgts, event_region, cgs_levels_for
                     )
             for (i_onset_date,onset_date) in enumerate(onset_dates):
                 # for some reason the slicing operation works fine 
+                severities[dict(onset_date=i_onset_date)] = ext_sign*(ext_sign*da_cgts.sel(time=slice(onset_date,None))).max(dim='time')
                 severities_ref[dict(onset_date=i_onset_date)] = ext_sign*(ext_sign*da_cgts_ref.sel(time=slice(onset_date,None))).max(dim='time')
         Nlon,Nlat,Nmem = (severities[c].size for c in ['lon','lat','member'])
         if not (Nlon==cgs_level[0] and Nlat==cgs_level[1]):
@@ -148,11 +152,6 @@ def onset_date_sensitivity_analysis(ens_files_cgts, event_region, cgs_levels_for
                     isel['member'] = i_mem
                     xr.plot.plot(da_cgts.isel(isel), ax=axintensity, x='time',**kwargsofmem(mem))
                     xr.plot.plot(severities.isel(isel), ax=axseverity, x='onset_date', **kwargsofmem(mem)) # TODO instead of plotting all the ensemble members, plot the mean
-                if ens_files_cgts_ref is not None:
-                    for i_mem,mem in enumerate(da_cgts_ref.coords['member']):
-                        isel['member'] = i_mem
-                        xr.plot.plot(da_cgts_ref.isel(isel), ax=axintensity, x='time',**kwargsofmem(mem))
-                        xr.plot.plot(severities_ref.isel(isel), ax=axseverity, x='onset_date', **kwargsofmem(mem)) # TODO instead of plotting all the ensemble members, plot the mean
                 isel.pop('member')
                 xr.plot.plot(
                         (0 != 
@@ -161,6 +160,9 @@ def onset_date_sensitivity_analysis(ens_files_cgts, event_region, cgs_levels_for
                         ).sum(dim='member'),
                         ax=axnumchange, x='onset_date', color='red', linewidth=1
                     ) 
+                if ens_files_cgts_ref is not None and mem_special_ref is not None:
+                    xr.plot.plot(da_cgts_ref.isel(isel).sel(member=mem_special_ref), ax=axintensity, x='time',**kwargsofmem(mem_special_ref))
+                    xr.plot.plot(severities_ref.isel(isel).sel(member=mem_special_ref), ax=axseverity, x='onset_date', **kwargsofmem(mem_special_ref)) # TODO instead of plotting all the ensemble members, plot the mean
                 axintensity.set_ylim(intensity_lims)
                 axseverity.set_ylim(intensity_lims)
                 for ax in (axintensity,axseverity):
@@ -187,7 +189,7 @@ def onset_date_sensitivity_analysis(ens_files_cgts, event_region, cgs_levels_for
                 for ax in axes:
                     ax.tick_params(axis='y', which='both',labelleft=True)
                     ax.tick_params(axis='x', which='both',labelbottom=True)
-                fig.savefig(join(figdir,f'ODSA_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
+                fig.savefig(join(figdir,f'ODSA_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
                 plt.close(fig)
     return 
 
