@@ -22,8 +22,11 @@ import glob
 from scipy.stats import norm as spnorm, genextreme as spgex
 
 # My own modules
+from importlib import reload
 import utils
+from utils import dict2args as dtoa
 import pipeline_base
+import pipeline_era5
 
 def gcm_multiparams(which_ssw):
     # Sets out all the options for which piece of data to ingest
@@ -33,34 +36,6 @@ def gcm_multiparams(which_ssw):
     fc_dates,onset_date_nominal,term_date = pipeline_base.dates_of_interest(which_ssw)
     return gcms, expts, fc_dates, onset_date_nominal, term_date 
 
-def analysis_multiparams(which_ssw):
-    # lon/lat ratios are 6/1 at the bottom and 4/1 at the top; stick to 5/1 
-    if "feb2018" == which_ssw:
-        cgs_levels = [(1,1),(5,1),(10,2),(20,4),(40,8),(80,16)]
-        select_regions = ( # Indexed by cgs_level
-                ((0,0),), # level (1,1)
-                (), # level (5,1)
-                ((2*i,2*i//5) for i in range(5)),
-                (), # level (20,4)
-                (), # level (40,8)
-                (), # level (141,16)
-                )
-    elif "jan2019" == which_ssw:
-        cgs_levels = [(1,1),(2,1),(5,3),(15,9)]
-        select_regions = ( # Indexed by cgs_level
-                ((0,0),), # level (1,1)
-                ((0,0),(1,0)), # level (2,1)
-                ((i,j) for i in range(5) for j in range(3)),
-                (),
-                )
-    elif "sep2019" == which_ssw:
-        cgs_levels = [(1,1),(2,2),(7,6)]
-        select_regions = ( # Indexed by cgs_level
-                ((0,0),), # level (1,1)
-                ((0,0),(1,0),(0,1),(1,1)), # level (2,1)
-                ((i,j) for i in range(7) for j in range(6)),
-                )
-    return cgs_levels,select_regions
 
 def all_gcms_institutes():
     gcm2institute = dict({
@@ -81,105 +56,108 @@ def all_gcms_institutes():
 
 
 def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
-    # Sets out the folders necessary to ingest a chunk of data specified by the input arguments 
+    # 0. Global constants
     gcms,expts,fc_dates,onset_date,term_date = gcm_multiparams(which_ssw)
+    fc_dates,onset_date_nominal,term_date = pipeline_base.dates_of_interest(which_ssw)
     gcm = gcms[i_gcm]
     expt = expts[i_expt]
     fc_date = fc_dates[i_fc_date]
-
     gcm2institute = all_gcms_institutes()
+    onset_date = pipeline_base.least_sensible_onset_date(which_ssw)
 
     # ----------- Files for each stage of analysis -------------
     # 1. Raw data
-    fc_date_abbrv = dtlib.datetime.strftime(fc_date,'s%Y%m%d')
-    raw_data_dir = join('/badc/snap/data/post-cmip6/SNAPSI', gcm2institute[gcm], gcm, expt, fc_date_abbrv)
-    print(f'{raw_data_dir = }')
+    fc_date_abbrv = dtlib.datetime.strftime(fc_date,'%Y%m%d')
+    raw_data_dir = join('/badc/snap/data/post-cmip6/SNAPSI', gcm2institute[gcm], gcm, expt, 's'+fc_date_abbrv)
     ens_path_skeleton = join(raw_data_dir,'r*i*p*f*')
     mem_labels = [basename(p) for p in glob.glob(ens_path_skeleton)]
-    #print(f'{mem_labels = }')
-    #print(f'{len(mem_labels) = }')
-
     if "GloSea6" == gcm: # for some reason there's a single odd version file 
         path_skeleton = join(ens_path_skeleton,'6hrPt','tas','g*','v20230403*','*.nc')
     else:
         path_skeleton = join(ens_path_skeleton,'6hrPt','tas','g*','v*','*.nc')
-    print(f'{path_skeleton = }')
     raw_mem_files = glob.glob(path_skeleton)
-    print(f'{len(raw_mem_files) = }')
-    #for rmf in raw_mem_files:
-    #    print(rmf)
     assert len(raw_mem_files) == len(mem_labels)
-    
-    daily_stat = 'daily_min'
 
+    # 2. Processed data 
     analysis_date = '2025-05-20'
-    fc_dates,onset_date_nominal,term_date = pipeline_base.dates_of_interest(which_ssw)
-    event_region,context_region = pipeline_base.region_of_interest(which_ssw)
-    # 2. Spatiotemporal sub-selection and coarse-graining (cg)
-    if "feb2018" == which_ssw:
-        event_year = 2018
-        ext_sign = -1
-    elif "jan2019" == which_ssw:
-        event_year = 2019
-        ext_sign = -1
-    elif "sep2019" == which_ssw:
-        event_year = 2019
-        ext_sign = 1
-
     processed_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596'
-    landmask_file_full = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/era5/land_sea_mask.nc'
-    landmask_file_interp = join(processed_data_dir,'land_sea_mask_interp.nc')
-    reduced_data_dir = join(processed_data_dir,which_ssw,analysis_date,gcm)
-    reduced_data_dir_era5 = join(processed_data_dir,which_ssw,analysis_date,'era5')
+    reduced_data_dir = join(processed_data_dir,which_ssw,analysis_date,f'{gcm}')
     figdir = join('/home/users/ju26596/snapsi_analysis_figures',which_ssw,analysis_date,gcm)
     makedirs(reduced_data_dir,exist_ok=True)
     makedirs(figdir,exist_ok=True)
-    # spatial coarse graining (cgs)
-    cgs_levels,select_regions = analysis_multiparams(which_ssw)
-    ens_file_cgt = join(reduced_data_dir,f't2m_e{expt}_i{fc_date_abbrv}_cgt1day.nc')
-    era5_file_cgt = join(reduced_data_dir_era5,f't2m_cgt1day.nc')
+
+    # 3. Files 
+    ens_file_cgt = join(reduced_data_dir,'t2m_e%s_i%s_cgt1day.nc'%(expt,fc_date_abbrv))
+    ens_files_cgts = []
+    ens_files_cgts_extt = []
+    gevpar_files = []
+    risk_files = []
+    gevsevlev_files = []
+    cgs_levels,select_regions = pipeline_base.analysis_multiparams(which_ssw)
+    for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
+        ens_files_cgts.append(join(reduced_data_dir,'t2m_e%s_i%s_cgt1day_cgs%dx%d.nc'%(expt,fc_date_abbrv,cgs_level[0],cgs_level[1])))
+        ens_files_cgts_extt.append(join(reduced_data_dir,'t2m_e%s_i%s_cgt1day_cgs%dx%d_extt.nc'%(expt,fc_date_abbrv,cgs_level[0],cgs_level[1])))
+        gevpar_files.append('gevpar_e%s_i%s_cgs%dx%d.nc'%(expt,fc_date_abbrv,cgs_level[0],cgs_level[1]))
+        risk_files.append(join(reduced_data_dir,'risk_e%s_i%s_cgs%dx%d.nc'%(expt,fc_date_abbrv,cgs_level[0],cgs_level[1])))
+        gevsevlev_files.append([])
+        for (i_lon,i_lat) in select_regions[i_cgs_level]:
+            gevsevlev_files[i_cgs_level].append(join(reduced_data_dir,'gevsevlev_e%s_i%s_cgs%dx%d_ilon%d_ilat%d.nc'%(expt,fc_date_abbrv,cgs_level[0],cgs_level[1],i_lon,i_lat)))
+
+
 
     # bootstrap parameters
-    n_boot = 1000
-    confint_width = 0.5
-    risk_levels = np.exp(np.linspace(np.log(0.001),np.log(49/50),30))
     workflow = dict(
             gcm=gcm,
             expt=expt,
             fc_date=fc_date,
-            ext_sign=ext_sign,
-            event_year=event_year,
-            event_region=event_region,
-            context_region=context_region,
-            daily_stat=daily_stat,
             fc_dates=fc_dates,
             onset_date_nominal=onset_date_nominal,
+            onset_date=onset_date, 
             term_date=term_date,
-            landmask_file_full=landmask_file_full,
-            landmask_file_interp=landmask_file_interp,
             raw_mem_files=raw_mem_files,
             mem_labels=mem_labels,
             reduced_data_dir=reduced_data_dir,
-            reduced_data_dir_era5=reduced_data_dir_era5,
             figdir=figdir,
             cgs_levels=cgs_levels,
-            ens_file_cgt=ens_file_cgt,
-            era5_file_cgt=era5_file_cgt,
+            ens_file_cgt = ens_file_cgt, 
+            ens_files_cgts = ens_files_cgts,
+            ens_files_cgts_extt = ens_files_cgts_extt,
+            gevpar_files = gevpar_files,
+            risk_files = risk_files,
+            gevsevlev_files = gevsevlev_files,
             select_regions=select_regions,
-            risk_levels=risk_levels,
-            n_boot=n_boot,
-            confint_width=confint_width,
             )
+    # Append the applicable items from the ERA5  
+    workflow_era5 = pipeline_era5.era5_workflow(which_ssw)
+    workflow.update({
+        key: workflow_era5[key] for key in map(str.strip, 
+            '''
+            event_year,
+            event_region,
+            context_region,
+            Nlon_interp,
+            Nlat_interp,
+            ext_sign,
+            ext_symb,
+            ineq_symb,
+            landmask_interp_file,
+            param_bounds_file,
+            daily_stat,
+            risk_levels,
+            n_boot,
+            confint_width,
+            boot_type
+            '''.split(',')
+            )
+        })
     return workflow
 
-def visualize_ensemble_spread(raw_mem_files,):
-    return
 
 
-def coarse_grain_time(raw_mem_files, mem_labels, region, init_date, term_date, era5_file_cgt, use_dask=False):
+def coarse_grain_time(raw_mem_files, mem_labels, event_region, context_region, Nlon_interp, Nlat_interp, init_date, term_date, ens_file_cgt, use_dask=False):
     timesel = dict(time=slice(init_date,term_date))
-    region_padded = dict(lat=slice(region['lat'].start-2,region['lat'].stop+2), lon=slice(region['lon'].start-2, region['lon'].stop+2)) 
-    preprocess = lambda dsmem: preprocess_gcm_6hrPt(dsmem, init_date, timesel, region_padded)
+    #region_padded = dict(lat=slice(region['lat'].start-2,region['lat'].stop+2), lon=slice(region['lon'].start-2, region['lon'].stop+2)) 
+    preprocess = lambda dsmem: preprocess_gcm_6hrPt(dsmem, init_date, timesel, context_region)
     print(f'{all([exists(f) for f in raw_mem_files]) = }')
 
     if use_dask:
@@ -191,6 +169,13 @@ def coarse_grain_time(raw_mem_files, mem_labels, region, init_date, term_date, e
             print(f'\n\nAppended file {f}, with dimensions \n{ds_ens[-1].dims}\nshape\n{ds_ens[-1].shape}')
         ds_ens = xr.concat(ds_ens, dim='member').assign_coords(member=mem_labels)
     print(f'{ds_ens.coords = }')
+    # Interpolate to ERA5 grid
+    dlon = (event_region['lon'].stop - event_region['lon'].start)/Nlon_interp
+    dlat = (event_region['lat'].stop - event_region['lat'].start)/Nlat_interp
+    lon_interp = np.linspace(event_region['lon'].start+dlon/2, event_region['lon'].stop-dlon/2, Nlon_interp)
+    lat_interp = np.linspace(event_region['lat'].start+dlat/2, event_region['lat'].stop-dlat/2, Nlat_interp)
+
+    ds_ens = ds_ens.interp(lon=lon_interp, lat=lat_interp, method="linear").sel(event_region)
     # Take daily mean 
     daily_mean = (
             ds_ens
@@ -211,7 +196,7 @@ def coarse_grain_time(raw_mem_files, mem_labels, region, init_date, term_date, e
     ds_ens_cgt = xr.concat([daily_mean,daily_min,daily_max], dim='daily_stat').assign_coords(daily_stat=['daily_mean','daily_min','daily_max'])
     # also just include the full dataset
     ds = xr.Dataset(data_vars=dict({'1xday': ds_ens_cgt, '4xday': ds_ens.rename({'time': 'time_6h'})}))
-    ds = ds.interp(lon=ds
+    ds.to_netcdf(ens_file_cgt)
     return #ds
 
 
@@ -292,7 +277,7 @@ def compare_gcms(which_ssw, idx_gcms):
         ext_sign = -1
         ext_symb = "min"
         event_year = 2018
-    cgs_levels,select_regions = analysis_multiparams(which_ssw)
+    cgs_levels,select_regions = pipeline_base.analysis_multiparams(which_ssw)
     gcms,expts,inits = gcm_multiparams(which_ssw)
     print(f'{gcms = }')
     colors = dict({'era5': 'black', 'control': 'dodgerblue', 'free': 'limegreen', 'nudged': 'red'})
@@ -723,6 +708,24 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 print(f'------------------ SAVED THE FIG -----------------')
     return
 
+def onset_date_sensitivity_analysis(
+        ens_files_cgts, fc_dates, onset_date_nominal, term_date, cgs_levels, ext_sign, figdir,
+        ens_files_cgts_era5, event_year, 
+        ):
+    for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
+        da_cgts = xr.open_dataarray(ens_files_cgts[i_cgs_level])
+        da_cgts_era5 = xr.open_dataarray(ens_files_cgts_era5[i_cgs_level])
+        da_cgts_plus_era5 = xr.concat([
+            da_cgts, 
+            da_cgts_era5
+            .sel(member=slice(event_year,event_year))
+            .assign_coords(member=['era5'])
+            ], dim='member')
+    return
+        
+        
+    
+
 
 
 #def onset_date_sensitivity_analysis(which_ssw,i_gcm,i_expt):
@@ -754,57 +757,43 @@ def compare_expts(which_ssw, i_gcm, i_init):
 def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
     todo = dict({
-        'coarse_grain_time':                1,
-        'coarse_grain_space':               1,
+        'coarse_grain_time':                0,
+        'coarse_grain_space':               0,
         'onset_date_sensitivity_analysis':  1,
-        'plot_t2m_sumstats_map':            1,
-        'fit_gev':                          1,
-        'plot_gevpar_map':                  1,
-        'compute_risk':                     1,
-        'plot_risk_map':                    1,
-        'compute_valatrisk':                1,
-        'plot_valatrisk_map':               1,
-        'fit_gev_select_regions':           1,
-        'plot_gev_select_regions':          1,
+        'plot_t2m_sumstats_map':            0,
+        'fit_gev':                          0,
+        'plot_gevpar_map':                  0,
+        'compute_risk':                     0,
+        'plot_risk_map':                    0,
+        'compute_valatrisk':                0,
+        'plot_valatrisk_map':               0,
+        'fit_gev_select_regions':           0,
+        'plot_gev_select_regions':          0,
         })
 
     # In this main function, specify only the inputs and outputs as files 
     wkf = gcm_workflow(which_ssw,i_gcm,i_expt,i_init)
+    wkf_era5 = pipeline_era5.era5_workflow(which_ssw)
     if todo['coarse_grain_time']:
-        coarse_grain_time(wkf['raw_mem_files'], wkf['mem_labels'], wkf['context_region'], wkf['fc_date'], wkf['term_date'], wkf['era5_file_cgt'])
+        coarse_grain_time(
+                *(wkf[key.strip()] for key in '''
+                raw_mem_files,mem_labels,
+                event_region,context_region,
+                Nlon_interp, Nlat_interp, 
+                fc_date,term_date, ens_file_cgt
+                '''.split(',')),
+                )
 
     if todo['coarse_grain_space']:
-        pipeline_base.coarse_grain_space(wkf['ens_file_cgt'], wkf['landmask_file_full'], wkf['landmask_file_interp'], wkf['event_region'], wkf['cgs_levels'])
+        pipeline_base.coarse_grain_space(
+                *(wkf[key.strip()] for key in '''
+                ens_file_cgt,ens_files_cgts, cgs_levels, 
+                landmask_interp_file,
+                event_region
+                '''.split(','))
+                )
+    return
 
-
-
-    (
-            gcm,
-            expt,
-            fc_date,
-            ext_sign,
-            event_year,
-            event_region,
-            context_region,
-            daily_stat,
-            fc_dates,onset_date_nominal,term_date,
-            landmask_file,
-            raw_mem_files,
-            mem_labels,
-            reduced_data_dir,
-            reduced_data_dir_era5,
-            figdir,
-            cgs_levels,
-            select_regions,
-            risk_levels,
-            n_boot,
-            confint_width
-            ) = gcm_workflow(which_ssw,i_gcm,i_expt,i_init)
-    ext_symb = "max" if 1==ext_sign else "min"
-    ineq_sign = "geq" if 1==ext_sign else "leq"
-
-    datestr = fc_date.strftime("%Y-%m-%d")
-    fc_date_abbrv = dtlib.datetime.strftime(fc_date,'%Y%m%d')
 
     # ------------- Coarse-grain in time (cgt) and space (cgts) -------------
     # Load ERA5 as well
@@ -855,6 +844,26 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     # ------------- Sensitivity analysis with respect to onset date ------------
     print(f'************ About to do ODSA *******')
     if todo['onset_date_sensitivity_analysis']:
+        pipeline_base.onset_date_sensitivity_analysis(
+        onset_date_sensitivity_analysis(
+                *dtoa(wkf, '''
+                ens_files_cgts, fc_dates, onset_date_nominal, term_date,
+                cgs_levels, ext_sign, figdir,
+                '''),
+                *dtoa(wkf_era5, '''
+                ens_files_cgts, event_year, 
+                '''),
+                )
+
+
+
+        # TODO need to make an intermediate helper 
+        pipeline_base.onset_date_sensitivity_analysis(
+                wkf['ens_files_cgts'],
+                wkf['event_region'],wkf['cgs_levels'][:2], 
+                wkf['fc_dates'], wkf['fc_dates'][0], wkf['onset_date_nominal'], wkf['term_date'], wkf['daily_stat'], wkf['ext_sign'], 
+                wkf['figdir'], gcm, mem_special=None, fc_date_special=None,
+                )
         for i_cgs_level,cgs_level in enumerate(cgs_levels[:2]):
             cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
             da_cgts_era5 = xr.open_dataset(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc'))['1xday'].sel(daily_stat=daily_stat)
@@ -971,7 +980,6 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
             plt.close(fig)
         
     # ----------------- Compute risk w.r.t. ERA5 ---------------
-    pdb.set_trace()
     print(f'********** About to compute_risk ***********')
     if todo['compute_risk']:
         for (i_cgs_level,cgs_level) in enumerate(cgs_levels): 

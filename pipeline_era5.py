@@ -26,55 +26,39 @@ from scipy.stats import norm as spnorm, genextreme as spgex
 from importlib import reload
 import utils; reload(utils)
 import pipeline_base; reload(pipeline_base)
-import stat_functions as stfu; reload(stfu)
 
-def analysis_multiparams(which_ssw):
-    # lon/lat ratios are 6/1 at the bottom and 4/1 at the top; stick to 5/1 
-    if "feb2018" == which_ssw:
-        cgs_levels = [(1,1),(5,1),(10,2),(20,4),(40,8),(80,16)] #,(141,16)]
-        select_regions = ( # Indexed by cgs_level
-                [(0,0),], # level (1,1)
-                [], # level (5,1)
-                [(2*i,2*i//5) for i in range(5)],
-                [], # level (20,4)
-                [], # level (40,8)
-                [], # level (80,16)
-                )
-    elif "jan2019" == which_ssw:
-        cgs_levels = [(1,1),(2,1),(5,3),(15,9)]
-        select_regions = ( # Indexed by cgs_level
-                ((0,0),), # level (1,1)
-                ((0,0),(1,0)), # level (2,1)
-                ((i,j) for i in range(5) for j in range(3)),
-                (),
-                )
-    elif "sep2019" == which_ssw:
-        cgs_levels = [(1,1),(2,2),(7,6)]
-        select_regions = ( # Indexed by cgs_level
-                ((0,0),), # level (1,1)
-                ((0,0),(1,0),(0,1),(1,1)), # level (2,1)
-                ((i,j) for i in range(7) for j in range(6)),
-                )
-    return cgs_levels,select_regions
 
 def era5_workflow(which_ssw,verbose=False):
-    print(f'Starting workflow setup')
-    analysis_date = '2025-05-20'
+    # 0. Global constants
+    fc_dates,onset_date_nominal,term_date = pipeline_base.dates_of_interest(which_ssw)
+    onset_date = pipeline_base.least_sensible_onset_date(which_ssw)
+    event_region,context_region = pipeline_base.region_of_interest(which_ssw)
+
+    # 1. Raw data
     raw_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/era5'
+
+    # 2. Processed data
+    analysis_date = '2025-05-20'
     processed_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596'
-    cgs_levels,select_regions = analysis_multiparams(which_ssw)
-    landmask_full_file = join(processed_data_dir,'era5/land_sea_mask.nc')
+    reduced_data_dir = join(processed_data_dir,which_ssw,analysis_date,'era5')
+    figdir = join('/home/users/ju26596/snapsi_analysis_figures',which_ssw,analysis_date,'era5')
+    makedirs(reduced_data_dir,exist_ok=True)
+    makedirs(figdir,exist_ok=True)
+
+    # 3. Files
+    landmask_full_file = join(processed_data_dir,'era5','land_sea_mask.nc')
+    landmask_interp_file = join(reduced_data_dir,'land_sea_mask_interp.nc')
+
     daily_stat = 'daily_min'
     years = np.arange(1980,2020,dtype=int)
     year_filegroups = []
-    reduced_data_dir = join(processed_data_dir,which_ssw,analysis_date,'era5')
-    landmask_interp_file = join(reduced_data_dir,'land_sea_mask_interp.nc')
-    ens_file_cgt = join(reduced_data_dir,f't2m_cgt1day.nc')
+    ens_file_cgt = join(reduced_data_dir,'t2m_cgt1day.nc')
     ens_files_cgts = []
     ens_files_cgts_extt = [] # extremized in time 
     gevpar_files = []
     risk_files = []
     gevsevlev_files = []
+    cgs_levels,select_regions = pipeline_base.analysis_multiparams(which_ssw)
     for i_cgs_level,cgs_level in enumerate(cgs_levels):
         ens_files_cgts.append(join(reduced_data_dir,'t2m_cgt1day_cgs%dx%d.nc'%(cgs_level[0],cgs_level[1])))
         ens_files_cgts_extt.append(join(reduced_data_dir,'t2m_cgt1day_cgs%dx%d_extt.nc'%(cgs_level[0],cgs_level[1])))
@@ -83,12 +67,9 @@ def era5_workflow(which_ssw,verbose=False):
         gevsevlev_files.append([])
         for (i_lon,i_lat) in select_regions[i_cgs_level]:
             gevsevlev_files[i_cgs_level].append(join(reduced_data_dir,'gevsevlev_cgs%dx%d_ilon%d_ilat%d.nc'%(cgs_level[0],cgs_level[1],i_lon,i_lat)))
+
     param_bounds_file = join(reduced_data_dir, 'param_bounds.nc')
 
-    figdir = join('/home/users/ju26596/snapsi_analysis_figures',which_ssw,analysis_date,'era5')
-    fc_dates,onset_date_nominal,term_date = pipeline_base.dates_of_interest(which_ssw)
-    onset_date = pipeline_base.least_sensible_onset_date(which_ssw)
-    event_region,context_region = pipeline_base.region_of_interest(which_ssw)
     if "feb2018" == which_ssw:
         event_year = 2018
         ext_sign = -1
@@ -114,8 +95,6 @@ def era5_workflow(which_ssw,verbose=False):
             year_filegroups.append(tuple(
                 [join(raw_data_dir,f't2m_{year:04}-{month:02}.nc') for month in [9,10,11]]
                 ))
-    makedirs(reduced_data_dir,exist_ok=True)
-    # spatial coarse graining (cgs)
     n_boot = 1000
     confint_width = 0.5
     boot_type = 'percentile'
@@ -123,7 +102,6 @@ def era5_workflow(which_ssw,verbose=False):
     ext_symb = "max" if 1==ext_sign else "min"
     ineq_symb = "\u2265" if 1==ext_sign else "\u2264"
 
-    makedirs(figdir,exist_ok=True)
 
     select_points = ()
     risk_levels = np.exp(np.linspace(np.log(0.001),np.log(49/50),30))
@@ -144,11 +122,11 @@ def era5_workflow(which_ssw,verbose=False):
             # files at each stage of processing
             landmask_full_file     =landmask_full_file,
             landmask_interp_file     =landmask_interp_file,
+            param_bounds_file = param_bounds_file,
             ens_file_cgt = ens_file_cgt, 
             ens_files_cgts = ens_files_cgts,
             ens_files_cgts_extt = ens_files_cgts_extt,
             gevpar_files = gevpar_files,
-            param_bounds_file = param_bounds_file,
             risk_files = risk_files,
             gevsevlev_files = gevsevlev_files,
             year_filegroups   =year_filegroups,
@@ -270,10 +248,10 @@ def reduce_era5(which_ssw):
     # ------------- Sensitivity analysis with respect to onset date ------------
     if todo['onset_date_sensitivity_analysis']:
         pipeline_base.onset_date_sensitivity_analysis(
-                wkf['ens_files_cgts'],
+                wkf['ens_files_cgts'], wkf['ens_files_cgts'],
                 wkf['event_region'],wkf['cgs_levels'][:2], 
                 wkf['fc_dates'], wkf['fc_dates'][0], wkf['onset_date_nominal'], wkf['term_date'], wkf['daily_stat'], wkf['ext_sign'], 
-                wkf['figdir'], "ERA5", mem_special=wkf['event_year'], fc_date_special=None,
+                wkf['figdir'], "ERA5", mem_special_ref=wkf['event_year'], fc_date_special=None,
                 )
     # ------------ extremize in time -------------------
     if todo['compute_severities']:

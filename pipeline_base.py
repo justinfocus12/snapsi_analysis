@@ -66,7 +66,37 @@ def region_of_interest(which_ssw):
     context_region = dict(lat=slice(lat_min-lat_pad,lat_max+lat_pad),lon=slice(lon_min-lon_pad,lon_max+lon_pad))
     return event_region,context_region
 
-def onset_date_sensitivity_analysis(ens_files_cgts, event_region, cgs_levels_for_odsa, fc_dates, init_date, onset_date_nominal, term_date, daily_stat, ext_sign, figdir, figtitle_prefix, mem_special=None, fc_date_special=None, ):
+def analysis_multiparams(which_ssw):
+    # lon/lat ratios are 6/1 at the bottom and 4/1 at the top; stick to 5/1 
+    if "feb2018" == which_ssw:
+        cgs_levels = [(1,1),(5,1),(10,2),(20,4),(40,8),(80,16)] #,(141,16)]
+        select_regions = ( # Indexed by cgs_level
+                [(0,0),], # level (1,1)
+                [], # level (5,1)
+                [(2*i,2*i//5) for i in range(5)],
+                [], # level (20,4)
+                [], # level (40,8)
+                [], # level (80,16)
+                )
+    elif "jan2019" == which_ssw:
+        cgs_levels = [(1,1),(2,1),(5,3),(15,9)]
+        select_regions = ( # Indexed by cgs_level
+                ((0,0),), # level (1,1)
+                ((0,0),(1,0)), # level (2,1)
+                ((i,j) for i in range(5) for j in range(3)),
+                (),
+                )
+    elif "sep2019" == which_ssw:
+        cgs_levels = [(1,1),(2,2),(7,6)]
+        select_regions = ( # Indexed by cgs_level
+                ((0,0),), # level (1,1)
+                ((0,0),(1,0),(0,1),(1,1)), # level (2,1)
+                ((i,j) for i in range(7) for j in range(6)),
+                )
+    return cgs_levels,select_regions
+
+
+def onset_date_sensitivity_analysis(ens_files_cgts, event_region, cgs_levels_for_odsa, fc_dates, init_date, onset_date_nominal, term_date, daily_stat, ext_sign, figdir, figtitle_prefix, ens_files_cgts_ref=None, mem_special_ref=None, fc_date_special=None, ):
     # init_date should coincide with the first entry of da.time, but time conversion headaches...
     # Plot the minimum over the time interval as a function of onset date, across ensemble members. 
 
@@ -83,18 +113,28 @@ def onset_date_sensitivity_analysis(ens_files_cgts, event_region, cgs_levels_for
                 dims = ['lon','lat','member','onset_date',],
                 data = np.nan,
                 )
-        for (i_onset_date,onset_date) in enumerate(onset_dates):
-            # for some reason the slicing operation works fine 
-            severities[dict(onset_date=i_onset_date)] = ext_sign*(ext_sign*da_cgts.sel(time=slice(onset_date,None))).max(dim='time')
+        if ens_files_cgts_ref is not None:
+           da_cgts_ref = xr.open_dataset(ens_files_cgts_ref[i_cgs_level])['1xday'].sel(daily_stat=daily_stat)
+            severities_ref = xr.DataArray(
+                    coords = dict(
+                        **{c: da_cgts_ref.sel(event_region).coords[c] for c in ['lon','lat','member',]},
+                        onset_date=onset_dates,
+                        ),
+                    dims = ['lon','lat','member','onset_date',],
+                    data = np.nan,
+                    )
+            for (i_onset_date,onset_date) in enumerate(onset_dates):
+                # for some reason the slicing operation works fine 
+                severities_ref[dict(onset_date=i_onset_date)] = ext_sign*(ext_sign*da_cgts_ref.sel(time=slice(onset_date,None))).max(dim='time')
         Nlon,Nlat,Nmem = (severities[c].size for c in ['lon','lat','member'])
         if not (Nlon==cgs_level[0] and Nlat==cgs_level[1]):
             pdb.set_trace()
         def kwargsofmem(mem):
-           if mem_special and mem==mem_special:
-               kwargs = dict(color='black', linestyle='--', zorder=1)
-           else:
-               kwargs = dict(color='gray', alpha=0.5, linestyle='-', zorder=0)
-           return kwargs
+            if mem_special_ref and mem==mem_special_ref:
+                kwargs = dict(color='black', linestyle='--', zorder=1)
+            else:
+                kwargs = dict(color='gray', alpha=0.5, linestyle='-', zorder=0)
+            return kwargs
         for i_lon in range(Nlon):
             for i_lat in range(Nlat):
                 fig,axes = plt.subplots(nrows=2,figsize=(6,6+3), sharex=True,height_ratios=[2,1],gridspec_kw=dict(hspace=0.3,))
@@ -108,6 +148,11 @@ def onset_date_sensitivity_analysis(ens_files_cgts, event_region, cgs_levels_for
                     isel['member'] = i_mem
                     xr.plot.plot(da_cgts.isel(isel), ax=axintensity, x='time',**kwargsofmem(mem))
                     xr.plot.plot(severities.isel(isel), ax=axseverity, x='onset_date', **kwargsofmem(mem)) # TODO instead of plotting all the ensemble members, plot the mean
+                if ens_files_cgts_ref is not None:
+                    for i_mem,mem in enumerate(da_cgts_ref.coords['member']):
+                        isel['member'] = i_mem
+                        xr.plot.plot(da_cgts_ref.isel(isel), ax=axintensity, x='time',**kwargsofmem(mem))
+                        xr.plot.plot(severities_ref.isel(isel), ax=axseverity, x='onset_date', **kwargsofmem(mem)) # TODO instead of plotting all the ensemble members, plot the mean
                 isel.pop('member')
                 xr.plot.plot(
                         (0 != 

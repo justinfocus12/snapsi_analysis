@@ -24,6 +24,14 @@ def lonlatstr(region,cgs_level,i_lon,i_lat):
     label = r'$\lambda=%d\pm%d^\circ\text{E},\phi=%d\pm%d^\circ\text{N}$'%(clon,dlon/2,clat,dlat/2)
     return label
 
+def dict2args(bag_of_args, sep=','):
+    args = bag_of_args.split(sep)
+    if (len(args[-1]) == 0) or (not any(map(str.isalnum, args[-1]))):
+        args.pop()
+    return args
+
+
+
 def spherical2cartesian(lon,lat):
     vec = np.array([
         np.cos(np.deg2rad(lon))*np.cos(np.deg2rad(lat)),
