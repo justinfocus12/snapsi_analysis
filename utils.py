@@ -3,9 +3,9 @@ import numpy as np
 import xarray as xr
 import pdb
 
-def padded_bounds(arr, alpha=0.25):
+def padded_bounds(arr, inflation=0.25):
     arrmin,arrmax = np.nanmin(arr),np.nanmax(arr)
-    pb = np.array([(1+alpha)*arrmin-alpha*arrmax, (1+alpha)*arrmax-alpha*arrmin])
+    pb = np.array([(1+inflation)*arrmin-inflation*arrmax, (1+inflation)*arrmax-inflation*arrmin])
     return pb
 
 def area_average(da):

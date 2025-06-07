@@ -62,7 +62,6 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
     gcm = gcms[i_gcm]
     expt = expts[i_expt]
     fc_date = fc_dates[i_fc_date]
-    init_date = fc_dates[0]
     gcm2institute = all_gcms_institutes()
     onset_date = pipeline_base.least_sensible_onset_date(which_ssw)
 
@@ -93,6 +92,7 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
     ens_files_cgts_extt = []
     gevpar_files = []
     risk_files = []
+    valatrisk_files = []
     gevsevlev_files = []
     cgs_levels,select_regions = pipeline_base.analysis_multiparams(which_ssw)
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
@@ -100,6 +100,7 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
         ens_files_cgts_extt.append(join(reduced_data_dir,'t2m_e%s_i%s_cgt1day_cgs%dx%d_extt.nc'%(expt,fc_date_abbrv,cgs_level[0],cgs_level[1])))
         gevpar_files.append('gevpar_e%s_i%s_cgs%dx%d.nc'%(expt,fc_date_abbrv,cgs_level[0],cgs_level[1]))
         risk_files.append(join(reduced_data_dir,'risk_e%s_i%s_cgs%dx%d.nc'%(expt,fc_date_abbrv,cgs_level[0],cgs_level[1])))
+        valatrisk_files.append(join(reduced_data_dir,'valatrisk_e%s_i%s_cgs%dx%d.nc'%(expt,fc_date_abbrv,cgs_level[0],cgs_level[1])))
         gevsevlev_files.append([])
         for (i_lon,i_lat) in select_regions[i_cgs_level]:
             gevsevlev_files[i_cgs_level].append(join(reduced_data_dir,'gevsevlev_e%s_i%s_cgs%dx%d_ilon%d_ilat%d.nc'%(expt,fc_date_abbrv,cgs_level[0],cgs_level[1],i_lon,i_lat)))
@@ -111,6 +112,8 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
             gcm=gcm,
             expt=expt,
             fc_date=fc_date,
+            figfile_tag='e%s_i%s'%(expt,fc_date_abbrv),
+            figtitle_affix = '%s, %s, FC %s'%(gcm, expt, dtlib.datetime.strftime(fc_date, "%Y/%m/%d")),
             fc_dates=fc_dates,
             fc_date_abbrv=fc_date_abbrv,
             init_date = fc_dates[0],
@@ -127,6 +130,7 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
             ens_files_cgts_extt = ens_files_cgts_extt,
             gevpar_files = gevpar_files,
             risk_files = risk_files,
+            valatrisk_files = valatrisk_files,
             gevsevlev_files = gevsevlev_files,
             select_regions=select_regions,
             )
@@ -142,7 +146,9 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
             Nlat_interp,
             ext_sign,
             ext_symb,
+            prob_symb,
             ineq_symb,
+            leq_symb,
             landmask_interp_file,
             param_bounds_file,
             daily_stat,
@@ -763,16 +769,15 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
         'coarse_grain_time':                0,
         'coarse_grain_space':               0,
         'onset_date_sensitivity_analysis':  0,
-        'compute_severities':               1,
-        'plot_sumstats_map':                1,
+        'compute_severities':               0,
+        'plot_sumstats_map':                0,
         'fit_gev':                          0,
         'plot_gevpar_map':                  0,
         'compute_risk':                     0,
         'plot_risk_map':                    0,
-        'compute_valatrisk':                0,
         'plot_valatrisk_map':               0,
         'fit_gev_select_regions':           0,
-        'plot_gev_select_regions':          0,
+        'plot_gev_select_regions':          1,
         })
 
     # In this main function, specify only the inputs and outputs as files 
@@ -801,47 +806,117 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                 *dtoa(wkf, '''
                 ens_files_cgts, event_region, cgs_levels, fc_dates,
                 init_date, onset_date_nominal, term_date, daily_stat,
-                ext_sign, figdir, gcm, expt, fc_date_abbrv,
+                ext_sign, figdir, gcm, figfile_tag,
                 '''),
                 *dtoa(wkf_era5, '''
                 ens_files_cgts, event_year, 
                 '''),
                 idx_cgs_levels = [0,1]
                 )
+    if todo['compute_severities']:
+        pipeline_base.compute_severity_from_intensity(
+                *dtoa(wkf, '''
+                ens_files_cgts, ens_files_cgts_extt, cgs_levels,
+                ext_sign, onset_date, term_date, daily_stat,
+                landmask_interp_file,
+                '''),
+                )
     if todo['plot_sumstats_map']:
+        mem_special = xr.open_dataset(wkf['ens_files_cgts_extt'][0]).coords['member'][0].item()
+        print(f'{mem_special = }')
         pipeline_base.plot_sumstats_maps_flat(
+                wkf['ens_files_cgts_extt'], wkf_era5['ens_files_cgts_extt'],
+                mem_special, wkf_era5['event_year'],
                 *dtoa(wkf,'''
-                ens_files_cgts_extt,ens_files_cgts_extt,
-                event_year,event_year,
                 ext_sign,param_bounds_file,cgs_levels,
                 ext_symb,onset_date,term_date,
-                figdir
+                figdir, figfile_tag, figtitle_affix,
+                '''),
+                )
+    if todo['fit_gev']:
+        pipeline_base.fit_gev_exttemp(
+                *(wkf[key.strip()] for key in '''
+                ens_files_cgts_extt,gevpar_files,
+                ext_sign,cgs_levels
                 '''.split(',')),
-                "ERA5",
+                method='PWM',
                 )
-        fmtfun = lambda date: dtlib.datetime.strftime(date, "%Y/%m/%d")
-        mem_special = da_cgt_extt['member'][0].item()
-        mem_special_ref = event_year
-        titles = [
-                r"%s, %s, FC %s, $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-member mean"%(
-                    gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date), da_cgt_extt['member'].size),
-                r"%s, %s, FC %s, $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, %d-member std. dev."%(
-                    gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date), da_cgt_extt['member'].size),
-                r"%s, %s, FC %s, $\%s \{\text{T2M}(t): %s\leq t\leq%s\}$, member %s standardized anomaly"%(
-                    gcm, expt, fmtfun(fc_date), ext_symb, fmtfun(onset_date), fmtfun(term_date), mem_special)
-                ]
-        fig,axes = pipeline_base.plot_sumstats_maps_flat(
-                da_cgt_extt,
-                da_cgt_extt_era5,
-                landmask,
-                mem_special, mem_special_ref,
-                titles, 
-                cgs_levels[2],
-                param_bounds=param_bounds,
-                ext_sign=ext_sign,
+    if todo['plot_gevpar_map']:
+        pipeline_base.plot_gevpar_maps_flat(
+                *dtoa(wkf, '''
+                gevpar_files,
+                ext_sign,cgs_levels,param_bounds_file,
+                figdir, figfile_tag, figtitle_affix,
+                '''),
                 )
-        fig.savefig(join(figdir,f'sumstats_map_{daily_stat}_e{expt}_i{fc_date_abbrv}_cgt1day.png'), **pltkwargs)
-        plt.close(fig)
+    if todo['compute_risk']:
+        pipeline_base.compute_valatrisk(
+                *dtoa(wkf_era5, 'ens_files_cgts_extt, event_year, gevpar_files,'),
+                *dtoa(wkf, 'gevpar_files, valatrisk_files, cgs_levels, ext_sign'),
+                )
+    if todo['plot_risk_map']:
+        pipeline_base.plot_risk_or_valatrisk_map(
+                *dtoa(wkf, '''
+                valatrisk_files, cgs_levels, ext_sign,
+                onset_date, term_date, 
+                prob_symb, ext_symb, leq_symb, ineq_symb, figtitle_affix, event_year,
+                figdir, figfile_tag
+                '''),
+                True,
+                )
+    if todo['plot_valatrisk_map']:
+        pipeline_base.plot_risk_or_valatrisk_map(
+                *dtoa(wkf, '''
+                valatrisk_files, cgs_levels, ext_sign,
+                onset_date, term_date, 
+                prob_symb, ext_symb, leq_symb, ineq_symb, figtitle_affix, event_year,
+                figdir, figfile_tag
+                '''),
+                False,
+                )
+    if todo['fit_gev_select_regions']:
+        pipeline_base.fit_regional_gevsevlev(
+                *dtoa(wkf, '''
+                ens_files_cgts_extt, gevsevlev_files, risk_levels, 
+                cgs_levels, select_regions,
+                ext_sign,
+                '''),
+                )
+    if todo['plot_gev_select_regions']:
+        pipeline_base.plot_regional_gevsevlev(
+                *dtoa(wkf, 'ens_files_cgts_extt, gevsevlev_files'),
+                *dtoa(wkf_era5, 'ens_files_cgts_extt, event_year, param_bounds_file'),
+                *dtoa(wkf, '''
+                cgs_levels, 
+                event_region, select_regions,
+                boot_type, confint_width,
+                figdir, figfile_tag, figtitle_affix, onset_date, term_date, 
+                prob_symb, ext_sign, ext_symb, leq_symb, ineq_symb
+                '''),
+                )
+    return
+    if False:
+        cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+        # Load the ensemble data
+        ens_file_cgts = join(reduced_data_dir,f't2m_e{expt}_i{fc_date_abbrv}_cgt1day_cgs{cgs_key}.nc')
+        da_cgts = xr.open_dataset(ens_file_cgts)['1xday'].sel(daily_stat=daily_stat)
+        da_cgts_era5 = xr.open_dataset(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc'))['1xday'].sel(daily_stat=daily_stat)
+        da_cgts_extt = ext_sign * (ext_sign*da_cgts.sel(time=slice(onset_date,term_date))).max(dim='time')
+        da_cgts_extt_era5 = ext_sign * (ext_sign*da_cgts_era5.sel(time=slice(onset_date,term_date))).max(dim='time')
+        # Load the computed GEV parameters
+        gevpar_file_cgts = join(reduced_data_dir,f'gevpar_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}.nc')
+        gevpar_cgts_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_cgt1xday_cgs{cgs_key}.nc'))
+        gevpar_cgts = xr.open_dataarray(gevpar_file_cgts)
+        # Specify the output file for risk
+        risk_file = join(reduced_data_dir,f'risk_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}.nc')
+        # compute the risk
+        risk = pipeline_base.compute_risk(
+                da_cgts_extt,
+                da_cgts_extt_era5.sel(member=event_year),
+                gevpar_cgts,
+                gevpar_cgts_era5,
+                locsign=ext_sign)
+        risk.to_netcdf(risk_file)
     return
 
 
@@ -918,12 +993,12 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
             e5min,e5max = np.nanmin(da_cgts_era5),np.nanmax(da_cgts_era5)
             e5mid = 0.5*(e5min+e5max)
             vmin,vmax = e5mid + 1.25*np.array([-1,1])*(e5max-e5min)/2
-            figtitle_prefix = f'{gcm} {expt}'
+            figtitle_affix = f'{gcm} {expt}'
             onset_date_minsens = pipeline_base.onset_date_sensitivity_analysis(
                     da_cgts_plus_era5,
                     event_region,cgs_level, 
                     fc_dates, fc_date, onset_date_nominal, term_date, ext_sign, 
-                    figdir, exptstr, figtitle_prefix, mem_special='era5', fc_date_special=fc_date,
+                    figdir, exptstr, figtitle_affix, mem_special='era5', fc_date_special=fc_date,
                     intensity_lims=[vmin,vmax]
                     )
     # choose an onset date based on this 

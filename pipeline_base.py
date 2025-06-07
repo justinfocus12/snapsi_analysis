@@ -96,7 +96,7 @@ def analysis_multiparams(which_ssw):
     return cgs_levels,select_regions
 
 
-def onset_date_sensitivity_analysis(ens_files_cgts, event_region, cgs_levels, fc_dates, init_date, onset_date_nominal, term_date, daily_stat, ext_sign, figdir, figtitle_prefix, expt, fc_date_abbrv, ens_files_cgts_ref=None, mem_special_ref=None, fc_date_special=None, idx_cgs_levels=None):
+def onset_date_sensitivity_analysis(ens_files_cgts, event_region, cgs_levels, fc_dates, init_date, onset_date_nominal, term_date, daily_stat, ext_sign, figdir, figtitle_prefix, figfile_tag, ens_files_cgts_ref=None, mem_special_ref=None, fc_date_special=None, idx_cgs_levels=None):
     # init_date should coincide with the first entry of da.time, but time conversion headaches...
     # Plot the minimum over the time interval as a function of onset date, across ensemble members. 
     if idx_cgs_levels is None:
@@ -189,21 +189,25 @@ def onset_date_sensitivity_analysis(ens_files_cgts, event_region, cgs_levels, fc
                 for ax in axes:
                     ax.tick_params(axis='y', which='both',labelleft=True)
                     ax.tick_params(axis='x', which='both',labelbottom=True)
-                fig.savefig(join(figdir,f'ODSA_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
+                fig.savefig(join(figdir,f'ODSA_{figfile_tag}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
                 plt.close(fig)
     return 
 
-def compute_severity_from_intensity(ens_file_cgt, ens_files_cgts, ens_files_cgts_extt, cgs_levels, ext_sign, onset_date, term_date, daily_stat, param_bounds_file, landmask_file):
-    # First get parameter bounds for all plots 
+def set_param_bounds(ens_file_cgt, param_bounds_file, landmask_file, daily_stat, onset_date, term_date, ext_sign):
+    landmask = xr.open_dataarray(landmask_file)
     da_cgt = xr.open_dataset(ens_file_cgt)['1xday'].sel(daily_stat=daily_stat)
     da_cgt_extt = ext_sign * (ext_sign*da_cgt.sel(time=slice(onset_date,term_date))).max(dim='time')
-    landmask = xr.open_dataarray(landmask_file)
     # Set global bounds on plots (sign might flip)
-    param_bounds = xr.DataArray(coords={'param': ['loc','scale','shape'], 'side': ['lo','hi']}, dims=['param','side'], data=np.nan)
+    param_bounds = xr.DataArray(coords={'param': ['loc','scale','shape','allvalues'], 'side': ['lo','hi']}, dims=['param','side'], data=np.nan)
     param_bounds.loc[dict(param='loc')][:] = utils.padded_bounds(ext_sign*da_cgt_extt.where(landmask>0, np.nan).mean(dim='member'))
+    param_bounds.loc[dict(param='allvalues')][:] = utils.padded_bounds(da_cgt_extt.where(landmask>0, np.nan)) #.mean(dim='member'))
     param_bounds.loc[dict(param='scale')][:] = utils.padded_bounds(da_cgt_extt.where(landmask>0, np.nan).std(dim='member'), 0.1)
     param_bounds.loc[dict(param='shape')][:] = np.array([-0.5, 0.1])
     param_bounds.to_netcdf(param_bounds_file)
+    return
+
+def compute_severity_from_intensity(ens_files_cgts, ens_files_cgts_extt, cgs_levels, ext_sign, onset_date, term_date, daily_stat, landmask_file):
+    # First get parameter bounds for all plots 
 
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
         da_cgts = xr.open_dataset(ens_files_cgts[i_cgs_level])['1xday'].sel(daily_stat=daily_stat)
@@ -215,13 +219,12 @@ def plot_sumstats_maps_flat(
         ens_files_cgts_extt, ens_files_cgts_extt_ref, 
         mem_special, mem_special_ref, 
         ext_sign, param_bounds_file, cgs_levels, 
-        ext_symb,onset_date,term_date,figdir,title_prefix=''
+        ext_symb,onset_date,term_date,figdir,figfile_tag,title_prefix=''
         ):
     # 1. ensemble-mean of time-min
     # 2. ensemble-std of time-min
     # 3. special member's time-min
 
-    # in figure, ERA5 will be on left, and GCM will be in 2nd and 3rd columns for early and late fc_date 
 
     param_bounds = xr.open_dataarray(param_bounds_file)
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
@@ -290,15 +293,17 @@ def plot_sumstats_maps_flat(
                 **pcmargs,
                 )
         fmtfun = lambda date: dtlib.datetime.strftime(date, "%m/%d")
+        suptitle = "%s {T2M(t): %s \u2264 t \u2264 %s}, %s"%(ext_symb, fmtfun(onset_date), fmtfun(term_date), title_prefix)
         titles = [
-                r"%s {T2M($t$): %s$\leq t\leq$%s}, %s mean"%(ext_symb, fmtfun(onset_date), fmtfun(term_date), title_prefix),
-                r"%s {T2M($t$): %s$\leq t\leq$%s}, %s std. dev."%(ext_symb, fmtfun(onset_date), fmtfun(term_date), title_prefix),
-                r"%s {T2M($t$): %s$\leq t\leq$%s}, %s %s norm. anom."%(ext_symb, fmtfun(onset_date), fmtfun(term_date), title_prefix, mem_special)
+                "Mean",
+                "Standard deviation",
+                "%s normalized anomaly"%(mem_special),
                 ]
         for (i_ax,ax) in enumerate(axes):
             decorate_mercator_axis(ax, lonmin, lonmax, latmin, latmax)
             ax.set_title(titles[i_ax], loc='left')
-        fig.savefig(join(figdir,'sumstats_map_%dx%d.png'%(cgs_level[0],cgs_level[1])), **pltkwargs)
+        fig.suptitle(suptitle, x=0.5, ha='center')
+        fig.savefig(join(figdir,'sumstats_map_%s_%dx%d.png'%(figfile_tag,cgs_level[0],cgs_level[1])), **pltkwargs)
         plt.close(fig)
     return 
 
@@ -345,7 +350,7 @@ def plot_sumstats_map(ds,loc_vmin,loc_vmax,scale_vmin,scale_vmax):
         ax.gridlines()
     return fig,axes
 
-def compute_risk(gevpar_files, ens_files_cgts_extt, risk_files, mem_special, ext_sign, cgs_levels):
+def compute_risk(gevpar_files, risk_files, ens_files_cgts_extt, mem_special, ext_sign, cgs_levels):
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
         if min(cgs_level) <= 1:
             continue
@@ -369,29 +374,37 @@ def compute_risk(gevpar_files, ens_files_cgts_extt, risk_files, mem_special, ext
         risk.to_netcdf(risk_files[i_cgs_level])
     return 
 
-def compute_valatrisk(ds_cgts, ds_cgts_ref, gevpar, gevpar_ref, locsign=1):
-    # Calculate the change in the level corresponding to an exceedance probability ccdf
-    risk_valatrisk = xr.DataArray(
-            coords={'lon': ds_cgts_ref.lon, 'lat': ds_cgts_ref.lat, 'quantity': ['risk','valatrisk']},
-            dims=['quantity'] + [d for d in ds_cgts_ref.dims if d in ['lat','lon']],
-            data=np.nan,
-            )
-    #pdb.set_trace()
-    shapes_ref,locs_ref,scales_ref = (gevpar_ref.sel(param=p).to_numpy() for p in ('shape','loc','scale'))
-    shapes,locs,scales = (gevpar.sel(param=p).to_numpy() for p in ('shape','loc','scale'))
-    risk_valatrisk.loc[dict(quantity='risk')] = spgex.sf(ds_cgts_ref.to_numpy()*locsign, -shapes_ref, loc=locs_ref, scale=scales_ref)
-    risk_valatrisk.loc[dict(quantity='valatrisk')] = spgex.isf(risk_valatrisk.sel(quantity='risk').to_numpy(), -shapes, loc=locs, scale=scales)*locsign
-    #pdb.set_trace()
-    # TODO obtain a whole range of quantile shifts to plot as a function of probability ("value at risk"? )
-    return risk_valatrisk
+def compute_valatrisk(ens_files_cgts_extt_ref, mem_special_ref, gevpar_ref_files, gevpar_files, valatrisk_files, cgs_levels, ext_sign):
+    for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
+        gevpar = xr.open_dataarray(gevpar_files[i_cgs_level])
+        gevpar_ref = xr.open_dataarray(gevpar_ref_files[i_cgs_level])
+        da_cgts_extt_ref = xr.open_dataarray(ens_files_cgts_extt_ref[i_cgs_level]).sel(member=mem_special_ref)
+        lons,lats = (da_cgts_extt_ref.coords[c].to_numpy() for c in ['lon','lat'])
+        valatrisk = xr.DataArray(
+                coords={'lon': lons, 'lat': lats, 'quantity': ['risk_refgivenref','risk_refgivenexpt','valatrisk']},
+                dims=['quantity'] + [d for d in da_cgts_extt_ref.dims if d in ['lat','lon']],
+                data=np.nan,
+                )
+        shapes_ref,locs_ref,scales_ref = (gevpar_ref.sel(param=p).to_numpy() for p in ('shape','loc','scale'))
+        shapes,locs,scales = (gevpar.sel(param=p).to_numpy() for p in ('shape','loc','scale'))
+        valatrisk.loc[dict(quantity='risk_refgivenref')] = spgex.sf(da_cgts_extt_ref.to_numpy()*ext_sign, -shapes_ref, loc=locs_ref, scale=scales_ref)
+        valatrisk.loc[dict(quantity='risk_refgivenexpt')] = spgex.sf(da_cgts_extt_ref.to_numpy()*ext_sign, -shapes, loc=locs, scale=scales)
+        valatrisk.loc[dict(quantity='valatrisk')] = spgex.isf(valatrisk.sel(quantity='risk_refgivenref').to_numpy(), -shapes, loc=locs, scale=scales)*ext_sign
+        valatrisk.to_netcdf(valatrisk_files[i_cgs_level])
+    return 
 
-def plot_risk_or_valatrisk_map(riskorvar_files, cgs_levels, ext_sign, figdir, is_risk):
+def plot_risk_or_valatrisk_map(
+        riskandvar_files, cgs_levels, ext_sign, 
+        onset_date, term_date, 
+        prob_symb, ext_symb, leq_symb, ineq_symb, title_infix, event_year, 
+        figdir, figfile_tag, is_risk
+        ):
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
         if min(cgs_level) <= 1:
             continue
 
-        riskorvar = xr.open_dataarray(riskorvar_files[i_cgs_level])
-        lons,lats = (riskorvar[c].to_numpy() for c in ('lon','lat'))
+        riskandvar = xr.open_dataarray(riskandvar_files[i_cgs_level])
+        lons,lats = (riskandvar[c].to_numpy() for c in ('lon','lat'))
         clon,clat = np.mean(lons),np.mean(lats)
         dlon = lons[1]-lons[0]
         dlat = lats[1]-lats[0]
@@ -428,9 +441,16 @@ def plot_risk_or_valatrisk_map(riskorvar_files, cgs_levels, ext_sign, figdir, is
                 cmap=plt.cm.RdYlBu_r if ext_sign==-1 else plt.cm.RdYlBu,
                 ))
         fig,ax = plt.subplots(figsize=(3*aspect,3), subplot_kw=subplot_kw)
-        xr.plot.pcolormesh(riskorvar, **pcmargs, ax=ax)
+        quantity2plot = 'risk_refgivenexpt' if is_risk else 'valatrisk'
+        xr.plot.pcolormesh(riskandvar.sel(quantity=quantity2plot), **pcmargs, ax=ax)
         decorate_mercator_axis(ax, minlon, maxlon, minlat, maxlat)
-        fig.savefig(join(figdir, "risk_map_cgs%dx%d"%(cgs_level[0],cgs_level[1])))
+        fmtfun = lambda dt: dtlib.datetime.strftime(dt, "%m/%d")
+        if is_risk:
+            ax.set_title(f'{prob_symb}{{{ext_symb}{{T2M(t): {fmtfun(onset_date)} {leq_symb} t {leq_symb} {fmtfun(term_date)}}} {ineq_symb} (ERA5 {event_year} value)}} \naccording to {title_infix}', loc='left')
+        else:
+            ax.set_title(f'{ext_symb}{{T2M(t): {fmtfun(onset_date)} {leq_symb} t {leq_symb} {fmtfun(term_date)}}} value at {prob_symb}={prob_symb}[ERA5]\naccording to {title_infix}', loc='left')
+            #ax.set_title(f'%s[%s]{%s{T2M(t): %s %s t %s %s'%(prob_symb,title_infix,ext_symb, fmtfun(onset_date), leq_symb, leq_symb, fmtfun(term_date)))
+        fig.savefig(join(figdir, "%s_map_%s_cgs%dx%d"%(quantity2plot, figfile_tag,cgs_level[0],cgs_level[1])))
         plt.close(fig)
     return 
 
@@ -678,7 +698,7 @@ def plot_gevpar_difference_maps_flat(gevpar0, gevpar1, titles, cgs_level_2show, 
         ax.set_title(titles[i_ax], loc='left')
     return fig,axes
 
-def plot_gevpar_maps_flat(gevpar_files, ext_sign, cgs_levels, figdir, param_bounds_file, title_suffix,):
+def plot_gevpar_maps_flat(gevpar_files, ext_sign, cgs_levels, param_bounds_file, figdir, figfile_tag, title_suffix):
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
         if min(cgs_level) <= 1:
             continue
@@ -736,7 +756,7 @@ def plot_gevpar_maps_flat(gevpar_files, ext_sign, cgs_levels, figdir, param_boun
         axshape.set_title(r"Shape $\xi$ %s"%(title_suffix), loc='left')
         for (i_ax,ax) in enumerate(axes):
             decorate_mercator_axis(ax, lonmin, lonmax, latmin, latmax)
-        fig.savefig(join(figdir,"gevpar_map_cgs%dx%d.png"%(cgs_level[0],cgs_level[1])), **pltkwargs)
+        fig.savefig(join(figdir,"gevpar_map_%s_cgs%dx%d.png"%(figfile_tag,cgs_level[0],cgs_level[1])), **pltkwargs)
         plt.close(fig)
     return 
 
@@ -890,15 +910,21 @@ def fit_regional_gevsevlev(ens_files_cgts_extt, gevsevlev_files, risk_levels, cg
             gevsevlev.to_netcdf(gevsevlev_files[i_cgs_level][i_region])
     return
 
-def plot_regional_gevsevlev(ens_files_cgts_extt, gevsevlev_files, cgs_levels, event_region, select_regions, mem_special, boot_type, confint_width, figdir, ext_sign, ext_symb, ineq_symb):
+def plot_regional_gevsevlev(ens_files_cgts_extt, gevsevlev_files, ens_files_cgts_extt_ref, mem_special_ref, param_bounds_file, cgs_levels, event_region, select_regions, boot_type, confint_width, figdir, figfile_tag, figtitle_affix, onset_date, term_date, prob_symb, ext_sign, ext_symb, leq_symb, ineq_symb):
+    # TODO add lines to indicate the reference values etc 
+    param_bounds = xr.open_dataarray(param_bounds_file)
 
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
         da_cgts_extt = xr.open_dataarray(ens_files_cgts_extt[i_cgs_level])
+        da_cgts_extt_ref = xr.open_dataarray(ens_files_cgts_extt_ref[i_cgs_level])
         lon_blocksize,lat_blocksize = ((event_region[d].stop - event_region[d].start)/cgs_level[i_d] for (i_d,d) in enumerate(('lon','lat')))
         for (i_region,(i_lon,i_lat)) in enumerate(select_regions[i_cgs_level]):
             gevsevlev = xr.open_dataset(gevsevlev_files[i_cgs_level][i_region])
             exttemp_levels_reg = gevsevlev['sevlev'].to_numpy() # n_boot x n_lev
             exttemp = da_cgts_extt.isel(lon=i_lon,lat=i_lat).to_numpy().flatten()
+            exttemp_ref = da_cgts_extt_ref.isel(lon=i_lon,lat=i_lat)
+            temp_bounds = utils.padded_bounds(exttemp_ref, inflation=0.5)
+            exttemp_ref_special = exttemp_ref.sel(member=mem_special_ref).item()
             risk_levels = gevsevlev.coords['risk'].to_numpy()
             gevpar_reg = gevsevlev['gevpar']
             center_lon = event_region['lon'].start + (i_lon+0.5)*lon_blocksize
@@ -923,10 +949,6 @@ def plot_regional_gevsevlev(ens_files_cgts_extt, gevsevlev_files, cgs_levels, ev
                 r'$\sigma=%.1f$'%(scale),
                 r'$\xi=%+.2f$'%(shape)
                 ])
-            # Special marker for the year 
-            i_mem_special = np.where(da_cgts_extt.member == mem_special)[0][0]
-
-            ax.scatter(risk_empirical[rank[i_mem_special]], exttemp[i_mem_special], color='black', marker='o')
             h, = ax.plot(risk_levels,exttemp_levels_reg[0,:],color='black', label=param_label)
             boot_quant_lo,boot_quant_hi = (np.quantile(exttemp_levels_reg[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
             if boot_type == 'percentile':
@@ -934,13 +956,17 @@ def plot_regional_gevsevlev(ens_files_cgts_extt, gevsevlev_files, cgs_levels, ev
             else:
                 lo,hi = 2*risk_ratio[0,:]-boot_quant_hi, 2*risk_ratio[0,:]-boot_quant_lo
             ax.fill_between(risk_levels, lo, hi, fc='gray', ec='none', alpha=0.3, zorder=-1)
+            # Plot reference
+            ax.axhline(exttemp_ref_special, color='black', linestyle='--', linewidth=1.5)
             ax.set_xscale('log')
-            ax.set_xlabel('Prob. worse than %s'%(mem_special))
+            fmtfun = lambda dt: dtlib.datetime.strftime(dt, "%m/%d")
+            ax.set_xlabel(f'{prob_symb}{{{ext_symb}{{T2M(t): {fmtfun(onset_date)} {leq_symb} t {leq_symb} {fmtfun(term_date)}}} {ineq_symb} T}}')
             ax.set_ylabel('T')
-            ax.set_title('ERA5 at %s'%(lonlatstr))
+            ax.set_ylim(temp_bounds)
+            ax.set_title('%s\n%s'%(figtitle_affix,lonlatstr))
             ax.legend(handles=[h])
 
-            fig.savefig(join(figdir,f'gevsevlev_cgs{cgs_level[0]}x{cgs_level[1]}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
+            fig.savefig(join(figdir,f'gevsevlev_{figfile_tag}_cgs{cgs_level[0]}x{cgs_level[1]}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
             plt.close(fig)
             
 
