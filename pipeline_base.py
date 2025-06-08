@@ -627,76 +627,73 @@ def coarse_grain_space(ens_file_cgt, ens_files_cgts, cgs_levels, landmask_interp
         ds_cgts.to_netcdf(ens_files_cgts[i_cgs_level])
     return ds_cgts # awkward to put into a single dataset because of differing lon/lat coordinates between coarsening levels
 
-def plot_gevpar_difference_maps_flat(gevpar0, gevpar1, titles, cgs_level_2show, ext_sign, landmask=None, gevpar_diff_ref=None, param_bounds=None):
-    lons,lats = (gevpar0[c].to_numpy() for c in ('lon','lat'))
-    dlon = lons[1]-lons[0]
-    dlat = lats[1]-lats[0]
-    Nlon = len(lons)
-    Nlat = len(lats)
-    lon_extent = lons[-1]-lons[0]+dlon
-    lat_extent = lats[-1]-lats[0]+dlat
-    aspect = lon_extent/lat_extent * np.cos(np.deg2rad((lats[0]+lats[-1])/2))
+def plot_gevpar_difference_maps_flat(gevpar_files_0, expt0, gevpar_files_1, expt1, param_bounds_file, ext_sign, cgs_levels, event_region, figdir, gcm, fc_date, fc_date_abbrv, ):
+    param_bounds = xr.open_dataarray(param_bounds_file)
+    max_dloc,max_dscale,max_dshape = (0.5*(param_bounds.sel(param=p,side='hi')-param_bounds.sel(param=p,side='lo')).item() for p in ['loc','scale','shape'])
+    for i_cgs_level,cgs_level in enumerate(cgs_levels):
+        if min(cgs_level) <= 1:
+            continue
+        gevpar0,gevpar1 = (xr.open_dataarray(gpf[i_cgs_level]) for gpf in [gevpar_files_0, gevpar_files_1])
+        gevpar_diff = gevpar1 - gevpar0 
 
-    def masksea(da):
-        if landmask is None:
-            return da
-        return xr.where(landmask>0, da, np.nan)
+        lons,lats = (gevpar0[c].to_numpy() for c in ('lon','lat'))
+        dlon = lons[1]-lons[0]
+        dlat = lats[1]-lats[0]
+        Nlon = len(lons)
+        Nlat = len(lats)
+        lonmin = lons[0]-dlon/2
+        lonmax = lons[-1]+dlon/2
+        latmin = lats[0]-dlat/2
+        latmax = lats[-1]+dlat/2
+        lon_extent = lonmax-lonmin
+        lat_extent = latmax-latmin
+        aspect = lon_extent/lat_extent * np.cos(np.deg2rad((lats[0]+lats[-1])/2))
 
-    gevpar_diff = gevpar1 - gevpar0 
+        fig,axes = plt.subplots(figsize=(3*aspect,3*3), nrows=3, gridspec_kw={'hspace': 0.3}, subplot_kw={'projection': ccrs.Mercator(central_longitude=(lons[0]+lons[-1])/2)})
+        axdloc,axdscale,axdshape = axes
+        fc_date_label = dtlib.datetime.strftime(fc_date, "%Y/%m/%d")
 
-    if param_bounds is not None:
-        bounds_loc,bounds_scale,bounds_shape = (param_bounds[p] for p in ['loc','scale','shape'])
-    elif gevpar_diff_ref is not None:
-        bounds_loc,bounds_scale,bounds_shape = list(map(utils.padded_bounds, (gevpar_diff_ref.sel(param=p) for p in ['loc','scale','shape'])))
-    else:
-        bounds_loc,bounds_scale,bounds_shape = list(map(utils.padded_bounds, (gevpar_diff.sel(param=p) for p in ['loc','scale','shape'])))
+        pcmargs = dict(
+                x='lon',y='lat', transform=ccrs.PlateCarree(),
+                add_labels=False,
+                #norm=mplcolors.LogNorm(vmin=0.2,vmax=5),
+                cbar_kwargs=dict({
+                    'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 
+                    })
+                )
+        pcmargs['cbar_kwargs']['label'] = '[K]'
+        fig.suptitle(f"{gcm}, FC {fc_date_label}, {expt0}\u2192{expt1}") #,loc='left')
+        xr.plot.pcolormesh(
+                ext_sign*gevpar_diff.sel(param='loc'),
+                cmap=plt.cm.RdYlBu if ext_sign==1 else plt.cm.RdYlBu_r,
+                #vmin=-max_dloc, vmax=max_dloc,
+                ax=axdloc, 
+                **pcmargs,
+                )
+        axdloc.set_title(f"Location shift \u0394\u03BC",loc='left')
+        xr.plot.pcolormesh(
+                gevpar_diff.sel(param='scale'),
+                ax=axdscale,
+                cmap=plt.cm.RdYlBu_r if ext_sign==1 else plt.cm.RdYlBu,
+                vmin=-max_dscale, vmax=max_dscale,
+                **pcmargs,
+                )
+        axdscale.set_title(f"Scale shift \u0394\u03C3",loc='left')
+        pcmargs['cbar_kwargs']['label'] = ''
+        xr.plot.pcolormesh(
+                gevpar_diff.sel(param='shape'),
+                cmap=plt.cm.RdYlBu_r if ext_sign==1 else plt.cm.RdYlBu,
+                vmin=-max_dshape, vmax=max_dshape,
+                ax=axdshape,
+                **pcmargs,
+                )
+        axdshape.set_title(f"Shape shift \u0394\u03BE",loc='left')
+        for (i_ax,ax) in enumerate(axes):
+            decorate_mercator_axis(ax, lonmin, lonmax, latmin, latmax)
+        fig.savefig(join(figdir, f'gevpar_diff_map_e{expt0}to{expt1}_i{fc_date_abbrv}_cgs{cgs_level[0]}x{cgs_level[1]}.png'), **pltkwargs)
+        plt.close(fig)
 
-    fig,axes = plt.subplots(figsize=(3*aspect,3*3), nrows=3, gridspec_kw={'hspace': 0.3}, subplot_kw={'projection': ccrs.Mercator(central_longitude=(lons[0]+lons[-1])/2)})
-    axloc,axscale,axshape = axes
-
-    pcmargs = dict(
-            x='lon',y='lat', transform=ccrs.PlateCarree(),
-            add_labels=False,
-            #norm=mplcolors.LogNorm(vmin=0.2,vmax=5),
-            cbar_kwargs=dict({
-                'orientation': 'vertical', 'label': '', 'shrink': 0.75, 'pad': 0.04, 'aspect': 15, 
-                })
-            )
-
-    pcmargs['cbar_kwargs']['label'] = '[K]'
-    xr.plot.pcolormesh(
-            masksea(ext_sign*gevpar_diff.sel(param='loc')),
-            cmap=plt.cm.RdYlBu if ext_sign==1 else plt.cm.RdYlBu_r,
-            vmin=-np.max(np.abs(ext_sign*bounds_loc)), vmax=np.max(np.abs(ext_sign*bounds_loc)),
-            ax=axloc, 
-            **pcmargs,
-            )
-    xr.plot.pcolormesh(
-            masksea(gevpar_diff.sel(param='scale')),
-            ax=axscale,
-            cmap=plt.cm.RdYlBu_r if ext_sign==1 else plt.cm.RdYlBu,
-            vmin=-np.max(np.abs(bounds_scale)), vmax=np.max(np.abs(bounds_scale)),
-            **pcmargs,
-            )
-    pcmargs['cbar_kwargs']['label'] = ''
-    xr.plot.pcolormesh(
-            masksea(gevpar_diff.sel(param='shape')),
-            cmap=plt.cm.RdYlBu_r if ext_sign==1 else plt.cm.RdYlBu,
-            vmin=-np.max(np.abs(bounds_shape)), vmax=np.max(np.abs(bounds_shape)),
-            ax=axshape,
-            **pcmargs,
-            )
-    for (i_ax,ax) in enumerate(axes):
-        ax.add_feature(cfeature.BORDERS, linewidth=1.0, edgecolor='black')
-        ax.coastlines(color='black')
-        gl = ax.gridlines(draw_labels=True, color="black")
-        gl.top_labels = gl.right_labels = False
-        gl.xlocator = ticker.FixedLocator(np.linspace(lons[0]+dlon/2, lons[-1]-dlon/2, 10))
-        gl.ylocator = ticker.FixedLocator(np.linspace(lats[0]+dlat/2, lats[-1]-dlat/2, 2))
-        gl.xformatter = LongitudeFormatter(number_format='.0f')
-        gl.yformatter = LatitudeFormatter(number_format='.0f')
-        ax.set_title(titles[i_ax], loc='left')
-    return fig,axes
+    return 
 
 def plot_gevpar_maps_flat(gevpar_files, ext_sign, cgs_levels, param_bounds_file, figdir, figfile_tag, title_suffix):
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
