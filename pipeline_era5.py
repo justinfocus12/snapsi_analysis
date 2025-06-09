@@ -243,11 +243,11 @@ def reduce_era5(which_ssw):
         'compute_severities':               0,
         'plot_sumstats_map':                0,
         'fit_gev':                          0,
-        'plot_gevpar_map':                  0,
+        'plot_gevpar_map':                  1,
         'compute_risk':                     0,
         'plot_risk_map':                    0,
         'fit_gev_select_regions':           0,
-        'plot_gev_select_regions':          1,
+        'plot_gev_select_regions':          0,
         })
     wkf = era5_workflow(which_ssw)
     if todo['interpolate_landmask']:

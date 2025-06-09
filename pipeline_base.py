@@ -7,7 +7,7 @@ from cartopy import crs as ccrs, feature as cfeature
 from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 import netCDF4
 from os.path import join, exists
-from matplotlib import pyplot as plt, rcParams, ticker, colors as mplcolors, patches as mplpatches
+from matplotlib import pyplot as plt, rcParams, ticker, colors as mplcolors, patches as mplpatches, gridspec
 pltkwargs = dict({
     'bbox_inches': 'tight',
     'pad_inches': 0.2,
@@ -454,26 +454,26 @@ def plot_risk_or_valatrisk_map(
         plt.close(fig)
     return 
 
-def plot_relative_risk_map_flat(risk0, risk1, event_region, landmask=None, ext_sign=1, plot_contour_ratio=True, **other_pcmargs):
+def plot_relative_risk_map_flat(risk0, risk1, event_region, ext_sign, plot_contour_ratio=True, ):
     lons,lats = (risk0[c].to_numpy() for c in ('lon','lat'))
     dlon = lons[1]-lons[0]
     dlat = lats[1]-lats[0]
+    lonmin = lons[0]-dlon/2
+    lonmax = lons[-1]+dlon/2
+    latmin = lats[0]-dlat/2
+    latmax = lats[-1]+dlat/2
     Nlon = len(lons)
     Nlat = len(lats)
     lon_extent = lons[-1]-lons[0]+dlon
     lat_extent = lats[-1]-lats[0]+dlat
     aspect = lon_extent/lat_extent * np.cos(np.deg2rad((lats[0]+lats[-1])/2))
 
-    def masksea(da):
-        if landmask is None:
-            return da
-        return xr.where(landmask>0, da, np.nan)
-
     # the reference ds_cgts is ERA5, and should only have one year asociated with it 
     clon,clat = (risk0.coords[coordname].mean().item() for coordname in ('lon','lat'))
     fig,ax = plt.subplots(figsize=(3*aspect,3), gridspec_kw={'hspace': 0.3}, subplot_kw={'projection': ccrs.Mercator(central_longitude=(lons[0]+lons[-1])/2)})
     pcmargs_relrisk = dict(
             x='lon',y='lat', transform=ccrs.PlateCarree(),
+            add_labels=False,
             cmap=plt.cm.RdYlBu_r if ext_sign==1 else plt.cm.RdYlBu,
             norm=mplcolors.LogNorm(vmin=0.25,vmax=4),
             cbar_kwargs=dict({
@@ -492,11 +492,9 @@ def plot_relative_risk_map_flat(risk0, risk1, event_region, landmask=None, ext_s
                 "format": ticker.FixedFormatter(["0", "1/4", "1/2", "3/4", "1"]),
                 })
             )
-    pcmargs_absrisk.update(other_pcmargs)
-    pcmargs_relrisk.update(other_pcmargs)
     rel_risk = risk1 / risk0
     print(f'About to pcolormesh')
-    xr.plot.pcolormesh(risk1, **pcmargs_absrisk, ax=ax)
+    xr.plot.pcolormesh(rel_risk, **pcmargs_relrisk, ax=ax)
     if plot_contour_ratio:
         # contour plot for baseline risk  
         contour_levels_absrisk = np.array([0.1, 0.3, 0.5, 0.7, 0.9])
@@ -506,23 +504,7 @@ def plot_relative_risk_map_flat(risk0, risk1, event_region, landmask=None, ext_s
         contour_linewidths_relrisk = np.array([2, 1, 1, 1, 2])
         xr.plot.contour(rel_risk, x="lon", y="lat", ax=ax, transform=ccrs.PlateCarree(), levels=contour_levels_relrisk, linestyles=contour_linestyles_relrisk, colors='black', linewidths=contour_linewidths_relrisk, add_labels=False,)
 
-    else:
-        ax.add_feature(cfeature.BORDERS, linewidth=1.0, edgecolor='black')
-        ax.coastlines(color='black')
-    gl = ax.gridlines(draw_labels=True, linewidth=0.5, alpha=1.0*(not plot_contour_ratio), color="black")
-    gl.top_labels = gl.right_labels = False
-    if aspect > 1:
-        ngridlines = {'lat': 2, 'lon': int(round(aspect*2))}
-    else:
-        ngridlines = {'lat': int(round(aspect*2)), 'lon': 2}
-    gllocs = {
-            c: [event_region[c].start*a + event_region[c].stop*(1-a) for a in [1-1/(2+ngridlines[c]), 1/(2+ngridlines[c])]] 
-            for c in ('lon','lat')
-            }
-    gl.xlocator = ticker.FixedLocator(np.linspace(*gllocs['lon'], ngridlines['lon']))
-    gl.ylocator = ticker.FixedLocator(np.linspace(*gllocs['lat'], ngridlines['lat']))
-    gl.xformatter = LongitudeFormatter(number_format='.0f')
-    gl.yformatter = LatitudeFormatter(number_format='.0f')
+    decorate_mercator_axis(ax, lonmin, lonmax, latmin, latmax)
     return fig,ax
 
 def format_mercator_gridlines(lonmin,lonmax,latmin,latmax):
@@ -627,9 +609,11 @@ def coarse_grain_space(ens_file_cgt, ens_files_cgts, cgs_levels, landmask_interp
         ds_cgts.to_netcdf(ens_files_cgts[i_cgs_level])
     return ds_cgts # awkward to put into a single dataset because of differing lon/lat coordinates between coarsening levels
 
+
 def plot_gevpar_difference_maps_flat(gevpar_files_0, expt0, gevpar_files_1, expt1, param_bounds_file, ext_sign, cgs_levels, event_region, figdir, gcm, fc_date, fc_date_abbrv, ):
     param_bounds = xr.open_dataarray(param_bounds_file)
-    max_dloc,max_dscale,max_dshape = (0.5*(param_bounds.sel(param=p,side='hi')-param_bounds.sel(param=p,side='lo')).item() for p in ['loc','scale','shape'])
+    max_dloc,max_dscale,max_dshape = (0.5*np.abs(param_bounds.sel(param=p,side='hi')-param_bounds.sel(param=p,side='lo')).item() for p in ['loc','scale','shape'])
+    print(f"{max_dloc = }")
     for i_cgs_level,cgs_level in enumerate(cgs_levels):
         if min(cgs_level) <= 1:
             continue
@@ -649,6 +633,8 @@ def plot_gevpar_difference_maps_flat(gevpar_files_0, expt0, gevpar_files_1, expt
         lat_extent = latmax-latmin
         aspect = lon_extent/lat_extent * np.cos(np.deg2rad((lats[0]+lats[-1])/2))
 
+        gl = utils.greekletters()
+
         fig,axes = plt.subplots(figsize=(3*aspect,3*3), nrows=3, gridspec_kw={'hspace': 0.3}, subplot_kw={'projection': ccrs.Mercator(central_longitude=(lons[0]+lons[-1])/2)})
         axdloc,axdscale,axdshape = axes
         fc_date_label = dtlib.datetime.strftime(fc_date, "%Y/%m/%d")
@@ -662,7 +648,7 @@ def plot_gevpar_difference_maps_flat(gevpar_files_0, expt0, gevpar_files_1, expt
                     })
                 )
         pcmargs['cbar_kwargs']['label'] = '[K]'
-        fig.suptitle(f"{gcm}, FC {fc_date_label}, {expt0}\u2192{expt1}") #,loc='left')
+        fig.suptitle(f"{gcm}, FC {fc_date_label}, {expt0}\u2192{expt1}", x=0.2, ha='left')
         xr.plot.pcolormesh(
                 ext_sign*gevpar_diff.sel(param='loc'),
                 cmap=plt.cm.RdYlBu if ext_sign==1 else plt.cm.RdYlBu_r,
@@ -670,7 +656,7 @@ def plot_gevpar_difference_maps_flat(gevpar_files_0, expt0, gevpar_files_1, expt
                 ax=axdloc, 
                 **pcmargs,
                 )
-        axdloc.set_title(f"Location shift \u0394\u03BC",loc='left')
+        axdloc.set_title(f"Location shift {gl['Delta']}{gl['mu']}",loc='left')
         xr.plot.pcolormesh(
                 gevpar_diff.sel(param='scale'),
                 ax=axdscale,
@@ -678,7 +664,7 @@ def plot_gevpar_difference_maps_flat(gevpar_files_0, expt0, gevpar_files_1, expt
                 vmin=-max_dscale, vmax=max_dscale,
                 **pcmargs,
                 )
-        axdscale.set_title(f"Scale shift \u0394\u03C3",loc='left')
+        axdscale.set_title(f"Scale shift {gl['Delta']}{gl['sigma']}",loc='left')
         pcmargs['cbar_kwargs']['label'] = ''
         xr.plot.pcolormesh(
                 gevpar_diff.sel(param='shape'),
@@ -687,7 +673,7 @@ def plot_gevpar_difference_maps_flat(gevpar_files_0, expt0, gevpar_files_1, expt
                 ax=axdshape,
                 **pcmargs,
                 )
-        axdshape.set_title(f"Shape shift \u0394\u03BE",loc='left')
+        axdshape.set_title(f"Shape shift {gl['Delta']}{gl['xi']}",loc='left')
         for (i_ax,ax) in enumerate(axes):
             decorate_mercator_axis(ax, lonmin, lonmax, latmin, latmax)
         fig.savefig(join(figdir, f'gevpar_diff_map_e{expt0}to{expt1}_i{fc_date_abbrv}_cgs{cgs_level[0]}x{cgs_level[1]}.png'), **pltkwargs)
@@ -695,7 +681,7 @@ def plot_gevpar_difference_maps_flat(gevpar_files_0, expt0, gevpar_files_1, expt
 
     return 
 
-def plot_gevpar_maps_flat(gevpar_files, ext_sign, cgs_levels, param_bounds_file, figdir, figfile_tag, title_suffix):
+def plot_gevpar_maps_flat(gevpar_files, ext_sign, cgs_levels, param_bounds_file, figdir, figfile_tag, title_affix):
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
         if min(cgs_level) <= 1:
             continue
@@ -733,7 +719,7 @@ def plot_gevpar_maps_flat(gevpar_files, ext_sign, cgs_levels, param_bounds_file,
                 ax=axloc, 
                 **pcmargs,
                 )
-        axloc.set_title(r"Location $\mu$ %s"%(title_suffix), loc='left')
+        axloc.set_title(r"Location $\mu$", loc='left')
         xr.plot.pcolormesh(
                 gevpar.sel(param='scale'),
                 ax=axscale,
@@ -741,7 +727,7 @@ def plot_gevpar_maps_flat(gevpar_files, ext_sign, cgs_levels, param_bounds_file,
                 vmin = 0, vmax=np.max(bounds_scale[1]), 
                 **pcmargs,
                 )
-        axscale.set_title(r"Scale $\sigma$ %s"%(title_suffix), loc='left')
+        axscale.set_title(r"Scale $\sigma$", loc='left')
         pcmargs['cbar_kwargs']['label'] = ''
         xr.plot.pcolormesh(
                 gevpar.sel(param='shape'),
@@ -750,9 +736,10 @@ def plot_gevpar_maps_flat(gevpar_files, ext_sign, cgs_levels, param_bounds_file,
                 ax=axshape,
                 **pcmargs,
                 )
-        axshape.set_title(r"Shape $\xi$ %s"%(title_suffix), loc='left')
+        axshape.set_title(r"Shape $\xi$", loc='left')
         for (i_ax,ax) in enumerate(axes):
             decorate_mercator_axis(ax, lonmin, lonmax, latmin, latmax)
+        fig.suptitle(title_affix)
         fig.savefig(join(figdir,"gevpar_map_%s_cgs%dx%d.png"%(figfile_tag,cgs_level[0],cgs_level[1])), **pltkwargs)
         plt.close(fig)
     return 

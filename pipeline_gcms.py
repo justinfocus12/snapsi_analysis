@@ -54,6 +54,59 @@ def all_gcms_institutes():
         })
     return gcm2institute
 
+def expt_comparison_workflow(which_ssw, i_gcm):
+    # TODO clean up this dictionary from extraneous information 
+    gcms,expts,fc_dates,onset_date,term_date = gcm_multiparams(which_ssw)
+    fc_dates,onset_date_nominal,term_date = pipeline_base.dates_of_interest(which_ssw)
+    wkfs = dict({
+        expt: [
+            gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date)
+            for i_fc_date in range(len(fc_dates))
+            ]
+        for (i_expt,expt) in enumerate(expts)
+        })
+    wkf_era5 = pipeline_era5.era5_workflow(which_ssw)
+    wkf_comp = dict(expts=expts)
+    keys2share = '''
+    event_year,
+    event_region,
+    context_region,
+    Nlon_interp,
+    Nlat_interp,
+    ext_sign,
+    ext_symb,
+    prob_symb,
+    ineq_symb,
+    leq_symb,
+    landmask_interp_file,
+    param_bounds_file,
+    daily_stat,
+    risk_levels,
+    n_boot,
+    confint_width,
+    boot_type,
+    gcm,
+    onset_date,
+    term_date,
+    fc_dates, 
+    cgs_levels, 
+    reduced_data_dir,
+    select_regions,
+    figdir,
+    '''
+    wkf_comp.update({key: wkfs[expts[0]][0][key] for key in utils.unbag_args(keys2share)})
+    wkf_comp['expt_pairs'] = [('free','nudged'),('free','control')]
+    wkf_comp['valatrisk_comp_files'] = [] # a netcdf file per coarse-graining level 
+    wkf_comp['gevsevlev_comp_files'] = []
+    for (i_cgs_level,cgs_level) in enumerate(wkf_comp['cgs_levels']):
+        wkf_comp['valatrisk_comp_files'].append(join(wkf_comp['reduced_data_dir'],'valatrisk_comp_cgs%dx%d.nc'%(cgs_level[0],cgs_level[1])))
+        wkf_comp['gevsevlev_comp_files'].append([])
+        for (i_lon,i_lat) in wkf_comp['select_regions'][i_cgs_level]:
+            wkf_comp['gevsevlev_comp_files'][i_cgs_level].append(join(wkf_comp['reduced_data_dir'],'gevsevlev_comp_cgs%dx%d_ilon%d_ilat%d.nc'%(cgs_level[0],cgs_level[1],i_lon,i_lat)))
+
+    return wkf_era5,wkfs,wkf_comp
+
+
 
 def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
     # 0. Global constants
@@ -98,7 +151,7 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
         ens_files_cgts.append(join(reduced_data_dir,'t2m_e%s_i%s_cgt1day_cgs%dx%d.nc'%(expt,fc_date_abbrv,cgs_level[0],cgs_level[1])))
         ens_files_cgts_extt.append(join(reduced_data_dir,'t2m_e%s_i%s_cgt1day_cgs%dx%d_extt.nc'%(expt,fc_date_abbrv,cgs_level[0],cgs_level[1])))
-        gevpar_files.append('gevpar_e%s_i%s_cgs%dx%d.nc'%(expt,fc_date_abbrv,cgs_level[0],cgs_level[1]))
+        gevpar_files.append(join(reduced_data_dir,'gevpar_e%s_i%s_cgs%dx%d.nc'%(expt,fc_date_abbrv,cgs_level[0],cgs_level[1])))
         risk_files.append(join(reduced_data_dir,'risk_e%s_i%s_cgs%dx%d.nc'%(expt,fc_date_abbrv,cgs_level[0],cgs_level[1])))
         valatrisk_files.append(join(reduced_data_dir,'valatrisk_e%s_i%s_cgs%dx%d.nc'%(expt,fc_date_abbrv,cgs_level[0],cgs_level[1])))
         gevsevlev_files.append([])
@@ -241,36 +294,6 @@ def preprocess_gcm_6hrPt(dsmem,fcdate,timesel,spacesel,verbose=False):
 
 
 
-def compare_statpar_maps_2expts(i_gcm,i0_expt,i1_expt,i_init):
-    todo = dict({
-        'plot_statpar_map_diff':           1,
-        'plot_gev_select_regions_diff':    1,
-        })
-    # Assumes both have been reduced
-    gcm,expt0,init,event_region,context_region,event_time_interval,landmask_file,raw_mem_files,mem_labels,reduced_data_dir,reduced_data_dir_era5,figdir,cgs_levels,select_regions,risk_levels,n_boot,confint_width = gcm_workflow(i_gcm,i0_expt,i_init)
-    _,expt1,_,_,_,_,_,_,_,_,_,_,_,_,_,_,_ = gcm_workflow(i_gcm,i1_expt,i_init)
-    ds_cgt_0,ds_cgt_1 = (xr.open_dataarray(join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day.nc')) for expt in (expt0,expt1))
-    landmask = (
-            utils.rezero_lons(
-                xr.open_dataarray(landmask_file)
-                .isel(time=0,drop=True)
-                .isel(latitude=slice(None,None,-1)) # Flip lat to go in increasing order
-                .rename(dict(latitude='lat',longitude='lon'))
-                )
-            .sel(event_region)
-            )
-    for i_cgs_level,cgs_level in enumerate(cgs_levels):
-        cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
-        ds_cgts_mint_0,ds_cgts_mint_1 = (xr.open_dataarray(join(reduced_data_dir,f't2m_e{expt}_i{init}_cgt1day_cgs{cgs_key}.nc')).sel(daily_stat='daily_mean').min('time') for expt in (expt0,expt1))
-        gevpar_0,gevpar_1 = (xr.open_dataarray(join(reduced_data_dir,f'gevpar_e{expt}_i{init}_cgs{cgs_key}.nc')).sel(daily_stat='daily_mean') for expt in (expt0,expt1))
-        if todo['plot_param_diff_map']:
-            fig_gaussian,axes_gaussian,fig_gev,axes_gev = pipeline_base.plot_statpar_map_difference(ds_cgts_mint_0,ds_cgts_mint_1,gevpar_0,gevpar_1,locsign=-1)
-            datestr = dtlib.datetime.strptime(init,"%Y%m%d").strftime("%Y-%m-%d")
-            for (fig,distname) in [(fig_gaussian,'gaussian'),(fig_gev,'gev')]:
-                fig.suptitle(f'{expt1} - {expt0}, init {datestr}')
-                fig.savefig(join(figdir,f'statpar_diffmap_e0{expt0}_e1{expt1}_i{init}_cgs{cgs_key}_{distname}.png'), **pltkwargs)
-                plt.close(fig)
-    return
 
 def compare_gcms(which_ssw, idx_gcms):
     # Plot relative risk and absolute risk, perhaps in a 2D space 
@@ -442,30 +465,107 @@ def compare_gcms(which_ssw, idx_gcms):
         plt.close(fig_rr)
     return
             
+def plot_gevpar_difference_maps(wkfs,wkf_comp):
+    for (expt0,expt1) in wkf_comp['expt_pairs']:
+        pipeline_base.plot_gevpar_difference_maps_flat(
+                *dtoa(wkfs[expt0], 'gevpar_files,expt,'),
+                *dtoa(wkfs[expt1], 'gevpar_files,expt,'),
+                *dtoa(wkfs[expt0], 'param_bounds_file,ext_sign,cgs_levels,event_region,figdir,gcm,fc_date,fc_date_abbrv')
+                )
+    return
 
+def expt_pair_coordval(expt_pair):
+    return '%s2%s'%(expt_pair[0],expt_pair[1])
+
+def compute_valatrisk_comp(
+        valatrisk_files: dict,
+        valatrisk_comp_files,
+        expts, expt_pairs, cgs_levels, fc_dates,  
+        ):
+    for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
+        print(f"Starting {cgs_level = }")
+        coords = xr.open_dataset(valatrisk_files[expts[0]][0][i_cgs_level]).coords
+        valatrisk_comp = xr.DataArray(
+                coords={'expt_pair': list(map(expt_pair_coordval, expt_pairs)), 'quantity': ['dvalatrisk','relrisk'], 'fc_date': fc_dates, 'lon': coords['lon'], 'lat': coords['lat']},
+                dims=['expt_pair','quantity','fc_date','lon','lat'],
+                data=np.nan)
+        valatrisks = []
+        for i_fcdate,fc_date in enumerate(fc_dates):
+            valatrisks_fcdate = [xr.open_dataarray(valatrisk_files[expt][i_fcdate][i_cgs_level]) for expt in expts]
+            valatrisks.append(xr.concat(valatrisks_fcdate, dim="expt").assign_coords(expt=expts))
+            for expt_pair in expt_pairs:
+                valatrisk_comp.loc[dict(fc_date=fc_date,expt_pair=expt_pair_coordval(expt_pair),quantity='relrisk')] = np.divide(*(
+                    valatrisks[i_fcdate].sel(expt=expt,quantity='risk_refgivenexpt') 
+                    for expt in (expt_pair[1],expt_pair[0])
+                    ))
+                valatrisk_comp.loc[dict(fc_date=fc_date,expt_pair=expt_pair_coordval(expt_pair),quantity='dvalatrisk')] = np.subtract(*(
+                    valatrisks[i_fcdate].sel(expt=expt,quantity='risk_refgivenexpt') 
+                    for expt in (expt_pair[1],expt_pair[0])
+                    ))
+        valatrisks_abs_comp = xr.Dataset(data_vars=dict({
+            "valatrisks": xr.concat(valatrisks, dim="fc_date").assign_coords(fc_date=fc_dates),
+            "valatrisk_comp": valatrisk_comp
+            }))
+        valatrisks_abs_comp.to_netcdf(valatrisk_comp_files[i_cgs_level])
+    return
+
+def plot_valatrisk_comp_maps(
+        valatrisk_comp_files, expt_pairs, event_region, cgs_levels, fc_dates, ext_sign, figdir,
+        gcm, onset_date, term_date, ineq_symb, ext_symb,
+        ):
+    # Two maps at each CG scale: relative risk, and quantile shift aka d(value at risk) 
+    fmtfun = lambda date: dtlib.datetime.strftime(date, "%Y/%m/%d")
+    for (i_cgs_level, cgs_level) in enumerate(cgs_levels):
+        if min(cgs_level) == 1:
+            continue
+        valatrisks = xr.open_dataset(valatrisk_comp_files[i_cgs_level])['valatrisks']
+        for expt_pair in expt_pairs:
+            for i_fcdate, fc_date in enumerate(fc_dates):
+                risk0,risk1 = (valatrisks.sel(quantity='risk_refgivenexpt',fc_date=fc_date,expt=expt) for expt in expt_pair)
+                fig,ax = pipeline_base.plot_relative_risk_map_flat(risk0, risk1, event_region, ext_sign, plot_contour_ratio=False)
+                fc_date_abbrv = dtlib.datetime.strftime(fc_date, "%Y%m%d")
+                title = "%s, FC %s %s \u2192 %s\n\u2119{%s{T2M(t):%s\u2264t\u2264%s}%s(ERA5 value)}"%(gcm, fmtfun(fc_date), expt_pair[0], expt_pair[1], ext_symb, fmtfun(onset_date), fmtfun(term_date), ineq_symb)
+                ax.set_title(title, loc='left')
+                figfile = join(figdir,f'relrisk_map_{expt_pair[0]}2{expt_pair[1]}_i{fc_date_abbrv}_cgs{cgs_level[0]}x{cgs_level[1]}.png')
+                fig.savefig(figfile, **pltkwargs)
+                plt.close(fig)
+    return
+
+
+    
 
 def compare_expts(which_ssw, i_gcm, i_init):
     todo = dict({
-        'plot_statpar_map_diff':           1,
-        'plot_relrisk_map':                0,
-        # TODO add an option for 'plot_qshift_map'
+        'plot_gevpar_map_diffs':           0,
+        'compute_valatrisk_comp':          0,
+        'plot_valatrisk_comp_maps':        1,
         'plot_gev_select_regions':         0,
         })
     gcms,expts,fc_dates,_,term_date = gcm_multiparams(which_ssw)
-    wkfs = dict({
-            expt: gcm_workflow(which_ssw,i_gcm,i_expt,i_init)
-            for (i_expt,expt) in enumerate(expts)
-            })
-    expt_pairs = (('free','nudged'),('free','control'))
-    if todo['plot_statpar_map_diff']:
-        for (expt0,expt1) in expt_pairs:
-            # TODO need a system 
-            pipeline_base.plot_gevpar_difference_maps_flat(
-                    *dtoa(wkfs[expt0], 'gevpar_files,expt,'),
-                    *dtoa(wkfs[expt1], 'gevpar_files,expt,'),
-                    *dtoa(wkfs[expt0], 'param_bounds_file,ext_sign,cgs_levels,event_region,figdir,gcm,fc_date,fc_date_abbrv')
-                    )
+    wkf_era5,wkfs,wkf_comp = expt_comparison_workflow(which_ssw,i_gcm)
+    if todo['plot_gevpar_map_diffs']:
+        plot_gevpar_difference_maps(wkf_comp)
+    if todo['compute_valatrisk_comp']:
+        compute_valatrisk_comp(
+                {expt: 
+                    [wkfs[expt][i_fc_date]['valatrisk_files'] for i_fc_date in range(len(fc_dates))] 
+                    for expt in expts},
+                *dtoa(wkf_comp, '''
+                valatrisk_comp_files, 
+                expts, expt_pairs, cgs_levels, fc_dates
+                ''')
+                )
+    if todo['plot_valatrisk_comp_maps']:
+        plot_valatrisk_comp_maps(
+                *dtoa(wkf_comp, '''
+                valatrisk_comp_files, 
+                expt_pairs, event_region, cgs_levels, fc_dates, ext_sign,
+                figdir, gcm, onset_date, term_date, ineq_symb, ext_symb,
+                ''')
+                )
     return
+
+
     if False:
         for i_cgs_level,cgs_level in enumerate(cgs_levels):
             if min(cgs_level) <= 1:
@@ -729,17 +829,17 @@ def onset_date_sensitivity_analysis(
 def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
     todo = dict({
-        'coarse_grain_time':                0,
-        'coarse_grain_space':               0,
-        'onset_date_sensitivity_analysis':  0,
-        'compute_severities':               0,
-        'plot_sumstats_map':                0,
-        'fit_gev':                          0,
-        'plot_gevpar_map':                  0,
-        'compute_risk':                     0,
-        'plot_risk_map':                    0,
-        'plot_valatrisk_map':               0,
-        'fit_gev_select_regions':           0,
+        'coarse_grain_time':                1,
+        'coarse_grain_space':               1,
+        'onset_date_sensitivity_analysis':  1,
+        'compute_severities':               1,
+        'plot_sumstats_map':                1,
+        'fit_gev':                          1,
+        'plot_gevpar_map':                  1,
+        'compute_risk':                     1,
+        'plot_risk_map':                    1,
+        'plot_valatrisk_map':               1,
+        'fit_gev_select_regions':           1,
         'plot_gev_select_regions':          1,
         })
 
