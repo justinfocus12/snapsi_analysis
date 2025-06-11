@@ -338,7 +338,7 @@ def reduce_era5(which_ssw):
                 )
     # Do a more thorough uncertainty quantification at a specific site or region, using bootstrap analysis and goodness-of-fit etc. Maybe parallelize over all sites too
     if todo['fit_gev_select_regions']:
-        pipeline_base.fit_regional_gevsevlev(
+        pipeline_base.fit_gev_select_regions(
                 *dtoa(wkf, '''
                 ens_files_cgts_extt, gevsevlev_files, risk_levels, 
                 cgs_levels, select_regions,

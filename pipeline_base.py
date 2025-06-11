@@ -883,7 +883,7 @@ def fit_gev_exttemp_1d_uq(exttemp, risks, ext_sign, method='PWM', n_boot=1000):
     return gevsevlev
 
 
-def fit_regional_gevsevlev(ens_files_cgts_extt, gevsevlev_files, risk_levels, cgs_levels, select_regions, ext_sign, ):
+def fit_gev_select_regions(ens_files_cgts_extt, gevsevlev_files, risk_levels, cgs_levels, select_regions, ext_sign, ):
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
         da_cgts_extt = xr.open_dataarray(ens_files_cgts_extt[i_cgs_level])
         for (i_region,(i_lon,i_lat)) in enumerate(select_regions[i_cgs_level]):
@@ -909,7 +909,7 @@ def plot_regional_gevsevlev(ens_files_cgts_extt, gevsevlev_files, ens_files_cgts
             exttemp_ref = da_cgts_extt_ref.isel(lon=i_lon,lat=i_lat)
             temp_bounds = utils.padded_bounds(exttemp_ref, inflation=0.5)
             exttemp_ref_special = exttemp_ref.sel(member=mem_special_ref).item()
-            risk_levels = gevsevlev.coords['risk'].to_numpy()
+            risk_levels = gevsevlev.coords['risk'].to_numpy() # increasing 
             gevpar_reg = gevsevlev['gevpar']
             center_lon = event_region['lon'].start + (i_lon+0.5)*lon_blocksize
             center_lat = event_region['lat'].start + (i_lat+0.5)*lat_blocksize

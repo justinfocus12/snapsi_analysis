@@ -67,6 +67,7 @@ def expt_comparison_workflow(which_ssw, i_gcm):
         })
     wkf_era5 = pipeline_era5.era5_workflow(which_ssw)
     wkf_comp = dict(expts=expts)
+    wkf_comp['expt_colors'] = dict({'era5': 'black', 'control': 'dodgerblue', 'free': 'limegreen', 'nudged': 'red'})
     keys2share = '''
     event_year,
     event_region,
@@ -95,6 +96,7 @@ def expt_comparison_workflow(which_ssw, i_gcm):
     figdir,
     '''
     wkf_comp.update({key: wkfs[expts[0]][0][key] for key in utils.unbag_args(keys2share)})
+    wkf_comp['expt_baseline'] = 'free'
     wkf_comp['expt_pairs'] = [('free','nudged'),('free','control')]
     wkf_comp['valatrisk_comp_files'] = [] # a netcdf file per coarse-graining level 
     wkf_comp['gevsevlev_comp_files'] = []
@@ -291,35 +293,20 @@ def preprocess_gcm_6hrPt(dsmem,fcdate,timesel,spacesel,verbose=False):
     #sys.exit()
     return dsmem_tas
 
-
-
-
-
 def compare_gcms(which_ssw, idx_gcms):
-    # Plot relative risk and absolute risk, perhaps in a 2D space 
-    if "sep2019" == which_ssw:
-        ext_sign = 1
-        ext_symb = "max"
-        event_year = 2019
-    elif "jan2019" == which_ssw:
-        ext_sign = -1
-        ext_symb = "min"
-        event_year = 2019
-    elif "feb2018" == which_ssw:
-        ext_sign = -1
-        ext_symb = "min"
-        event_year = 2018
-    cgs_levels,select_regions = pipeline_base.analysis_multiparams(which_ssw)
-    gcms,expts,inits = gcm_multiparams(which_ssw)
-    print(f'{gcms = }')
+    gcms,expts,fc_dates,_,term_date = gcm_multiparams(which_ssw)
+    wkfs = [expt_comparison_workflow(which_ssw,i_gcm) for i_gcm in idx_gcms]
+    [wkfs_era5,wkfss,wkfss_comp] = [[wkf[i] for wkf in wkfs] for i in range(len(wkfs))]
+    wkf_era5 = wkfs_era5[0]
+
     colors = dict({'era5': 'black', 'control': 'dodgerblue', 'free': 'limegreen', 'nudged': 'red'})
     yoffsets = dict({'control': 1/3, 'free': 0.0, 'nudged': -1/3})
-    figdir = f'/home/users/ju26596/snapsi_analysis_figures/{which_ssw}/2025-05-20/multimodel'
+    figdir = wkf_era5['figdir'].replace('era5','multimodel')
+    makedirs(figdir, exist_ok=True)
     print(f'{figdir = }')
     xlims = [0.25, 4.0]
     ylims = [-0.5, len(idx_gcms)-0.5]
     slims = (np.array([1.0, 4.0])*rcParams['lines.markersize']) # bounds on the marker size 
-    makedirs(figdir, exist_ok=True)
     dpi = 200
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
@@ -341,8 +328,7 @@ def compare_gcms(which_ssw, idx_gcms):
             for (i_init,init) in enumerate(inits):
                 ax_rr = axes_rr[i_init]
                 ax_dv = axes_dv[i_init]
-                workflow = gcm_workflow(which_ssw,i_gcm,0,i_init)
-                reduced_data_dir = workflow[9]
+                reduced_data_dir = wkfs[9]
                 reduced_data_dir_era5 = workflow[10]
                 risk_levels = workflow[14]
                 confint_width = workflow[16]
@@ -467,11 +453,12 @@ def compare_gcms(which_ssw, idx_gcms):
             
 def plot_gevpar_difference_maps(wkfs,wkf_comp):
     for (expt0,expt1) in wkf_comp['expt_pairs']:
-        pipeline_base.plot_gevpar_difference_maps_flat(
-                *dtoa(wkfs[expt0], 'gevpar_files,expt,'),
-                *dtoa(wkfs[expt1], 'gevpar_files,expt,'),
-                *dtoa(wkfs[expt0], 'param_bounds_file,ext_sign,cgs_levels,event_region,figdir,gcm,fc_date,fc_date_abbrv')
-                )
+        for (i_fcdate,fc_date) in enumerate(wkf_comp['fc_dates']):
+            pipeline_base.plot_gevpar_difference_maps_flat(
+                    *dtoa(wkfs[expt0][i_fcdate], 'gevpar_files,expt,'),
+                    *dtoa(wkfs[expt1][i_fcdate], 'gevpar_files,expt,'),
+                    *dtoa(wkfs[expt0][i_fcdate], 'param_bounds_file,ext_sign,cgs_levels,event_region,figdir,gcm,fc_date,fc_date_abbrv')
+                    )
     return
 
 def expt_pair_coordval(expt_pair):
@@ -531,20 +518,230 @@ def plot_valatrisk_comp_maps(
                 plt.close(fig)
     return
 
+def plot_gevsevlev_select_regions():
+    if todo['plot_gev_select_regions']:
+        for (i_cgs_level,cgs_level) in enumerate(cgs_levels[:1]):
+            cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
+            ens_file_cgts = join(reduced_data_dir,f't2m_e{expt}_i{fc_date_abbrv}_cgt1day_cgs{cgs_key}.nc')
+            da_cgts = xr.open_dataset(ens_file_cgts)['1xday'].sel(daily_stat=daily_stat)
+            da_cgts_era5 = xr.open_dataset(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc'))['1xday'].sel(daily_stat=daily_stat)
+            da_cgts_extt = ext_sign * (ext_sign*da_cgts.sel(time=slice(onset_date,term_date))).max(dim='time')
+            da_cgts_extt_era5 = ext_sign * (ext_sign*da_cgts_era5.sel(time=slice(onset_date,term_date))).max(dim='time')
+            lon_blocksize,lat_blocksize = ((event_region[d].stop - event_region[d].start)/cgs_level[i_d] for (i_d,d) in enumerate(('lon','lat')))
+            print(f' --- Starting loop over lons and lats')
+            for (i_lon,i_lat) in select_regions[i_cgs_level]:
+                exttemp = da_cgts_extt.isel(lon=i_lon,lat=i_lat) #.to_numpy()
+                exttemp_era5 = da_cgts_extt_era5.isel(lon=i_lon,lat=i_lat) #.to_numpy()
+                gevpar_reg = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
+                exttemp_levels_reg = np.load(join(reduced_data_dir,f'exttemp_levels_reg_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
+                gevpar_reg_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
+                exttemp_levels_reg_era5 = np.load(join(reduced_data_dir_era5,f'exttemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
+                print(f'      --- Loaded the exttemps and gevpars')
+                fig = plt.figure(figsize=(12,8))
+                gs = gridspec.GridSpec(figure=fig, nrows=2, ncols=2, height_ratios=[1,18])
+                ax_title = fig.add_subplot(gs[0,0:2])
+                ax_gev = fig.add_subplot(gs[1,0])
+                ax_timeseries = fig.add_subplot(gs[1,1], sharey=ax_gev)
+
+
+                # Plot timeseries on right
+                ax = ax_timeseries
+                for i_mem in range(da_cgts.member.size):
+                    temp_gcm = da_cgts.isel(lat=i_lat,lon=i_lon,member=i_mem)
+                    #print(f'{temp_gcm.time = }')
+                    xr.plot.plot(temp_gcm, x='time', ax=ax, color='red', alpha=0.25)
+                    i_t_argmax = (ext_sign*temp_gcm).argmax(dim='time').item()
+                    idx_argmax = range(max(i_t_argmax,0),min(i_t_argmax+1,temp_gcm['time'].size))
+                    xr.plot.plot(temp_gcm.isel(time=idx_argmax), x='time', ax=ax, color='purple', marker='.', linestyle='-')
+                for (i_mem,mem) in enumerate(da_cgts_era5.member.to_numpy()):
+                    temp_era5 = da_cgts_era5.isel(lat=i_lat,lon=i_lon,member=i_mem)
+                    xr.plot.plot(temp_era5, x='time', ax=ax, color='gray', alpha=0.25) 
+                    if mem == event_year:
+                        xr.plot.plot(temp_era5, x='time', ax=ax, color='black', linestyle='--', linewidth=2) 
+                    i_t_argmax = (ext_sign*temp_era5).argmax(dim='time').item()
+                    idx_argmax = range(max(i_t_argmax,0),min(i_t_argmax+1,temp_era5.time.size))
+                    xr.plot.plot(temp_era5.isel(time=idx_argmax), x='time', ax=ax, color='black', marker='.', linestyle='-')
+                ax.set_title('')
+                ax.set_xlabel('Time')
+                ax.yaxis.set_tick_params(which='both', labelbottom=True)
+                ax.set_ylabel('')
+
+                shape,loc,scale = (gevpar_reg.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
+                shape_era5,loc_era5,scale_era5 = (gevpar_reg_era5.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
+                param_label = ','.join([
+                    r'$\mu=%d$'%(ext_sign*loc),
+                    r'$\sigma=%d$'%(scale),
+                    r'$\xi=%.2f$'%(shape)
+                    ])
+                param_label_era5 = ','.join([
+                    r'$\mu=%d$'%(ext_sign*loc_era5),
+                    r'$\sigma=%d$'%(scale_era5),
+                    r'$\xi=%.2f$'%(shape_era5)
+                    ])
+                ax = ax_gev
+                # GCM data
+                order = np.argsort(exttemp.to_numpy())
+                
+                if ext_sign == -1:
+                    risk_empirical = np.arange(1,len(exttemp)+1)/len(exttemp)
+                else:
+                    risk_empirical = np.arange(len(exttemp),0,-1)/len(exttemp)
+                ax.scatter(risk_empirical, exttemp.isel(member=order).to_numpy(), color='red', marker='+')
+                hgcm, = ax.plot(risk_levels,exttemp_levels_reg[0,:],color='red',label=r'%s (%s)'%(gcm,param_label))
+                ax.fill_between(risk_levels, np.quantile(exttemp_levels_reg[1:], 0.25, axis=0), np.quantile(exttemp_levels_reg[1:], 0.75, axis=0), fc='red', ec='none', alpha=0.3, zorder=-1)
+                # Now ERA5
+                order = np.argsort(exttemp_era5.to_numpy())
+                rank = np.argsort(order)
+                if ext_sign == -1:
+                    risk_empirical = np.arange(1,exttemp_era5.member.size+1)/exttemp_era5.member.size
+                else:
+                    risk_empirical = np.arange(exttemp_era5.member.size,0,-1)/exttemp_era5.member.size
+                ax.scatter(risk_empirical, exttemp_era5.isel(member=order).to_numpy(), color='black', marker='+')
+                # Special marker for the year of interest
+                i_mem_event_year = np.where(da_cgts_extt_era5.member == event_year)[0][0]
+
+                ax.scatter(risk_empirical[rank[i_mem_event_year]], exttemp_era5.isel(member=i_mem_event_year).item(), color='black', marker='o')
+                hera5, = ax.plot(risk_levels,exttemp_levels_reg_era5[0,:],color='black',label=r'ERA5 (%s)'%(param_label_era5))
+                ax.fill_between(risk_levels, np.quantile(exttemp_levels_reg_era5, 0.25, axis=0), np.quantile(exttemp_levels_reg_era5, 0.75, axis=0), fc='gray', ec='none', alpha=0.3, zorder=-1)
+                ax.legend(handles=[hera5,hgcm])
+                ax.set_xscale('log')
+                ineq_symb = "geq" if 1==ext_sign else "leq"
+                ax.set_xlabel(r'$\mathbb{P}\{\%s_t\langle T(t)\rangle_{\mathrm{region}}\%s T\}$'%(ext_symb,ineq_symb))
+
+                center_lon = event_region['lon'].start + (i_lon+0.5)*lon_blocksize
+                center_lat = event_region['lat'].start + (i_lat+0.5)*lat_blocksize
+                lonlatstr = r'$\lambda=%d\pm%d,\phi=%d\pm%d$'%(center_lon,lon_blocksize/2,center_lat,lat_blocksize/2)
+                # Title 
+                ax_title.text(0.5, 0.5, f'{gcm} {expt}, init {datestr} at {lonlatstr}', transform=ax_title.transAxes, ha='center', va='center')
+                ax.set_ylabel(r'$T$')
+                ax.set_title('')
+
+                fig.savefig(join(figdir,f'riskplot_reg_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
+                plt.close(fig)
+    return 
+
+def plot_gevsevlev_comp_select_regions(
+        gevsevlev_files, gevsevlev_files_era5,
+        ens_files_cgts_extt, ens_files_cgts_extt_era5, 
+        expts, expt_pairs, expt_baseline, cgs_levels, fc_dates, event_region, select_regions,
+        gcm, onset_date, term_date, 
+        ext_sign, confint_width, 
+        ineq_symb, ext_symb, expt_colors, 
+        figdir,
+        ):
+    for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
+        da_cgts_extt_era5 = xr.open_dataarray(ens_files_cgts_extt_era5[i_cgs_level])
+        da_cgts_extt = (
+                xr.concat([
+                    xr.concat([
+                        xr.open_dataarray(ens_files_cgts_extt[expt][i_fcdate][i_cgs_level])
+                        for i_fcdate in range(len(fc_dates))], dim='fc_date')
+                    .assign_coords(fc_date=fc_dates)
+                    for (i_expt,expt) in enumerate(expts)], dim='expt')
+                .assign_coords(expt=expts)
+                )
+        for (i_region,(i_lon,i_lat)) in enumerate(select_regions[i_cgs_level]):
+            gevsevlev = (
+                    xr.concat([
+                        xr.concat([
+                            xr.open_dataset(gevsevlev_files[expt][i_fcdate][i_cgs_level][i_region]) for i_fcdate in range(len(fc_dates))],
+                            dim='fc_date')
+                            .assign_coords(fc_date=fc_dates)
+                        for (i_expt,expt) in enumerate(expts)],
+                        dim='expt')
+                        .assign_coords(expt=expts)
+                    )
+            gevsevlev_era5 = xr.open_dataset(gevsevlev_files_era5[i_cgs_level][i_region])
+            sev_bounds = utils.padded_bounds(da_cgts_extt_era5.isel(lon=i_lon,lat=i_lat), inflation=0.5)
+            risks = gevsevlev.coords["risk"].to_numpy() # increasing 
+            ordering_for_interp = np.arange(len(risks)-1,-1,-1)
+            if ext_sign == -1:
+                ordering_for_interp = np.flip(ordering_for_interp)
+            for (i_fcdate,fc_date) in enumerate(fc_dates):
+                fig = plt.figure(figsize=(15,15))
+                gs = gridspec.GridSpec(nrows=3, ncols=2, figure=fig, width_ratios=[2,1], height_ratios=[0.15,2,1])
+                axtitle = fig.add_subplot(gs[0,0:2])
+                axgev = fig.add_subplot(gs[1,0])
+                axdvar = fig.add_subplot(gs[2,0], sharex=axgev)
+                axrr = fig.add_subplot(gs[1,1], sharey=axgev)
+
+                handles = []
+                sevlev_common = np.linspace(*(utils.padded_bounds(gevsevlev["sevlev"], inflation=0.0)), 40)
+                interp_fun = lambda sevlev: np.interp(sevlev_common, sevlev[ordering_for_interp], risks[ordering_for_interp])
+                risks_interp_baseline = np.apply_along_axis(interp_fun, 1, gevsevlev["sevlev"].sel(fc_date=fc_date,expt=expt_baseline).to_numpy())
+                for expt in expts+['era5']:
+                    if expt in expts:
+                        exttemp = da_cgts_extt.isel(lon=i_lon,lat=i_lat).sel(expt=expt,fc_date=fc_date).to_numpy()
+                        sevlev = gevsevlev["sevlev"].sel(fc_date=fc_date,expt=expt)
+                        Nmem = da_cgts_extt.coords['member'].size
+                    else:
+                        exttemp = da_cgts_extt_era5.isel(lon=i_lon,lat=i_lat).to_numpy()
+                        sevlev = gevsevlev_era5["sevlev"]
+                        Nmem = da_cgts_extt_era5.coords['member'].size
+                    risk_empirical = np.arange(0,Nmem,1)/Nmem
+                    ordering_for_interp_empirical = np.arange(Nmem-1,-1,-1)
+                    if ext_sign == -1:
+                        ordering_for_interp_empirical = np.flip(ordering_for_interp_empirical)
+                    order = np.argsort(exttemp)
+                    # GEV 
+                    axgev.scatter(risk_empirical[ordering_for_interp_empirical], exttemp[order], marker='+', color=expt_colors[expt])
+                    h, = axgev.plot(risks,sevlev.isel(boot=0).to_numpy(),color=expt_colors[expt], label=expt)
+                    handles.append(h)
+                    axgev.fill_between(risks,*(np.quantile(sevlev.to_numpy(), 0.5+sgn*0.5*confint_width, axis=0) for sgn in [-1,1]), alpha=0.25, color=expt_colors[expt], zorder=-1)
+                    # Quantile shift
+                    dvar = sevlev.to_numpy() - gevsevlev["sevlev"].sel(fc_date=fc_date,expt=expt_baseline)
+                    axdvar.plot(risks, dvar[0,:], color=expt_colors[expt])
+                    axdvar.fill_between(risks, *(np.quantile(dvar, 0.5+sgn*0.5*confint_width, axis=0) for sgn in (-1,1)), alpha=0.5, zorder=-1, color=expt_colors[expt])
+                    # interpolate for relative risks
+                    risks_interp = np.apply_along_axis(interp_fun, 1, sevlev.to_numpy())
+                    relrisk = risks_interp/risks_interp_baseline
+                    axrr.plot(relrisk[0,:], sevlev_common, color=expt_colors[expt])
+                    axrr.fill_betweenx(sevlev_common, *(np.quantile(relrisk, 0.5+0.5*sgn*confint_width, axis=0) for sgn in (-1,1)), color=expt_colors[expt], alpha=0.25, zorder=-1)
+
+                fc_date_abbrv = dtlib.datetime.strftime(fc_date,'%Y%m%d')
+                fc_date_label = dtlib.datetime.strftime(fc_date,'%Y/%m/%d')
+                lonlatstr = utils.lonlatstr(event_region,cgs_level,i_lon,i_lat)
+
+                # Decorations
+                axtitle.text(
+                        0.0, 0.0, 
+                        f'{gcm}, FC {fc_date_label}, {lonlatstr}',
+                        ha='left', va='bottom', transform=axtitle.transAxes, fontsize=20
+                        )
+                axtitle.axis('off')
+                axgev.legend(handles=handles)
+
+
+                for ax in (axgev, axdvar, axrr):
+                    ax.set_xscale('log')
+                for ax in (axgev, axrr):
+                    ax.set_ylim(sev_bounds)
+                for ax in (axgev, axdvar):
+                    ax.set_xlim([risks[0],risks[-1]])
+                axrr.set_xlim([0.25, 4])
+                axdvar.set_ylim((sev_bounds[1]-sev_bounds[0])*np.array([-1/4,1/4]))
+                fig.savefig(join(figdir,f'gevsevlev_comp_fc{fc_date_abbrv}_cgs{cgs_level[0]}x{cgs_level[1]}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
+                plt.close(fig)
+
+                
+    return
+        
+        
+
 
     
 
 def compare_expts(which_ssw, i_gcm, i_init):
     todo = dict({
-        'plot_gevpar_map_diffs':           0,
-        'compute_valatrisk_comp':          0,
-        'plot_valatrisk_comp_maps':        1,
-        'plot_gev_select_regions':         0,
+        'plot_gevpar_map_diffs':                0,
+        'compute_valatrisk_comp':               0,
+        'plot_valatrisk_comp_maps':             0,
+        'plot_gevsevlev_comp_select_regions':   1,
         })
     gcms,expts,fc_dates,_,term_date = gcm_multiparams(which_ssw)
     wkf_era5,wkfs,wkf_comp = expt_comparison_workflow(which_ssw,i_gcm)
     if todo['plot_gevpar_map_diffs']:
-        plot_gevpar_difference_maps(wkf_comp)
+        plot_gevpar_difference_maps(wkfs,wkf_comp)
     if todo['compute_valatrisk_comp']:
         compute_valatrisk_comp(
                 {expt: 
@@ -563,6 +760,26 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 figdir, gcm, onset_date, term_date, ineq_symb, ext_symb,
                 ''')
                 )
+    if todo['plot_gevsevlev_comp_select_regions']:
+        plot_gevsevlev_comp_select_regions(
+                {expt: 
+                    [wkfs[expt][i_fc_date]['gevsevlev_files'] for i_fc_date in range(len(fc_dates))] 
+                    for expt in expts},
+                wkf_era5['gevsevlev_files'],
+                {expt: 
+                    [wkfs[expt][i_fc_date]['ens_files_cgts_extt'] for i_fc_date in range(len(fc_dates))] 
+                    for expt in expts},
+                *dtoa(wkf_era5, 'ens_files_cgts_extt'),
+                *dtoa(wkf_comp, '''
+                expts, expt_pairs, expt_baseline, cgs_levels, fc_dates, event_region, select_regions, 
+                gcm, onset_date, term_date, 
+                ext_sign, confint_width,
+                ineq_symb, ext_symb, expt_colors,
+                figdir,
+                ''')
+                )
+                
+
     return
 
 
@@ -672,7 +889,7 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 ax = axes[0,0]
                 handles = []
 
-                # Interpolate for relative risk 
+                # interpolate for relative risk 
                 exttemp_levels_range = [exttemp_levels_regs['era5'][0,:].min().item(),exttemp_levels_regs['era5'][0,:].max().item()] 
                 exttemp_levels_common = np.linspace(*exttemp_levels_range, 30)
                 risk_at_levels = dict()
@@ -938,7 +1155,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                 False,
                 )
     if todo['fit_gev_select_regions']:
-        pipeline_base.fit_regional_gevsevlev(
+        pipeline_base.fit_gev_select_regions(
                 *dtoa(wkf, '''
                 ens_files_cgts_extt, gevsevlev_files, risk_levels, 
                 cgs_levels, select_regions,
