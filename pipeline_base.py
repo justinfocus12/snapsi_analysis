@@ -894,23 +894,41 @@ def fit_gev_select_regions(ens_files_cgts_extt, gevsevlev_files, risk_levels, cg
             gevsevlev.to_netcdf(gevsevlev_files[i_cgs_level][i_region])
     return
 
-def plot_regional_gevsevlev(ens_files_cgts_extt, gevsevlev_files, ens_files_cgts_extt_ref, mem_special_ref, param_bounds_file, cgs_levels, event_region, select_regions, boot_type, confint_width, figdir, figfile_tag, figtitle_affix, onset_date, term_date, prob_symb, ext_sign, ext_symb, leq_symb, ineq_symb):
+def plot_gevsevlev_select_regions(
+        ens_files_cgts, ens_files_cgts_extt, gevsevlev_files, 
+        ens_files_cgts_ref, ens_files_cgts_extt_ref, gevsevlev_files_ref, 
+        mem_special_ref, param_bounds_file, 
+        cgs_levels, daily_stat,
+        event_region, select_regions, 
+        boot_type, confint_width, 
+        figdir, figfile_tag, figtitle_affix, onset_date, term_date, 
+        prob_symb, ext_sign, ext_symb, leq_symb, ineq_symb,
+        ref_is_different=False, # whether the reference ensemble is different from the main one 
+        ):
     # TODO add lines to indicate the reference values etc 
     param_bounds = xr.open_dataarray(param_bounds_file)
 
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
+        da_cgts = xr.open_dataset(ens_files_cgts[i_cgs_level])['1xday'].sel(daily_stat=daily_stat)
+        da_cgts_ref = xr.open_dataset(ens_files_cgts_ref[i_cgs_level])['1xday'].sel(daily_stat=daily_stat)
         da_cgts_extt = xr.open_dataarray(ens_files_cgts_extt[i_cgs_level])
         da_cgts_extt_ref = xr.open_dataarray(ens_files_cgts_extt_ref[i_cgs_level])
         lon_blocksize,lat_blocksize = ((event_region[d].stop - event_region[d].start)/cgs_level[i_d] for (i_d,d) in enumerate(('lon','lat')))
+        idx_mem_special_ref = np.argmax([mem_special_ref == mem for mem in da_cgts_extt_ref['member'].values])
         for (i_region,(i_lon,i_lat)) in enumerate(select_regions[i_cgs_level]):
             gevsevlev = xr.open_dataset(gevsevlev_files[i_cgs_level][i_region])
-            exttemp_levels_reg = gevsevlev['sevlev'].to_numpy() # n_boot x n_lev
+            gevsevlev_ref = xr.open_dataset(gevsevlev_files_ref[i_cgs_level][i_region])
+            sevlev = gevsevlev['sevlev'].to_numpy() # n_boot x n_lev
+            sevlev_ref = gevsevlev_ref['sevlev'].to_numpy() # n_boot x n_lev
             exttemp = da_cgts_extt.isel(lon=i_lon,lat=i_lat).to_numpy().flatten()
-            exttemp_ref = da_cgts_extt_ref.isel(lon=i_lon,lat=i_lat)
+            exttemp_ref = da_cgts_extt_ref.isel(lon=i_lon,lat=i_lat).to_numpy().flatten()
             temp_bounds = utils.padded_bounds(exttemp_ref, inflation=0.5)
-            exttemp_ref_special = exttemp_ref.sel(member=mem_special_ref).item()
+            exttemp_ref_special = exttemp_ref[idx_mem_special_ref]
             risk_levels = gevsevlev.coords['risk'].to_numpy() # increasing 
-            gevpar_reg = gevsevlev['gevpar']
+            risk_levels_ref = gevsevlev_ref.coords['risk'].to_numpy() # increasing 
+            gevpar = gevsevlev['gevpar']
+            gevpar_ref = gevsevlev_ref['gevpar']
+
             center_lon = event_region['lon'].start + (i_lon+0.5)*lon_blocksize
             center_lat = event_region['lat'].start + (i_lat+0.5)*lat_blocksize
             lonlatstr = r'$\lambda=%d\pm%d,\phi=%d\pm%d$'%(center_lon,lon_blocksize/2,center_lat,lat_blocksize/2)
@@ -919,36 +937,121 @@ def plot_regional_gevsevlev(ens_files_cgts_extt, gevsevlev_files, ens_files_cgts
 
             order = np.argsort(exttemp)
             rank = np.argsort(order)
+            order_ref = np.argsort(exttemp_ref)
+            rank_ref = np.argsort(order_ref)
             if ext_sign == -1:
                 risk_empirical = np.arange(1,len(exttemp)+1)/len(exttemp)
+                risk_empirical_ref = np.arange(1,len(exttemp_ref)+1)/len(exttemp_ref)
             else:
                 risk_empirical = np.arange(len(exttemp),0,-1)/len(exttemp)
-            shape,loc,scale = (gevpar_reg.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
+                risk_empirical_ref = np.arange(len(exttemp_ref),0,-1)/len(exttemp_ref)
+            shape,loc,scale = (gevpar.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
+            shape_ref,loc_ref,scale_ref = (gevpar_ref.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
             if not np.all([np.isfinite(p) for p in [shape,loc,scale]]):
                 pdb.set_trace()
-            fig,ax = plt.subplots()
-            ax.scatter(risk_empirical, exttemp[order], color='black', marker='+')
+            # --------------- Figure: left GEV, right timeseries ---------
+            fig = plt.figure(figsize=(12,8))
+            gs = gridspec.GridSpec(figure=fig, nrows=2, ncols=2, height_ratios=[1,18])
+            ax_title = fig.add_subplot(gs[0,0:2])
+            ax_gev = fig.add_subplot(gs[1,0])
+            ax_timeseries = fig.add_subplot(gs[1,1], sharey=ax_gev)
+
+            # GEV & sevlev
+            ax = ax_gev
+            handles = []
+            # non-ref
+            ax.scatter(risk_empirical, exttemp[order], color='red', marker='+')
             param_label = '\n'.join([
                 r'$\mu=%.1f$'%(ext_sign*loc),
                 r'$\sigma=%.1f$'%(scale),
                 r'$\xi=%+.2f$'%(shape)
                 ])
-            h, = ax.plot(risk_levels,exttemp_levels_reg[0,:],color='black', label=param_label)
-            boot_quant_lo,boot_quant_hi = (np.quantile(exttemp_levels_reg[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
+            h, = ax.plot(risk_levels,sevlev[0,:],color='red', label=param_label)
+            handles.append(h)
+            boot_quant_lo,boot_quant_hi = (np.quantile(sevlev[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
             if boot_type == 'percentile':
                 lo,hi = boot_quant_lo,boot_quant_hi
             else:
-                lo,hi = 2*risk_ratio[0,:]-boot_quant_hi, 2*risk_ratio[0,:]-boot_quant_lo
-            ax.fill_between(risk_levels, lo, hi, fc='gray', ec='none', alpha=0.3, zorder=-1)
-            # Plot reference
+                lo,hi = 2*sevlev[0,:]-boot_quant_hi, 2*sevlev[0,:]-boot_quant_lo
+            ax.fill_between(risk_levels, lo, hi, fc='red', ec='none', alpha=0.3, zorder=-1)
+            # ref
+            ax.scatter(risk_empirical_ref, exttemp_ref[order_ref], color='black', marker='+')
+            param_label = '\n'.join([
+                r'$\mu=%.1f$'%(ext_sign*loc_ref),
+                r'$\sigma=%.1f$'%(scale_ref),
+                r'$\xi=%+.2f$'%(shape_ref)
+                ])
+            h, = ax.plot(risk_levels_ref,sevlev_ref[0,:],color='black', label=param_label)
+            handles.append(h)
+            boot_quant_lo,boot_quant_hi = (np.quantile(sevlev_ref[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
+            if boot_type == 'percentile':
+                lo,hi = boot_quant_lo,boot_quant_hi
+            else:
+                lo,hi = 2*sevlev_ref[0,:]-boot_quant_hi, 2*sevlev_ref[0,:]-boot_quant_lo
+            ax.fill_between(risk_levels_ref, lo, hi, fc='gray', ec='none', alpha=0.3, zorder=-1)
             ax.axhline(exttemp_ref_special, color='black', linestyle='--', linewidth=1.5)
+
+            # Decorations 
             ax.set_xscale('log')
+
             fmtfun = lambda dt: dtlib.datetime.strftime(dt, "%m/%d")
             ax.set_xlabel(f'{prob_symb}{{{ext_symb}{{T2M(t): {fmtfun(onset_date)} {leq_symb} t {leq_symb} {fmtfun(term_date)}}} {ineq_symb} T}}')
-            ax.set_ylabel('T')
+            ax.set_ylabel(r'$T$')
             ax.set_ylim(temp_bounds)
-            ax.set_title('%s\n%s'%(figtitle_affix,lonlatstr))
-            ax.legend(handles=[h])
+            ax.set_title('')
+            ax.legend(handles=handles)
+
+            # Timeseries
+            argmaxwindow = lambda da: da.sel(time=slice(onset_date,term_date))
+            ax = ax_timeseries
+            ts_argmax = []
+            Ts_argmax = []
+            for i_mem in range(da_cgts.member.size):
+                temp_gcm = da_cgts.isel(lat=i_lat,lon=i_lon,member=i_mem)
+                #print(f'{temp_gcm.time = }')
+                xr.plot.plot(temp_gcm, x='time', ax=ax, color='red', alpha=0.25)
+                i_t_argmax = argmaxwindow(ext_sign*temp_gcm).argmax(dim='time').item()
+                t_argmax = onset_date + dtlib.timedelta(i_t_argmax)
+                T_argmax = argmaxwindow(temp_gcm).isel(time=i_t_argmax).item()
+                ts_argmax.append(t_argmax)
+                Ts_argmax.append(T_argmax)
+            ax.scatter(ts_argmax, Ts_argmax,color='purple', marker='+')
+            # collect all the min points 
+            ts_argmax = []
+            Ts_argmax = []
+            for (i_mem,mem) in enumerate(da_cgts_ref.member.to_numpy()):
+                temp_ref = da_cgts_ref.isel(lat=i_lat,lon=i_lon,member=i_mem)
+                xr.plot.plot(temp_ref, x='time', ax=ax, color='gray', alpha=0.25) 
+                if mem == mem_special_ref:
+                    xr.plot.plot(temp_ref, x='time', ax=ax, color='black', linestyle='--', linewidth=2) 
+                i_t_argmax = argmaxwindow(ext_sign*temp_ref).argmax(dim='time').item()
+                t_argmax = onset_date + dtlib.timedelta(i_t_argmax)
+                T_argmax = argmaxwindow(temp_ref).isel(time=i_t_argmax).item()
+                ts_argmax.append(t_argmax)
+                Ts_argmax.append(T_argmax)
+            ax.scatter(ts_argmax, Ts_argmax,color='black', marker='+')
+            ax.axvline(onset_date, color='dodgerblue', zorder=-1, alpha=0.5)
+            ax.axvline(term_date, color='dodgerblue', zorder=-1, alpha=0.5)
+            ax.set_title('')
+            ax.set_xlabel('Time')
+            ax.yaxis.set_tick_params(which='both', labelbottom=True)
+            ax.set_ylabel('')
+
+            shape,loc,scale = (gevpar.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
+            shape_ref,loc_ref,scale_ref = (gevpar_ref.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
+            param_label = ','.join([
+                r'$\mu=%d$'%(ext_sign*loc),
+                r'$\sigma=%d$'%(scale),
+                r'$\xi=%.2f$'%(shape)
+                ])
+            param_label_ref = ','.join([
+                r'$\mu=%d$'%(ext_sign*loc_ref),
+                r'$\sigma=%d$'%(scale_ref),
+                r'$\xi=%.2f$'%(shape_ref)
+                ])
+            # Title
+            ax_title.text(0.5, 0.5, figtitle_affix, transform=ax_title.transAxes, ha='center', va='center')
+            ax_title.axis('off')
 
             fig.savefig(join(figdir,f'gevsevlev_{figfile_tag}_cgs{cgs_level[0]}x{cgs_level[1]}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
             plt.close(fig)

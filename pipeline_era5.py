@@ -347,16 +347,17 @@ def reduce_era5(which_ssw):
                 )
 
     if todo['plot_gev_select_regions']:
-        pipeline_base.plot_regional_gevsevlev(
+        pipeline_base.plot_gevsevlev_select_regions(
                 *(wkf[key.strip()] for key in '''
-                ens_files_cgts_extt, gevsevlev_files, 
-                ens_files_cgts_extt, event_year, param_bounds_file,
-                cgs_levels, 
+                ens_files_cgts, ens_files_cgts_extt, gevsevlev_files, 
+                ens_files_cgts, ens_files_cgts_extt, event_year, param_bounds_file,
+                cgs_levels, daily_stat,
                 event_region, select_regions, 
                 boot_type, confint_width,
                 figdir, figfile_tag, figtitle_affix, onset_date, term_date,
                 prob_symb, ext_sign, ext_symb, leq_symb, ineq_symb
                 '''.split(',')),
+                ref_is_different=False,
                 )
     return 
 
