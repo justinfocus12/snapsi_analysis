@@ -54,6 +54,17 @@ def all_gcms_institutes():
         })
     return gcm2institute
 
+def gcm_comparison_workflow(which_ssw):
+    gcms,expts,fc_dates,onset_date,term_date = gcm_multiparams(which_ssw)
+    fc_dates,onset_date_nominal,term_date = pipeline_base.dates_of_interest(which_ssw)
+    wkfs_comp = dict({
+        gcm: expt_comparison_workflow(which_ssw, i_gcm)[2]
+        for (i_gcm,gcm) in enumerate(gcms)
+        })
+    wkf_era5 = pipeline_era5.era5_workflow(which_ssw)
+    return wkfs_comp,wkf_era5
+
+
 def expt_comparison_workflow(which_ssw, i_gcm):
     # TODO clean up this dictionary from extraneous information 
     gcms,expts,fc_dates,onset_date,term_date = gcm_multiparams(which_ssw)
@@ -295,10 +306,7 @@ def preprocess_gcm_6hrPt(dsmem,fcdate,timesel,spacesel,verbose=False):
 
 def compare_gcms(which_ssw, idx_gcms):
     gcms,expts,fc_dates,_,term_date = gcm_multiparams(which_ssw)
-    wkfs = [expt_comparison_workflow(which_ssw,i_gcm) for i_gcm in idx_gcms]
-    [wkfs_era5,wkfss,wkfss_comp] = [[wkf[i] for wkf in wkfs] for i in range(len(wkfs))]
-    wkf_era5 = wkfs_era5[0]
-
+    wkfs_comp,wkf_era5 = gcm_comparison_workflow(which_ssw)
     colors = dict({'era5': 'black', 'control': 'dodgerblue', 'free': 'limegreen', 'nudged': 'red'})
     yoffsets = dict({'control': 1/3, 'free': 0.0, 'nudged': -1/3})
     figdir = wkf_era5['figdir'].replace('era5','multimodel')
@@ -620,7 +628,7 @@ def plot_gevsevlev_select_regions():
     return 
 
 def plot_gevsevlev_comp_select_regions(
-        gevsevlev_files, gevsevlev_files_era5,
+        gevsevlev_files, gevsevlev_files_era5, mem_special_era5,
         ens_files_cgts_extt, ens_files_cgts_extt_era5, 
         expts, expt_pairs, expt_baseline, cgs_levels, fc_dates, event_region, select_regions,
         gcm, onset_date, term_date, 
@@ -630,6 +638,7 @@ def plot_gevsevlev_comp_select_regions(
         ):
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
         da_cgts_extt_era5 = xr.open_dataarray(ens_files_cgts_extt_era5[i_cgs_level])
+        i_mem_special_era5 = np.argmax([mem==mem_special_era5 for mem in da_cgts_extt_era5.coords['member'].values])
         da_cgts_extt = (
                 xr.concat([
                     xr.concat([
@@ -658,7 +667,7 @@ def plot_gevsevlev_comp_select_regions(
                 ordering_for_interp = np.flip(ordering_for_interp)
             for (i_fcdate,fc_date) in enumerate(fc_dates):
                 fig = plt.figure(figsize=(15,15))
-                gs = gridspec.GridSpec(nrows=3, ncols=2, figure=fig, width_ratios=[2,1], height_ratios=[0.15,2,1])
+                gs = gridspec.GridSpec(nrows=3, ncols=2, figure=fig, width_ratios=[2,1], height_ratios=[0.15,2,1], hspace=0.0, wspace=0.0)
                 axtitle = fig.add_subplot(gs[0,0:2])
                 axgev = fig.add_subplot(gs[1,0])
                 axdvar = fig.add_subplot(gs[2,0], sharex=axgev)
@@ -682,6 +691,7 @@ def plot_gevsevlev_comp_select_regions(
                     if ext_sign == -1:
                         ordering_for_interp_empirical = np.flip(ordering_for_interp_empirical)
                     order = np.argsort(exttemp)
+                    rank = np.argsort(order)
                     # GEV 
                     axgev.scatter(risk_empirical[ordering_for_interp_empirical], exttemp[order], marker='+', color=expt_colors[expt])
                     h, = axgev.plot(risks,sevlev.isel(boot=0).to_numpy(),color=expt_colors[expt], label=expt)
@@ -696,6 +706,11 @@ def plot_gevsevlev_comp_select_regions(
                     relrisk = risks_interp/risks_interp_baseline
                     axrr.plot(relrisk[0,:], sevlev_common, color=expt_colors[expt])
                     axrr.fill_betweenx(sevlev_common, *(np.quantile(relrisk, 0.5+0.5*sgn*confint_width, axis=0) for sgn in (-1,1)), color=expt_colors[expt], alpha=0.25, zorder=-1)
+                    if "era5" == expt:
+                        for ax in (axgev,axrr):
+                            ax.axhline(exttemp[i_mem_special_era5], color=expt_colors['era5'], linestyle='--')
+                        for ax in (axgev,axdvar):
+                            ax.axvline(risk_empirical[rank[i_mem_special_era5]], color=expt_colors['era5'], linestyle='--')
 
                 fc_date_abbrv = dtlib.datetime.strftime(fc_date,'%Y%m%d')
                 fc_date_label = dtlib.datetime.strftime(fc_date,'%Y/%m/%d')
@@ -764,11 +779,11 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 {expt: 
                     [wkfs[expt][i_fc_date]['gevsevlev_files'] for i_fc_date in range(len(fc_dates))] 
                     for expt in expts},
-                wkf_era5['gevsevlev_files'],
+                wkf_era5['gevsevlev_files'], wkf_era5['event_year'],
                 {expt: 
                     [wkfs[expt][i_fc_date]['ens_files_cgts_extt'] for i_fc_date in range(len(fc_dates))] 
                     for expt in expts},
-                *dtoa(wkf_era5, 'ens_files_cgts_extt'),
+                *dtoa(wkf_era5, 'ens_files_cgts_extt, '),
                 *dtoa(wkf_comp, '''
                 expts, expt_pairs, expt_baseline, cgs_levels, fc_dates, event_region, select_regions, 
                 gcm, onset_date, term_date, 
@@ -1165,11 +1180,13 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
         pipeline_base.plot_gevsevlev_select_regions(
                 *dtoa(wkf, 'ens_files_cgts, ens_files_cgts_extt, gevsevlev_files'),
                 *dtoa(wkf_era5, 'ens_files_cgts, ens_files_cgts_extt, gevsevlev_files, event_year, param_bounds_file'),
+                'ERA5',
                 *dtoa(wkf, '''
                 cgs_levels, daily_stat,
                 event_region, select_regions,
                 boot_type, confint_width,
-                figdir, figfile_tag, figtitle_affix, onset_date, term_date, 
+                figdir, figfile_tag, figtitle_affix, gcm,
+                fc_dates, fc_date, onset_date, term_date, 
                 prob_symb, ext_sign, ext_symb, leq_symb, ineq_symb
                 '''),
                 ref_is_different=True,

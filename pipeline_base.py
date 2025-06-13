@@ -897,11 +897,12 @@ def fit_gev_select_regions(ens_files_cgts_extt, gevsevlev_files, risk_levels, cg
 def plot_gevsevlev_select_regions(
         ens_files_cgts, ens_files_cgts_extt, gevsevlev_files, 
         ens_files_cgts_ref, ens_files_cgts_extt_ref, gevsevlev_files_ref, 
-        mem_special_ref, param_bounds_file, 
+        mem_special_ref, param_bounds_file, ref_label,
         cgs_levels, daily_stat,
         event_region, select_regions, 
         boot_type, confint_width, 
-        figdir, figfile_tag, figtitle_affix, onset_date, term_date, 
+        figdir, figfile_tag, figtitle_affix, gcm_label,
+        fc_dates, fc_date, onset_date, term_date, 
         prob_symb, ext_sign, ext_symb, leq_symb, ineq_symb,
         ref_is_different=False, # whether the reference ensemble is different from the main one 
         ):
@@ -951,22 +952,25 @@ def plot_gevsevlev_select_regions(
                 pdb.set_trace()
             # --------------- Figure: left GEV, right timeseries ---------
             fig = plt.figure(figsize=(12,8))
-            gs = gridspec.GridSpec(figure=fig, nrows=2, ncols=2, height_ratios=[1,18])
+            gs = gridspec.GridSpec(figure=fig, nrows=2, ncols=2, height_ratios=[1,18], hspace=0.0)
             ax_title = fig.add_subplot(gs[0,0:2])
             ax_gev = fig.add_subplot(gs[1,0])
             ax_timeseries = fig.add_subplot(gs[1,1], sharey=ax_gev)
 
             # GEV & sevlev
+            grk = utils.greekletters()
+            def param_label_fun(loc,scale,shape):
+                param_label = '\n'.join([
+                    '%s=%.1f'%(grk["mu"],ext_sign*loc),
+                    '%s=%.1f'%(grk["sigma"],scale),
+                    '%s=%+.2f'%(grk["xi"],shape)
+                    ])
+                return param_label
             ax = ax_gev
             handles = []
             # non-ref
             ax.scatter(risk_empirical, exttemp[order], color='red', marker='+')
-            param_label = '\n'.join([
-                r'$\mu=%.1f$'%(ext_sign*loc),
-                r'$\sigma=%.1f$'%(scale),
-                r'$\xi=%+.2f$'%(shape)
-                ])
-            h, = ax.plot(risk_levels,sevlev[0,:],color='red', label=param_label)
+            h, = ax.plot(risk_levels,sevlev[0,:],color='red', label=gcm_label+'\n'+param_label_fun(loc,scale,shape))
             handles.append(h)
             boot_quant_lo,boot_quant_hi = (np.quantile(sevlev[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
             if boot_type == 'percentile':
@@ -976,12 +980,7 @@ def plot_gevsevlev_select_regions(
             ax.fill_between(risk_levels, lo, hi, fc='red', ec='none', alpha=0.3, zorder=-1)
             # ref
             ax.scatter(risk_empirical_ref, exttemp_ref[order_ref], color='black', marker='+')
-            param_label = '\n'.join([
-                r'$\mu=%.1f$'%(ext_sign*loc_ref),
-                r'$\sigma=%.1f$'%(scale_ref),
-                r'$\xi=%+.2f$'%(shape_ref)
-                ])
-            h, = ax.plot(risk_levels_ref,sevlev_ref[0,:],color='black', label=param_label)
+            h, = ax.plot(risk_levels_ref,sevlev_ref[0,:],color='black', label=ref_label+'\n'+param_label_fun(loc_ref,scale_ref,shape_ref))
             handles.append(h)
             boot_quant_lo,boot_quant_hi = (np.quantile(sevlev_ref[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
             if boot_type == 'percentile':
@@ -990,13 +989,15 @@ def plot_gevsevlev_select_regions(
                 lo,hi = 2*sevlev_ref[0,:]-boot_quant_hi, 2*sevlev_ref[0,:]-boot_quant_lo
             ax.fill_between(risk_levels_ref, lo, hi, fc='gray', ec='none', alpha=0.3, zorder=-1)
             ax.axhline(exttemp_ref_special, color='black', linestyle='--', linewidth=1.5)
+            ax.axvline(risk_empirical_ref[rank_ref[idx_mem_special_ref]], color='black', linestyle='--')
+            ax.scatter(sevlev_special, exttemp_ref_special, color='black', marker='.')
 
             # Decorations 
             ax.set_xscale('log')
 
             fmtfun = lambda dt: dtlib.datetime.strftime(dt, "%m/%d")
             ax.set_xlabel(f'{prob_symb}{{{ext_symb}{{T2M(t): {fmtfun(onset_date)} {leq_symb} t {leq_symb} {fmtfun(term_date)}}} {ineq_symb} T}}')
-            ax.set_ylabel(r'$T$')
+            ax.set_ylabel(r'T [K]')
             ax.set_ylim(temp_bounds)
             ax.set_title('')
             ax.legend(handles=handles)
@@ -1015,7 +1016,7 @@ def plot_gevsevlev_select_regions(
                 T_argmax = argmaxwindow(temp_gcm).isel(time=i_t_argmax).item()
                 ts_argmax.append(t_argmax)
                 Ts_argmax.append(T_argmax)
-            ax.scatter(ts_argmax, Ts_argmax,color='purple', marker='+')
+            ax.scatter(ts_argmax, Ts_argmax,color='red', marker='+')
             # collect all the min points 
             ts_argmax = []
             Ts_argmax = []
@@ -1033,24 +1034,19 @@ def plot_gevsevlev_select_regions(
             ax.axvline(onset_date, color='dodgerblue', zorder=-1, alpha=0.5)
             ax.axvline(term_date, color='dodgerblue', zorder=-1, alpha=0.5)
             ax.set_title('')
-            ax.set_xlabel('Time')
+            ax.axvline(fc_date, color='red', linestyle='--', zorder=-1)
+            ax.set_xlabel('')
+            xtickvalues = [fc_date] + [onset_date, term_date]
+            fmtfun = lambda date: dtlib.datetime.strftime(date, "%Y/%m/%d")
+            xticklabels = list(map(fmtfun, xtickvalues))
+            ax.set_xticks(xtickvalues, xticklabels, rotation=37.5, ha='right')
             ax.yaxis.set_tick_params(which='both', labelbottom=True)
             ax.set_ylabel('')
 
             shape,loc,scale = (gevpar.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
             shape_ref,loc_ref,scale_ref = (gevpar_ref.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
-            param_label = ','.join([
-                r'$\mu=%d$'%(ext_sign*loc),
-                r'$\sigma=%d$'%(scale),
-                r'$\xi=%.2f$'%(shape)
-                ])
-            param_label_ref = ','.join([
-                r'$\mu=%d$'%(ext_sign*loc_ref),
-                r'$\sigma=%d$'%(scale_ref),
-                r'$\xi=%.2f$'%(shape_ref)
-                ])
             # Title
-            ax_title.text(0.5, 0.5, figtitle_affix, transform=ax_title.transAxes, ha='center', va='center')
+            ax_title.text(0.5, 0.0, figtitle_affix, transform=ax_title.transAxes, ha='center', va='bottom', fontsize=20)
             ax_title.axis('off')
 
             fig.savefig(join(figdir,f'gevsevlev_{figfile_tag}_cgs{cgs_level[0]}x{cgs_level[1]}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
