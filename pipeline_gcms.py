@@ -109,13 +109,16 @@ def expt_comparison_workflow(which_ssw, i_gcm):
     wkf_comp.update({key: wkfs[expts[0]][0][key] for key in utils.unbag_args(keys2share)})
     wkf_comp['expt_baseline'] = 'free'
     wkf_comp['expt_pairs'] = [('free','nudged'),('free','control')]
-    wkf_comp['valatrisk_comp_files'] = [] # a netcdf file per coarse-graining level 
+    wkf_comp['valatrisk_comp_files'] = [] # a single netcdf file per coarse-graining level. TODO should include error bars
     wkf_comp['gevsevlev_comp_files'] = []
+    wkf_comp['relrisk_dvalatrisk_comp_files'] = []
     for (i_cgs_level,cgs_level) in enumerate(wkf_comp['cgs_levels']):
         wkf_comp['valatrisk_comp_files'].append(join(wkf_comp['reduced_data_dir'],'valatrisk_comp_cgs%dx%d.nc'%(cgs_level[0],cgs_level[1])))
         wkf_comp['gevsevlev_comp_files'].append([])
+        wkf_comp['relrisk_dvalatrisk_comp_files'].append([])
         for (i_lon,i_lat) in wkf_comp['select_regions'][i_cgs_level]:
             wkf_comp['gevsevlev_comp_files'][i_cgs_level].append(join(wkf_comp['reduced_data_dir'],'gevsevlev_comp_cgs%dx%d_ilon%d_ilat%d.nc'%(cgs_level[0],cgs_level[1],i_lon,i_lat)))
+            wkf_comp['relrisk_dvalatrisk_comp_files'][i_cgs_level].append(join(wkf_comp['reduced_data_dir'],'relrisk_dvalatrisk_comp_cgs%dx%d_ilon%d_ilat%d.nc'%(cgs_level[0],cgs_level[1],i_lon,i_lat)))
 
     return wkf_era5,wkfs,wkf_comp
 
@@ -304,9 +307,44 @@ def preprocess_gcm_6hrPt(dsmem,fcdate,timesel,spacesel,verbose=False):
     #sys.exit()
     return dsmem_tas
 
+def plot_relrisks_dvalatrisks_allgcms(
+        valatrisk_comp_files: dict, 
+        gevsevlev_comp_files: dict,
+        gcms, fc_dates, 
+        cgs_levels, select_regions,
+        figdir
+        ):
+    # 2D scatter plot: dvalatrisk vs relrisk 
+    # different color for each GCM; different marker for free->control and free->nudged  
+    # left and right panels for early and late FC date 
+    for (i_cgs_level,cgs_level) in enumerate(cgs_levels[:1]):
+        valatrisk_comp = xr.open_dataset(valatrisk_comp_files[i_cgs_level])
+        for (i_region,(i_lon,i_lat)) in enumerate(select_regions[i_cgs_level]):
+            fig = plt.figure(figsize=(25,12))
+            gs = gridspec.GridSpec(figure=fig, nrows=2, ncols=2, height_ratios=[1,18], width_ratios=[1,1])
+            ax_title = fig.add_subplot(gs[0,:])
+            ax_fc0 = fig.add_subplot(gs[1,0])
+            ax_fc1 = fig.add_subplot(gs[1,1], sharex=ax_fc0, sharey=ax_fc1)
+            for (i_gcm,gcm) in enumerate(gcms):
+                gevsevlev_comp = xr.open_dataset(gevsevlev_comp_files[gcm][i_cgs_level][i_region])
+    return
+
+            
+
+
+
 def compare_gcms(which_ssw, idx_gcms):
+    todo = dict({
+        'plot_relrisks_dvalatrisks': 1,
+        })
+
     gcms,expts,fc_dates,_,term_date = gcm_multiparams(which_ssw)
     wkfs_comp,wkf_era5 = gcm_comparison_workflow(which_ssw)
+
+    if todo['plot_relrisks_dvalatrisks']:
+        pass
+
+
     colors = dict({'era5': 'black', 'control': 'dodgerblue', 'free': 'limegreen', 'nudged': 'red'})
     yoffsets = dict({'control': 1/3, 'free': 0.0, 'nudged': -1/3})
     figdir = wkf_era5['figdir'].replace('era5','multimodel')
@@ -634,7 +672,7 @@ def plot_gevsevlev_comp_select_regions(
         gcm, onset_date, term_date, 
         ext_sign, confint_width, 
         ineq_symb, ext_symb, expt_colors, 
-        figdir,
+        figdir, gevsevlev_comp_files, relrisk_dvalatrisk_comp_files
         ):
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
         da_cgts_extt_era5 = xr.open_dataarray(ens_files_cgts_extt_era5[i_cgs_level])
@@ -658,6 +696,12 @@ def plot_gevsevlev_comp_select_regions(
                         for (i_expt,expt) in enumerate(expts)],
                         dim='expt')
                         .assign_coords(expt=expts)
+                    )
+            # Add another dataarray to this: relative risks and quantile shifts 
+            relrisk_dvalatrisk = xr.DataArray(
+                    coords={'fc_date': fc_dates, 'expt': expts+['era5'], 'quantity':  ['relrisk','dvalatrisk'], 'side': ['lo','mid','hi']},
+                    dims=['fc_date','expt','quantity','side'],
+                    data=np.nan
                     )
             gevsevlev_era5 = xr.open_dataset(gevsevlev_files_era5[i_cgs_level][i_region])
             sev_bounds = utils.padded_bounds(da_cgts_extt_era5.isel(lon=i_lon,lat=i_lat), inflation=0.5)
@@ -711,6 +755,12 @@ def plot_gevsevlev_comp_select_regions(
                             ax.axhline(exttemp[i_mem_special_era5], color=expt_colors['era5'], linestyle='--')
                         for ax in (axgev,axdvar):
                             ax.axvline(risk_empirical[rank[i_mem_special_era5]], color=expt_colors['era5'], linestyle='--')
+                    relrisk_dvalatrisk.loc[dict(expt=expt,fc_date=fc_date,quantity='relrisk',side='mid')] = np.interp(exttemp[i_mem_special_era5], sevlev_common, relrisk[0,:])
+                    relrisk_dvalatrisk.loc[dict(expt=expt,fc_date=fc_date,quantity='relrisk',side='lo')] = np.interp(exttemp[i_mem_special_era5], sevlev_common, np.quantile(relrisk, 0.5-0.5*confint_width, axis=0))
+                    relrisk_dvalatrisk.loc[dict(expt=expt,fc_date=fc_date,quantity='relrisk',side='hi')] = np.interp(exttemp[i_mem_special_era5], sevlev_common, np.quantile(relrisk, 0.5+0.5*confint_width, axis=0))
+                    relrisk_dvalatrisk.loc[dict(expt=expt,fc_date=fc_date,quantity='dvalatrisk',side='mid')] = np.interp(risk_empirical[rank[i_mem_special_era5]], risks, dvar[0,:])
+                    relrisk_dvalatrisk.loc[dict(expt=expt,fc_date=fc_date,quantity='dvalatrisk',side='lo')] = np.interp(risk_empirical[rank[i_mem_special_era5]], risks, np.quantile(dvar, 0.5-0.5*confint_width, axis=0))
+                    relrisk_dvalatrisk.loc[dict(expt=expt,fc_date=fc_date,quantity='dvalatrisk',side='hi')] = np.interp(risk_empirical[rank[i_mem_special_era5]], risks, np.quantile(dvar, 0.5+0.5*confint_width, axis=0))
 
                 fc_date_abbrv = dtlib.datetime.strftime(fc_date,'%Y%m%d')
                 fc_date_label = dtlib.datetime.strftime(fc_date,'%Y/%m/%d')
@@ -736,6 +786,8 @@ def plot_gevsevlev_comp_select_regions(
                 axdvar.set_ylim((sev_bounds[1]-sev_bounds[0])*np.array([-1/4,1/4]))
                 fig.savefig(join(figdir,f'gevsevlev_comp_fc{fc_date_abbrv}_cgs{cgs_level[0]}x{cgs_level[1]}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
                 plt.close(fig)
+            relrisk_dvalatrisk.to_netcdf(relrisk_dvalatrisk_comp_files[i_cgs_level][i_region])
+            gevsevlev.to_netcdf(gevsevlev_comp_files[i_cgs_level][i_region])
 
                 
     return
@@ -775,6 +827,7 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 ''')
                 )
     if todo['plot_gevsevlev_comp_select_regions']:
+        # TODO split this task into two subtasks: one to compile together the gevsevlevs into a single netcdf, and anothre to plot them. For now, stack them both into the same function
         plot_gevsevlev_comp_select_regions(
                 {expt: 
                     [wkfs[expt][i_fc_date]['gevsevlev_files'] for i_fc_date in range(len(fc_dates))] 
@@ -789,7 +842,7 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 gcm, onset_date, term_date, 
                 ext_sign, confint_width,
                 ineq_symb, ext_symb, expt_colors,
-                figdir,
+                figdir, gevsevlev_comp_files, relrisk_dvalatrisk_comp_files
                 ''')
                 )
                 
@@ -1200,7 +1253,7 @@ if __name__ == "__main__":
     gcms2ignore = ["BCC-CSM2-HR","GLOBO","GEM-NEMO","CanESM5","SPEAR"]
 
     idx_gcms = [i for i in range(len(gcms)) if ((gcms[i] not in gcms2ignore))]
-    idx_gcms = [gcms.index(gcm) for gcm in ['CESM2-CAM6','IFS'][1:]] #,'CESM2-CAM6']]
+    idx_gcms = [gcms.index(gcm) for gcm in ['CESM2-CAM6','IFS'][0:2]] #,'CESM2-CAM6']]
     print(f'{idx_gcms = }')
     print(f'{[gcms[i] for i in idx_gcms] = }')
     idx_expt = [0,1,2]

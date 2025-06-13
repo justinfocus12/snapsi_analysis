@@ -878,7 +878,7 @@ def fit_gev_exttemp_1d_uq(exttemp, risks, ext_sign, method='PWM', n_boot=1000):
     levels = ext_sign*stfu.complementary_quantile_parametric('gev', gevpar_dict, risks)
     sevlev = xr.DataArray(coords={'boot': np.arange(n_boot+1), 'risk': risks}, dims=['boot','risk'], data=levels) # for severity levels
     gevsevlev = xr.Dataset(data_vars={'gevpar': gevpar, 'sevlev': sevlev})
-    # levels should get progressively less eextreme as risk_levels increases, because less-extreme levels have a higher risk of being exceeded
+    # levels should get progressively less extreme as risk_levels increases, because less-extreme levels have a higher risk of being exceeded
 
     return gevsevlev
 
