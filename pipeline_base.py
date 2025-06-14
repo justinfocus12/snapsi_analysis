@@ -883,7 +883,14 @@ def fit_gev_exttemp_1d_uq(exttemp, risks, ext_sign, method='PWM', n_boot=1000):
     return gevpar, sevlev #gevsevlev
 
 
-def fit_gev_select_regions(ens_files_cgts_extt_ref, mem_special_ref, ens_files_cgts_extt, gevsevlev_files, risk_levels, cgs_levels, select_regions, ext_sign, n_boot=1000):
+def fit_gev_select_regions(
+        ens_files_cgts_extt_ref, gevsevlev_files_ref, 
+        mem_special_ref, 
+        ens_files_cgts_extt, gevsevlev_files, 
+        risk_levels, cgs_levels, select_regions, ext_sign, 
+        expt_equals_ref: bool,
+        n_boot=1000
+        ):
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
         da_cgts_extt = xr.open_dataarray(ens_files_cgts_extt[i_cgs_level])
         da_cgts_extt_ref = xr.open_dataarray(ens_files_cgts_extt_ref[i_cgs_level])
@@ -896,21 +903,24 @@ def fit_gev_select_regions(ens_files_cgts_extt_ref, mem_special_ref, ens_files_c
                     )
             extt_ref = da_cgts_extt_ref.isel(lon=i_lon,lat=i_lat).to_numpy().flatten()
             # Additionally, here should calculate risk and value at risk  
-            risk_ref = spgex.sf(ext_sign*extt_ref[i_mem_special_ref], -gevpar.sel(param="shape").to_numpy(), gevpar.sel(param="loc").to_numpy(), gevpar.sel(param="scale").to_numpy())
-            rank_special_ref = np.argsort(np.argsort(extt_ref))[i_mem_special_ref]
-            prob_greater = (Nmem_ref - rank_special_ref + 0.5) / Nmem_ref
-            prob_lesser = (rank_special_ref + 0.5) / Nmem_ref 
-            risk_empirical_special_ref = prob_greater if 1==ext_sign else prob_lesser
-            valatrisk = ext_sign*spgex.isf(risk_empirical_special_ref, -gevpar.sel(param="shape").to_numpy(), gevpar.sel(param="loc").to_numpy(), gevpar.sel(param="scale").to_numpy())
-            gev_sev_rr_var = xr.Dataset(data_vars={
+            risk_refgivenexpt = spgex.sf(ext_sign*extt_ref[i_mem_special_ref], -gevpar.sel(param="shape").to_numpy(), gevpar.sel(param="loc").to_numpy(), gevpar.sel(param="scale").to_numpy())
+            if expt_equals_ref:
+                risk_refgivenref = risk_refgivenexpt
+            else:
+                risk_refgivenref = xr.open_dataset(gevsevlev_files_ref[i_cgs_level][i_region])['risk_refgivenexpt']
+            # ---------- VESTIGE -------------
+            #rank_special_ref = np.argsort(np.argsort(extt_ref))[i_mem_special_ref]
+            #prob_greater = (Nmem_ref - rank_special_ref + 0.5) / Nmem_ref
+            #prob_lesser = (rank_special_ref + 0.5) / Nmem_ref 
+            #risk_empirical_special_ref = prob_greater if 1==ext_sign else prob_lesser
+            valatrisk_refgivenexpt = ext_sign*spgex.isf(risk_refgivenref[0], -gevpar.sel(param="shape").to_numpy(), gevpar.sel(param="loc").to_numpy(), gevpar.sel(param="scale").to_numpy())
+            gev_sev_risk_var = xr.Dataset(data_vars={
                 'gevpar': gevpar, 
                 'sevlev': sevlev, 
-                'risk_ref': xr.DataArray(coords={'boot': np.arange(n_boot+1),},data=risk_ref),
-                'valatrisk_ref': xr.DataArray(coords={'boot': np.arange(n_boot+1),}, data=valatrisk)
+                'risk_refgivenexpt': xr.DataArray(coords={'boot': np.arange(n_boot+1),},data=risk_refgivenexpt),
+                'valatrisk_refgivenexpt': xr.DataArray(coords={'boot': np.arange(n_boot+1),}, data=valatrisk_refgivenexpt)
                 })
-            print(f'{valatrisk = }')
-            print(f'{risk_ref = }')
-            gev_sev_rr_var.to_netcdf(gevsevlev_files[i_cgs_level][i_region])
+            gev_sev_risk_var.to_netcdf(gevsevlev_files[i_cgs_level][i_region])
     return
 
 def plot_gevsevlev_select_regions(
@@ -948,8 +958,10 @@ def plot_gevsevlev_select_regions(
             risk_levels_ref = gevsevlev_ref.coords['risk'].to_numpy() # increasing 
             gevpar = gevsevlev['gevpar']
             gevpar_ref = gevsevlev_ref['gevpar']
-            risk_ref = gevsevlev['risk_ref']
-            valatrisk_ref = gevsevlev['valatrisk_ref']
+            risk_refgivenexpt = gevsevlev['risk_refgivenexpt']
+            valatrisk_refgivenexpt = gevsevlev['valatrisk_refgivenexpt']
+            risk_refgivenref = gevsevlev_ref['risk_refgivenexpt']
+            valatrisk_refgivenref = gevsevlev_ref['valatrisk_refgivenexpt']
 
             center_lon = event_region['lon'].start + (i_lon+0.5)*lon_blocksize
             center_lat = event_region['lat'].start + (i_lat+0.5)*lat_blocksize
@@ -1001,13 +1013,15 @@ def plot_gevsevlev_select_regions(
             ax.fill_between(risk_levels, lo, hi, fc='red', ec='none', alpha=0.3, zorder=-1)
             # Plot the ref risk value to make sure it's consistent
             ax.plot(
-                    [risk_ref[0]] + [np.quantile(risk_ref[1:], 0.5*(1+sgn*confint_width)) for sgn in [-1,1]], 
+                    [risk_refgivenexpt.isel(boot=0).item()] + [np.quantile(risk_refgivenexpt.isel(boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]], 
                     exttemp_ref_special*np.ones(3), 
-                    color='purple', marker='o')
+                    color='purple', linewidth=3, zorder=2
+                    )
             ax.plot(
-                    risk_empirical_ref[rank_ref[idx_mem_special_ref]]*np.ones(3), 
-                    [valatrisk_ref[0]] + [np.quantile(valatrisk_ref[1:], 0.5*(1+sgn*confint_width)) for sgn in [-1,1]],
-                    color='purple', marker='o'
+                    #risk_empirical_ref[rank_ref[idx_mem_special_ref]]*np.ones(3), 
+                    risk_refgivenref.isel(boot=0).item()*np.ones(3),
+                    [valatrisk_refgivenexpt.isel(boot=0).item()] + [np.quantile(valatrisk_refgivenexpt[1:], 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]],
+                    color='purple', linewidth=3, zorder=2
                     )
             # ref
             ax.scatter(risk_empirical_ref, exttemp_ref[order_ref], color='black', marker='+')
@@ -1019,9 +1033,12 @@ def plot_gevsevlev_select_regions(
             else:
                 lo,hi = 2*sevlev_ref[0,:]-boot_quant_hi, 2*sevlev_ref[0,:]-boot_quant_lo
             ax.fill_between(risk_levels_ref, lo, hi, fc='gray', ec='none', alpha=0.3, zorder=-1)
+            # Two big h/v lines: one for the empirical value of risk, and one for the risk and var according to the GCM 
             ax.axhline(exttemp_ref_special, color='black', linestyle='--', linewidth=1.5)
             ax.axvline(risk_empirical_ref[rank_ref[idx_mem_special_ref]], color='black', linestyle='--')
-            ax.scatter(risk_empirical_ref[rank_ref[idx_mem_special_ref]], exttemp_ref_special, color='black', marker='.')
+            ax.axhline(valatrisk_refgivenexpt.isel(boot=0).item(), color='purple', linestyle='--')
+            ax.axvline(risk_refgivenref.isel(boot=0).item(), color='purple', linestyle='--')
+            ax.scatter(risk_empirical_ref[rank_ref[idx_mem_special_ref]], exttemp_ref_special, color='black', marker='o', s=12)
 
             # Decorations 
             ax.set_xscale('log')

@@ -110,15 +110,15 @@ def expt_comparison_workflow(which_ssw, i_gcm):
     wkf_comp['expt_baseline'] = 'free'
     wkf_comp['expt_pairs'] = [('free','nudged'),('free','control')]
     wkf_comp['valatrisk_comp_files'] = [] # a single netcdf file per coarse-graining level. TODO should include error bars
-    wkf_comp['gevsevlev_comp_files'] = []
-    wkf_comp['relrisk_dvalatrisk_comp_files'] = []
+    wkf_comp['gevsevlev_comp_files'] = [] # this includes the relative risks and value at risks
+    #wkf_comp['relrisk_dvalatrisk_comp_files'] = []
     for (i_cgs_level,cgs_level) in enumerate(wkf_comp['cgs_levels']):
         wkf_comp['valatrisk_comp_files'].append(join(wkf_comp['reduced_data_dir'],'valatrisk_comp_cgs%dx%d.nc'%(cgs_level[0],cgs_level[1])))
         wkf_comp['gevsevlev_comp_files'].append([])
-        wkf_comp['relrisk_dvalatrisk_comp_files'].append([])
+        #wkf_comp['relrisk_dvalatrisk_comp_files'].append([])
         for (i_lon,i_lat) in wkf_comp['select_regions'][i_cgs_level]:
             wkf_comp['gevsevlev_comp_files'][i_cgs_level].append(join(wkf_comp['reduced_data_dir'],'gevsevlev_comp_cgs%dx%d_ilon%d_ilat%d.nc'%(cgs_level[0],cgs_level[1],i_lon,i_lat)))
-            wkf_comp['relrisk_dvalatrisk_comp_files'][i_cgs_level].append(join(wkf_comp['reduced_data_dir'],'relrisk_dvalatrisk_comp_cgs%dx%d_ilon%d_ilat%d.nc'%(cgs_level[0],cgs_level[1],i_lon,i_lat)))
+            #wkf_comp['relrisk_dvalatrisk_comp_files'][i_cgs_level].append(join(wkf_comp['reduced_data_dir'],'relrisk_dvalatrisk_comp_cgs%dx%d_ilon%d_ilat%d.nc'%(cgs_level[0],cgs_level[1],i_lon,i_lat)))
 
     return wkf_era5,wkfs,wkf_comp
 
@@ -510,6 +510,39 @@ def plot_gevpar_difference_maps(wkfs,wkf_comp):
 def expt_pair_coordval(expt_pair):
     return '%s2%s'%(expt_pair[0],expt_pair[1])
 
+def compute_gevsevlev_comp_select_regions(
+        # A more-detailed regional verion of valatrisk_comp 
+        gevsevlev_files: dict, 
+        gevsevlev_files_ref, 
+        gevsevlev_comp_files, 
+        risk_levels,
+        expts, expt_pairs, cgs_levels, select_regions, fc_dates, n_boot
+        ):
+    for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
+        for (i_region,(i_lat,i_lon)) in enumerate(select_regions[i_cgs_level]):
+            gev_sev_risk_var = xr.concat([
+                xr.concat([
+                    xr.open_dataset(gevsevlev_files[expt][i_fc_date][i_cgs_level][i_region])
+                    for (i_fc_date,fc_date) in enumerate(fc_dates)
+                    ], dim='fc_date').assign_coords(fc_date=fc_dates)
+                for expt in expts
+                ], dim='expt').assign_coords(expt=expts)
+            gev_sev_risk_var_ref = xr.open_dataset(gevsevlev_files_ref[i_cgs_level][i_region])
+            # Compute relative risks and changes in value at risk 
+            rr_dvar = xr.DataArray(coords={'expt_pair': list(map(expt_pair_coordval, expt_pairs)), 'fc_date': fc_dates, 'quantity': ['relrisk','dvalatrisk'], 'boot': np.arange(n_boot+1)}, dims=['expt_pair','fc_date','quantity','boot'], data=np.nan)
+            for (i_expt_pair,expt_pair) in enumerate(expt_pairs):
+                rr_dvar.loc[dict(expt_pair=expt_pair_coordval(expt_pair))] = np.divide(*(
+                    gev_sev_risk_var['risk_refgivenexpt']
+                    .sel(expt=expt)
+                    for expt in (expt_pair[1],expt_pair[0])
+                    ))
+            gev_sev_risk_var_rr_dvar = xr.Dataset(data_vars={**gev_sev_risk_var.data_vars, 'rr_dvar': rr_dvar})
+            gev_sev_risk_var_rr_dvar.to_netcdf(gevsevlev_comp_files[i_cgs_level][i_region])
+            pdb.set_trace()
+    return
+
+
+
 def compute_valatrisk_comp(
         valatrisk_files: dict,
         valatrisk_comp_files,
@@ -666,6 +699,7 @@ def plot_gevsevlev_select_regions():
     return 
 
 def plot_gevsevlev_comp_select_regions(
+        # TODO read in the precomputed RRs and DVs to ease this  
         gevsevlev_files, gevsevlev_files_era5, mem_special_era5,
         ens_files_cgts_extt, ens_files_cgts_extt_era5, 
         expts, expt_pairs, expt_baseline, cgs_levels, fc_dates, event_region, select_regions,
@@ -799,10 +833,11 @@ def plot_gevsevlev_comp_select_regions(
 
 def compare_expts(which_ssw, i_gcm, i_init):
     todo = dict({
-        'plot_gevpar_map_diffs':                0,
-        'compute_valatrisk_comp':               0,
-        'plot_valatrisk_comp_maps':             0,
-        'plot_gevsevlev_comp_select_regions':   1,
+        'plot_gevpar_map_diffs':                    0,
+        'compute_valatrisk_comp':                   0,
+        'plot_valatrisk_comp_maps':                 0,
+        'compute_gevsevlev_comp_select_regions':    1,
+        'plot_gevsevlev_comp_select_regions':       0,
         })
     gcms,expts,fc_dates,_,term_date = gcm_multiparams(which_ssw)
     wkf_era5,wkfs,wkf_comp = expt_comparison_workflow(which_ssw,i_gcm)
@@ -824,6 +859,16 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 valatrisk_comp_files, 
                 expt_pairs, event_region, cgs_levels, fc_dates, ext_sign,
                 figdir, gcm, onset_date, term_date, ineq_symb, ext_symb,
+                ''')
+                )
+    if todo['compute_gevsevlev_comp_select_regions']:
+        compute_gevsevlev_comp_select_regions(
+                {expt: 
+                    [wkfs[expt][i_fc_date]['gevsevlev_files'] for i_fc_date in range(len(fc_dates))] for expt in expts},
+                wkf_era5['gevsevlev_files'],
+                *dtoa(wkf_comp,'''
+                gevsevlev_comp_files, 
+                risk_levels, expts, expt_pairs, cgs_levels, select_regions, fc_dates, n_boot
                 ''')
                 )
     if todo['plot_gevsevlev_comp_select_regions']:
@@ -1123,8 +1168,8 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
         'compute_risk':                     0,
         'plot_risk_map':                    0,
         'plot_valatrisk_map':               0,
-        'fit_gev_select_regions':           1,
-        'plot_gevsevlev_select_regions':    1,
+        'fit_gev_select_regions':           0,
+        'plot_gevsevlev_select_regions':    0,
         })
 
     # In this main function, specify only the inputs and outputs as files 
@@ -1223,12 +1268,17 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                 )
     if todo['fit_gev_select_regions']:
         pipeline_base.fit_gev_select_regions(
-                *dtoa(wkf_era5, 'ens_files_cgts_extt, event_year'),
+                *dtoa(wkf_era5, '''
+                ens_files_cgts_extt, gevsevlev_files, 
+                event_year
+                '''),
                 *dtoa(wkf, '''
-                ens_files_cgts_extt, gevsevlev_files, risk_levels, 
+                ens_files_cgts_extt, gevsevlev_files, 
+                risk_levels, 
                 cgs_levels, select_regions,
                 ext_sign,
                 '''),
+                False, n_boot=1000
                 )
     if todo['plot_gevsevlev_select_regions']:
         pipeline_base.plot_gevsevlev_select_regions(
@@ -1254,7 +1304,7 @@ if __name__ == "__main__":
     gcms2ignore = ["BCC-CSM2-HR","GLOBO","GEM-NEMO","CanESM5","SPEAR"]
 
     idx_gcms = [i for i in range(len(gcms)) if ((gcms[i] not in gcms2ignore))]
-    idx_gcms = [gcms.index(gcm) for gcm in ['CESM2-CAM6','IFS'][0:2]] #,'CESM2-CAM6']]
+    idx_gcms = [gcms.index(gcm) for gcm in ['CESM2-CAM6','IFS'][1:2]] #,'CESM2-CAM6']]
     print(f'{idx_gcms = }')
     print(f'{[gcms[i] for i in idx_gcms] = }')
     idx_expt = [0,1,2]

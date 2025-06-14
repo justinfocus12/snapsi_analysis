@@ -340,11 +340,13 @@ def reduce_era5(which_ssw):
     if todo['fit_gev_select_regions']:
         pipeline_base.fit_gev_select_regions(
                 *dtoa(wkf, '''
-                ens_files_cgts_extt, event_year, 
+                ens_files_cgts_extt, gevsevlev_files,
+                event_year, 
                 ens_files_cgts_extt, gevsevlev_files, risk_levels, 
                 cgs_levels, select_regions,
                 ext_sign,
                 '''),
+                True, n_boot=wkf['n_boot'],
                 )
 
     if todo['plot_gev_select_regions']:
