@@ -1123,7 +1123,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
         'compute_risk':                     0,
         'plot_risk_map':                    0,
         'plot_valatrisk_map':               0,
-        'fit_gev_select_regions':           0,
+        'fit_gev_select_regions':           1,
         'plot_gevsevlev_select_regions':    1,
         })
 
@@ -1223,6 +1223,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
                 )
     if todo['fit_gev_select_regions']:
         pipeline_base.fit_gev_select_regions(
+                *dtoa(wkf_era5, 'ens_files_cgts_extt, event_year'),
                 *dtoa(wkf, '''
                 ens_files_cgts_extt, gevsevlev_files, risk_levels, 
                 cgs_levels, select_regions,

@@ -238,15 +238,15 @@ def reduce_era5(which_ssw):
         'interpolate_landmask':             0,
         'coarse_grain_time':                0,
         'coarse_grain_space':               0,
-        'set_param_bounds':                 1,
+        'set_param_bounds':                 0,
         'onset_date_sensitivity_analysis':  0,
         'compute_severities':               0,
         'plot_sumstats_map':                0,
         'fit_gev':                          0,
-        'plot_gevpar_map':                  1,
+        'plot_gevpar_map':                  0,
         'compute_risk':                     0,
         'plot_risk_map':                    0,
-        'fit_gev_select_regions':           0,
+        'fit_gev_select_regions':           1,
         'plot_gev_select_regions':          0,
         })
     wkf = era5_workflow(which_ssw)
@@ -340,6 +340,7 @@ def reduce_era5(which_ssw):
     if todo['fit_gev_select_regions']:
         pipeline_base.fit_gev_select_regions(
                 *dtoa(wkf, '''
+                ens_files_cgts_extt, event_year, 
                 ens_files_cgts_extt, gevsevlev_files, risk_levels, 
                 cgs_levels, select_regions,
                 ext_sign,
