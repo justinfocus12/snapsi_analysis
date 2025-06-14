@@ -519,7 +519,7 @@ def compute_gevsevlev_comp_select_regions(
         expts, expt_pairs, cgs_levels, select_regions, fc_dates, n_boot
         ):
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
-        for (i_region,(i_lat,i_lon)) in enumerate(select_regions[i_cgs_level]):
+        for (i_region,(i_lon,i_lat)) in enumerate(select_regions[i_cgs_level]):
             gev_sev_risk_var = xr.concat([
                 xr.concat([
                     xr.open_dataset(gevsevlev_files[expt][i_fc_date][i_cgs_level][i_region])
@@ -527,18 +527,28 @@ def compute_gevsevlev_comp_select_regions(
                     ], dim='fc_date').assign_coords(fc_date=fc_dates)
                 for expt in expts
                 ], dim='expt').assign_coords(expt=expts)
-            gev_sev_risk_var_ref = xr.open_dataset(gevsevlev_files_ref[i_cgs_level][i_region])
+            #gev_sev_risk_var_ref = xr.open_dataset(gevsevlev_files_ref[i_cgs_level][i_region])
             # Compute relative risks and changes in value at risk 
             rr_dvar = xr.DataArray(coords={'expt_pair': list(map(expt_pair_coordval, expt_pairs)), 'fc_date': fc_dates, 'quantity': ['relrisk','dvalatrisk'], 'boot': np.arange(n_boot+1)}, dims=['expt_pair','fc_date','quantity','boot'], data=np.nan)
             for (i_expt_pair,expt_pair) in enumerate(expt_pairs):
-                rr_dvar.loc[dict(expt_pair=expt_pair_coordval(expt_pair))] = np.divide(*(
+                rr_dvar.loc[dict(expt_pair=expt_pair_coordval(expt_pair),quantity='relrisk')] = np.divide(*(
                     gev_sev_risk_var['risk_refgivenexpt']
                     .sel(expt=expt)
                     for expt in (expt_pair[1],expt_pair[0])
                     ))
-            gev_sev_risk_var_rr_dvar = xr.Dataset(data_vars={**gev_sev_risk_var.data_vars, 'rr_dvar': rr_dvar})
+                rr_dvar.loc[dict(expt_pair=expt_pair_coordval(expt_pair),quantity='dvalatrisk')] = np.subtract(*(
+                    gev_sev_risk_var['valatrisk_refgivenexpt']
+                    .sel(expt=expt)
+                    for expt in (expt_pair[1],expt_pair[0])
+                    ))
+            gev_sev_risk_var_rr_dvar = xr.Dataset(data_vars={**{dv: gev_sev_risk_var[dv].copy() for dv in gev_sev_risk_var.data_vars.keys()}, 'rr_dvar': rr_dvar})
+            print(f'{i_lon = }, {i_lat = }')
+            #if (i_lon == 8 and i_lat == 1):
+            #    pdb.set_trace()
             gev_sev_risk_var_rr_dvar.to_netcdf(gevsevlev_comp_files[i_cgs_level][i_region])
-            pdb.set_trace()
+            
+            gev_sev_risk_var.close()
+            gev_sev_risk_var_rr_dvar.close()
     return
 
 
@@ -700,13 +710,13 @@ def plot_gevsevlev_select_regions():
 
 def plot_gevsevlev_comp_select_regions(
         # TODO read in the precomputed RRs and DVs to ease this  
-        gevsevlev_files, gevsevlev_files_era5, mem_special_era5,
+        gevsevlev_comp_files, gevsevlev_files_era5, mem_special_era5,
         ens_files_cgts_extt, ens_files_cgts_extt_era5, 
         expts, expt_pairs, expt_baseline, cgs_levels, fc_dates, event_region, select_regions,
         gcm, onset_date, term_date, 
         ext_sign, confint_width, 
         ineq_symb, ext_symb, expt_colors, 
-        figdir, gevsevlev_comp_files, relrisk_dvalatrisk_comp_files
+        figdir, 
         ):
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
         da_cgts_extt_era5 = xr.open_dataarray(ens_files_cgts_extt_era5[i_cgs_level])
@@ -721,48 +731,35 @@ def plot_gevsevlev_comp_select_regions(
                 .assign_coords(expt=expts)
                 )
         for (i_region,(i_lon,i_lat)) in enumerate(select_regions[i_cgs_level]):
-            gevsevlev = (
-                    xr.concat([
-                        xr.concat([
-                            xr.open_dataset(gevsevlev_files[expt][i_fcdate][i_cgs_level][i_region]) for i_fcdate in range(len(fc_dates))],
-                            dim='fc_date')
-                            .assign_coords(fc_date=fc_dates)
-                        for (i_expt,expt) in enumerate(expts)],
-                        dim='expt')
-                        .assign_coords(expt=expts)
-                    )
-            # Add another dataarray to this: relative risks and quantile shifts 
-            relrisk_dvalatrisk = xr.DataArray(
-                    coords={'fc_date': fc_dates, 'expt': expts+['era5'], 'quantity':  ['relrisk','dvalatrisk'], 'side': ['lo','mid','hi']},
-                    dims=['fc_date','expt','quantity','side'],
-                    data=np.nan
-                    )
-            gevsevlev_era5 = xr.open_dataset(gevsevlev_files_era5[i_cgs_level][i_region])
+            gev_sev_risk_var_rr_dvar = xr.open_dataset(gevsevlev_comp_files[i_cgs_level][i_region])
+            sevlev = gev_sev_risk_var_rr_dvar['sevlev']
+            sevlev_era5 = xr.open_dataset(gevsevlev_files_era5[i_cgs_level][i_region])['sevlev']
             sev_bounds = utils.padded_bounds(da_cgts_extt_era5.isel(lon=i_lon,lat=i_lat), inflation=0.5)
-            risks = gevsevlev.coords["risk"].to_numpy() # increasing 
+            risks = sevlev.coords["risk"].to_numpy() # increasing 
             ordering_for_interp = np.arange(len(risks)-1,-1,-1)
             if ext_sign == -1:
                 ordering_for_interp = np.flip(ordering_for_interp)
             for (i_fcdate,fc_date) in enumerate(fc_dates):
-                fig = plt.figure(figsize=(15,15))
-                gs = gridspec.GridSpec(nrows=3, ncols=2, figure=fig, width_ratios=[2,1], height_ratios=[0.15,2,1], hspace=0.0, wspace=0.0)
-                axtitle = fig.add_subplot(gs[0,0:2])
+                fig = plt.figure(figsize=(9,12))
+                gs = gridspec.GridSpec(nrows=3, ncols=2, figure=fig, width_ratios=[2,1], height_ratios=[1/9, 2, 1], hspace=0.1, wspace=0.1)
+                ax_title = fig.add_subplot(gs[0,0:2])
                 axgev = fig.add_subplot(gs[1,0])
                 axdvar = fig.add_subplot(gs[2,0], sharex=axgev)
                 axrr = fig.add_subplot(gs[1,1], sharey=axgev)
+                axrrdvar = fig.add_subplot(gs[2,1], sharey=axdvar, sharex=axrr)
 
                 handles = []
-                sevlev_common = np.linspace(*(utils.padded_bounds(gevsevlev["sevlev"], inflation=0.0)), 40)
-                interp_fun = lambda sevlev: np.interp(sevlev_common, sevlev[ordering_for_interp], risks[ordering_for_interp])
-                risks_interp_baseline = np.apply_along_axis(interp_fun, 1, gevsevlev["sevlev"].sel(fc_date=fc_date,expt=expt_baseline).to_numpy())
+                sevlev_common = np.linspace(*(utils.padded_bounds(sevlev, inflation=0.0)), 40)
+                interp_fun = lambda sev: np.interp(sevlev_common, sev[ordering_for_interp], risks[ordering_for_interp])
+                risks_interp_baseline = np.apply_along_axis(interp_fun, 1, sevlev.sel(fc_date=fc_date,expt=expt_baseline).to_numpy())
                 for expt in expts+['era5']:
                     if expt in expts:
                         exttemp = da_cgts_extt.isel(lon=i_lon,lat=i_lat).sel(expt=expt,fc_date=fc_date).to_numpy()
-                        sevlev = gevsevlev["sevlev"].sel(fc_date=fc_date,expt=expt)
+                        sevlev_expt = sevlev.sel(fc_date=fc_date,expt=expt)
                         Nmem = da_cgts_extt.coords['member'].size
                     else:
                         exttemp = da_cgts_extt_era5.isel(lon=i_lon,lat=i_lat).to_numpy()
-                        sevlev = gevsevlev_era5["sevlev"]
+                        sevlev_expt = sevlev_era5
                         Nmem = da_cgts_extt_era5.coords['member'].size
                     risk_empirical = np.arange(0,Nmem,1)/Nmem
                     ordering_for_interp_empirical = np.arange(Nmem-1,-1,-1)
@@ -772,43 +769,49 @@ def plot_gevsevlev_comp_select_regions(
                     rank = np.argsort(order)
                     # GEV 
                     axgev.scatter(risk_empirical[ordering_for_interp_empirical], exttemp[order], marker='+', color=expt_colors[expt])
-                    h, = axgev.plot(risks,sevlev.isel(boot=0).to_numpy(),color=expt_colors[expt], label=expt)
+                    h, = axgev.plot(risks,sevlev_expt.isel(boot=0).to_numpy(),color=expt_colors[expt], label=expt)
                     handles.append(h)
-                    axgev.fill_between(risks,*(np.quantile(sevlev.to_numpy(), 0.5+sgn*0.5*confint_width, axis=0) for sgn in [-1,1]), alpha=0.25, color=expt_colors[expt], zorder=-1)
+                    axgev.fill_between(risks,*(np.quantile(sevlev_expt.to_numpy(), 0.5+sgn*0.5*confint_width, axis=0) for sgn in [-1,1]), alpha=0.25, color=expt_colors[expt], zorder=-1)
                     # Quantile shift
-                    dvar = sevlev.to_numpy() - gevsevlev["sevlev"].sel(fc_date=fc_date,expt=expt_baseline)
+                    dvar = sevlev_expt.to_numpy() - sevlev.sel(fc_date=fc_date,expt=expt_baseline)
                     axdvar.plot(risks, dvar[0,:], color=expt_colors[expt])
                     axdvar.fill_between(risks, *(np.quantile(dvar, 0.5+sgn*0.5*confint_width, axis=0) for sgn in (-1,1)), alpha=0.5, zorder=-1, color=expt_colors[expt])
                     # interpolate for relative risks
-                    risks_interp = np.apply_along_axis(interp_fun, 1, sevlev.to_numpy())
+                    risks_interp = np.apply_along_axis(interp_fun, 1, sevlev_expt.to_numpy())
                     relrisk = risks_interp/risks_interp_baseline
                     axrr.plot(relrisk[0,:], sevlev_common, color=expt_colors[expt])
                     axrr.fill_betweenx(sevlev_common, *(np.quantile(relrisk, 0.5+0.5*sgn*confint_width, axis=0) for sgn in (-1,1)), color=expt_colors[expt], alpha=0.25, zorder=-1)
+                    print(f'{expt = }')
+                    if (expt_baseline,expt) in expt_pairs:
+                        axrrdvar.scatter(*(
+                            gev_sev_risk_var_rr_dvar['rr_dvar'].sel(expt_pair=expt_pair_coordval((expt_baseline,expt)),fc_date=fc_date,quantity=q,boot=0).item() for q in ['relrisk','dvalatrisk']),
+                            color=expt_colors[expt], marker='o')
                     if "era5" == expt:
                         for ax in (axgev,axrr):
                             ax.axhline(exttemp[i_mem_special_era5], color=expt_colors['era5'], linestyle='--')
                         for ax in (axgev,axdvar):
                             ax.axvline(risk_empirical[rank[i_mem_special_era5]], color=expt_colors['era5'], linestyle='--')
-                    relrisk_dvalatrisk.loc[dict(expt=expt,fc_date=fc_date,quantity='relrisk',side='mid')] = np.interp(exttemp[i_mem_special_era5], sevlev_common, relrisk[0,:])
-                    relrisk_dvalatrisk.loc[dict(expt=expt,fc_date=fc_date,quantity='relrisk',side='lo')] = np.interp(exttemp[i_mem_special_era5], sevlev_common, np.quantile(relrisk, 0.5-0.5*confint_width, axis=0))
-                    relrisk_dvalatrisk.loc[dict(expt=expt,fc_date=fc_date,quantity='relrisk',side='hi')] = np.interp(exttemp[i_mem_special_era5], sevlev_common, np.quantile(relrisk, 0.5+0.5*confint_width, axis=0))
-                    relrisk_dvalatrisk.loc[dict(expt=expt,fc_date=fc_date,quantity='dvalatrisk',side='mid')] = np.interp(risk_empirical[rank[i_mem_special_era5]], risks, dvar[0,:])
-                    relrisk_dvalatrisk.loc[dict(expt=expt,fc_date=fc_date,quantity='dvalatrisk',side='lo')] = np.interp(risk_empirical[rank[i_mem_special_era5]], risks, np.quantile(dvar, 0.5-0.5*confint_width, axis=0))
-                    relrisk_dvalatrisk.loc[dict(expt=expt,fc_date=fc_date,quantity='dvalatrisk',side='hi')] = np.interp(risk_empirical[rank[i_mem_special_era5]], risks, np.quantile(dvar, 0.5+0.5*confint_width, axis=0))
 
                 fc_date_abbrv = dtlib.datetime.strftime(fc_date,'%Y%m%d')
                 fc_date_label = dtlib.datetime.strftime(fc_date,'%Y/%m/%d')
                 lonlatstr = utils.lonlatstr(event_region,cgs_level,i_lon,i_lat)
 
                 # Decorations
-                axtitle.text(
-                        0.0, 0.0, 
+                ax_title.text(
+                        0.5, 0.0, 
                         f'{gcm}, FC {fc_date_label}, {lonlatstr}',
-                        ha='left', va='bottom', transform=axtitle.transAxes, fontsize=20
+                        ha='center', va='bottom', transform=ax_title.transAxes, fontsize=20
                         )
-                axtitle.axis('off')
+                #ax_title.text(0.5, 0.0, figtitle_affix, transform=ax_title.transAxes, ha='center', va='bottom', fontsize=20)
+                ax_title.axis('off')
                 axgev.legend(handles=handles)
 
+                axrrdvar.axhline(0, color=expt_colors[expt_baseline])
+                axrrdvar.axvline(1, color=expt_colors[expt_baseline])
+                axrrdvar.set_xlabel("risk / (free risk)")
+                axgev.set_ylabel("Severity [K]")
+                grk = utils.greekletters()
+                axrrdvar.set_ylabel(f"{grk['Delta']}(severity)")
 
                 for ax in (axgev, axdvar, axrr):
                     ax.set_xscale('log')
@@ -816,12 +819,19 @@ def plot_gevsevlev_comp_select_regions(
                     ax.set_ylim(sev_bounds)
                 for ax in (axgev, axdvar):
                     ax.set_xlim([risks[0],risks[-1]])
-                axrr.set_xlim([0.25, 4])
+                for ax in (axrr,axrrdvar):
+                    ax.set_xlim([0.25, 4])
+                    rr_tickvals = [0.25, 0.5, 1.0, 2.0, 4.0]
+                    axrr.set_xticks(rr_tickvals, map(str, rr_tickvals))
+                for ax in (axgev,axrr):
+                    ax.xaxis.set_tick_params(which='both',labelbottom=False)
+                for ax in (axgev,axdvar):
+                    ax.yaxis.set_tick_params(which='both',labelbottom=False)
                 axdvar.set_ylim((sev_bounds[1]-sev_bounds[0])*np.array([-1/4,1/4]))
                 fig.savefig(join(figdir,f'gevsevlev_comp_fc{fc_date_abbrv}_cgs{cgs_level[0]}x{cgs_level[1]}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
                 plt.close(fig)
-            relrisk_dvalatrisk.to_netcdf(relrisk_dvalatrisk_comp_files[i_cgs_level][i_region])
-            gevsevlev.to_netcdf(gevsevlev_comp_files[i_cgs_level][i_region])
+            #relrisk_dvalatrisk.to_netcdf(relrisk_dvalatrisk_comp_files[i_cgs_level][i_region])
+            #gevsevlev.to_netcdf(gevsevlev_comp_files[i_cgs_level][i_region])
 
                 
     return
@@ -837,7 +847,7 @@ def compare_expts(which_ssw, i_gcm, i_init):
         'compute_valatrisk_comp':                   0,
         'plot_valatrisk_comp_maps':                 0,
         'compute_gevsevlev_comp_select_regions':    1,
-        'plot_gevsevlev_comp_select_regions':       0,
+        'plot_gevsevlev_comp_select_regions':       1,
         })
     gcms,expts,fc_dates,_,term_date = gcm_multiparams(which_ssw)
     wkf_era5,wkfs,wkf_comp = expt_comparison_workflow(which_ssw,i_gcm)
@@ -874,9 +884,7 @@ def compare_expts(which_ssw, i_gcm, i_init):
     if todo['plot_gevsevlev_comp_select_regions']:
         # TODO split this task into two subtasks: one to compile together the gevsevlevs into a single netcdf, and anothre to plot them. For now, stack them both into the same function
         plot_gevsevlev_comp_select_regions(
-                {expt: 
-                    [wkfs[expt][i_fc_date]['gevsevlev_files'] for i_fc_date in range(len(fc_dates))] 
-                    for expt in expts},
+                wkf_comp['gevsevlev_comp_files'],
                 wkf_era5['gevsevlev_files'], wkf_era5['event_year'],
                 {expt: 
                     [wkfs[expt][i_fc_date]['ens_files_cgts_extt'] for i_fc_date in range(len(fc_dates))] 
@@ -887,7 +895,7 @@ def compare_expts(which_ssw, i_gcm, i_init):
                 gcm, onset_date, term_date, 
                 ext_sign, confint_width,
                 ineq_symb, ext_symb, expt_colors,
-                figdir, gevsevlev_comp_files, relrisk_dvalatrisk_comp_files
+                figdir, 
                 ''')
                 )
                 
