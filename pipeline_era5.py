@@ -152,7 +152,6 @@ def era5_workflow(which_ssw,verbose=False):
             confint_width     =confint_width,
             boot_type = 'percentile', 
             )
-    print(f'Finished setting up workflow')
     return workflow
 
 def interpolate_landmask(landmask_full_file, landmask_interp_file, Nlon_interp, Nlat_interp, event_region):

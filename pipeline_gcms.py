@@ -54,15 +54,90 @@ def all_gcms_institutes():
         })
     return gcm2institute
 
-def gcm_comparison_workflow(which_ssw):
+def gcm_plot_styles():            
+    styles = dict({
+        'BCC-CSM2-HR': dict({
+            'marker': '.',
+            }),
+        'GLOBO': dict({
+            'marker': '.',
+            }),
+        'GEM-NEMO': dict({
+            'marker': '.',
+            }),
+        'CanESM5': dict({
+            'marker': '.',
+            }),
+        'IFS': dict({
+            'marker': "$I$",
+            }),
+        'SPEAR': dict({
+            'marker': "$S$",
+            }),
+        'GRIMs': dict({
+            'marker': "$G$",
+            }),
+        'GloSea6-GC32': dict({
+            'marker': "$\Gamma$",
+            }),
+        'CNRM-CM61': dict({
+            'marker': "$N$",
+            }),
+        'CESM2-CAM6': dict({
+            'marker': "$C$",
+            }),
+        'NAVGEM': dict({
+            'marker': "$V$",
+            }),
+        'GloSea6': dict({
+            'marker': "$\gamma$",
+            }),
+        })
+    return styles
+
+def gcm_comparison_workflow(which_ssw, idx_gcms):
     gcms,expts,fc_dates,onset_date,term_date = gcm_multiparams(which_ssw)
     fc_dates,onset_date_nominal,term_date = pipeline_base.dates_of_interest(which_ssw)
     wkfs_comp = dict({
-        gcm: expt_comparison_workflow(which_ssw, i_gcm)[2]
-        for (i_gcm,gcm) in enumerate(gcms)
+        gcms[i_gcm]: expt_comparison_workflow(which_ssw, i_gcm)[2]
+        for i_gcm in idx_gcms
         })
     wkf_era5 = pipeline_era5.era5_workflow(which_ssw)
-    return wkfs_comp,wkf_era5
+    wkf_gcmcomp = dict(gcms=[gcms[i_gcm] for i_gcm in idx_gcms],expts=expts)
+    keys2share = '''
+    expt_pairs,
+    expt_colors,
+    event_year,
+    event_region,
+    context_region,
+    Nlon_interp,
+    Nlat_interp,
+    ext_sign,
+    ext_symb,
+    prob_symb,
+    ineq_symb,
+    leq_symb,
+    landmask_interp_file,
+    param_bounds_file,
+    daily_stat,
+    risk_levels,
+    n_boot,
+    confint_width,
+    boot_type,
+    onset_date,
+    term_date,
+    fc_dates, 
+    cgs_levels, 
+    select_regions,
+    '''
+    wkf_gcmcomp.update({key: wkfs_comp[gcms[idx_gcms[0]]][key] for key in utils.unbag_args(keys2share)})
+    wkf_gcmcomp['gevsevlev_comp_files'] = dict({
+        gcms[i_gcm]: wkfs_comp[gcms[i_gcm]]['gevsevlev_comp_files']
+        for i_gcm in idx_gcms
+        })
+    wkf_gcmcomp['figdir'] = wkfs_comp[gcms[idx_gcms[0]]]['figdir'].replace(gcms[idx_gcms[0]],'multimodel')
+    makedirs(wkf_gcmcomp['figdir'], exist_ok=True)
+    return wkf_gcmcomp,wkfs_comp,wkf_era5
 
 
 def expt_comparison_workflow(which_ssw, i_gcm):
@@ -308,28 +383,51 @@ def preprocess_gcm_6hrPt(dsmem,fcdate,timesel,spacesel,verbose=False):
     return dsmem_tas
 
 def plot_relrisks_dvalatrisks_allgcms(
-        valatrisk_comp_files: dict, 
         gevsevlev_comp_files: dict,
         gcms, fc_dates, 
         cgs_levels, select_regions,
+        expts,expt_pairs,expt_colors,
         figdir
         ):
     # 2D scatter plot: dvalatrisk vs relrisk 
     # different color for each GCM; different marker for free->control and free->nudged  
     # left and right panels for early and late FC date 
-    for (i_cgs_level,cgs_level) in enumerate(cgs_levels[:1]):
-        valatrisk_comp = xr.open_dataset(valatrisk_comp_files[i_cgs_level])
+    gcmstyles = gcm_plot_styles()
+    for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
         for (i_region,(i_lon,i_lat)) in enumerate(select_regions[i_cgs_level]):
             fig = plt.figure(figsize=(25,12))
             gs = gridspec.GridSpec(figure=fig, nrows=2, ncols=2, height_ratios=[1,18], width_ratios=[1,1])
             ax_title = fig.add_subplot(gs[0,:])
             ax_fc0 = fig.add_subplot(gs[1,0])
-            ax_fc1 = fig.add_subplot(gs[1,1], sharex=ax_fc0, sharey=ax_fc1)
+            ax_fc1 = fig.add_subplot(gs[1,1], sharex=ax_fc0, sharey=ax_fc0)
+            axs_fc = [ax_fc0,ax_fc1]
+            handles = []
             for (i_gcm,gcm) in enumerate(gcms):
-                gevsevlev_comp = xr.open_dataset(gevsevlev_comp_files[gcm][i_cgs_level][i_region])
+                gev_sev_risk_var_rr_dvar = xr.open_dataset(gevsevlev_comp_files[gcm][i_cgs_level][i_region])
+                rr_dvar = gev_sev_risk_var_rr_dvar['rr_dvar'] #.sel(quantity=q) for q in ['relrisk','dvalatrisk'])
+                for (i_expt_pair,expt_pair) in enumerate(expt_pairs):
+                    for (fc_date,ax) in zip(fc_dates,axs_fc):
+                        h = ax.scatter(*(
+                            rr_dvar.sel(quantity=q,expt_pair=expt_pair_coordval(expt_pair),fc_date=fc_date,boot=0).item()
+                            for q in ('relrisk','dvalatrisk')),
+                            marker=gcmstyles[gcm]['marker'], color=expt_colors[expt_pair[1]],
+                            s=100,
+                            label=gcm
+                            )
+                        if i_expt_pair == 0 and ax == axs_fc[0]:
+                            handles.append(h)
+                    # TODO add errorbars to each one 
+            for (fc_date,ax) in zip(fc_dates,axs_fc):
+                ax.set_xscale('log')
+                #ax.set_xlim([0.25, 4.0])
+                ax.set_title(dtlib.datetime.strftime(fc_date,"FC %Y/%m/%d"))
+                ax.axhline(0, color=expt_colors['free'])
+                ax.axvline(1, color=expt_colors['free'])
+            fig.savefig(join(figdir,f'relrisks_dvalatrisks_allgcms_cgs{cgs_level[0]}x{cgs_level[1]}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
+            plt.close(fig)
+                   
     return
 
-            
 
 
 
@@ -337,12 +435,20 @@ def compare_gcms(which_ssw, idx_gcms):
     todo = dict({
         'plot_relrisks_dvalatrisks': 1,
         })
-
     gcms,expts,fc_dates,_,term_date = gcm_multiparams(which_ssw)
-    wkfs_comp,wkf_era5 = gcm_comparison_workflow(which_ssw)
+    wkf_gcmcomp,wkfs_comp,wkf_era5 = gcm_comparison_workflow(which_ssw, idx_gcms)
 
     if todo['plot_relrisks_dvalatrisks']:
-        pass
+        plot_relrisks_dvalatrisks_allgcms(
+                *dtoa(wkf_gcmcomp,'''
+                gevsevlev_comp_files,
+                gcms, fc_dates, cgs_levels, select_regions,
+                expts, expt_pairs, expt_colors,
+                figdir
+                ''')
+                )
+
+    return
 
 
     colors = dict({'era5': 'black', 'control': 'dodgerblue', 'free': 'limegreen', 'nudged': 'red'})
@@ -1315,11 +1421,10 @@ if __name__ == "__main__":
     gcms2ignore = ["BCC-CSM2-HR","GLOBO","GEM-NEMO","CanESM5","SPEAR"]
 
     idx_gcms = [i for i in range(len(gcms)) if ((gcms[i] not in gcms2ignore))]
-    #idx_gcms = [gcms.index(gcm) for gcm in ['CESM2-CAM6','IFS'][1:2]] #,'CESM2-CAM6']]
+    #idx_gcms = [gcms.index(gcm) for gcm in ['CNRM-CM61','CESM2-CAM6','NAVGEM','GloSea6'][3:4]]
     print(f'{idx_gcms = }')
     print(f'{[gcms[i] for i in idx_gcms] = }')
     idx_expt = [0,1,2]
-    idx_expt_pairs = [(1,0),(1,2)]
     idx_init = [0,1]
     ssws = ['feb2018','jan2019','sep2019'][:1]
     procedures = sys.argv[1:]

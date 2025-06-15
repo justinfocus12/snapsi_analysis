@@ -678,6 +678,9 @@ def plot_gevpar_difference_maps_flat(gevpar_files_0, expt0, gevpar_files_1, expt
             decorate_mercator_axis(ax, lonmin, lonmax, latmin, latmax)
         fig.savefig(join(figdir, f'gevpar_diff_map_e{expt0}to{expt1}_i{fc_date_abbrv}_cgs{cgs_level[0]}x{cgs_level[1]}.png'), **pltkwargs)
         plt.close(fig)
+        gevpar0.close()
+        gevpar1.close()
+    param_bounds.close()
 
     return 
 
