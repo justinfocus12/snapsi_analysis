@@ -733,7 +733,8 @@ def plot_gevsevlev_comp_select_regions(
         for (i_region,(i_lon,i_lat)) in enumerate(select_regions[i_cgs_level]):
             gev_sev_risk_var_rr_dvar = xr.open_dataset(gevsevlev_comp_files[i_cgs_level][i_region])
             sevlev = gev_sev_risk_var_rr_dvar['sevlev']
-            sevlev_era5 = xr.open_dataset(gevsevlev_files_era5[i_cgs_level][i_region])['sevlev']
+            gevsevlev_era5 = xr.open_dataset(gevsevlev_files_era5[i_cgs_level][i_region])
+            sevlev_era5,risk_refgivenref = gevsevlev_era5['sevlev'],gevsevlev_era5['risk_refgivenexpt']
             sev_bounds = utils.padded_bounds(da_cgts_extt_era5.isel(lon=i_lon,lat=i_lat), inflation=0.5)
             risks = sevlev.coords["risk"].to_numpy() # increasing 
             ordering_for_interp = np.arange(len(risks)-1,-1,-1)
@@ -790,7 +791,8 @@ def plot_gevsevlev_comp_select_regions(
                         for ax in (axgev,axrr):
                             ax.axhline(exttemp[i_mem_special_era5], color=expt_colors['era5'], linestyle='--')
                         for ax in (axgev,axdvar):
-                            ax.axvline(risk_empirical[rank[i_mem_special_era5]], color=expt_colors['era5'], linestyle='--')
+                            #ax.axvline(risk_empirical[rank[i_mem_special_era5]], color=expt_colors['era5'], linestyle='--')
+                            ax.axvline(risk_refgivenref.isel(boot=0).item(), color=expt_colors['era5'], linestyle='--')
 
                 fc_date_abbrv = dtlib.datetime.strftime(fc_date,'%Y%m%d')
                 fc_date_label = dtlib.datetime.strftime(fc_date,'%Y/%m/%d')
@@ -811,7 +813,8 @@ def plot_gevsevlev_comp_select_regions(
                 axrrdvar.set_xlabel("risk / (free risk)")
                 axgev.set_ylabel("Severity [K]")
                 grk = utils.greekletters()
-                axrrdvar.set_ylabel(f"{grk['Delta']}(severity)")
+                axdvar.set_ylabel(f"{grk['Delta']}(severity)")
+                axdvar.set_xlabel("Probability")
 
                 for ax in (axgev, axdvar, axrr):
                     ax.set_xscale('log')
@@ -825,7 +828,7 @@ def plot_gevsevlev_comp_select_regions(
                     axrr.set_xticks(rr_tickvals, map(str, rr_tickvals))
                 for ax in (axgev,axrr):
                     ax.xaxis.set_tick_params(which='both',labelbottom=False)
-                for ax in (axgev,axdvar):
+                for ax in (axrr,axrrdvar):
                     ax.yaxis.set_tick_params(which='both',labelbottom=False)
                 axdvar.set_ylim((sev_bounds[1]-sev_bounds[0])*np.array([-1/4,1/4]))
                 fig.savefig(join(figdir,f'gevsevlev_comp_fc{fc_date_abbrv}_cgs{cgs_level[0]}x{cgs_level[1]}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
@@ -841,11 +844,11 @@ def plot_gevsevlev_comp_select_regions(
 
     
 
-def compare_expts(which_ssw, i_gcm, i_init):
+def compare_expts(which_ssw, i_gcm):
     todo = dict({
-        'plot_gevpar_map_diffs':                    0,
-        'compute_valatrisk_comp':                   0,
-        'plot_valatrisk_comp_maps':                 0,
+        'plot_gevpar_map_diffs':                    1,
+        'compute_valatrisk_comp':                   1,
+        'plot_valatrisk_comp_maps':                 1,
         'compute_gevsevlev_comp_select_regions':    1,
         'plot_gevsevlev_comp_select_regions':       1,
         })
@@ -1166,18 +1169,18 @@ def onset_date_sensitivity_analysis(
 def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
     todo = dict({
-        'coarse_grain_time':                0,
-        'coarse_grain_space':               0,
-        'onset_date_sensitivity_analysis':  0,
-        'compute_severities':               0,
-        'plot_sumstats_map':                0,
-        'fit_gev':                          0,
-        'plot_gevpar_map':                  0,
-        'compute_risk':                     0,
-        'plot_risk_map':                    0,
-        'plot_valatrisk_map':               0,
-        'fit_gev_select_regions':           0,
-        'plot_gevsevlev_select_regions':    0,
+        'coarse_grain_time':                1,
+        'coarse_grain_space':               1,
+        'onset_date_sensitivity_analysis':  1,
+        'compute_severities':               1,
+        'plot_sumstats_map':                1,
+        'fit_gev':                          1,
+        'plot_gevpar_map':                  1,
+        'compute_risk':                     1,
+        'plot_risk_map':                    1,
+        'plot_valatrisk_map':               1,
+        'fit_gev_select_regions':           1,
+        'plot_gevsevlev_select_regions':    1,
         })
 
     # In this main function, specify only the inputs and outputs as files 
@@ -1312,7 +1315,7 @@ if __name__ == "__main__":
     gcms2ignore = ["BCC-CSM2-HR","GLOBO","GEM-NEMO","CanESM5","SPEAR"]
 
     idx_gcms = [i for i in range(len(gcms)) if ((gcms[i] not in gcms2ignore))]
-    idx_gcms = [gcms.index(gcm) for gcm in ['CESM2-CAM6','IFS'][1:2]] #,'CESM2-CAM6']]
+    #idx_gcms = [gcms.index(gcm) for gcm in ['CESM2-CAM6','IFS'][1:2]] #,'CESM2-CAM6']]
     print(f'{idx_gcms = }')
     print(f'{[gcms[i] for i in idx_gcms] = }')
     idx_expt = [0,1,2]
@@ -1332,8 +1335,8 @@ if __name__ == "__main__":
                     if 'reduce' in procedures:
                         reduce_gcm(which_ssw,i_gcm,i_expt,i_init)
                         print(f'------------------ finished reduction------------')
-                if 'compare_expts' in procedures:
-                    print(f'------------- STARTING compare_expts -----------')
-                    compare_expts(which_ssw, i_gcm, i_init)
+            if 'compare_expts' in procedures:
+                print(f'------------- STARTING compare_expts -----------')
+                compare_expts(which_ssw, i_gcm)
         if 'compare_gcms' in procedures:
             compare_gcms(which_ssw, idx_gcms)
