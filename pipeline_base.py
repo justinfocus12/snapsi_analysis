@@ -109,7 +109,7 @@ def onset_date_sensitivity_analysis(ens_files_cgts, event_region, cgs_levels, fc
         cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
         da_cgts = xr.open_dataset(ens_files_cgts[i_cgs_level])['1xday'].sel(daily_stat=daily_stat)
         intensity_lims = utils.padded_bounds(da_cgts)
-        onset_dates = [init_date+dtlib.timedelta(days=dt) for dt in range(1, (term_date-init_date).days+1)]
+        onset_dates = [init_date+dtlib.timedelta(days=dt) for dt in range(1, (term_date-init_date).days-1)]
         severities = xr.DataArray(
                 coords = dict(
                     **{c: da_cgts.sel(event_region).coords[c] for c in ['lon','lat','member',]},

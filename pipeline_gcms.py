@@ -969,10 +969,10 @@ def plot_gevsevlev_comp_select_regions(
 
 def compare_expts(which_ssw, i_gcm):
     todo = dict({
-        'plot_gevpar_map_diffs':                    0,
-        'compute_valatrisk_comp':                   0,
-        'plot_valatrisk_comp_maps':                 0,
-        'compute_gevsevlev_comp_select_regions':    0,
+        'plot_gevpar_map_diffs':                    1,
+        'compute_valatrisk_comp':                   1,
+        'plot_valatrisk_comp_maps':                 1,
+        'compute_gevsevlev_comp_select_regions':    1,
         'plot_gevsevlev_comp_select_regions':       1,
         })
     gcms,expts,fc_dates,_,term_date = gcm_multiparams(which_ssw)
@@ -1289,9 +1289,23 @@ def onset_date_sensitivity_analysis(
 
 
 
-def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todo=None):
+def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
-    if todo is None:
+    todokeys = utils.unbag_args('''
+    coarse_grain_time,              
+    coarse_grain_space,             
+    onset_date_sensitivity_analysis,
+    compute_severities,             
+    plot_sumstats_map,              
+    fit_gev,                        
+    plot_gevpar_map,                
+    compute_risk,                   
+    plot_risk_map,                  
+    plot_valatrisk_map,             
+    fit_gev_select_regions,         
+    plot_gevsevlev_select_regions,  
+    ''')
+    if todoflags is None:
         todo = dict({
             'coarse_grain_time':                0,
             'coarse_grain_space':               0,
@@ -1303,9 +1317,12 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todo=None):
             'compute_risk':                     0,
             'plot_risk_map':                    0,
             'plot_valatrisk_map':               0,
-            'fit_gev_select_regions':           1,
-            'plot_gevsevlev_select_regions':    1,
+            'fit_gev_select_regions':           0,
+            'plot_gevsevlev_select_regions':    0,
             })
+    else:
+        todo = dict({key: todoflags[i] for (i,key) in enumerate(todokeys)})
+
 
     # In this main function, specify only the inputs and outputs as files 
     wkf = gcm_workflow(which_ssw,i_gcm,i_expt,i_init)
@@ -1439,7 +1456,7 @@ if __name__ == "__main__":
     gcms2ignore = ["BCC-CSM2-HR","GLOBO","GEM-NEMO","CanESM5","SPEAR"]
 
     idx_gcms = [i for i in range(len(gcms)) if ((gcms[i] not in gcms2ignore))]
-    idx_gcms = [gcms.index(gcm) for gcm in ['IFS']]
+    #idx_gcms = [gcms.index(gcm) for gcm in ['GRIMs']]
     print(f'{idx_gcms = }')
     print(f'{[gcms[i] for i in idx_gcms] = }')
     idx_expt = [0,1,2]
@@ -1456,7 +1473,11 @@ if __name__ == "__main__":
                 for i_expt in idx_expt:
                     print(f'---------------- STARTING {i_expt = } ---------------------')
                     if 'reduce' in procedures:
-                        reduce_gcm(which_ssw,i_gcm,i_expt,i_init)
+                        #todoflags = None
+                        #reduce_gcm(which_ssw,i_gcm,i_expt,i_init)
+                        for i_todo in range(1,12):
+                            todoflags = [(i==i_todo) for i in range(12)]
+                            reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags)
                         print(f'------------------ finished reduction------------')
             if 'compare_expts' in procedures:
                 print(f'------------- STARTING compare_expts -----------')
