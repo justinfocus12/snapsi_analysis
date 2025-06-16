@@ -1289,22 +1289,23 @@ def onset_date_sensitivity_analysis(
 
 
 
-def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
+def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todo=None):
     # One GCM, one forcing (expt), one initialization (init), multiple coarse-grainings in space 
-    todo = dict({
-        'coarse_grain_time':                1,
-        'coarse_grain_space':               1,
-        'onset_date_sensitivity_analysis':  1,
-        'compute_severities':               1,
-        'plot_sumstats_map':                1,
-        'fit_gev':                          1,
-        'plot_gevpar_map':                  1,
-        'compute_risk':                     1,
-        'plot_risk_map':                    1,
-        'plot_valatrisk_map':               1,
-        'fit_gev_select_regions':           1,
-        'plot_gevsevlev_select_regions':    1,
-        })
+    if todo is None:
+        todo = dict({
+            'coarse_grain_time':                0,
+            'coarse_grain_space':               0,
+            'onset_date_sensitivity_analysis':  0,
+            'compute_severities':               0,
+            'plot_sumstats_map':                0,
+            'fit_gev':                          0,
+            'plot_gevpar_map':                  0,
+            'compute_risk':                     0,
+            'plot_risk_map':                    0,
+            'plot_valatrisk_map':               0,
+            'fit_gev_select_regions':           1,
+            'plot_gevsevlev_select_regions':    1,
+            })
 
     # In this main function, specify only the inputs and outputs as files 
     wkf = gcm_workflow(which_ssw,i_gcm,i_expt,i_init)
@@ -1321,11 +1322,11 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init):
 
     if todo['coarse_grain_space']:
         pipeline_base.coarse_grain_space(
-                *(wkf[key.strip()] for key in '''
-                ens_file_cgt,ens_files_cgts, cgs_levels, 
+                *dtoa(wkf,'''
+                ens_file_cgt, ens_files_cgts, cgs_levels, 
                 landmask_interp_file,
-                event_region
-                '''.split(','))
+                event_region,
+                ''')
                 )
     if todo['onset_date_sensitivity_analysis']:
         pipeline_base.onset_date_sensitivity_analysis( #arg0, arg1) 
@@ -1443,7 +1444,7 @@ if __name__ == "__main__":
     print(f'{[gcms[i] for i in idx_gcms] = }')
     idx_expt = [0,1,2]
     idx_init = [0,1]
-    ssws = ['feb2018','jan2019','sep2019'][:1]
+    ssws = ['feb2018','jan2019','sep2019'][1:2]
     procedures = sys.argv[1:]
     print(f'{procedures = }')
     for which_ssw in ssws:

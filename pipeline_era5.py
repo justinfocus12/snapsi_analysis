@@ -91,6 +91,8 @@ def era5_workflow(which_ssw,verbose=False):
                 [join(raw_data_dir,f't2m_{(year-1):04}-12.nc')] + 
                 [join(raw_data_dir,f't2m_{year:04}-{month:02}.nc') for month in [1,2,3]]
                 ))
+        Nlon_interp = 36
+        Nlat_interp = 36
     elif "sep2019" == which_ssw:
         event_year = 2019
         ext_sign = 1
@@ -121,6 +123,7 @@ def era5_workflow(which_ssw,verbose=False):
             prob_symb = prob_symb,
             figtitle_affix = "ERA5",
             figfile_tag = "era5",
+            era5_label = "ERA5",
             event_region      =event_region,
             context_region    =context_region,
             Nlon_interp = Nlon_interp,
@@ -175,10 +178,11 @@ def interpolate_landmask(landmask_full_file, landmask_interp_file, Nlon_interp, 
 
 
 
-def coarse_grain_time(years, year_filegroups, region, context_region, Nlon_interp, Nlat_interp, init_date, term_date, ens_file_cgt):
+def coarse_grain_time(years, year_filegroups, region, context_region, Nlon_interp, Nlat_interp, init_date, onset_date_nominal, term_date, ens_file_cgt):
     print(f'Starting to coarse-grain time')
     t2m = []
-    duration = term_date - init_date
+    duration_init2onset = onset_date_nominal - init_date
+    duration_init2term = term_date - init_date
     # Regrid to an easily divisible size 
     # The physical aspect ratio ranges from 6/1 at the lower boundary to 4/1 at the top, so we settle on a ratio of 5/1
 
@@ -193,8 +197,8 @@ def coarse_grain_time(years, year_filegroups, region, context_region, Nlon_inter
         print(f'Ingesting year {year}')
         print(f'{year_filegroups[i_year] = }')
         # Modify the time selection
-        t0 = dtlib.datetime.replace(init_date, year=year) #dtlib.datetime(year, init_date.month, init_date.day, t0_ref.hour)
-        t1 = t0 + duration
+        t0 = dtlib.datetime.replace(onset_date_nominal, year=year) - duration_init2onset #dtlib.datetime(year, init_date.month, init_date.day, t0_ref.hour)
+        t1 = t0 + duration_init2term
         t2m_year = (
                 xr.concat([
                     xr.open_dataarray(yf).rename({'valid_time': 'time'}) 
@@ -240,19 +244,19 @@ def reduce_era5(which_ssw):
         'set_param_bounds':                 0,
         'onset_date_sensitivity_analysis':  0,
         'compute_severities':               0,
-        'plot_sumstats_map':                0,
+        'plot_sumstats_map':                1,
         'fit_gev':                          0,
-        'plot_gevpar_map':                  0,
+        'plot_gevpar_map':                  1,
         'compute_risk':                     0,
         'plot_risk_map':                    0,
-        'fit_gev_select_regions':           1,
+        'fit_gev_select_regions':           0,
         'plot_gev_select_regions':          0,
         })
     wkf = era5_workflow(which_ssw)
     if todo['interpolate_landmask']:
         interpolate_landmask(wkf['landmask_full_file'], wkf['landmask_interp_file'], wkf['Nlon_interp'], wkf['Nlat_interp'], wkf['event_region'])
     if todo['coarse_grain_time']:
-        coarse_grain_time(wkf['years'], wkf['year_filegroups'], wkf['event_region'], wkf['context_region'], wkf['Nlon_interp'], wkf['Nlat_interp'], wkf['fc_dates'][0], wkf['term_date'], wkf['ens_file_cgt'])
+        coarse_grain_time(wkf['years'], wkf['year_filegroups'], wkf['event_region'], wkf['context_region'], wkf['Nlon_interp'], wkf['Nlat_interp'], wkf['fc_dates'][0], wkf['onset_date_nominal'], wkf['term_date'], wkf['ens_file_cgt'])
     if todo['coarse_grain_space']:
         pipeline_base.coarse_grain_space(wkf['ens_file_cgt'], wkf['ens_files_cgts'], wkf['cgs_levels'], wkf['landmask_interp_file'], wkf['event_region'])
 
@@ -350,22 +354,28 @@ def reduce_era5(which_ssw):
 
     if todo['plot_gev_select_regions']:
         pipeline_base.plot_gevsevlev_select_regions(
-                *(wkf[key.strip()] for key in '''
+                *dtoa(wkf,'''
                 ens_files_cgts, ens_files_cgts_extt, gevsevlev_files, 
-                ens_files_cgts, ens_files_cgts_extt, event_year, param_bounds_file,
+                ens_files_cgts, ens_files_cgts_extt, gevsevlev_files,
+                event_year, param_bounds_file, era5_label,
                 cgs_levels, daily_stat,
                 event_region, select_regions, 
                 boot_type, confint_width,
-                figdir, figfile_tag, figtitle_affix, onset_date, term_date,
+                figdir, figfile_tag, figtitle_affix, era5_label,
+                fc_dates, 
+                '''),
+                wkf['fc_dates'][0], 
+                *dtoa(wkf, '''
+                onset_date, term_date,
                 prob_symb, ext_sign, ext_symb, leq_symb, ineq_symb
-                '''.split(',')),
+                '''),
                 ref_is_different=False,
                 )
     return 
 
 if __name__ == '__main__':
     print(f'Starting main')
-    for which_ssw in ["feb2018","jan2019","sep2019"][:1]:
+    for which_ssw in ["feb2018","jan2019","sep2019"][1:2]:
         result = reduce_era5(which_ssw)
 
 
