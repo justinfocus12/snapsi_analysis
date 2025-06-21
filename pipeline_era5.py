@@ -73,6 +73,7 @@ def era5_workflow(which_ssw,verbose=False):
 
     param_bounds_file = join(reduced_data_dir, 'param_bounds.nc')
 
+    Nlon_interp,Nlat_interp = cgs_levels[-1]
     if "feb2018" == which_ssw:
         event_year = 2018
         ext_sign = -1
@@ -81,8 +82,6 @@ def era5_workflow(which_ssw,verbose=False):
                 [join(raw_data_dir,f't2m_{(year-1):04}-12.nc')] + 
                 [join(raw_data_dir,f't2m_{year:04}-{month:02}.nc') for month in [1,2,3]]
                 ))
-        Nlon_interp = 80
-        Nlat_interp = 16
     elif "jan2019" == which_ssw:
         event_year = 2019
         ext_sign = -1
@@ -91,14 +90,12 @@ def era5_workflow(which_ssw,verbose=False):
                 [join(raw_data_dir,f't2m_{(year-1):04}-12.nc')] + 
                 [join(raw_data_dir,f't2m_{year:04}-{month:02}.nc') for month in [1,2,3]]
                 ))
-        Nlon_interp = 36
-        Nlat_interp = 36
     elif "sep2019" == which_ssw:
         event_year = 2019
         ext_sign = 1
         for year in years:
             year_filegroups.append(tuple(
-                [join(raw_data_dir,f't2m_{year:04}-{month:02}.nc') for month in [9,10,11]]
+                [join(raw_data_dir,f't2m_{year:04}-{month:02}.nc') for month in [8,9,10,11]]
                 ))
     n_boot = 1000
     confint_width = 0.5
@@ -238,19 +235,19 @@ def coarse_grain_time(years, year_filegroups, region, context_region, Nlon_inter
 
 def reduce_era5(which_ssw):
     todo = dict({
-        'interpolate_landmask':             0,
-        'coarse_grain_time':                0,
-        'coarse_grain_space':               0,
-        'set_param_bounds':                 0,
-        'onset_date_sensitivity_analysis':  0,
-        'compute_severities':               0,
+        'interpolate_landmask':             1,
+        'coarse_grain_time':                1,
+        'coarse_grain_space':               1,
+        'set_param_bounds':                 1,
+        'onset_date_sensitivity_analysis':  1,
+        'compute_severities':               1,
         'plot_sumstats_map':                1,
-        'fit_gev':                          0,
+        'fit_gev':                          1,
         'plot_gevpar_map':                  1,
-        'compute_risk':                     0,
-        'plot_risk_map':                    0,
-        'fit_gev_select_regions':           0,
-        'plot_gev_select_regions':          0,
+        'compute_risk':                     1,
+        'plot_risk_map':                    1,
+        'fit_gev_select_regions':           1,
+        'plot_gev_select_regions':          1,
         })
     wkf = era5_workflow(which_ssw)
     if todo['interpolate_landmask']:

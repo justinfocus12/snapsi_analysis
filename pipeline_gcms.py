@@ -1307,18 +1307,18 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
     ''')
     if todoflags is None:
         todo = dict({
-            'coarse_grain_time':                0,
-            'coarse_grain_space':               0,
-            'onset_date_sensitivity_analysis':  0,
-            'compute_severities':               0,
-            'plot_sumstats_map':                0,
-            'fit_gev':                          0,
-            'plot_gevpar_map':                  0,
-            'compute_risk':                     0,
-            'plot_risk_map':                    0,
-            'plot_valatrisk_map':               0,
-            'fit_gev_select_regions':           0,
-            'plot_gevsevlev_select_regions':    0,
+            'coarse_grain_time':                1,
+            'coarse_grain_space':               1,
+            'onset_date_sensitivity_analysis':  1,
+            'compute_severities':               1,
+            'plot_sumstats_map':                1,
+            'fit_gev':                          1,
+            'plot_gevpar_map':                  1,
+            'compute_risk':                     1,
+            'plot_risk_map':                    1,
+            'plot_valatrisk_map':               1,
+            'fit_gev_select_regions':           1,
+            'plot_gevsevlev_select_regions':    1,
             })
     else:
         todo = dict({key: todoflags[i] for (i,key) in enumerate(todokeys)})
@@ -1454,33 +1454,24 @@ if __name__ == "__main__":
     gcm2institute = all_gcms_institutes()
     gcms = list(gcm2institute.keys())
     gcms2ignore = ["BCC-CSM2-HR","GLOBO","GEM-NEMO","CanESM5","SPEAR"]
-
     idx_gcms = [i for i in range(len(gcms)) if ((gcms[i] not in gcms2ignore))]
-    #idx_gcms = [gcms.index(gcm) for gcm in ['GRIMs']]
-    print(f'{idx_gcms = }')
-    print(f'{[gcms[i] for i in idx_gcms] = }')
-    idx_expt = [0,1,2]
-    idx_init = [0,1]
-    ssws = ['feb2018','jan2019','sep2019'][1:2]
-    procedures = sys.argv[1:]
-    print(f'{procedures = }')
-    for which_ssw in ssws:
-        print(f'-------------STARTING SSW {which_ssw = }---------------')
-        for i_gcm in idx_gcms:
-            print(f'-------------- STARTING I_GCM {i_gcm = } -------------')
-            for i_init in idx_init:
-                print(f'----------------- STARTING INIT {i_init = } ---------------')
-                for i_expt in idx_expt:
-                    print(f'---------------- STARTING {i_expt = } ---------------------')
-                    if 'reduce' in procedures:
-                        #todoflags = None
-                        #reduce_gcm(which_ssw,i_gcm,i_expt,i_init)
-                        for i_todo in range(1,12):
-                            todoflags = [(i==i_todo) for i in range(12)]
-                            reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags)
-                        print(f'------------------ finished reduction------------')
-            if 'compare_expts' in procedures:
-                print(f'------------- STARTING compare_expts -----------')
-                compare_expts(which_ssw, i_gcm)
-        if 'compare_gcms' in procedures:
+
+
+    procedure = sys.argv[1]
+    # Pass in which procedure to do based on system arguments
+    for which_ssw in ["jan2019"]:
+        if procedure != "compare_gcms":
+            for (i_gcm,gcm) in enumerate(gcms):
+                if gcm in gcms2ignore:
+                    continue
+                #if not ("IFS" == gcm):
+                #    continue
+                if procedure == "reduce":
+                    for i_fcdate in range(2):
+                        for i_expt in range(3):
+                            reduce_gcm(which_ssw,i_gcm,i_expt,i_fcdate)
+                else:
+                    compare_expts(which_ssw, i_gcm)
+        else:
             compare_gcms(which_ssw, idx_gcms)
+

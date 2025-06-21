@@ -26,9 +26,9 @@ def least_sensible_onset_date(which_ssw):
     if "feb2018" == which_ssw:
         onset_date = '20180221'
     elif "jan2019" == which_ssw:
-        onset_date = "20190115"
+        onset_date = '20190115'
     else:
-        raise NotImplementedError(f"Onset date not defined for ssw {which_ssw}")
+        onset_date = '20191002'
     onset_date_dt = dtlib.datetime.strptime(onset_date,"%Y%m%d")
     return onset_date_dt
 
@@ -44,7 +44,7 @@ def dates_of_interest(which_ssw):
         term_date = '20190127' # restricted to the last day from GCMs
     elif "sep2019" == which_ssw:
         fc_dates = ['20190829','20191001']
-        onset_date_nominal = '20191001'
+        onset_date_nominal = '20191002'
         term_date = '20191014'
     # convert to datetime objects 
     fc_dates_dt = [dtlib.datetime.strptime(fc_date, "%Y%m%d").replace(hour=0) for fc_date in fc_dates]
@@ -58,8 +58,8 @@ def region_of_interest(which_ssw):
         lat_min, lat_max, lat_pad = 50, 65, 10
         lon_min, lon_max, lon_pad = -10, 130, 10
     elif "jan2019" == which_ssw:
-        lat_min, lat_max, lat_pad = 30, 66, 10
-        lon_min, lon_max, lon_pad = -120, -60, 10
+        lat_min, lat_max, lat_pad = 40, 60, 10
+        lon_min, lon_max, lon_pad = -102, -55, 10
     elif "sep2019" == which_ssw:
         lat_min, lat_max, lat_pad = -46, -10, 10
         lon_min, lon_max, lon_pad = 112, 154, 10
@@ -81,7 +81,7 @@ def analysis_multiparams(which_ssw):
                 [], # level (80,16)
                 )
     elif "jan2019" == which_ssw:
-        cgs_levels = [(1,1),(4,4),(12,12),(36,36)]
+        cgs_levels = [(1,1),(9,6),(15,10),(30,20)]
         select_regions = ( # Indexed by cgs_level
                 [(0,0),], # level (1,1)
                 [], # level (2,1)
@@ -305,7 +305,7 @@ def plot_sumstats_maps_flat(
             decorate_mercator_axis(ax, lonmin, lonmax, latmin, latmax)
             ax.set_title(titles[i_ax], loc='left')
         fig.suptitle(suptitle, x=0.5, ha='center', va='bottom', y=0.98)
-        fig.savefig(join(figdir,'sumstats_map_%s_%dx%d.png'%(figfile_tag,cgs_level[0],cgs_level[1])), **pltkwargs)
+        fig.savefig(join(figdir,'sumstats_map_%s_cgs%dx%d.png'%(figfile_tag,cgs_level[0],cgs_level[1])), **pltkwargs)
         plt.close(fig)
     return 
 
