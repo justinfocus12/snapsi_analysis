@@ -393,6 +393,7 @@ def plot_relrisks_dvalatrisks_allgcms(
     # different color for each GCM; different marker for free->control and free->nudged  
     # left and right panels for early and late FC date 
     gcmstyles = gcm_plot_styles()
+    # TODO for the infinite cases, at least indicate which direction the partner expt_pair is 
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
         for (i_region,(i_lon,i_lat)) in enumerate(select_regions[i_cgs_level]):
             fig = plt.figure(figsize=(16,8))
@@ -403,34 +404,45 @@ def plot_relrisks_dvalatrisks_allgcms(
             for (i_gcm,gcm) in enumerate(gcms):
                 gev_sev_risk_var_rr_dvar = xr.open_dataset(gevsevlev_comp_files[gcm][i_cgs_level][i_region])
                 rr_dvar = gev_sev_risk_var_rr_dvar['rr_dvar'] #.sel(quantity=q) for q in ['relrisk','dvalatrisk'])
-                for (i_expt_pair,expt_pair) in enumerate(expt_pairs):
-                    for (fc_date,ax) in zip(fc_dates,axs_fc):
-                        rrmid,dvarmid = (rr_dvar.sel(quantity=q,expt_pair=expt_pair_coordval(expt_pair),fc_date=fc_date,boot=0).item() for q in ['relrisk','dvalatrisk'])
-                        rrlo,rrhi = [np.quantile(rr_dvar.sel(quantity='relrisk',expt_pair=expt_pair_coordval(expt_pair),fc_date=fc_date,boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]]
-                        if not np.all(np.isfinite([rrmid,dvarmid])):
+                for (fc_date,ax) in zip(fc_dates,axs_fc):
+                    # Keep track of difference in differences and ratio of ratios
+                    rrmids,dvarmids = [rr_dvar.sel(quantity=q,fc_date=fc_date,boot=0) for q in ['relrisk','dvalatrisk']]
+                    logrrmids = np.log10(rrmids)
+                    for (i_expt_pair,expt_pair) in enumerate(expt_pairs):
+                        logrrmid,dvarmid = [dthing.sel(expt_pair=expt_pair_coordval(expt_pair)).item() for dthing in (logrrmids,dvarmids)]
+                        logrrlo,logrrhi = list(map(np.log10, [np.quantile(rr_dvar.sel(quantity='relrisk',expt_pair=expt_pair_coordval(expt_pair),fc_date=fc_date,boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]]))
+                        if not np.all(np.isfinite([logrrmid,dvarmid])):
                             continue
                         dvarlo,dvarhi = [np.quantile(rr_dvar.sel(quantity='dvalatrisk',expt_pair=expt_pair_coordval(expt_pair),fc_date=fc_date,boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]]
-                        ax.plot([rrlo,rrhi],[dvarmid,dvarmid], color=expt_colors[expt_pair[1]], zorder=-1)
-                        ax.plot([rrmid,rrmid], [dvarlo,dvarhi], color=expt_colors[expt_pair[1]], zorder=-1)
-                        ax.scatter(rrmid,dvarmid,marker='o',fc='white',ec=expt_colors[expt_pair[1]], zorder=0, s=18**2)
-                        ax.scatter(rrmid,dvarmid,marker=gcmstyles[gcm]['marker'],color='black', zorder=1)
-                        #print(f"{gcmstyles[gcm]['marker'] = }")
-                        #ax.text(rrmid, dvarmid, gcmstyles[gcm]['marker'], horizontalalignment='center', verticalalignment='center', color='black', zorder=1, fontsize=8)
-                    # TODO add errorbars to each one 
+                        ax.plot([logrrlo,logrrhi],[dvarmid,dvarmid], color=expt_colors[expt_pair[1]], zorder=-1)
+                        ax.plot([logrrmid,logrrmid], [dvarlo,dvarhi], color=expt_colors[expt_pair[1]], zorder=-1)
+                        ax.scatter(logrrmid,dvarmid,marker='o',fc='white',ec=expt_colors[expt_pair[1]], zorder=0, s=18**2)
+                        ax.scatter(logrrmid,dvarmid,marker=gcmstyles[gcm]['marker'],color='black', zorder=1)
+                        # draw an arrow toward the other one 
+                        expt_pair_other = expt_pairs[(i_expt_pair+1) % 2]
+                        ddvar = dvarmids.sel(expt_pair=expt_pair_coordval(expt_pair_other)) - dvarmid
+                        dlogrr = logrrmids.sel(expt_pair=expt_pair_coordval(expt_pair_other)) - logrrmid
+                        angle = np.arctan2(ddvar,dlogrr)
+                        ax.plot(
+                                [logrrmid + factor*dlogrr for factor in [0,0.5]],
+                                [dvarmid + factor*ddvar for factor in [0,.5]],
+                                color=expt_colors[expt_pair[1]],
+                                linewidth=6, alpha=0.25, zorder=2)
             grk = utils.greekletters()
             for (fc_date,ax) in zip(fc_dates,axs_fc):
-                ax.set_xscale('log')
-                ax.set_xlim([0.25, 4.0])
-                xtickvalues = [0.25, 0.5, 1.0, 2.0, 4.0]
+                #ax.set_xscale('log')
+                rrtickvalues = [0.25, 0.5, 1.0, 2.0, 4.0]
+                xtickvalues = list(map(np.log10, rrtickvalues))
+                ax.set_xlim([xtickvalues[0],xtickvalues[-1]])
                 xticklabels = list(map(
                         lambda rr: "1/%d"%(int(round(1/rr))) if rr<1 else "%d"%rr, 
-                        xtickvalues))
+                        rrtickvalues))
                 ax.set_xticks(xtickvalues, xticklabels)
-                ax.set_ylabel("%s(severity) [K]"%(grk["Delta"]))
+                ax.set_ylabel("severity - (free severity) [K]")
                 ax.set_xlabel("risk / (free risk)")
                 ax.set_title(dtlib.datetime.strftime(fc_date,"FC %Y/%m/%d"))
                 ax.axhline(0, color=expt_colors['free'])
-                ax.axvline(1, color=expt_colors['free'])
+                ax.axvline(0, color=expt_colors['free'])
                 
             fig.savefig(join(figdir,f'relrisks_dvalatrisks_allgcms_cgs{cgs_level[0]}x{cgs_level[1]}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
             plt.close(fig)
@@ -460,157 +472,6 @@ def compare_gcms(which_ssw, idx_gcms):
     return
 
 
-    colors = dict({'era5': 'black', 'control': 'dodgerblue', 'free': 'limegreen', 'nudged': 'red'})
-    yoffsets = dict({'control': 1/3, 'free': 0.0, 'nudged': -1/3})
-    figdir = wkf_era5['figdir'].replace('era5','multimodel')
-    makedirs(figdir, exist_ok=True)
-    print(f'{figdir = }')
-    xlims = [0.25, 4.0]
-    ylims = [-0.5, len(idx_gcms)-0.5]
-    slims = (np.array([1.0, 4.0])*rcParams['lines.markersize']) # bounds on the marker size 
-    dpi = 200
-    for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
-        cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
-        fig_rr,axes_rr = plt.subplots(figsize=(12,8),ncols=2,nrows=1,sharey=True, sharex=True, dpi=dpi) # relative risk
-        fig_dv,axes_dv = plt.subplots(figsize=(12,8),ncols=2,nrows=1,sharey=True, sharex=True, dpi=dpi) # difference in value at risk 
-        for ax in axes_rr:
-            ax.set_xlim(xlims)
-            ax.set_ylim(ylims)
-        # Determine the radius-to-points conversion
-        unit_radius_data = 1/6
-        unit_radius_display = axes_rr[0].transData.transform([0, unit_radius_data])[1] - axes_rr[0].transData.transform([0,0])[1]
-        unit_radius_points = unit_radius_display * 72/fig_rr.dpi
-        handles = []
-        i_gcm2plot = -1
-        for i_gcm in idx_gcms:
-            gcm = gcms[i_gcm]
-            print(f'Starting {i_gcm,gcm = }')
-            i_gcm2plot += 1
-            for (i_init,init) in enumerate(inits):
-                ax_rr = axes_rr[i_init]
-                ax_dv = axes_dv[i_init]
-                reduced_data_dir = wkfs[9]
-                reduced_data_dir_era5 = workflow[10]
-                risk_levels = workflow[14]
-                confint_width = workflow[16]
-                event_region = workflow[3]
-                for (expt0,expt1) in (('free','free'),('free','control'),('free','nudged')):
-                    print(f'{expt0 = }, {expt1 = }')
-                    print(f'{reduced_data_dir = }')
-                    risk0_file,risk1_file = (join(reduced_data_dir,f'risk_e{expt}_i{init}_cgs{cgs_key}.nc') for expt in (expt0,expt1))
-                    rvar0_file,rvar1_file = (join(reduced_data_dir,f'risk_valatrisk_e{expt}_i{init}_cgs{cgs_key}.nc') for expt in (expt0,expt1))
-                    risk0 = xr.open_dataarray(risk0_file).to_numpy()
-                    risk1 = xr.open_dataarray(risk1_file).to_numpy()
-                    rr = np.maximum(xlims[0], np.minimum(xlims[1], risk1/risk0))
-                    rvar0 = xr.open_dataarray(rvar0_file)
-                    rvar1 = xr.open_dataarray(rvar1_file)
-                    dvar = (rvar1.sel(quantity='valatrisk',drop=True) - rvar0.sel(quantity='valatrisk',drop=True)).to_numpy()
-                    #pdb.set_trace()
-                    print(f'{rr.shape = }')
-                    h = ax_rr.scatter(rr.flat, (i_gcm2plot+yoffsets[expt1])*np.ones(rr.size), ec=colors[expt1], linewidth=2, fc='none', s=(2*unit_radius_points * (1/4 + risk1*3/4))**2, label=expt1)
-                    # Add error bars if the level of coarse-graining is 1x1
-                    if len(handles) < 3: handles.append(h)
-                    h = ax_dv.scatter(dvar.flat, (i_gcm2plot+yoffsets[expt1])*np.ones(dvar.size), ec=colors[expt1], linewidth=2, fc='none', s=(2*unit_radius_points * (1/4 + risk1*3/4))**2, label=expt1)
-                    # Add error bars if the level of coarse-graining is 1x1
-                    if i_cgs_level == 0:
-                        ds_cgts_extts_era5 = (xr.open_dataarray(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc')) * ext_sign).max('time') * ext_sign
-                        for i_lon in range(rr.shape[0]):
-                            for i_lat in range(rr.shape[1]):
-                                #if not np.all([np.all(np.isfinite(ds_cgts_extts[expt].isel(lon=i_lon,lat=i_lat))) for expt in expts+['era5']]):
-                                #    continue
-                                exttemp_levels_reg_0 = np.load(join(reduced_data_dir,f'exttemp_levels_reg_e{expt0}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
-                                exttemp_levels_reg_1 = np.load(join(reduced_data_dir,f'exttemp_levels_reg_e{expt1}_i{init}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
-                                exttemp_reg_era5 = ds_cgts_extts_era5.sel(member=event_year,daily_stat='daily_mean').isel(lon=i_lon,lat=i_lat).item()
-                                if not np.isfinite(exttemp_reg_era5):
-                                    print(f'Oops, not finite for {i_lon = }, {i_lat = }')
-                                    sys.exit()
-                                    continue
-
-                                exttemp_levels_range = tuple(extfun(exttemp_reg_era5).item() for extfun in (np.min, np.max))
-                                print(f'{exttemp_levels_range = }')
-                                order = np.arange(0,len(risk_levels),dtype=int)
-                                if ext_sign == 1:
-                                    order = order[::-1]
-                                print(f'{order = }')
-                                func = lambda T: (np.interp(exttemp_reg_era5, T[order], risk_levels[order]))
-                                risk_at_levels_0 = np.apply_along_axis(func, 1, exttemp_levels_reg_0)
-                                risk_at_levels_1 = np.apply_along_axis(func, 1, exttemp_levels_reg_1)
-                                print(f'{risk_at_levels_0 = }')
-                                print(f'{risk_at_levels_1 = }')
-                                rel_risk_lo,rel_risk_hi = (np.quantile(risk_at_levels_1[1:]/risk_at_levels_0[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
-                                # TODO basic-bootstrap if called for
-                                # now same for value at risk 
-                                i_risklev = np.argmin(np.abs(risk_levels - rvar0.sel(quantity='risk').isel(lon=i_lon,lat=i_lat).item()))
-                                #pdb.set_trace()
-                                dvar_los,dvar_his = (np.quantile(exttemp_levels_reg_1[1:,:] - exttemp_levels_reg_0[1:,:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
-                                dvar_lo = np.interp(rvar0.sel(quantity='risk').isel(lon=i_lon,lat=i_lat).item(), risk_levels, dvar_los)
-                                dvar_hi = np.interp(rvar0.sel(quantity='risk').isel(lon=i_lon,lat=i_lat).item(), risk_levels, dvar_his)
-                                print(f'{i_init = }, {expt0 = }, {expt1 = }, {i_cgs_level = }, {dvar_lo = }, {dvar_hi = }')
-                                print(f'{rel_risk_hi - rel_risk_lo = }')
-                                print(f'{dvar_hi - dvar_lo = }')
-                                #pdb.set_trace()
-                                if False and (expt0 != expt1):
-                                    sys.exit()
-                                h, = ax_rr.plot([rel_risk_lo,rel_risk_hi], (i_gcm2plot+yoffsets[expt1])*np.ones(2),color=colors[expt1], linewidth=3, label=expt1)
-                                h, = ax_dv.plot([dvar_lo,dvar_hi], (i_gcm2plot+yoffsets[expt1])*np.ones(2),color=colors[expt1], linewidth=3, label=expt1)
-        # value at risk comparison
-        filename = join(figdir, f'dvalatrisk_multimodel_cgs{cgs_key}.png')
-        axes_dv[0].set_yticks(range(len(idx_gcms)), labels=[gcms[i] for i in idx_gcms])
-        for (i_ax,ax) in enumerate(axes_dv):
-            ax.set_ylim(ylims)
-            ax.axvline(0.0, color='black', linestyle='--')
-            datestr = dtlib.datetime.strptime(inits[i_ax],"%Y%m%d").strftime("%Y-%m-%d")
-            ax.set_title(f"init {datestr}")
-            ax.set_xlabel(r'$T-T_{\mathrm{free}}$')
-            for i_gcm2plot in range(len(idx_gcms)):
-                ax.axhline(i_gcm2plot+0.5, color='gray')
-                ax.axhline(i_gcm2plot-0.5, color='gray')
-                ax.axhline(i_gcm2plot+1/6, color='gray', linestyle='dotted')
-                ax.axhline(i_gcm2plot-1/6, color='gray', linestyle='dotted')
-        dlon = (event_region['lon'].stop - event_region['lon'].start)/(cgs_level[0])
-        dlat = (event_region['lat'].stop - event_region['lat'].start)/(cgs_level[1])
-        if i_cgs_level == 0:
-            suptitle = r'$\Delta T$ (whole region)'
-        else:
-            suptitle = r'$\Delta T$ ($%d^\circ$lon$\times%d^\circ$lat regions)'%(dlon, dlat)
-        fig_dv.suptitle(suptitle)
-        fig_dv.legend(handles=handles, bbox_to_anchor=(0.5,0.0), loc='upper center', ncol=3)
-        fig_dv.savefig(filename, **pltkwargs)
-
-        plt.close(fig_dv)
-                            
-        # relative risk comparison
-        filename = join(figdir, f'relrisk_multimodel_cgs{cgs_key}.png')
-        axes_rr[0].set_yticks(range(len(idx_gcms)), labels=[gcms[i] for i in idx_gcms])
-        for (i_ax,ax) in enumerate(axes_rr):
-            ax.set_xlim(xlims)
-            ax.set_ylim(ylims)
-            ax.axvline(1.0, color='black', linestyle='--')
-            ax.axvline(xlims[0], color='black', linestyle='--')
-            ax.axvline(xlims[1], color='black', linestyle='--')
-            datestr = dtlib.datetime.strptime(inits[i_ax],"%Y%m%d").strftime("%Y-%m-%d")
-            ax.set_title(f"init {datestr}")
-            ax.set_xscale('log')
-            xticks = [xlims[0], 1.0, xlims[1]]
-            ax.set_xticks(xticks, labels=[str(xtick) for xtick in xticks])
-            ax.set_xlabel('rel. risk w.r.t. free')
-            for i_gcm2plot in range(len(idx_gcms)):
-                ax.axhline(i_gcm2plot+0.5, color='gray')
-                ax.axhline(i_gcm2plot-0.5, color='gray')
-                ax.axhline(i_gcm2plot+1/6, color='gray', linestyle='dotted')
-                ax.axhline(i_gcm2plot-1/6, color='gray', linestyle='dotted')
-        dlon = (event_region['lon'].stop - event_region['lon'].start)/(cgs_level[0])
-        dlat = (event_region['lat'].stop - event_region['lat'].start)/(cgs_level[1])
-        if i_cgs_level == 0:
-            suptitle = r'Relative risk (whole region)'
-        else:
-            suptitle = r'Relative risk ($%d^\circ$lon$\times%d^\circ$lat regions)'%(dlon, dlat)
-        fig_rr.suptitle(suptitle)
-        fig_rr.legend(handles=handles, bbox_to_anchor=(0.5,0.0), loc='upper center', ncol=3)
-        fig_rr.savefig(filename, **pltkwargs)
-
-        plt.close(fig_rr)
-    return
             
 def plot_gevpar_difference_maps(wkfs,wkf_comp):
     for (expt0,expt1) in wkf_comp['expt_pairs']:
@@ -897,24 +758,38 @@ def plot_gevsevlev_comp_select_regions(
                         # interpolate for relative risks
                         risks_interp = np.apply_along_axis(interp_fun, 1, sevlev_expt.to_numpy())
                         relrisk = risks_interp/risks_interp_baseline
-                        axrr.plot(relrisk[0,:], sevlev_common, color=expt_colors[expt])
-                        axrr.fill_betweenx(sevlev_common, *(np.quantile(relrisk, 0.5+0.5*sgn*confint_width, axis=0) for sgn in (-1,1)), color=expt_colors[expt], alpha=0.25, zorder=-1)
+                        axrr.plot(np.log10(relrisk[0,:]), sevlev_common, color=expt_colors[expt])
+                        axrr.fill_betweenx(sevlev_common, *(np.quantile(np.log10(relrisk), 0.5+0.5*sgn*confint_width, axis=0) for sgn in (-1,1)), color=expt_colors[expt], alpha=0.25, zorder=-1)
                     print(f'{expt = }')
-                    if (expt_baseline,expt) in expt_pairs:
-                        rrmid,dvarmid = [gev_sev_risk_var_rr_dvar['rr_dvar'].sel(expt_pair=expt_pair_coordval((expt_baseline,expt)),fc_date=fc_date,quantity=q,boot=0).item() for q in ['relrisk','dvalatrisk']]
-                        rrlo,rrhi= [np.quantile(
-                            gev_sev_risk_var_rr_dvar['rr_dvar'].sel(expt_pair=expt_pair_coordval((expt_baseline,expt)),fc_date=fc_date,quantity='relrisk',boot=slice(1,None)), 0.5*(1+sgn*confint_width)) for sgn in [-1,1]]
-                        dvarlo,dvarhi= [np.quantile(
-                            gev_sev_risk_var_rr_dvar['rr_dvar'].sel(expt_pair=expt_pair_coordval((expt_baseline,expt)),fc_date=fc_date,quantity='dvalatrisk',boot=slice(1,None)), 0.5*(1+sgn*confint_width)) for sgn in [-1,1]]
-                        axrrdvar.scatter(rrmid,dvarmid,marker='o',s=15**2, ec=expt_colors[expt], fc='white', zorder=1)
-                        axrrdvar.scatter(rrmid,dvarmid,marker=gcmstyles[gcm]['marker'], zorder=2)
-                        axrrdvar.plot([rrlo,rrhi],[dvarmid,dvarmid],color=expt_colors[expt], zorder=-1)
-                        axrrdvar.plot([rrmid,rrmid],[dvarlo,dvarhi],color=expt_colors[expt], zorder=-1)
+                    rrmids,dvarmids = [gev_sev_risk_var_rr_dvar['rr_dvar'].sel(fc_date=fc_date,quantity=q,boot=0) for q in ['relrisk','dvalatrisk']]
+                    # for the relative risk plot, implement the log scale manually 
+                    logrrmids = np.log10(rrmids)
+                    expt_pair = (expt_baseline,expt)
+                    if expt_pair in expt_pairs:
+                        logrrmid,dvarmid = [dthing.sel(expt_pair=expt_pair_coordval(expt_pair)).item() for dthing in (logrrmids,dvarmids)]
+                        logrrlo,logrrhi= list(map(np.log10, [np.quantile(
+                            gev_sev_risk_var_rr_dvar['rr_dvar'].sel(expt_pair=expt_pair_coordval(expt_pair),fc_date=fc_date,quantity='relrisk',boot=slice(1,None)), 0.5*(1+sgn*confint_width)) for sgn in [-1,1]]))
+                        dvarlo,dvarhi = [np.quantile(
+                            gev_sev_risk_var_rr_dvar['rr_dvar'].sel(expt_pair=expt_pair_coordval(expt_pair),fc_date=fc_date,quantity='dvalatrisk',boot=slice(1,None)), 0.5*(1+sgn*confint_width)) for sgn in [-1,1]]
+                        axrrdvar.scatter(logrrmid,dvarmid,marker='o',s=15**2, ec=expt_colors[expt], fc='white', zorder=1)
+                        axrrdvar.scatter(logrrmid,dvarmid,marker=gcmstyles[gcm]['marker'], zorder=2)
+                        axrrdvar.plot([logrrlo,logrrhi],[dvarmid,dvarmid],color=expt_colors[expt], zorder=-1)
+                        axrrdvar.plot([logrrmid,logrrmid],[dvarlo,dvarhi],color=expt_colors[expt], zorder=-1)
+                        # draw an arrow toward the other one 
+                        for expt_other in expts:
+                            expt_pair_other = (expt_baseline,expt_other)
+                            if (expt_other != expt) and (expt_pair_other in expt_pairs):
+                                ddvar = dvarmids.sel(expt_pair=expt_pair_coordval((expt_baseline,expt_other))) - dvarmid
+                                dlogrr = logrrmids.sel(expt_pair=expt_pair_coordval(expt_pair_other)) - logrrmid
+                                axrrdvar.plot(
+                                        [logrrmid + factor*dlogrr for factor in [0,0.5]],
+                                        [dvarmid + factor*ddvar for factor in [0,.5]],
+                                        color=expt_colors[expt],
+                                        linewidth=6, alpha=0.25, zorder=2)
                     if "era5" == expt:
                         for ax in (axgev,axrr):
                             ax.axhline(exttemp[i_mem_special_era5], color=expt_colors['era5'], linestyle='--')
                         for ax in (axgev,axdvar):
-                            #ax.axvline(risk_empirical[rank[i_mem_special_era5]], color=expt_colors['era5'], linestyle='--')
                             ax.axvline(risk_refgivenref.isel(boot=0).item(), color=expt_colors['era5'], linestyle='--')
 
                 fc_date_abbrv = dtlib.datetime.strftime(fc_date,'%Y%m%d')
@@ -932,23 +807,27 @@ def plot_gevsevlev_comp_select_regions(
                 axgev.legend(handles=handles)
 
                 axrrdvar.axhline(0, color=expt_colors[expt_baseline])
-                axrrdvar.axvline(1, color=expt_colors[expt_baseline])
+                axrrdvar.axvline(0, color=expt_colors[expt_baseline])
                 axrrdvar.set_xlabel("risk / (free risk)")
-                axgev.set_ylabel("Severity [K]")
+                axgev.set_ylabel("severity [K]")
                 grk = utils.greekletters()
-                axdvar.set_ylabel(f"{grk['Delta']}(severity)")
+                axdvar.set_ylabel(f"severity - (free severity) [K]")
                 axdvar.set_xlabel("Probability")
 
-                for ax in (axgev, axdvar, axrr):
-                    ax.set_xscale('log')
                 for ax in (axgev, axrr):
                     ax.set_ylim(sev_bounds)
+                for ax in (axgev,):
+                    ax.set_xscale('log')
                 for ax in (axgev, axdvar):
                     ax.set_xlim([risks[0],risks[-1]])
                 for ax in (axrr,axrrdvar):
-                    ax.set_xlim([0.25, 4])
-                    rr_tickvals = [0.25, 0.5, 1.0, 2.0, 4.0]
-                    axrr.set_xticks(rr_tickvals, map(str, rr_tickvals))
+                    rrtickvalues = [0.25, 0.5, 1.0, 2.0, 4.0]
+                    xtickvalues = list(map(np.log10, rrtickvalues))
+                    ax.set_xlim([xtickvalues[0],xtickvalues[-1]])
+                    xticklabels = list(map(
+                            lambda rr: "1/%d"%(int(round(1/rr))) if rr<1 else "%d"%rr, 
+                            rrtickvalues))
+                    ax.set_xticks(xtickvalues, xticklabels)
                 for ax in (axgev,axrr):
                     ax.xaxis.set_tick_params(which='both',labelbottom=False)
                 for ax in (axrr,axrrdvar):
@@ -969,10 +848,10 @@ def plot_gevsevlev_comp_select_regions(
 
 def compare_expts(which_ssw, i_gcm):
     todo = dict({
-        'plot_gevpar_map_diffs':                    1,
-        'compute_valatrisk_comp':                   1,
-        'plot_valatrisk_comp_maps':                 1,
-        'compute_gevsevlev_comp_select_regions':    1,
+        'plot_gevpar_map_diffs':                    0,
+        'compute_valatrisk_comp':                   0,
+        'plot_valatrisk_comp_maps':                 0,
+        'compute_gevsevlev_comp_select_regions':    0,
         'plot_gevsevlev_comp_select_regions':       1,
         })
     gcms,expts,fc_dates,_,term_date = gcm_multiparams(which_ssw)
@@ -1307,17 +1186,17 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
     ''')
     if todoflags is None:
         todo = dict({
-            'coarse_grain_time':                1,
-            'coarse_grain_space':               1,
-            'onset_date_sensitivity_analysis':  1,
-            'compute_severities':               1,
-            'plot_sumstats_map':                1,
-            'fit_gev':                          1,
-            'plot_gevpar_map':                  1,
-            'compute_risk':                     1,
-            'plot_risk_map':                    1,
-            'plot_valatrisk_map':               1,
-            'fit_gev_select_regions':           1,
+            'coarse_grain_time':                0,
+            'coarse_grain_space':               0,
+            'onset_date_sensitivity_analysis':  0,
+            'compute_severities':               0,
+            'plot_sumstats_map':                0,
+            'fit_gev':                          0,
+            'plot_gevpar_map':                  0,
+            'compute_risk':                     0,
+            'plot_risk_map':                    0,
+            'plot_valatrisk_map':               0,
+            'fit_gev_select_regions':           0,
             'plot_gevsevlev_select_regions':    1,
             })
     else:
@@ -1457,21 +1336,26 @@ if __name__ == "__main__":
     idx_gcms = [i for i in range(len(gcms)) if ((gcms[i] not in gcms2ignore))]
 
 
-    procedure = sys.argv[1]
+    all_procedures = ["reduce","compare_expts","compare_gcms"]
+    procedures = sys.argv[1:]
+    if not all([procedure in all_procedures for procedure in procedures]):
+        raise ValueError("procedures is {procedures} but must be a subset of of {options}".format(procedures=procedures, options=all_procedures))
+
     # Pass in which procedure to do based on system arguments
-    for which_ssw in ["jan2019"]:
-        if procedure != "compare_gcms":
-            for (i_gcm,gcm) in enumerate(gcms):
-                if gcm in gcms2ignore:
-                    continue
-                #if not ("IFS" == gcm):
-                #    continue
-                if procedure == "reduce":
-                    for i_fcdate in range(2):
-                        for i_expt in range(3):
-                            reduce_gcm(which_ssw,i_gcm,i_expt,i_fcdate)
-                else:
-                    compare_expts(which_ssw, i_gcm)
-        else:
-            compare_gcms(which_ssw, idx_gcms)
+    for which_ssw in ["feb2018","jan2019","sep2019"][0:1]:
+        for procedure in procedures:
+            if procedure != "compare_gcms":
+                for (i_gcm,gcm) in enumerate(gcms):
+                    if gcm in gcms2ignore:
+                        continue
+                    #if not ("IFS" == gcm):
+                    #    continue
+                    if "reduce" == procedure:
+                        for i_fcdate in range(2):
+                            for i_expt in range(3):
+                                reduce_gcm(which_ssw,i_gcm,i_expt,i_fcdate)
+                    elif "compare_expts" == procedure:
+                        compare_expts(which_ssw, i_gcm)
+            elif "compare_gcms" == procedure:
+                compare_gcms(which_ssw, idx_gcms)
 

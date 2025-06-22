@@ -89,11 +89,12 @@ def analysis_multiparams(which_ssw):
                 [],
                 )
     elif "sep2019" == which_ssw:
-        cgs_levels = [(1,1),(2,2),(7,6)]
+        cgs_levels = [(1,1),(4,4),(12,12),(36,36)]
         select_regions = ( # Indexed by cgs_level
-                ((0,0),), # level (1,1)
-                ((0,0),(1,0),(0,1),(1,1)), # level (2,1)
-                ((i,j) for i in range(7) for j in range(6)),
+                [(0,0),], # level (1,1)
+                [], # level (2,1)
+                [(4,4),(8,4),(4,8),(8,8)],
+                [],
                 )
     return cgs_levels,select_regions
 
@@ -957,7 +958,7 @@ def plot_gevsevlev_select_regions(
             sevlev_ref = gevsevlev_ref['sevlev'].to_numpy() # n_boot x n_lev
             exttemp = da_cgts_extt.isel(lon=i_lon,lat=i_lat).to_numpy().flatten()
             exttemp_ref = da_cgts_extt_ref.isel(lon=i_lon,lat=i_lat).to_numpy().flatten()
-            temp_bounds = utils.padded_bounds(exttemp_ref, inflation=0.5)
+            temp_bounds = utils.padded_bounds(da_cgts_ref.isel(lon=i_lon,lat=i_lat), inflation=0.2)
             exttemp_ref_special = exttemp_ref[idx_mem_special_ref]
             risk_levels = gevsevlev.coords['risk'].to_numpy() # increasing 
             risk_levels_ref = gevsevlev_ref.coords['risk'].to_numpy() # increasing 
