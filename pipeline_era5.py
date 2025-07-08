@@ -50,7 +50,6 @@ def era5_workflow(which_ssw,verbose=False):
     landmask_full_file = join(processed_data_dir,'era5','land_sea_mask.nc')
     landmask_interp_file = join(reduced_data_dir,'land_sea_mask_interp.nc')
 
-    daily_stat = 'daily_min'
     years = np.arange(1980,2020,dtype=int)
     year_filegroups = []
     ens_file_cgt = join(reduced_data_dir,'t2m_cgt1day.nc')
@@ -77,6 +76,7 @@ def era5_workflow(which_ssw,verbose=False):
     if "feb2018" == which_ssw:
         event_year = 2018
         ext_sign = -1
+        daily_stat = 'daily_min'
         for year in years:
             year_filegroups.append(tuple(
                 [join(raw_data_dir,f't2m_{(year-1):04}-12.nc')] + 
@@ -85,6 +85,7 @@ def era5_workflow(which_ssw,verbose=False):
     elif "jan2019" == which_ssw:
         event_year = 2019
         ext_sign = -1
+        daily_stat = 'daily_min'
         for year in years:
             year_filegroups.append(tuple(
                 [join(raw_data_dir,f't2m_{(year-1):04}-12.nc')] + 
@@ -93,6 +94,7 @@ def era5_workflow(which_ssw,verbose=False):
     elif "sep2019" == which_ssw:
         event_year = 2019
         ext_sign = 1
+        daily_stat = 'daily_max'
         for year in years:
             year_filegroups.append(tuple(
                 [join(raw_data_dir,f't2m_{year:04}-{month:02}.nc') for month in [8,9,10,11]]
@@ -235,11 +237,11 @@ def coarse_grain_time(years, year_filegroups, region, context_region, Nlon_inter
 
 def reduce_era5(which_ssw):
     todo = dict({
-        'interpolate_landmask':             1,
-        'coarse_grain_time':                1,
-        'coarse_grain_space':               1,
-        'set_param_bounds':                 1,
-        'onset_date_sensitivity_analysis':  1,
+        'interpolate_landmask':             0,
+        'coarse_grain_time':                0,
+        'coarse_grain_space':               0,
+        'set_param_bounds':                 0,
+        'onset_date_sensitivity_analysis':  0,
         'compute_severities':               1,
         'plot_sumstats_map':                1,
         'fit_gev':                          1,
@@ -372,7 +374,7 @@ def reduce_era5(which_ssw):
 
 if __name__ == '__main__':
     print(f'Starting main')
-    for which_ssw in ["feb2018","jan2019","sep2019"][:1]:
+    for which_ssw in ["feb2018","jan2019","sep2019"][2:3]:
         result = reduce_era5(which_ssw)
 
 

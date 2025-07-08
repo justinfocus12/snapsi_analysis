@@ -4,8 +4,8 @@ from os.path import join
 
 client = cdsapi.Client()
 
-for year in range(1979, 2020):
-    for month in [8]:
+for year in range(2019, 2020):
+    for month in [10]:
         first_weekday,days_in_month = monthrange(year,month)
         print(f'About to request year {year}, month {month}')
         target_filename = join(

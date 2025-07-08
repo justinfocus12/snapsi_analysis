@@ -305,7 +305,7 @@ def plot_sumstats_maps_flat(
         for (i_ax,ax) in enumerate(axes):
             decorate_mercator_axis(ax, lonmin, lonmax, latmin, latmax)
             ax.set_title(titles[i_ax], loc='left')
-        fig.suptitle(suptitle, x=0.5, ha='center', va='bottom', y=0.98)
+        fig.suptitle(suptitle, x=axes[0].get_position().x0, y=axes[0].get_position().y1+0.05, ha='left', va='bottom')
         fig.savefig(join(figdir,'sumstats_map_%s_cgs%dx%d.png'%(figfile_tag,cgs_level[0],cgs_level[1])), **pltkwargs)
         plt.close(fig)
     return 
@@ -745,7 +745,7 @@ def plot_gevpar_maps_flat(gevpar_files, ext_sign, cgs_levels, param_bounds_file,
         axshape.set_title(r"Shape $\xi$", loc='left')
         for (i_ax,ax) in enumerate(axes):
             decorate_mercator_axis(ax, lonmin, lonmax, latmin, latmax)
-        fig.suptitle(title_affix, va='bottom', y=0.98)
+        fig.suptitle(title_affix, va='bottom', ha='left', y=0.92)
         fig.savefig(join(figdir,"gevpar_map_%s_cgs%dx%d.png"%(figfile_tag,cgs_level[0],cgs_level[1])), **pltkwargs)
         plt.close(fig)
     return 
