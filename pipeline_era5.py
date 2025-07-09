@@ -244,12 +244,12 @@ def reduce_era5(which_ssw):
         'onset_date_sensitivity_analysis':  0,
         'compute_severities':               1,
         'plot_sumstats_map':                1,
-        'fit_gev':                          1,
+        'fit_gev':                          0,
         'plot_gevpar_map':                  1,
-        'compute_risk':                     1,
-        'plot_risk_map':                    1,
-        'fit_gev_select_regions':           1,
-        'plot_gev_select_regions':          1,
+        'compute_risk':                     0,
+        'plot_risk_map':                    0,
+        'fit_gev_select_regions':           0,
+        'plot_gev_select_regions':          0,
         })
     wkf = era5_workflow(which_ssw)
     if todo['interpolate_landmask']:
@@ -374,7 +374,7 @@ def reduce_era5(which_ssw):
 
 if __name__ == '__main__':
     print(f'Starting main')
-    for which_ssw in ["feb2018","jan2019","sep2019"][2:3]:
+    for which_ssw in ["feb2018","jan2019","sep2019"][:1]:
         result = reduce_era5(which_ssw)
 
 

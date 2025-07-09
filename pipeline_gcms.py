@@ -500,11 +500,14 @@ def plot_relrisks_dvalatrisks_allgcms(
             ax_fc0 = fig.add_subplot(gs[0,0])
             ax_fc1 = fig.add_subplot(gs[0,1], sharex=ax_fc0, sharey=ax_fc0)
             axs_fc = [ax_fc0,ax_fc1]
+            ylims_dvar = [np.inf,-np.inf]
             for (i_gcm,gcm) in enumerate(gcms):
                 gev_sev_risk_var_rr_dvar = xr.open_dataset(gevsevlev_comp_files[gcm][i_cgs_level][i_region])
                 rr_dvar = gev_sev_risk_var_rr_dvar['rr_dvar'] #.sel(quantity=q) for q in ['relrisk','dvalatrisk'])
                 for (fc_date,ax) in zip(fc_dates,axs_fc):
                     rrmids,dvarmids = [rr_dvar.sel(quantity=q,fc_date=fc_date,boot=0) for q in ['relrisk','dvalatrisk']]
+                    ylims_dvar[0] = min(ylims_dvar[0], np.nanmin(dvarmids).item())
+                    ylims_dvar[1] = max(ylims_dvar[1], np.nanmax(dvarmids).item())
                     for (i_expt_pair,expt_pair) in enumerate(expt_pairs):
                         rrmid,dvarmid = [dthing.sel(expt_pair=expt_pair_coordval(expt_pair)).item() for dthing in (rrmids,dvarmids)]
                         logrrmid = truncated_log10(rrmid)
@@ -532,6 +535,8 @@ def plot_relrisks_dvalatrisks_allgcms(
                                 color=expt_colors[expt_pair[1]],
                                 linewidth=6, alpha=0.25, zorder=2)
             grk = utils.greekletters()
+            ylims_dvar = utils.padded_bounds(ylims_dvar, inflation=0.1)
+            ylims_dvar = np.max(np.abs(ylims_dvar)) * np.array([-1,1])
             for (fc_date,ax) in zip(fc_dates,axs_fc):
                 #ax.set_xscale('log')
                 ax.set_xlim(logrrlims)
@@ -544,8 +549,9 @@ def plot_relrisks_dvalatrisks_allgcms(
                 ax.set_title(dtlib.datetime.strftime(fc_date,"FC %Y/%m/%d"))
                 ax.axhline(0, color=expt_colors['free'])
                 ax.axvline(0, color=expt_colors['free'])
-                ax.axvline(logrrtickvalues[0], color='gray', alpha=0.25)
-                ax.axvline(logrrtickvalues[-1], color='gray', alpha=0.25)
+                ax.set_ylim(ylims_dvar)
+                ax.fill_betweenx(ylims_dvar, logrrlims[0], logrrtickvalues[0], ec='none', fc='gray', alpha=0.3, zorder=-1)
+                ax.fill_betweenx(ylims_dvar, logrrtickvalues[-1], logrrlims[-1], ec='none', fc='gray', alpha=0.3, zorder=-1)
                 
             fig.savefig(join(figdir,f'relrisks_dvalatrisks_allgcms_cgs{cgs_level[0]}x{cgs_level[1]}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
             plt.close(fig)
@@ -924,13 +930,14 @@ def plot_gevsevlev_comp_select_regions(
                         ha='center', va='bottom', transform=ax_title.transAxes, fontsize=20
                         )
                 #ax_title.text(0.5, 0.0, figtitle_affix, transform=ax_title.transAxes, ha='center', va='bottom', fontsize=20)
+                ylims_dvar = (sev_bounds[1]-sev_bounds[0])*np.array([-1/4,1/4])
                 ax_title.axis('off')
                 axgev.legend(handles=handles)
 
                 axrrdvar.axhline(0, color=expt_colors[expt_baseline])
                 axrrdvar.axvline(0, color=expt_colors[expt_baseline])
-                axrrdvar.axvline(logrrtickvalues[0], color='gray', alpha=0.25)
-                axrrdvar.axvline(logrrtickvalues[-1], color='gray', alpha=0.25)
+                axrrdvar.fill_betweenx(ylims_dvar, logrrlims[0], logrrtickvalues[0], ec='none', fc='gray', zorder=-1, alpha=0.3)
+                axrrdvar.fill_betweenx(ylims_dvar, logrrtickvalues[-1], logrrlims[1], ec='none', fc='gray', zorder=-1, alpha=0.3)
                 axrrdvar.set_xlabel("risk / (free risk)")
                 axgev.set_ylabel("severity [K]")
                 grk = utils.greekletters()
@@ -953,7 +960,7 @@ def plot_gevsevlev_comp_select_regions(
                     ax.xaxis.set_tick_params(which='both',labelbottom=False)
                 for ax in (axrr,axrrdvar):
                     ax.yaxis.set_tick_params(which='both',labelbottom=False)
-                axdvar.set_ylim((sev_bounds[1]-sev_bounds[0])*np.array([-1/4,1/4]))
+                axdvar.set_ylim(ylims_dvar)
                 fig.savefig(join(figdir,f'gevsevlev_comp_fc{fc_date_abbrv}_cgs{cgs_level[0]}x{cgs_level[1]}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
                 plt.close(fig)
             #relrisk_dvalatrisk.to_netcdf(relrisk_dvalatrisk_comp_files[i_cgs_level][i_region])
@@ -969,10 +976,10 @@ def plot_gevsevlev_comp_select_regions(
 
 def compare_expts(which_ssw, i_gcm):
     todo = dict({
-        'plot_gevpar_map_diffs':                    1,
-        'compute_valatrisk_comp':                   1,
-        'plot_valatrisk_comp_maps':                 1,
-        'compute_gevsevlev_comp_select_regions':    1,
+        'plot_gevpar_map_diffs':                    0,
+        'compute_valatrisk_comp':                   0,
+        'plot_valatrisk_comp_maps':                 0,
+        'compute_gevsevlev_comp_select_regions':    0,
         'plot_gevsevlev_comp_select_regions':       1,
         })
     gcms,expts,fc_dates,_,term_date = gcm_multiparams(which_ssw)
@@ -1307,17 +1314,17 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
     ''')
     if todoflags is None:
         todo = dict({
-            'coarse_grain_time':                1,
-            'coarse_grain_space':               1,
-            'onset_date_sensitivity_analysis':  1,
-            'compute_severities':               1,
-            'plot_sumstats_map':                1,
-            'fit_gev':                          1,
+            'coarse_grain_time':                0,
+            'coarse_grain_space':               0,
+            'onset_date_sensitivity_analysis':  0,
+            'compute_severities':               0,
+            'plot_sumstats_map':                0,
+            'fit_gev':                          0,
             'plot_gevpar_map':                  1,
-            'compute_risk':                     1,
-            'plot_risk_map':                    1,
-            'plot_valatrisk_map':               1,
-            'fit_gev_select_regions':           1,
+            'compute_risk':                     0,
+            'plot_risk_map':                    0,
+            'plot_valatrisk_map':               0,
+            'fit_gev_select_regions':           0,
             'plot_gevsevlev_select_regions':    1,
             })
     else:
@@ -1463,15 +1470,15 @@ if __name__ == "__main__":
         raise ValueError("procedures is {procedures} but must be a subset of of {options}".format(procedures=procedures, options=all_procedures))
 
     # Pass in which procedure to do based on system arguments
-    for which_ssw in ["feb2018","jan2019","sep2019"][2:3]:
+    for which_ssw in ["feb2018","jan2019","sep2019"][:1]:
         for procedure in procedures:
             print(f'{procedure = }')
-            if "compare_gcms" != procedure:
+            if procedure in ["reduce","compare_expts"]:
                 for (i_gcm,gcm) in enumerate(gcms):
                     if gcm in gcms2ignore:
                         continue
-                    if not ("IFS" == gcm):
-                        continue
+                    #if not ("IFS" == gcm):
+                    #    continue
                     if "reduce" == procedure:
                         for i_fcdate in range(2):
                             for i_expt in range(3):
@@ -1485,7 +1492,7 @@ if __name__ == "__main__":
                 for (i_gcm,gcm) in enumerate(gcms):
                     if gcm in gcms2ignore:
                         continue
-                    if not ("IFS" == gcm):
-                        continue
+                    #if not ("IFS" == gcm):
+                    #    continue
                     sanity_check_2019(i_gcm)
 

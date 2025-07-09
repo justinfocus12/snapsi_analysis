@@ -745,7 +745,7 @@ def plot_gevpar_maps_flat(gevpar_files, ext_sign, cgs_levels, param_bounds_file,
         axshape.set_title(r"Shape $\xi$", loc='left')
         for (i_ax,ax) in enumerate(axes):
             decorate_mercator_axis(ax, lonmin, lonmax, latmin, latmax)
-        fig.suptitle(title_affix, va='bottom', ha='left', y=0.92)
+        fig.suptitle(title_affix, x=0.5, y=axes[0].get_position().y1+0.05, ha='center', va='bottom')
         fig.savefig(join(figdir,"gevpar_map_%s_cgs%dx%d.png"%(figfile_tag,cgs_level[0],cgs_level[1])), **pltkwargs)
         plt.close(fig)
     return 
@@ -1006,6 +1006,8 @@ def plot_gevsevlev_select_regions(
                     ])
                 return param_label
             ax = ax_gev
+            xlim = [min(np.min(risk_empirical),np.min(risk_empirical_ref)), 1.01]
+            ax.set_xlim(xlim)
             handles = []
             # non-ref
             ax.scatter(risk_empirical, exttemp[order], color='red', marker='+')
@@ -1029,6 +1031,19 @@ def plot_gevsevlev_select_regions(
                     [valatrisk_refgivenexpt.isel(boot=0).item()] + [np.quantile(valatrisk_refgivenexpt[1:], 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]],
                     color='purple', linewidth=3, zorder=2
                     )
+            # Dropping lines to axes to illustrate absolute risk and value-at-risk 
+            # 1. Horizontal line from era5 to gcm curve 
+            ax.plot([risk_empirical_ref[rank_ref[idx_mem_special_ref]], risk_refgivenexpt.isel(boot=0).item()], exttemp_ref_special*np.ones(2), color='black', linestyle='--', linewidth=1.5)
+            # 2. vertical line from gcm curve to risk axis, with error bars
+            ax.plot(risk_refgivenexpt.isel(boot=0).item()*np.ones(2), [temp_bounds[0], exttemp_ref_special], color='red', linestyle='--', linewidth=1.5)
+            ax.fill_betweenx([temp_bounds[0], exttemp_ref_special], *[np.quantile(risk_refgivenexpt.isel(boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]], fc='red', ec='none', zorder=-1, alpha=0.3)
+            # 3. Vertical line from era5 curve (at ERA5 risk) to gcm curve
+            ax.plot(risk_refgivenref.isel(boot=0).item()*np.ones(2), [exttemp_ref_special, valatrisk_refgivenexpt.isel(boot=0).item()], color='black', linestyle='--', linewidth=1.5) 
+            # 4. Horizontal line from gcm curve (at valatrisk) to severity axis
+            ax.plot([risk_refgivenref.isel(boot=0).item(), xlim[1]], valatrisk_refgivenexpt.isel(boot=0).item()*np.ones(2), color='red', linestyle='--', linewidth=1.5)
+            ax.fill_between([risk_refgivenref.isel(boot=0).item(), xlim[1]], *[np.quantile(valatrisk_refgivenexpt.isel(boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]], fc='red', ec='none', zorder=-1, alpha=0.3)
+
+
             # ref
             ax.scatter(risk_empirical_ref, exttemp_ref[order_ref], color='black', marker='+')
             h, = ax.plot(risk_levels_ref,sevlev_ref[0,:],color='black', label=ref_label+'\n'+param_label_fun(loc_ref,scale_ref,shape_ref))
@@ -1039,12 +1054,9 @@ def plot_gevsevlev_select_regions(
             else:
                 lo,hi = 2*sevlev_ref[0,:]-boot_quant_hi, 2*sevlev_ref[0,:]-boot_quant_lo
             ax.fill_between(risk_levels_ref, lo, hi, fc='gray', ec='none', alpha=0.3, zorder=-1)
-            # Two big h/v lines: one for the empirical value of risk, and one for the risk and var according to the GCM 
-            ax.axhline(exttemp_ref_special, color='black', linestyle='--', linewidth=1.5)
-            ax.axvline(risk_empirical_ref[rank_ref[idx_mem_special_ref]], color='black', linestyle='--')
-            ax.axhline(valatrisk_refgivenexpt.isel(boot=0).item(), color='purple', linestyle='--')
-            ax.axvline(risk_refgivenref.isel(boot=0).item(), color='purple', linestyle='--')
-            ax.scatter(risk_empirical_ref[rank_ref[idx_mem_special_ref]], exttemp_ref_special, color='black', marker='o', s=12)
+
+            # Special marker for the event year itself 
+            ax.scatter(risk_empirical_ref[rank_ref[idx_mem_special_ref]], exttemp_ref_special, color='black', marker='o', s=18)
 
             # Decorations 
             ax.set_xscale('log')
