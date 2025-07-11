@@ -87,10 +87,10 @@ def gcm_plot_styles():
             'marker': "$F$",
             }),
         'NAVGEM': dict({
-            'marker': "$G$",
+            'marker': ".",
             }),
         'GloSea6': dict({
-            'marker': "$H$",
+            'marker': "$G$",
             }),
         })
     return styles
@@ -543,6 +543,8 @@ def plot_relrisks_dvalatrisks_allgcms(
                 xticklabels = list(map(
                         lambda rr: "1/%d"%(int(round(1/rr))) if rr<1 else "%d"%rr, 
                         rrtickvalues))
+                xticklabels[0] = "\u003C"+xticklabels[0]
+                xticklabels[-1] = xticklabels[-1]+"\u003E"
                 ax.set_xticks(logrrtickvalues, xticklabels)
                 ax.set_ylabel("severity - (free severity) [K]")
                 ax.set_xlabel("risk / (free risk)")
@@ -692,106 +694,6 @@ def plot_valatrisk_comp_maps(
                 plt.close(fig)
     return
 
-def plot_gevsevlev_select_regions():
-    for (i_cgs_level,cgs_level) in enumerate(cgs_levels[:1]):
-        cgs_key = r'%dx%d'%(cgs_level[0],cgs_level[1])
-        ens_file_cgts = join(reduced_data_dir,f't2m_e{expt}_i{fc_date_abbrv}_cgt1day_cgs{cgs_key}.nc')
-        da_cgts = xr.open_dataset(ens_file_cgts)['1xday'].sel(daily_stat=daily_stat)
-        da_cgts_era5 = xr.open_dataset(join(reduced_data_dir_era5,f't2m_cgt1day_cgs{cgs_key}.nc'))['1xday'].sel(daily_stat=daily_stat)
-        da_cgts_extt = ext_sign * (ext_sign*da_cgts.sel(time=slice(onset_date,term_date))).max(dim='time')
-        da_cgts_extt_era5 = ext_sign * (ext_sign*da_cgts_era5.sel(time=slice(onset_date,term_date))).max(dim='time')
-        lon_blocksize,lat_blocksize = ((event_region[d].stop - event_region[d].start)/cgs_level[i_d] for (i_d,d) in enumerate(('lon','lat')))
-        print(f' --- Starting loop over lons and lats')
-        for (i_lon,i_lat) in select_regions[i_cgs_level]:
-            exttemp = da_cgts_extt.isel(lon=i_lon,lat=i_lat) #.to_numpy()
-            exttemp_era5 = da_cgts_extt_era5.isel(lon=i_lon,lat=i_lat) #.to_numpy()
-            gevpar_reg = xr.open_dataarray(join(reduced_data_dir,f'gevpar_reg_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
-            exttemp_levels_reg = np.load(join(reduced_data_dir,f'exttemp_levels_reg_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
-            gevpar_reg_era5 = xr.open_dataarray(join(reduced_data_dir_era5,f'gevpar_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.nc'))
-            exttemp_levels_reg_era5 = np.load(join(reduced_data_dir_era5,f'exttemp_levels_reg_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.npy'))
-            print(f'      --- Loaded the exttemps and gevpars')
-            fig = plt.figure(figsize=(12,8))
-            gs = gridspec.GridSpec(figure=fig, nrows=2, ncols=2, height_ratios=[1,18])
-            ax_title = fig.add_subplot(gs[0,0:2])
-            ax_gev = fig.add_subplot(gs[1,0])
-            ax_timeseries = fig.add_subplot(gs[1,1], sharey=ax_gev)
-
-
-            # Plot timeseries on right
-            ax = ax_timeseries
-            for i_mem in range(da_cgts.member.size):
-                temp_gcm = da_cgts.isel(lat=i_lat,lon=i_lon,member=i_mem)
-                #print(f'{temp_gcm.time = }')
-                xr.plot.plot(temp_gcm, x='time', ax=ax, color='red', alpha=0.25)
-                i_t_argmax = (ext_sign*temp_gcm).argmax(dim='time').item()
-                idx_argmax = range(max(i_t_argmax,0),min(i_t_argmax+1,temp_gcm['time'].size))
-                xr.plot.plot(temp_gcm.isel(time=idx_argmax), x='time', ax=ax, color='purple', marker='.', linestyle='-')
-            for (i_mem,mem) in enumerate(da_cgts_era5.member.to_numpy()):
-                temp_era5 = da_cgts_era5.isel(lat=i_lat,lon=i_lon,member=i_mem)
-                xr.plot.plot(temp_era5, x='time', ax=ax, color='gray', alpha=0.25) 
-                if mem == event_year:
-                    xr.plot.plot(temp_era5, x='time', ax=ax, color='black', linestyle='--', linewidth=2) 
-                i_t_argmax = (ext_sign*temp_era5).argmax(dim='time').item()
-                idx_argmax = range(max(i_t_argmax,0),min(i_t_argmax+1,temp_era5.time.size))
-                xr.plot.plot(temp_era5.isel(time=idx_argmax), x='time', ax=ax, color='black', marker='.', linestyle='-')
-            ax.set_title('')
-            ax.set_xlabel('Time')
-            ax.yaxis.set_tick_params(which='both', labelbottom=True)
-            ax.set_ylabel('')
-
-            shape,loc,scale = (gevpar_reg.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
-            shape_era5,loc_era5,scale_era5 = (gevpar_reg_era5.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
-            param_label = ','.join([
-                r'$\mu=%d$'%(ext_sign*loc),
-                r'$\sigma=%d$'%(scale),
-                r'$\xi=%.2f$'%(shape)
-                ])
-            param_label_era5 = ','.join([
-                r'$\mu=%d$'%(ext_sign*loc_era5),
-                r'$\sigma=%d$'%(scale_era5),
-                r'$\xi=%.2f$'%(shape_era5)
-                ])
-            ax = ax_gev
-            # GCM data
-            order = np.argsort(exttemp.to_numpy())
-            
-            if ext_sign == -1:
-                risk_empirical = np.arange(1,len(exttemp)+1)/len(exttemp)
-            else:
-                risk_empirical = np.arange(len(exttemp),0,-1)/len(exttemp)
-            ax.scatter(risk_empirical, exttemp.isel(member=order).to_numpy(), color='red', marker='+')
-            hgcm, = ax.plot(risk_levels,exttemp_levels_reg[0,:],color='red',label=r'%s (%s)'%(gcm,param_label))
-            ax.fill_between(risk_levels, np.quantile(exttemp_levels_reg[1:], 0.25, axis=0), np.quantile(exttemp_levels_reg[1:], 0.75, axis=0), fc='red', ec='none', alpha=0.3, zorder=-1)
-            # Now ERA5
-            order = np.argsort(exttemp_era5.to_numpy())
-            rank = np.argsort(order)
-            if ext_sign == -1:
-                risk_empirical = np.arange(1,exttemp_era5.member.size+1)/exttemp_era5.member.size
-            else:
-                risk_empirical = np.arange(exttemp_era5.member.size,0,-1)/exttemp_era5.member.size
-            ax.scatter(risk_empirical, exttemp_era5.isel(member=order).to_numpy(), color='black', marker='+')
-            # Special marker for the year of interest
-            i_mem_event_year = np.where(da_cgts_extt_era5.member == event_year)[0][0]
-
-            ax.scatter(risk_empirical[rank[i_mem_event_year]], exttemp_era5.isel(member=i_mem_event_year).item(), color='black', marker='o')
-            hera5, = ax.plot(risk_levels,exttemp_levels_reg_era5[0,:],color='black',label=r'ERA5 (%s)'%(param_label_era5))
-            ax.fill_between(risk_levels, np.quantile(exttemp_levels_reg_era5, 0.25, axis=0), np.quantile(exttemp_levels_reg_era5, 0.75, axis=0), fc='gray', ec='none', alpha=0.3, zorder=-1)
-            ax.legend(handles=[hera5,hgcm])
-            ax.set_xscale('log')
-            ineq_symb = "geq" if 1==ext_sign else "leq"
-            ax.set_xlabel(r'$\mathbb{P}\{\%s_t\langle T(t)\rangle_{\mathrm{region}}\%s T\}$'%(ext_symb,ineq_symb))
-
-            center_lon = event_region['lon'].start + (i_lon+0.5)*lon_blocksize
-            center_lat = event_region['lat'].start + (i_lat+0.5)*lat_blocksize
-            lonlatstr = r'$\lambda=%d\pm%d,\phi=%d\pm%d$'%(center_lon,lon_blocksize/2,center_lat,lat_blocksize/2)
-            # Title 
-            ax_title.text(0.5, 0.5, f'{gcm} {expt}, init {datestr} at {lonlatstr}', transform=ax_title.transAxes, ha='center', va='center')
-            ax.set_ylabel(r'$T$')
-            ax.set_title('')
-
-            fig.savefig(join(figdir,f'riskplot_reg_e{expt}_i{fc_date_abbrv}_cgs{cgs_key}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
-            plt.close(fig)
-    return 
 
 def plot_gevsevlev_comp_select_regions(
         # TODO read in the precomputed RRs and DVs to ease this  
@@ -843,6 +745,7 @@ def plot_gevsevlev_comp_select_regions(
                 rrtickvalues = [0.25, 0.5, 1.0, 2.0, 4.0]
                 logrrtickvalues = list(map(np.log10, rrtickvalues))
                 logrrlims = [1.5*logrrtickvalues[0]-0.5*logrrtickvalues[1], 1.5*logrrtickvalues[-1]-0.5*logrrtickvalues[-2]]
+                risklim = [risks[0],risks[-1]]
 
 
                 for expt in expts+['era5']:
@@ -855,6 +758,7 @@ def plot_gevsevlev_comp_select_regions(
                         sevlev_expt = sevlev_era5
                         Nmem = da_cgts_extt_era5.coords['member'].size
                     risk_empirical = (0.5+np.arange(0,Nmem,1))/Nmem
+                    risklim[0] = max(risklim[0], risk_empirical[0])
                     ordering_for_interp_empirical = np.arange(Nmem-1,-1,-1)
                     if ext_sign == -1:
                         ordering_for_interp_empirical = np.flip(ordering_for_interp_empirical)
@@ -949,12 +853,15 @@ def plot_gevsevlev_comp_select_regions(
                 for ax in (axgev,):
                     ax.set_xscale('log')
                 for ax in (axgev, axdvar):
-                    ax.set_xlim([risks[0],risks[-1]])
+                    #ax.set_xlim([risks[0],risks[-1]])
+                    ax.set_xlim(risklim)
                 for ax in (axrr,axrrdvar):
                     ax.set_xlim(logrrlims)
                     xticklabels = list(map(
                             lambda rr: "1/%d"%(int(round(1/rr))) if rr<1 else "%d"%rr, 
                             rrtickvalues))
+                    xticklabels[0] = "\u003C"+xticklabels[0]
+                    xticklabels[-1] = xticklabels[-1]+"\u003E"
                     ax.set_xticks(logrrtickvalues, xticklabels)
                 for ax in (axgev,axrr):
                     ax.xaxis.set_tick_params(which='both',labelbottom=False)
@@ -1460,7 +1367,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
 if __name__ == "__main__":
     gcm2institute = all_gcms_institutes()
     gcms = list(gcm2institute.keys())
-    gcms2ignore = ["BCC-CSM2-HR","GLOBO","GEM-NEMO","CanESM5","SPEAR"]
+    gcms2ignore = ["BCC-CSM2-HR","GLOBO","GEM-NEMO","CanESM5","SPEAR","NAVGEM"]
     idx_gcms = [i for i in range(len(gcms)) if ((gcms[i] not in gcms2ignore))]
 
 
@@ -1470,15 +1377,15 @@ if __name__ == "__main__":
         raise ValueError("procedures is {procedures} but must be a subset of of {options}".format(procedures=procedures, options=all_procedures))
 
     # Pass in which procedure to do based on system arguments
-    for which_ssw in ["feb2018","jan2019","sep2019"][:1]:
+    for which_ssw in ["feb2018","jan2019","sep2019"][0:3]:
         for procedure in procedures:
             print(f'{procedure = }')
             if procedure in ["reduce","compare_expts"]:
                 for (i_gcm,gcm) in enumerate(gcms):
                     if gcm in gcms2ignore:
                         continue
-                    #if not ("IFS" == gcm):
-                    #    continue
+                    if not ("IFS" == gcm):
+                        continue
                     if "reduce" == procedure:
                         for i_fcdate in range(2):
                             for i_expt in range(3):
