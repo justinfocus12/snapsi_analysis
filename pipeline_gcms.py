@@ -469,6 +469,7 @@ def preprocess_gcm_6hrPt(dsmem,fcdate,timesel,spacesel,verbose=False):
         print(f'Preprocessing done; {dsmem_tas.time.size = }')
         print(f'{dsmem_tas.time = }')
     #sys.exit()
+    # TODO record the full timespan of the dataset
     return dsmem_tas
 
 def plot_relrisks_dvalatrisks_allgcms(
@@ -501,6 +502,11 @@ def plot_relrisks_dvalatrisks_allgcms(
             ax_fc1 = fig.add_subplot(gs[0,1], sharex=ax_fc0, sharey=ax_fc0)
             axs_fc = [ax_fc0,ax_fc1]
             ylims_dvar = [np.inf,-np.inf]
+            # Multi-model means 
+            mmm = xr.DataArray(
+                    coords={'quantity': ['logrr','dvar'], 'fc_date': fc_dates, 'expt_pair': list(map(expt_pair_coordval, expt_pairs))}, 
+                    dims=['quantity','fc_date','expt_pair'],
+                    data=0.0)
             for (i_gcm,gcm) in enumerate(gcms):
                 gev_sev_risk_var_rr_dvar = xr.open_dataset(gevsevlev_comp_files[gcm][i_cgs_level][i_region])
                 rr_dvar = gev_sev_risk_var_rr_dvar['rr_dvar'] #.sel(quantity=q) for q in ['relrisk','dvalatrisk'])
@@ -511,6 +517,8 @@ def plot_relrisks_dvalatrisks_allgcms(
                     for (i_expt_pair,expt_pair) in enumerate(expt_pairs):
                         rrmid,dvarmid = [dthing.sel(expt_pair=expt_pair_coordval(expt_pair)).item() for dthing in (rrmids,dvarmids)]
                         logrrmid = truncated_log10(rrmid)
+                        mmm.loc[dict(quantity='logrr',fc_date=fc_date,expt_pair=expt_pair_coordval(expt_pair))] += logrrmid/len(gcms)
+                        mmm.loc[dict(quantity='dvar',fc_date=fc_date,expt_pair=expt_pair_coordval(expt_pair))] += dvarmid/len(gcms)
                         logrrlo,logrrhi= [
                                 np.quantile(
                                     np.vectorize(truncated_log10)(
@@ -534,6 +542,12 @@ def plot_relrisks_dvalatrisks_allgcms(
                                 [dvarmid + factor*ddvar for factor in [0,.5]],
                                 color=expt_colors[expt_pair[1]],
                                 linewidth=6, alpha=0.25, zorder=2)
+            for (fc_date,ax) in zip(fc_dates,axs_fc):
+                for (i_expt_pair,expt_pair) in enumerate(expt_pairs):
+                    ax.scatter(
+                            np.maximum(logrrlims[0], np.minimum(logrrlims[1], mmm.sel(quantity='logrr',fc_date=fc_date,expt_pair=expt_pair_coordval(expt_pair)))), 
+                            mmm.sel(quantity='dvar',fc_date=fc_date,expt_pair=expt_pair_coordval(expt_pair)), 
+                            fc='none', linewidth=3, ec=expt_colors[expt_pair[1]], s=38**2, marker='H', alpha=1.0, zorder=-2)
             grk = utils.greekletters()
             ylims_dvar = utils.padded_bounds(ylims_dvar, inflation=0.1)
             ylims_dvar = np.max(np.abs(ylims_dvar)) * np.array([-1,1])
@@ -774,6 +788,10 @@ def plot_gevsevlev_comp_select_regions(
                         dvar = sevlev_expt.to_numpy() - sevlev.sel(fc_date=fc_date,expt=expt_baseline)
                         axdvar.plot(risks, dvar[0,:], color=expt_colors[expt])
                         axdvar.fill_between(risks, *(np.quantile(dvar, 0.5+sgn*0.5*confint_width, axis=0) for sgn in (-1,1)), alpha=0.5, zorder=-1, color=expt_colors[expt])
+                        # empirical quantile shift
+                        if (expt_baseline,expt) in expt_pairs:
+                            dvar_emp = np.subtract(*(np.sort(da_cgts_extt.isel(lon=i_lon,lat=i_lat).sel(fc_date=fc_date,expt=e).to_numpy().flatten()) for e in [expt,expt_baseline]))
+                            axdvar.scatter(risk_empirical, dvar_emp, color=expt_colors[expt], marker='+')
                         # interpolate for relative risks
                         risks_interp = np.apply_along_axis(interp_fun, 1, sevlev_expt.to_numpy())
                         relrisk = risks_interp / risks_interp_baseline
@@ -790,6 +808,7 @@ def plot_gevsevlev_comp_select_regions(
                     print(f'{expt = }')
                     rrmids,dvarmids = [gev_sev_risk_var_rr_dvar['rr_dvar'].sel(fc_date=fc_date,quantity=q,boot=0) for q in ['relrisk','dvalatrisk']]
                     # for the relative risk plot, implement the log scale manually 
+                    # TODO plot differences on RR and QS plots 
                     expt_pair = (expt_baseline,expt)
                     if expt_pair in expt_pairs:
                         rrmid,dvarmid = [dthing.sel(expt_pair=expt_pair_coordval(expt_pair)).item() for dthing in (rrmids,dvarmids)]
@@ -1227,12 +1246,12 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
             'compute_severities':               0,
             'plot_sumstats_map':                0,
             'fit_gev':                          0,
-            'plot_gevpar_map':                  1,
+            'plot_gevpar_map':                  0,
             'compute_risk':                     0,
             'plot_risk_map':                    0,
             'plot_valatrisk_map':               0,
             'fit_gev_select_regions':           0,
-            'plot_gevsevlev_select_regions':    1,
+            'plot_gevsevlev_select_regions':    0,
             })
     else:
         todo = dict({key: todoflags[i] for (i,key) in enumerate(todokeys)})
@@ -1384,8 +1403,8 @@ if __name__ == "__main__":
                 for (i_gcm,gcm) in enumerate(gcms):
                     if gcm in gcms2ignore:
                         continue
-                    if not ("IFS" == gcm):
-                        continue
+                    #if not ("IFS" == gcm):
+                    #    continue
                     if "reduce" == procedure:
                         for i_fcdate in range(2):
                             for i_expt in range(3):

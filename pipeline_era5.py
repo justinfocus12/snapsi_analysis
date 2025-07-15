@@ -256,8 +256,10 @@ def reduce_era5(which_ssw):
         interpolate_landmask(wkf['landmask_full_file'], wkf['landmask_interp_file'], wkf['Nlon_interp'], wkf['Nlat_interp'], wkf['event_region'])
     if todo['coarse_grain_time']:
         coarse_grain_time(wkf['years'], wkf['year_filegroups'], wkf['event_region'], wkf['context_region'], wkf['Nlon_interp'], wkf['Nlat_interp'], wkf['fc_dates'][0], wkf['onset_date_nominal'], wkf['term_date'], wkf['ens_file_cgt'])
+    # Ad-hoc: find the day with the most extreme cold
     if todo['coarse_grain_space']:
         pipeline_base.coarse_grain_space(wkf['ens_file_cgt'], wkf['ens_files_cgts'], wkf['cgs_levels'], wkf['landmask_interp_file'], wkf['event_region'])
+    pdb.set_trace()
 
 
     if todo['set_param_bounds']:
