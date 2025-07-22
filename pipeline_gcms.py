@@ -42,7 +42,7 @@ def all_gcms_institutes():
         'BCC-CSM2-HR': 'BCC',
         'GLOBO': 'CNR-ISAC',
         'GEM-NEMO': 'ECCC',
-        'CanESM5': 'ECCC',
+        'CanESM5': 'CCCma',
         'IFS': 'ECMWF',
         'SPEAR': 'NOAA-GFDL',
         'GRIMs': 'SNU',
@@ -60,37 +60,37 @@ def gcm_plot_styles():
             'marker': '.',
             }),
         'GLOBO': dict({
-            'marker': '.',
+            'marker': '$H$',
             }),
         'GEM-NEMO': dict({
-            'marker': '.',
+            'marker': '$I$',
             }),
         'CanESM5': dict({
-            'marker': '.',
+            'marker': '$G$',
             }),
         'IFS': dict({
             'marker': "$A$",
             }),
         'SPEAR': dict({
-            'marker': "$B$",
-            }),
-        'GRIMs': dict({
-            'marker': "$C$",
-            }),
-        'GloSea6-GC32': dict({
-            'marker': "$D$",
-            }),
-        'CNRM-CM61': dict({
-            'marker': "$E$",
-            }),
-        'CESM2-CAM6': dict({
-            'marker': "$F$",
-            }),
-        'NAVGEM': dict({
             'marker': ".",
             }),
+        'GRIMs': dict({
+            'marker': "$B$",
+            }),
+        'GloSea6-GC32': dict({
+            'marker': "$C$",
+            }),
+        'CNRM-CM61': dict({
+            'marker': "$D$",
+            }),
+        'CESM2-CAM6': dict({
+            'marker': "$E$",
+            }),
+        'NAVGEM': dict({
+            'marker': "$.$",
+            }),
         'GloSea6': dict({
-            'marker': "$G$",
+            'marker': "$F$",
             }),
         })
     return styles
@@ -150,7 +150,6 @@ def sanity_check_2019(i_gcm):
                 )
             for t2m_dummy in [t2m_era5,t2m_gcm]
             )
-    pdb.set_trace()
     # Area-means 
     t2m_areamean_era5 = (t2m_era5*landmask).sum(dim=['lat','lon'])/(landmask.sum(dim=['lat','lon']))
     t2m_areamean_gcm = (t2m_gcm*landmask).sum(dim=['lat','lon'])/(landmask.sum(dim=['lat','lon']))
@@ -902,10 +901,10 @@ def plot_gevsevlev_comp_select_regions(
 
 def compare_expts(which_ssw, i_gcm):
     todo = dict({
-        'plot_gevpar_map_diffs':                    0,
-        'compute_valatrisk_comp':                   0,
-        'plot_valatrisk_comp_maps':                 0,
-        'compute_gevsevlev_comp_select_regions':    0,
+        'plot_gevpar_map_diffs':                    1,
+        'compute_valatrisk_comp':                   1,
+        'plot_valatrisk_comp_maps':                 1,
+        'compute_gevsevlev_comp_select_regions':    1,
         'plot_gevsevlev_comp_select_regions':       1,
         })
     gcms,expts,fc_dates,_,term_date = gcm_multiparams(which_ssw)
@@ -1240,18 +1239,18 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
     ''')
     if todoflags is None:
         todo = dict({
-            'coarse_grain_time':                0,
-            'coarse_grain_space':               0,
-            'onset_date_sensitivity_analysis':  0,
-            'compute_severities':               0,
-            'plot_sumstats_map':                0,
-            'fit_gev':                          0,
-            'plot_gevpar_map':                  0,
-            'compute_risk':                     0,
-            'plot_risk_map':                    0,
-            'plot_valatrisk_map':               0,
-            'fit_gev_select_regions':           0,
-            'plot_gevsevlev_select_regions':    0,
+            'coarse_grain_time':                1,
+            'coarse_grain_space':               1,
+            'onset_date_sensitivity_analysis':  1,
+            'compute_severities':               1,
+            'plot_sumstats_map':                1,
+            'fit_gev':                          1,
+            'plot_gevpar_map':                  1,
+            'compute_risk':                     1,
+            'plot_risk_map':                    1,
+            'plot_valatrisk_map':               1,
+            'fit_gev_select_regions':           1,
+            'plot_gevsevlev_select_regions':    1,
             })
     else:
         todo = dict({key: todoflags[i] for (i,key) in enumerate(todokeys)})
@@ -1386,8 +1385,8 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
 if __name__ == "__main__":
     gcm2institute = all_gcms_institutes()
     gcms = list(gcm2institute.keys())
-    gcms2ignore = ["BCC-CSM2-HR","GLOBO","GEM-NEMO","CanESM5","SPEAR","NAVGEM"]
-    idx_gcms = [i for i in range(len(gcms)) if ((gcms[i] not in gcms2ignore))]
+    gcms2ignore = ["BCC-CSM2-HR","SPEAR","NAVGEM"]
+    gcms2ignore += ["GLOBO","GEM-NEMO",]
 
 
     all_procedures = ["reduce","compare_expts","compare_gcms","sanity2019"]
@@ -1396,15 +1395,18 @@ if __name__ == "__main__":
         raise ValueError("procedures is {procedures} but must be a subset of of {options}".format(procedures=procedures, options=all_procedures))
 
     # Pass in which procedure to do based on system arguments
-    for which_ssw in ["feb2018","jan2019","sep2019"][0:3]:
+    for which_ssw in ["feb2018","jan2019","sep2019"][2:3]:
+        if "sep2019" == which_ssw:
+            gcms2ignore += ["CanESM5"]
+        idx_gcms = [i for i in range(len(gcms)) if ((gcms[i] not in gcms2ignore))]
         for procedure in procedures:
             print(f'{procedure = }')
             if procedure in ["reduce","compare_expts"]:
                 for (i_gcm,gcm) in enumerate(gcms):
                     if gcm in gcms2ignore:
                         continue
-                    #if not ("IFS" == gcm):
-                    #    continue
+                    if not (gcm in ["CanESM5",]): #"IFS" == gcm):
+                        continue
                     if "reduce" == procedure:
                         for i_fcdate in range(2):
                             for i_expt in range(3):
