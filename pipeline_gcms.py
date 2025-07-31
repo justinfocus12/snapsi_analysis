@@ -1239,18 +1239,18 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
     ''')
     if todoflags is None:
         todo = dict({
-            'coarse_grain_time':                1,
-            'coarse_grain_space':               1,
-            'onset_date_sensitivity_analysis':  1,
-            'compute_severities':               1,
-            'plot_sumstats_map':                1,
-            'fit_gev':                          1,
-            'plot_gevpar_map':                  1,
-            'compute_risk':                     1,
-            'plot_risk_map':                    1,
-            'plot_valatrisk_map':               1,
-            'fit_gev_select_regions':           1,
-            'plot_gevsevlev_select_regions':    1,
+            'coarse_grain_time':                0,
+            'coarse_grain_space':               0,
+            'onset_date_sensitivity_analysis':  0,
+            'compute_severities':               0,
+            'plot_sumstats_map':                0,
+            'fit_gev':                          0,
+            'plot_gevpar_map':                  0,
+            'compute_risk':                     0,
+            'plot_risk_map':                    0,
+            'plot_valatrisk_map':               0,
+            'fit_gev_select_regions':           0,
+            'plot_gevsevlev_select_regions':    0,
             })
     else:
         todo = dict({key: todoflags[i] for (i,key) in enumerate(todokeys)})
@@ -1405,8 +1405,8 @@ if __name__ == "__main__":
                 for (i_gcm,gcm) in enumerate(gcms):
                     if gcm in gcms2ignore:
                         continue
-                    if not (gcm in ["CanESM5",]): #"IFS" == gcm):
-                        continue
+                    #if not (gcm in ["CanESM5",]): #"IFS" == gcm):
+                    #    continue
                     if "reduce" == procedure:
                         for i_fcdate in range(2):
                             for i_expt in range(3):

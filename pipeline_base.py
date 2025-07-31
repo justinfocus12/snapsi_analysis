@@ -45,7 +45,7 @@ def dates_of_interest(which_ssw):
     elif "sep2019" == which_ssw:
         fc_dates = ['20190829','20191001']
         onset_date_nominal = '20191002'
-        term_date = '20191014'
+        term_date = '20191115' # '20191014' #
     # convert to datetime objects 
     fc_dates_dt = [dtlib.datetime.strptime(fc_date, "%Y%m%d").replace(hour=0) for fc_date in fc_dates]
     onset_date_nominal_dt = dtlib.datetime.strptime(onset_date_nominal, "%Y%m%d").replace(hour=0)

@@ -237,19 +237,19 @@ def coarse_grain_time(years, year_filegroups, region, context_region, Nlon_inter
 
 def reduce_era5(which_ssw):
     todo = dict({
-        'interpolate_landmask':             0,
-        'coarse_grain_time':                0,
-        'coarse_grain_space':               0,
-        'set_param_bounds':                 0,
-        'onset_date_sensitivity_analysis':  0,
+        'interpolate_landmask':             1,
+        'coarse_grain_time':                1,
+        'coarse_grain_space':               1,
+        'set_param_bounds':                 1,
+        'onset_date_sensitivity_analysis':  1,
         'compute_severities':               1,
         'plot_sumstats_map':                1,
-        'fit_gev':                          0,
+        'fit_gev':                          1,
         'plot_gevpar_map':                  1,
-        'compute_risk':                     0,
-        'plot_risk_map':                    0,
-        'fit_gev_select_regions':           0,
-        'plot_gev_select_regions':          0,
+        'compute_risk':                     1,
+        'plot_risk_map':                    1,
+        'fit_gev_select_regions':           1,
+        'plot_gev_select_regions':          1,
         })
     wkf = era5_workflow(which_ssw)
     if todo['interpolate_landmask']:
@@ -259,8 +259,6 @@ def reduce_era5(which_ssw):
     # Ad-hoc: find the day with the most extreme cold
     if todo['coarse_grain_space']:
         pipeline_base.coarse_grain_space(wkf['ens_file_cgt'], wkf['ens_files_cgts'], wkf['cgs_levels'], wkf['landmask_interp_file'], wkf['event_region'])
-    pdb.set_trace()
-
 
     if todo['set_param_bounds']:
         pipeline_base.set_param_bounds(
@@ -376,7 +374,7 @@ def reduce_era5(which_ssw):
 
 if __name__ == '__main__':
     print(f'Starting main')
-    for which_ssw in ["feb2018","jan2019","sep2019"]:
+    for which_ssw in ["feb2018","jan2019","sep2019"][2:3]:
         result = reduce_era5(which_ssw)
 
 
