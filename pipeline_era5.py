@@ -39,7 +39,7 @@ def era5_workflow(which_ssw,verbose=False):
     raw_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/era5'
 
     # 2. Processed data
-    analysis_date = '2025-05-20'
+    analysis_date = '2025-10-20'
     processed_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596'
     reduced_data_dir = join(processed_data_dir,which_ssw,analysis_date,'era5')
     figdir = join('/home/users/ju26596/snapsi_analysis_figures',which_ssw,analysis_date,'era5')
@@ -191,6 +191,12 @@ def coarse_grain_time(years, year_filegroups, region, context_region, Nlon_inter
     lon_interp = np.linspace(region['lon'].start+dlon/2, region['lon'].stop-dlon/2, Nlon_interp)
     lat_interp = np.linspace(region['lat'].start+dlat/2, region['lat'].stop-dlat/2, Nlat_interp)
 
+    # TODO add some irregularly-spaced lons/lats ni the context region to display alongside 
+    n_lon_context_pre = int(round((lon_interp[0]-context_region['lon'].start)/dlon))
+    n_lon_context_post = int(round((context_region['lon'].stop-lon_interp[0])/dlon))
+    n_lat_context_pre = int(round((lat_interp[0]-context_region['lat'].start)/dlat))
+    n_lat_context_post = int(round((context_region['lat'].stop-lat_interp[0])/dlat))
+
 
     for i_year,year in enumerate(years):
         print(f'Ingesting year {year}')
@@ -237,19 +243,19 @@ def coarse_grain_time(years, year_filegroups, region, context_region, Nlon_inter
 
 def reduce_era5(which_ssw):
     todo = dict({
-        'interpolate_landmask':             1,
-        'coarse_grain_time':                1,
-        'coarse_grain_space':               1,
-        'set_param_bounds':                 1,
-        'onset_date_sensitivity_analysis':  1,
-        'compute_severities':               1,
+        'interpolate_landmask':             0,
+        'coarse_grain_time':                0,
+        'coarse_grain_space':               0,
+        'set_param_bounds':                 0,
+        'onset_date_sensitivity_analysis':  0,
+        'compute_severities':               0,
         'plot_sumstats_map':                1,
-        'fit_gev':                          1,
-        'plot_gevpar_map':                  1,
-        'compute_risk':                     1,
-        'plot_risk_map':                    1,
-        'fit_gev_select_regions':           1,
-        'plot_gev_select_regions':          1,
+        'fit_gev':                          0,
+        'plot_gevpar_map':                  0,
+        'compute_risk':                     0,
+        'plot_risk_map':                    0,
+        'fit_gev_select_regions':           0,
+        'plot_gev_select_regions':          0,
         })
     wkf = era5_workflow(which_ssw)
     if todo['interpolate_landmask']:
@@ -297,6 +303,7 @@ def reduce_era5(which_ssw):
                 ext_symb, onset_date, term_date,
                 figdir, figfile_tag, figtitle_affix,
                 '''),
+                subplot_prefixes=["Climatological ","Climatological ",""]
                 )
     if todo['fit_gev']:
         pipeline_base.fit_gev_exttemp(
@@ -374,7 +381,7 @@ def reduce_era5(which_ssw):
 
 if __name__ == '__main__':
     print(f'Starting main')
-    for which_ssw in ["feb2018","jan2019","sep2019"][2:3]:
+    for which_ssw in ["feb2018","jan2019","sep2019"]:
         result = reduce_era5(which_ssw)
 
 

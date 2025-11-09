@@ -222,7 +222,8 @@ def plot_sumstats_maps_flat(
         ens_files_cgts_extt, ens_files_cgts_extt_ref, 
         mem_special, mem_special_ref, 
         ext_sign, param_bounds_file, cgs_levels, 
-        ext_symb,onset_date,term_date,figdir,figfile_tag,title_prefix=''
+        ext_symb,onset_date,term_date,figdir,figfile_tag,
+        title_prefix='',subplot_prefixes=None,
         ):
     # 1. ensemble-mean of time-min
     # 2. ensemble-std of time-min
@@ -302,6 +303,7 @@ def plot_sumstats_maps_flat(
                 "Std. dev.",
                 "%s norm. anom."%(mem_special),
                 ]
+        titles = list(map(lambda titlepre,title: titlepre+title, subplot_prefixes, titles))
         for (i_ax,ax) in enumerate(axes):
             decorate_mercator_axis(ax, lonmin, lonmax, latmin, latmax)
             ax.set_title(titles[i_ax], loc='left')
@@ -689,6 +691,7 @@ def plot_gevpar_difference_maps_flat(gevpar_files_0, expt0, gevpar_files_1, expt
 
 def plot_gevpar_maps_flat(gevpar_files, ext_sign, cgs_levels, param_bounds_file, figdir, figfile_tag, title_affix):
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
+        print(f"{cgs_level = }")
         if min(cgs_level) <= 1:
             continue
         gevpar = xr.open_dataarray(gevpar_files[i_cgs_level])

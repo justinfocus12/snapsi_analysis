@@ -3,6 +3,7 @@ import xarray as xr
 import pdb
 import psutil
 from cartopy import crs as ccrs
+import gc as garbcol
 import netCDF4
 from matplotlib import pyplot as plt, rcParams, ticker, colors as mplcolors, patches as mplpatches, gridspec
 pltkwargs = dict({
@@ -312,7 +313,7 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
     assert len(raw_mem_files) == len(mem_labels)
 
     # 2. Processed data 
-    analysis_date = '2025-05-20'
+    analysis_date = '2025-10-20'
     processed_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596'
     reduced_data_dir = join(processed_data_dir,which_ssw,analysis_date,f'{gcm}')
     figdir = join('/home/users/ju26596/snapsi_analysis_figures',which_ssw,analysis_date,gcm)
@@ -437,6 +438,7 @@ def coarse_grain_time(raw_mem_files, mem_labels, event_region, context_region, N
     ds_ens_cgt = xr.concat([daily_mean,daily_min,daily_max], dim='daily_stat').assign_coords(daily_stat=['daily_mean','daily_min','daily_max'])
     # also just include the full dataset
     ds = xr.Dataset(data_vars=dict({'1xday': ds_ens_cgt, '4xday': ds_ens.rename({'time': 'time_6h'})}))
+    print("AAAUUGGGHHH")
     ds.to_netcdf(ens_file_cgt)
     return #ds
 
@@ -1395,7 +1397,7 @@ if __name__ == "__main__":
         raise ValueError("procedures is {procedures} but must be a subset of of {options}".format(procedures=procedures, options=all_procedures))
 
     # Pass in which procedure to do based on system arguments
-    for which_ssw in ["feb2018","jan2019","sep2019"][2:3]:
+    for which_ssw in ["feb2018","jan2019","sep2019"]:
         if "sep2019" == which_ssw:
             gcms2ignore += ["CanESM5"]
         idx_gcms = [i for i in range(len(gcms)) if ((gcms[i] not in gcms2ignore))]
@@ -1405,22 +1407,25 @@ if __name__ == "__main__":
                 for (i_gcm,gcm) in enumerate(gcms):
                     if gcm in gcms2ignore:
                         continue
-                    #if not (gcm in ["CanESM5",]): #"IFS" == gcm):
+                    print(f"{gcm = }")
+                    #if not (gcm in ["IFS",]): #"IFS" == gcm):
                     #    continue
                     if "reduce" == procedure:
                         for i_fcdate in range(2):
+                            print(f"{i_fcdate = }")
                             for i_expt in range(3):
+                                print(f"{i_expt = }")
                                 reduce_gcm(which_ssw,i_gcm,i_expt,i_fcdate)
+                                garbcol.collect()
                     elif "compare_expts" == procedure:
                         compare_expts(which_ssw, i_gcm)
             elif "compare_gcms" == procedure:
                 compare_gcms(which_ssw, idx_gcms)
             if "sep2019" == which_ssw and "sanity2019" == procedure:
-                print(f'here')
                 for (i_gcm,gcm) in enumerate(gcms):
                     if gcm in gcms2ignore:
                         continue
                     #if not ("IFS" == gcm):
                     #    continue
-                    sanity_check_2019(i_gcm)
+                    #sanity_check_2019(i_gcm)
 
