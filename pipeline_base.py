@@ -216,6 +216,10 @@ def compute_severity_from_intensity(ens_files_cgts, ens_files_cgts_extt, cgs_lev
         da_cgts = xr.open_dataset(ens_files_cgts[i_cgs_level])['1xday'].sel(daily_stat=daily_stat)
         da_cgts_extt = ext_sign * (ext_sign * da_cgts.sel(time=slice(onset_date,term_date))).max(dim='time')
         da_cgts_extt.to_netcdf(ens_files_cgts_extt[i_cgs_level])
+    i_cgs_level = len(cgs_levels)
+    da_cgts_context = xr.open_dataset(ens_files_cgts[i_cgs_level])['1xday'].sel(daily_stat=daily_stat)
+    da_cgts_context_extt = ext_sign * (ext_sign * da_cgts_context.sel(time=slice(onset_date,term_date))).max(dim='time')
+    da_cgts_context_extt.to_netcdf(ens_files_cgts_extt[i_cgs_level])
     return
 
 def plot_sumstats_maps_flat(
@@ -231,8 +235,10 @@ def plot_sumstats_maps_flat(
 
 
     param_bounds = xr.open_dataarray(param_bounds_file)
-    for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
-        if min(cgs_level) <= 1:
+    # TODO expand the below loop to include the context region map 
+    for i_cgs_level in range(len(cgs_levels)+1):
+    #for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
+        if i_cgs_level < len(cgs_levels) and min(cgs_levels[i_cgs_level]) <= 1:
             continue
         da_cgts_extt = xr.open_dataarray(ens_files_cgts_extt[i_cgs_level])
         da_cgts_extt_ref = xr.open_dataarray(ens_files_cgts_extt_ref[i_cgs_level])
@@ -308,7 +314,8 @@ def plot_sumstats_maps_flat(
             decorate_mercator_axis(ax, lonmin, lonmax, latmin, latmax)
             ax.set_title(titles[i_ax], loc='left')
         fig.suptitle(suptitle, x=axes[0].get_position().x0, y=axes[0].get_position().y1+0.05, ha='left', va='bottom')
-        fig.savefig(join(figdir,'sumstats_map_%s_cgs%dx%d.png'%(figfile_tag,cgs_level[0],cgs_level[1])), **pltkwargs)
+        cgs_suffix = r'%dx%d'%(cgs_levels[i_cgs_level][0],cgs_levels[i_cgs_level][1]) if i_cgs_level<len(cgs_levels) else 'context'
+        fig.savefig(join(figdir,'sumstats_map_%s_cgs%s.png'%(figfile_tag,cgs_suffix)), **pltkwargs)
         plt.close(fig)
     return 
 
@@ -585,15 +592,15 @@ def interpolate_landmask(landmask_file_full, landmask_file_interp, lons_ref, lat
     return
 
 
-def coarse_grain_space(ens_file_cgt, ens_files_cgts, cgs_levels, landmask_interp_file, event_region):
+def coarse_grain_space(ens_file_cgt, ens_files_cgts, cgs_levels, landmask_interp_file, event_region, context_region, Nlon, Nlat, Nlon_pad_pre, Nlon_pad_post, Nlat_pad_pre, Nlat_pad_post):
+    # Add the context region as one additional cgs_level
 
     ds_cgt = xr.open_dataset(ens_file_cgt)
     landmask = xr.open_dataarray(landmask_interp_file)
     data_vars = dict()
-    Nlon,Nlat = (ds_cgt[d].size for d in ('lon','lat'))        
     for i_cgs_level,cgs_level in enumerate(cgs_levels):
         dim = {'lon': Nlon//cgs_level[0], 'lat': Nlat//cgs_level[1]}
-        trim_kwargs = dict(lon=slice(None,cgs_level[0]*dim['lon']),lat=slice(None,cgs_level[1]*dim['lat']))
+        trim_kwargs = dict(lon=slice(Nlon_pad_pre,Nlon_pad_pre+cgs_level[0]*dim['lon']),lat=slice(Nlat_pad_pre,Nlat_pad_pre+cgs_level[1]*dim['lat']))
         ds_cgt_trimmed = ds_cgt.isel(**trim_kwargs)
         landmask_trimmed = landmask.isel(**trim_kwargs) #* xr.ones_like(ds_cgt_trimmed)
         coslat = np.cos(np.deg2rad(ds_cgt_trimmed['lat'])) * xr.ones_like(ds_cgt_trimmed)
@@ -612,7 +619,20 @@ def coarse_grain_space(ens_file_cgt, ens_files_cgts, cgs_levels, landmask_interp
         if not (ds_cgts.lon.size == cgs_level[0] and ds_cgts.lat.size == cgs_level[1]):
             pdb.set_trace()
         ds_cgts.to_netcdf(ens_files_cgts[i_cgs_level])
-    return ds_cgts # awkward to put into a single dataset because of differing lon/lat coordinates between coarsening levels
+    # Now for the context region 
+    coslat = np.cos(np.deg2rad(ds_cgt['lat']) * xr.ones_like(ds_cgt))
+    dim = {'lon': Nlon//cgs_level[0], 'lat': Nlat//cgs_level[1]} # same level of trimming as finest cgslevel
+    coarsen_kwargs = dict(dim=dim, boundary='trim', coord_func={'lon': 'mean', 'lat': 'mean'})
+    try:
+        numerator = (ds_cgt * landmask * coslat).coarsen(**coarsen_kwargs).sum() 
+    except ValueError:
+        pdb.set_trace()
+    denominator = (landmask * coslat).coarsen(**coarsen_kwargs).sum() 
+    land_frac = denominator / (coslat.coarsen(**coarsen_kwargs)).sum() 
+    ds_cgts_context = numerator / denominator 
+    #ds_cgts_context = (ds_cgt * landmask * coslat) / (landmask * coslat).sum()
+    ds_cgts_context.to_netcdf(ens_files_cgts[len(cgs_levels)])
+    return # awkward to put into a single dataset because of differing lon/lat coordinates between coarsening levels
 
 
 def plot_gevpar_difference_maps_flat(gevpar_files_0, expt0, gevpar_files_1, expt1, param_bounds_file, ext_sign, cgs_levels, event_region, figdir, gcm, fc_date, fc_date_abbrv, ):

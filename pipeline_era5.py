@@ -70,9 +70,25 @@ def era5_workflow(which_ssw,verbose=False):
         for (i_lon,i_lat) in select_regions[i_cgs_level]:
             gevsevlev_files[i_cgs_level].append(join(reduced_data_dir,'gevsevlev_cgs%dx%d_ilon%d_ilat%d.nc'%(cgs_level[0],cgs_level[1],i_lon,i_lat)))
 
+    # One more set of files for context region 
+    ens_files_cgts.append(join(reduced_data_dir,'t2m_cgt1day_cgscontext.nc'))
+    ens_files_cgts_extt.append(join(reduced_data_dir,'t2m_cgt1day_cgscontext_extt.nc'))
+    gevpar_files.append(join(reduced_data_dir,'gevpar_cgscontext.nc'))
+    risk_files.append(join(reduced_data_dir,'risk_cgscontext.nc'))
+    valatrisk_files.append(join(reduced_data_dir,'valatrisk_cgscontext.nc'))
+
     param_bounds_file = join(reduced_data_dir, 'param_bounds.nc')
 
     Nlon_interp,Nlat_interp = cgs_levels[-1]
+    dlon = (event_region['lon'].stop - event_region['lon'].start)/Nlon_interp
+    dlat = (event_region['lat'].stop - event_region['lat'].start)/Nlat_interp
+    lon_interp = np.linspace(event_region['lon'].start+dlon/2, event_region['lon'].stop-dlon/2, Nlon_interp)
+    lat_interp = np.linspace(event_region['lat'].start+dlat/2, event_region['lat'].stop-dlat/2, Nlat_interp)
+    # determine the number of padding pixels in each direction
+    Nlon_pad_pre = int(round((event_region['lon'].start-context_region['lon'].start)/dlon))
+    Nlon_pad_post = int(round((context_region['lon'].stop-event_region['lon'].stop)/dlon))
+    Nlat_pad_pre = int(round((event_region['lat'].start-context_region['lat'].start)/dlat))
+    Nlat_pad_post = int(round((context_region['lat'].stop-event_region['lat'].stop)/dlat))
     if "feb2018" == which_ssw:
         event_year = 2018
         ext_sign = -1
@@ -127,6 +143,10 @@ def era5_workflow(which_ssw,verbose=False):
             context_region    =context_region,
             Nlon_interp = Nlon_interp,
             Nlat_interp = Nlat_interp,
+            Nlon_pad_pre = Nlon_pad_pre,
+            Nlon_pad_post = Nlon_pad_post,
+            Nlat_pad_pre = Nlat_pad_pre,
+            Nlat_pad_post = Nlat_pad_post,
             fc_dates          =fc_dates,
             init_date = fc_dates[0],
             onset_date_nominal=onset_date_nominal,
@@ -156,7 +176,7 @@ def era5_workflow(which_ssw,verbose=False):
             )
     return workflow
 
-def interpolate_landmask(landmask_full_file, landmask_interp_file, Nlon_interp, Nlat_interp, event_region):
+def interpolate_landmask(landmask_full_file, landmask_interp_file, Nlon_interp, Nlat_interp, Nlon_pad_pre, Nlon_pad_post, Nlat_pad_pre, Nlat_pad_post, event_region, context_region):
     landmask_full = (
             utils.rezero_lons(
                 xr.open_dataarray(landmask_full_file)
@@ -168,16 +188,16 @@ def interpolate_landmask(landmask_full_file, landmask_interp_file, Nlon_interp, 
             )
     dlon = (event_region['lon'].stop - event_region['lon'].start)/Nlon_interp
     dlat = (event_region['lat'].stop - event_region['lat'].start)/Nlat_interp
-    lons_interp = np.linspace(event_region['lon'].start+dlon/2, event_region['lon'].stop-dlon/2, Nlon_interp)
-    lats_interp = np.linspace(event_region['lat'].start+dlat/2, event_region['lat'].stop-dlat/2, Nlat_interp)
-    landmask_interp = landmask_full.interp({'lat': lats_interp, 'lon': lons_interp}).sel(event_region)
+    lons_interp = np.linspace(context_region['lon'].start+dlon/2, context_region['lon'].stop-dlon/2, Nlon_interp+Nlon_pad_pre+Nlon_pad_post)
+    lats_interp = np.linspace(context_region['lat'].start+dlat/2, context_region['lat'].stop-dlat/2, Nlat_interp+Nlat_pad_pre+Nlat_pad_post)
+    landmask_interp = landmask_full.interp({'lat': lats_interp, 'lon': lons_interp}) #.sel(event_region)
     assert np.all(np.isfinite(landmask_interp))
     landmask_interp.to_netcdf(landmask_interp_file)
     return 
 
 
 
-def coarse_grain_time(years, year_filegroups, region, context_region, Nlon_interp, Nlat_interp, init_date, onset_date_nominal, term_date, ens_file_cgt):
+def coarse_grain_time(years, year_filegroups, region, context_region, Nlon_interp, Nlat_interp, Nlon_pad_pre, Nlon_pad_post, Nlat_pad_pre, Nlat_pad_post, init_date, onset_date_nominal, term_date, ens_file_cgt):
     print(f'Starting to coarse-grain time')
     t2m = []
     duration_init2onset = onset_date_nominal - init_date
@@ -188,14 +208,8 @@ def coarse_grain_time(years, year_filegroups, region, context_region, Nlon_inter
     dlon = (region['lon'].stop - region['lon'].start)/Nlon_interp
     dlat = (region['lat'].stop - region['lat'].start)/Nlat_interp
 
-    lon_interp = np.linspace(region['lon'].start+dlon/2, region['lon'].stop-dlon/2, Nlon_interp)
-    lat_interp = np.linspace(region['lat'].start+dlat/2, region['lat'].stop-dlat/2, Nlat_interp)
-
-    # TODO add some irregularly-spaced lons/lats ni the context region to display alongside 
-    n_lon_context_pre = int(round((lon_interp[0]-context_region['lon'].start)/dlon))
-    n_lon_context_post = int(round((context_region['lon'].stop-lon_interp[0])/dlon))
-    n_lat_context_pre = int(round((lat_interp[0]-context_region['lat'].start)/dlat))
-    n_lat_context_post = int(round((context_region['lat'].stop-lat_interp[0])/dlat))
+    lon_interp = np.linspace(context_region['lon'].start+dlon/2, context_region['lon'].stop-dlon/2, Nlon_interp+Nlon_pad_pre+Nlon_pad_post)
+    lat_interp = np.linspace(context_region['lat'].start+dlat/2, context_region['lat'].stop-dlat/2, Nlat_interp+Nlat_pad_pre+Nlat_pad_post)
 
 
     for i_year,year in enumerate(years):
@@ -221,7 +235,7 @@ def coarse_grain_time(years, year_filegroups, region, context_region, Nlon_inter
                     )
                 .sel(context_region)
                 .interp(lon=lon_interp, lat=lat_interp, method="linear")
-                .sel(region)
+                #.sel(region)
                 .expand_dims(member=[year])
                 )
         print(f'{t2m_year.shape = }, {t2m_year.dims = }')
@@ -245,10 +259,10 @@ def reduce_era5(which_ssw):
     todo = dict({
         'interpolate_landmask':             0,
         'coarse_grain_time':                0,
-        'coarse_grain_space':               0,
+        'coarse_grain_space':               1,
         'set_param_bounds':                 0,
         'onset_date_sensitivity_analysis':  0,
-        'compute_severities':               0,
+        'compute_severities':               1,
         'plot_sumstats_map':                1,
         'fit_gev':                          0,
         'plot_gevpar_map':                  0,
@@ -259,12 +273,31 @@ def reduce_era5(which_ssw):
         })
     wkf = era5_workflow(which_ssw)
     if todo['interpolate_landmask']:
-        interpolate_landmask(wkf['landmask_full_file'], wkf['landmask_interp_file'], wkf['Nlon_interp'], wkf['Nlat_interp'], wkf['event_region'])
+        interpolate_landmask(
+                *dtoa(wkf, '''
+                landmask_full_file, landmask_interp_file, 
+                Nlon_interp, Nlat_interp, Nlon_pad_pre, Nlon_pad_post, Nlat_pad_pre, Nlat_pad_post, 
+                event_region, context_region,
+                ''')
+                )
     if todo['coarse_grain_time']:
-        coarse_grain_time(wkf['years'], wkf['year_filegroups'], wkf['event_region'], wkf['context_region'], wkf['Nlon_interp'], wkf['Nlat_interp'], wkf['fc_dates'][0], wkf['onset_date_nominal'], wkf['term_date'], wkf['ens_file_cgt'])
+        coarse_grain_time(
+                *dtoa(wkf, '''
+                years, year_filegroups, event_region, context_region,
+                Nlon_interp, Nlat_interp, Nlon_pad_pre, Nlon_pad_post, Nlat_pad_pre, Nlat_pad_post, 
+                '''),
+                wkf['fc_dates'][0], wkf['onset_date_nominal'], wkf['term_date'], wkf['ens_file_cgt']
+                )
+        #wkf['years'], wkf['year_filegroups'], wkf['event_region'], wkf['context_region'], wkf['Nlon_interp'], wkf['Nlat_interp'], Nlon_pad_pre, Nlon_pad_post, Nlat_pad_pre, Nlat_pad_post, wkf['fc_dates'][0], wkf['onset_date_nominal'], wkf['term_date'], wkf['ens_file_cgt'])
     # Ad-hoc: find the day with the most extreme cold
     if todo['coarse_grain_space']:
-        pipeline_base.coarse_grain_space(wkf['ens_file_cgt'], wkf['ens_files_cgts'], wkf['cgs_levels'], wkf['landmask_interp_file'], wkf['event_region'])
+        pipeline_base.coarse_grain_space(
+                *dtoa(wkf, '''
+                ens_file_cgt, ens_files_cgts, cgs_levels, landmask_interp_file, 
+                event_region, context_region, Nlon_interp, Nlat_interp,
+                Nlon_pad_pre, Nlon_pad_post, Nlat_pad_pre, Nlat_pad_post,  
+                ''')
+                )
 
     if todo['set_param_bounds']:
         pipeline_base.set_param_bounds(

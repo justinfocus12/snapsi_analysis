@@ -378,6 +378,10 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
             context_region,
             Nlon_interp,
             Nlat_interp,
+            Nlon_pad_pre,
+            Nlon_pad_post,
+            Nlat_pad_pre,
+            Nlat_pad_post,
             ext_sign,
             ext_symb,
             prob_symb,
@@ -397,7 +401,7 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
 
 
 
-def coarse_grain_time(raw_mem_files, mem_labels, event_region, context_region, Nlon_interp, Nlat_interp, init_date, term_date, ens_file_cgt, use_dask=False):
+def coarse_grain_time(raw_mem_files, mem_labels, event_region, context_region, Nlon_interp, Nlat_interp, Nlon_pad_pre, Nlon_pad_post, Nlat_pad_pre, Nlat_pad_post, init_date, term_date, ens_file_cgt, use_dask=False):
     timesel = dict(time=slice(init_date,term_date))
     #region_padded = dict(lat=slice(region['lat'].start-2,region['lat'].stop+2), lon=slice(region['lon'].start-2, region['lon'].stop+2)) 
     preprocess = lambda dsmem: preprocess_gcm_6hrPt(dsmem, init_date, timesel, context_region)
@@ -415,10 +419,10 @@ def coarse_grain_time(raw_mem_files, mem_labels, event_region, context_region, N
     # Interpolate to ERA5 grid
     dlon = (event_region['lon'].stop - event_region['lon'].start)/Nlon_interp
     dlat = (event_region['lat'].stop - event_region['lat'].start)/Nlat_interp
-    lon_interp = np.linspace(event_region['lon'].start+dlon/2, event_region['lon'].stop-dlon/2, Nlon_interp)
-    lat_interp = np.linspace(event_region['lat'].start+dlat/2, event_region['lat'].stop-dlat/2, Nlat_interp)
+    lon_interp = np.linspace(context_region['lon'].start+dlon/2, context_region['lon'].stop-dlon/2, Nlon_interp+Nlon_pad_pre+Nlon_pad_post)
+    lat_interp = np.linspace(context_region['lat'].start+dlat/2, context_region['lat'].stop-dlat/2, Nlat_interp+Nlat_pad_pre+Nlat_pad_post)
 
-    ds_ens = ds_ens.interp(lon=lon_interp, lat=lat_interp, method="linear").sel(event_region)
+    ds_ens = ds_ens.interp(lon=lon_interp, lat=lat_interp, method="linear").sel(context_region)
     daily_mean = (
             ds_ens
             .coarsen({'time': 4}, side='left', coord_func='min')
@@ -1242,10 +1246,10 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
     if todoflags is None:
         todo = dict({
             'coarse_grain_time':                0,
-            'coarse_grain_space':               0,
+            'coarse_grain_space':               1,
             'onset_date_sensitivity_analysis':  0,
             'compute_severities':               0,
-            'plot_sumstats_map':                0,
+            'plot_sumstats_map':                1,
             'fit_gev':                          0,
             'plot_gevpar_map':                  0,
             'compute_risk':                     0,
