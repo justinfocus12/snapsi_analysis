@@ -313,7 +313,7 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
     assert len(raw_mem_files) == len(mem_labels)
 
     # 2. Processed data 
-    analysis_date = '2025-10-20'
+    analysis_date = '2025-12-04'
     processed_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596'
     reduced_data_dir = join(processed_data_dir,which_ssw,analysis_date,f'{gcm}')
     figdir = join('/home/users/ju26596/snapsi_analysis_figures',which_ssw,analysis_date,gcm)
@@ -338,6 +338,13 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
         gevsevlev_files.append([])
         for (i_lon,i_lat) in select_regions[i_cgs_level]:
             gevsevlev_files[i_cgs_level].append(join(reduced_data_dir,'gevsevlev_e%s_i%s_cgs%dx%d_ilon%d_ilat%d.nc'%(expt,fc_date_abbrv,cgs_level[0],cgs_level[1],i_lon,i_lat)))
+    # One more set of files for context region 
+    ens_files_cgts.append(join(reduced_data_dir,'t2m_cgt1day_cgscontext.nc'))
+    ens_files_cgts_extt.append(join(reduced_data_dir,'t2m_cgt1day_cgscontext_extt.nc'))
+    gevpar_files.append(join(reduced_data_dir,'gevpar_cgscontext.nc'))
+    risk_files.append(join(reduced_data_dir,'risk_cgscontext.nc'))
+    valatrisk_files.append(join(reduced_data_dir,'valatrisk_cgscontext.nc'))
+
 
 
 
@@ -1246,7 +1253,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
     if todoflags is None:
         todo = dict({
             'coarse_grain_time':                0,
-            'coarse_grain_space':               1,
+            'coarse_grain_space':               0,
             'onset_date_sensitivity_analysis':  0,
             'compute_severities':               0,
             'plot_sumstats_map':                1,
@@ -1270,7 +1277,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
                 *(wkf[key.strip()] for key in '''
                 raw_mem_files,mem_labels,
                 event_region,context_region,
-                Nlon_interp, Nlat_interp, 
+                Nlon_interp, Nlat_interp, Nlon_pad_pre, Nlon_pad_post, Nlat_pad_pre, Nlat_pad_post,  
                 fc_date,term_date, ens_file_cgt
                 '''.split(',')),
                 )
@@ -1278,9 +1285,9 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
     if todo['coarse_grain_space']:
         pipeline_base.coarse_grain_space(
                 *dtoa(wkf,'''
-                ens_file_cgt, ens_files_cgts, cgs_levels, 
-                landmask_interp_file,
-                event_region,
+                ens_file_cgt, ens_files_cgts, cgs_levels, landmask_interp_file,
+                event_region, context_region, Nlon_interp, Nlat_interp,
+                Nlon_pad_pre, Nlon_pad_post, Nlat_pad_pre, Nlat_pad_post,  
                 ''')
                 )
     if todo['onset_date_sensitivity_analysis']:

@@ -223,6 +223,7 @@ def compute_severity_from_intensity(ens_files_cgts, ens_files_cgts_extt, cgs_lev
     return
 
 def plot_sumstats_maps_flat(
+        event_region, context_region,
         ens_files_cgts_extt, ens_files_cgts_extt_ref, 
         mem_special, mem_special_ref, 
         ext_sign, param_bounds_file, cgs_levels, 
@@ -302,6 +303,17 @@ def plot_sumstats_maps_flat(
                 ax=axanomspecial, 
                 **pcmargs,
                 )
+
+        # Bounding box around event region
+        if i_cgs_level == len(cgs_levels):
+            for ax in [axmean,axstd,axanomspecial]:
+                ax.plot(
+                        [event_region['lon'].start, event_region['lon'].stop, event_region['lon'].stop, event_region['lon'].start, event_region['lon'].start],
+                        [event_region['lat'].start, event_region['lat'].start, event_region['lat'].stop, event_region['lat'].stop, event_region['lat'].start],
+                        transform=ccrs.PlateCarree(),
+                        color='black', linewidth=2, linestyle='--'
+                        )
+
         fmtfun = lambda date: dtlib.datetime.strftime(date, "%m/%d")
         suptitle = "%s\n%s{T2M(t):\n%s\u2264t\u2264%s}"%(title_prefix, ext_symb, fmtfun(onset_date), fmtfun(term_date))
         titles = [
