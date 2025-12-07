@@ -1256,8 +1256,8 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
             'coarse_grain_space':               0,
             'onset_date_sensitivity_analysis':  0,
             'compute_severities':               0,
-            'plot_sumstats_map':                1,
-            'fit_gev':                          0,
+            'plot_sumstats_map':                0,
+            'fit_gev':                          1,
             'plot_gevpar_map':                  0,
             'compute_risk':                     0,
             'plot_risk_map':                    0,
@@ -1314,6 +1314,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
         mem_special = xr.open_dataset(wkf['ens_files_cgts_extt'][0]).coords['member'][0].item()
         print(f'{mem_special = }')
         pipeline_base.plot_sumstats_maps_flat(
+                wkf['event_region'],wkf['context_region'],
                 wkf['ens_files_cgts_extt'], wkf_era5['ens_files_cgts_extt'],
                 mem_special, wkf_era5['event_year'],
                 *dtoa(wkf,'''

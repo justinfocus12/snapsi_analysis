@@ -257,19 +257,19 @@ def coarse_grain_time(years, year_filegroups, region, context_region, Nlon_inter
 
 def reduce_era5(which_ssw):
     todo = dict({
-        'interpolate_landmask':             1,
-        'coarse_grain_time':                1,
-        'coarse_grain_space':               1,
-        'set_param_bounds':                 1,
+        'interpolate_landmask':             0,
+        'coarse_grain_time':                0,
+        'coarse_grain_space':               0,
+        'set_param_bounds':                 0,
         'onset_date_sensitivity_analysis':  0,
-        'compute_severities':               1,
+        'compute_severities':               0,
         'plot_sumstats_map':                1,
-        'fit_gev':                          1,
-        'plot_gevpar_map':                  1,
-        'compute_risk':                     1,
-        'plot_risk_map':                    1,
-        'fit_gev_select_regions':           1,
-        'plot_gev_select_regions':          1,
+        'fit_gev':                          0,
+        'plot_gevpar_map':                  0,
+        'compute_risk':                     0,
+        'plot_risk_map':                    0,
+        'fit_gev_select_regions':           0,
+        'plot_gev_select_regions':          0,
         })
     wkf = era5_workflow(which_ssw)
     if todo['interpolate_landmask']:

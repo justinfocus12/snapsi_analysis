@@ -321,6 +321,8 @@ def plot_sumstats_maps_flat(
                 "Std. dev.",
                 "%s norm. anom."%(mem_special),
                 ]
+        if subplot_prefixes is None: subplot_prefixes = ['']*3
+            
         titles = list(map(lambda titlepre,title: titlepre+title, subplot_prefixes, titles))
         for (i_ax,ax) in enumerate(axes):
             decorate_mercator_axis(ax, lonmin, lonmax, latmin, latmax)
