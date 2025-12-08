@@ -6,3 +6,24 @@ memdim = 0
 memdim = 0
 memdim = 0
 memdim = 0
+memdim = 0
+memdim = 0
+svmem(total=1622475350016, available=1390690217984, percent=14.3, used=222759321600, free=576071745536, active=219042676736, inactive=801859125248, buffers=888832, cached=823643394048, shared=30781440, slab=11113418752)
+i_expt = 1
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+svmem(total=1622475350016, available=1388603998208, percent=14.4, used=224845488128, free=569937944576, active=221008932864, inactive=805906497536, buffers=888832, cached=827691028480, shared=30781440, slab=11111546880)
+i_expt = 2
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+svmem(total=1622475350016, available=1388451827712, percent=14.4, used=224997724160, free=567237013504, active=221099839488, inactive=808458268672, buffers=888832, cached=830239723520, shared=30756864, slab=11111342080)
+i_fcdate = 1
+i_expt = 0
