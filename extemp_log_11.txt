@@ -1,0 +1,16 @@
+procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '11']
+gcm = 'GloSea6'
+i_fcdate = 0
+i_expt = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+svmem(total=1622475350016, available=1400904380416, percent=13.7, used=212545200128, free=665774239744, active=210836819968, inactive=722391674880, buffers=888832, cached=744155021312, shared=30781440, slab=11083689984)
+i_expt = 1
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0

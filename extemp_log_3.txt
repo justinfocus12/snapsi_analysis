@@ -1,0 +1,4 @@
+procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '3']
+gcm = 'CanESM5'
+i_fcdate = 0
+i_expt = 0

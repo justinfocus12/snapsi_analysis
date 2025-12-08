@@ -1,0 +1,5 @@
+procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '9']
+gcm = 'CESM2-CAM6'
+i_fcdate = 0
+i_expt = 0
+memdim = 0

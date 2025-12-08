@@ -1,0 +1,12 @@
+procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '8']
+gcm = 'CNRM-CM61'
+i_fcdate = 0
+i_expt = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+svmem(total=1622475350016, available=1400896118784, percent=13.7, used=212553437184, free=665898897408, active=210869702656, inactive=722249732096, buffers=888832, cached=744022126592, shared=30781440, slab=11094040576)
+i_expt = 1

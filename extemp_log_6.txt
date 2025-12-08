@@ -1,0 +1,8 @@
+procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '6']
+gcm = 'GRIMs'
+i_fcdate = 0
+i_expt = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0

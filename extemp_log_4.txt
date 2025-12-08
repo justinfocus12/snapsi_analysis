@@ -1,0 +1,37 @@
+procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '4']
+gcm = 'IFS'
+i_fcdate = 0
+i_expt = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+svmem(total=1622475350016, available=1401438371840, percent=13.6, used=212011188224, free=666147692544, active=209417134080, inactive=722550767616, buffers=888832, cached=744315580416, shared=30781440, slab=11084394496)
+i_expt = 1
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+svmem(total=1622475350016, available=1406184157184, percent=13.3, used=207265320960, free=617652465664, active=200163397632, inactive=775815159808, buffers=888832, cached=797556674560, shared=30781440, slab=11064254464)
+i_expt = 2
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+svmem(total=1622475350016, available=1407194701824, percent=13.3, used=206254862336, free=618465509376, active=200110452736, inactive=776009478144, buffers=888832, cached=797754089472, shared=30781440, slab=11075084288)
+i_fcdate = 1
+i_expt = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+svmem(total=1622475350016, available=1407502675968, percent=13.2, used=205946814464, free=618210152448, active=199488237568, inactive=776572596224, buffers=888832, cached=798317494272, shared=30781440, slab=11069403136)
+i_expt = 1

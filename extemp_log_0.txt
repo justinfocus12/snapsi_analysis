@@ -1,0 +1,3 @@
+procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '0']
+procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '0']
+procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '0']

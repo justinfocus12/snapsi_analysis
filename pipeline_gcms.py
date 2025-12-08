@@ -1404,7 +1404,7 @@ if __name__ == "__main__":
 
 
     all_procedures = ["reduce","compare_expts","compare_gcms","sanity2019"]
-    procedures = sys.argv[1:]
+    procedures = [sys.argv[1]]
     if not all([procedure in all_procedures for procedure in procedures]):
         raise ValueError("procedures is {procedures} but must be a subset of of {options}".format(procedures=procedures, options=all_procedures))
 
@@ -1414,10 +1414,12 @@ if __name__ == "__main__":
             gcms2ignore += ["CanESM5"]
         idx_gcms = [i for i in range(len(gcms)) if ((gcms[i] not in gcms2ignore))]
         for procedure in procedures:
-            print(f'{procedure = }')
+            print(f'{procedure = }, {sys.argv = }')
             if procedure in ["reduce","compare_expts"]:
                 for (i_gcm,gcm) in enumerate(gcms):
                     if gcm in gcms2ignore:
+                        continue
+                    if (len(sys.argv) >= 3) and (i_gcm != int(sys.argv[2])):
                         continue
                     print(f"{gcm = }")
                     #if not (gcm in ["IFS",]): #"IFS" == gcm):
