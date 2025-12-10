@@ -53,6 +53,7 @@ def all_gcms_institutes():
         'NAVGEM': 'NRL',
         'GloSea6': 'UKMO',
         })
+    # indices that count: 3, 4, 6, 7, 8, 9, 11
     return gcm2institute
 
 def gcm_plot_styles():            
@@ -1257,13 +1258,13 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
             'onset_date_sensitivity_analysis':  0,
             'compute_severities':               0,
             'plot_sumstats_map':                0,
-            'fit_gev':                          1,
+            'fit_gev':                          0,
             'plot_gevpar_map':                  0,
             'compute_risk':                     0,
             'plot_risk_map':                    0,
             'plot_valatrisk_map':               0,
             'fit_gev_select_regions':           0,
-            'plot_gevsevlev_select_regions':    0,
+            'plot_gevsevlev_select_regions':    1,
             })
     else:
         todo = dict({key: todoflags[i] for (i,key) in enumerate(todokeys)})
@@ -1330,6 +1331,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
                 ext_sign,cgs_levels
                 '''.split(',')),
                 method='PWM',
+                overwrite_gevpar=True
                 )
     if todo['plot_gevpar_map']:
         pipeline_base.plot_gevpar_maps_flat(
@@ -1409,7 +1411,7 @@ if __name__ == "__main__":
         raise ValueError("procedures is {procedures} but must be a subset of of {options}".format(procedures=procedures, options=all_procedures))
 
     # Pass in which procedure to do based on system arguments
-    for which_ssw in ["feb2018","jan2019","sep2019"]:
+    for which_ssw in ["feb2018","jan2019","sep2019"][0:3]:
         if "sep2019" == which_ssw:
             gcms2ignore += ["CanESM5"]
         idx_gcms = [i for i in range(len(gcms)) if ((gcms[i] not in gcms2ignore))]

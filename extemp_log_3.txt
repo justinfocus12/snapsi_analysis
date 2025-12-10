@@ -2,3 +2,16 @@ procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '3']
 gcm = 'CanESM5'
 i_fcdate = 0
 i_expt = 0
+svmem(total=1622496022528, available=1374166114304, percent=15.3, used=239273635840, free=19330203648, active=228678090752, inactive=1353922134016, buffers=2207744, cached=1363889975296, shared=37171200, slab=12234539008)
+i_expt = 1
+svmem(total=1622496022528, available=1373384515584, percent=15.4, used=240053669888, free=19489865728, active=229577183232, inactive=1352983392256, buffers=2207744, cached=1362950279168, shared=37171200, slab=12240056320)
+i_expt = 2
+svmem(total=1622496022528, available=1380917739520, percent=14.9, used=232443011072, free=20143575040, active=218787172352, inactive=1358768779264, buffers=2207744, cached=1369907228672, shared=37191680, slab=13719928832)
+i_fcdate = 1
+i_expt = 0
+svmem(total=1622496022528, available=1381361102848, percent=14.9, used=231983878144, free=19145949184, active=219191656448, inactive=1360200687616, buffers=2207744, cached=1371363987456, shared=37191680, slab=13750013952)
+i_expt = 1
+svmem(total=1622496022528, available=1390043627520, percent=14.3, used=223322914816, free=29273276416, active=210833059840, inactive=1357369868288, buffers=2207744, cached=1369897623552, shared=101871616, slab=15981481984)
+i_expt = 2
+svmem(total=1622496022528, available=1389686575104, percent=14.3, used=223681531904, free=29424750592, active=211131006976, inactive=1356860235776, buffers=2207744, cached=1369387532288, shared=101871616, slab=15985205248)
+procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '3']

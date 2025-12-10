@@ -892,10 +892,12 @@ def plot_statpar_map_difference(da_cgts_0,da_cgts_1,gevpar_0,gevpar_1,locsign=1)
         ax.gridlines()
     return fig_gaussian,axes_gaussian,fig_gev,axes_gev
 
-def fit_gev_exttemp(ens_files_cgts_extt,gevpar_files,ext_sign,cgs_levels,method='PWM'):
+def fit_gev_exttemp(ens_files_cgts_extt,gevpar_files,ext_sign,cgs_levels,method='PWM', overwrite_gevpar=False):
     # ext_sign = 1 means hot; -1 means cold
     # Take care of negative signs appropriately 
     for i_cgs_level,cgs_level in enumerate(cgs_levels):
+        if (exists(gevpar_files[i_cgs_level]) and (not overwrite_gevpar)):
+            continue
         da_cgts_extt = xr.open_dataarray(ens_files_cgts_extt[i_cgs_level])
         memdim = da_cgts_extt.dims.index('member')
         print(f'{memdim = }')
@@ -1082,7 +1084,8 @@ def plot_gevsevlev_select_regions(
 
 
             # ref
-            ax.scatter(risk_empirical_ref, exttemp_ref[order_ref], color='black', marker='+')
+            ax.scatter(risk_empirical_ref, exttemp_ref[order_ref], color='black', marker='+', s=[100 if i_mem==idx_mem_special_ref else 36 for i_mem in range(len(order_ref))])
+            #ax.scatter(risk_empirical_ref[idx_mem_special_ref], exttemp_ref[order_ref], color='black', marker='+', s=20)
             h, = ax.plot(risk_levels_ref,sevlev_ref[0,:],color='black', label=ref_label+'\n'+param_label_fun(loc_ref,scale_ref,shape_ref))
             handles.append(h)
             boot_quant_lo,boot_quant_hi = (np.quantile(sevlev_ref[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
@@ -1123,17 +1126,23 @@ def plot_gevsevlev_select_regions(
             # collect all the min points 
             ts_argmax = []
             Ts_argmax = []
+            markersizes,linewidths = [],[]
             for (i_mem,mem) in enumerate(da_cgts_ref.member.to_numpy()):
                 temp_ref = da_cgts_ref.isel(lat=i_lat,lon=i_lon,member=i_mem)
                 xr.plot.plot(temp_ref, x='time', ax=ax, color='gray', alpha=0.25) 
                 if mem == mem_special_ref:
                     xr.plot.plot(temp_ref, x='time', ax=ax, color='black', linestyle='--', linewidth=2) 
+                    markersizes.append(100)
+                    linewidths.append(3)
+                else:
+                    markersizes.append(36)
+                    linewidths.append(1)
                 i_t_argmax = argmaxwindow(ext_sign*temp_ref).argmax(dim='time').item()
                 t_argmax = onset_date + dtlib.timedelta(i_t_argmax)
                 T_argmax = argmaxwindow(temp_ref).isel(time=i_t_argmax).item()
                 ts_argmax.append(t_argmax)
                 Ts_argmax.append(T_argmax)
-            ax.scatter(ts_argmax, Ts_argmax,color='black', marker='+')
+            ax.scatter(ts_argmax, Ts_argmax,color='black', marker='+', s=markersizes, linewidths=linewidths)
             ax.axvline(onset_date, color='dodgerblue', zorder=-1, alpha=0.5)
             ax.axvline(term_date, color='dodgerblue', zorder=-1, alpha=0.5)
             ax.set_title('')

@@ -2,36 +2,31 @@ procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '4']
 gcm = 'IFS'
 i_fcdate = 0
 i_expt = 0
-memdim = 0
-memdim = 0
-memdim = 0
-memdim = 0
-memdim = 0
-memdim = 0
-svmem(total=1622475350016, available=1401438371840, percent=13.6, used=212011188224, free=666147692544, active=209417134080, inactive=722550767616, buffers=888832, cached=744315580416, shared=30781440, slab=11084394496)
+svmem(total=1622496022528, available=1377937891328, percent=15.1, used=235490254848, free=21758337024, active=224573337600, inactive=1355043274752, buffers=2207744, cached=1365245222912, shared=37171200, slab=12079157248)
 i_expt = 1
-memdim = 0
-memdim = 0
-memdim = 0
-memdim = 0
-memdim = 0
-memdim = 0
-svmem(total=1622475350016, available=1406184157184, percent=13.3, used=207265320960, free=617652465664, active=200163397632, inactive=775815159808, buffers=888832, cached=797556674560, shared=30781440, slab=11064254464)
+svmem(total=1622496022528, available=1377843298304, percent=15.1, used=235576619008, free=22161227776, active=224498921472, inactive=1354546417664, buffers=2207744, cached=1364755968000, shared=37171200, slab=12087508992)
 i_expt = 2
-memdim = 0
-memdim = 0
-memdim = 0
-memdim = 0
-memdim = 0
-memdim = 0
-svmem(total=1622475350016, available=1407194701824, percent=13.3, used=206254862336, free=618465509376, active=200110452736, inactive=776009478144, buffers=888832, cached=797754089472, shared=30781440, slab=11075084288)
+svmem(total=1622496022528, available=1377527529472, percent=15.1, used=235892228096, free=20223733760, active=224595234816, inactive=1356167196672, buffers=2207744, cached=1366377852928, shared=37171200, slab=12086919168)
 i_fcdate = 1
 i_expt = 0
-memdim = 0
-memdim = 0
-memdim = 0
-memdim = 0
-memdim = 0
-memdim = 0
-svmem(total=1622475350016, available=1407502675968, percent=13.2, used=205946814464, free=618210152448, active=199488237568, inactive=776572596224, buffers=888832, cached=798317494272, shared=30781440, slab=11069403136)
+svmem(total=1622496022528, available=1381728444416, percent=14.8, used=230470193152, free=22998626304, active=219964751872, inactive=1358993825792, buffers=2207744, cached=1369024995328, shared=37183488, slab=12329263104)
 i_expt = 1
+svmem(total=1622496022528, available=1384461250560, percent=14.7, used=228979183616, free=26760794112, active=216442294272, inactive=1356073345024, buffers=2207744, cached=1366753837056, shared=37171200, slab=13395828736)
+i_expt = 2
+svmem(total=1622496022528, available=1383364333568, percent=14.7, used=230076416000, free=23575212032, active=217877475328, inactive=1358079668224, buffers=2207744, cached=1368842186752, shared=37171200, slab=13415583744)
+procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '4']
+gcm = 'IFS'
+i_fcdate = 0
+i_expt = 0
+svmem(total=1622496022528, available=1382066593792, percent=14.8, used=231365861376, free=20949889024, active=216058535936, inactive=1359350923264, buffers=2207744, cached=1370178064384, shared=37195776, slab=13573521408)
+i_expt = 1
+svmem(total=1622496022528, available=1377067323392, percent=15.1, used=236142866432, free=21827833856, active=224315015168, inactive=1353626398720, buffers=2207744, cached=1364523114496, shared=37199872, slab=13570637824)
+i_expt = 2
+svmem(total=1622496022528, available=1379318874112, percent=15.0, used=234121015296, free=30978977792, active=222946668544, inactive=1345958338560, buffers=2207744, cached=1357393821696, shared=37179392, slab=14147072000)
+i_fcdate = 1
+i_expt = 0
+svmem(total=1622496022528, available=1388086030336, percent=14.4, used=225285689344, free=23802503168, active=212860952576, inactive=1361794551808, buffers=2207744, cached=1373405622272, shared=101863424, slab=14170419200)
+i_expt = 1
+svmem(total=1622496022528, available=1385936007168, percent=14.6, used=225800716288, free=23008579584, active=213907365888, inactive=1362067910656, buffers=2207744, cached=1373684518912, shared=101863424, slab=14186196992)
+i_expt = 2
+svmem(total=1622496022528, available=1397572669440, percent=13.9, used=215785660416, free=36989509632, active=204476096512, inactive=1357849796608, buffers=2207744, cached=1369718644736, shared=101879808, slab=14529036288)

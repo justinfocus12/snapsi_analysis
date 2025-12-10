@@ -5,9 +5,9 @@
 #SBATCH --account=snapsi
 #SBATCH --partition=standard
 #SBATCH --qos=standard
-#SBATCH -o %A_%a.out
-#SBATCH -e %A_%a.err
+#SBATCH -o logs/%A_%a.out
+#SBATCH -e logs/%A_%a.err
 
 # executable
 module load jaspy
-python -u pipeline_gcms.py reduce $SLURM_ARRAY_TASK_ID > "extemp_log_""$SLURM_ARRAY_TASK_ID"".txt"
+python -u pipeline_gcms.py reduce $SLURM_ARRAY_TASK_ID > logs/extemp_"$SLURM_ARRAY_TASK_ID".log
