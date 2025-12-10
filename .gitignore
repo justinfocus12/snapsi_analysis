@@ -9,3 +9,4 @@ progress.out
 *.out
 *.err
 *log.txt
+logs/
