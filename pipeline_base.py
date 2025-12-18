@@ -264,7 +264,10 @@ def plot_sumstats_maps_flat(
         # Compute the summary stats 
         da_cgts_extt_ensmean = masksea(da_cgts_extt.mean('member'))
         da_cgts_extt_ensstd = masksea(da_cgts_extt.std('member'))
-        da_cgts_extt_special_anom = masksea((da_cgts_extt.sel(member=mem_special, drop=True)-da_cgts_extt_ensmean_ref)/da_cgts_extt_ensstd_ref)
+        try:
+            da_cgts_extt_special_anom = masksea((da_cgts_extt.sel(member=mem_special, drop=True)-da_cgts_extt_ensmean_ref)/da_cgts_extt_ensstd_ref)
+        except Exception:
+            pdb.set_trace()
 
         bounds_special_anom = utils.padded_bounds(da_cgts_extt_special_anom_ref, 0.05)
 
@@ -1102,7 +1105,8 @@ def plot_gevsevlev_select_regions(
             ax.set_xscale('log')
 
             fmtfun = lambda dt: dtlib.datetime.strftime(dt, "%m/%d")
-            ax.set_xlabel(f'{prob_symb}{{{ext_symb}{{T2M(t): {fmtfun(onset_date)} {leq_symb} t {leq_symb} {fmtfun(term_date)}}} {ineq_symb} T}}')
+            #ax.set_xlabel(f'{prob_symb}{{{ext_symb}{{T2M(t): {fmtfun(onset_date)} {leq_symb} t {leq_symb} {fmtfun(term_date)}}} {ineq_symb} T}}')
+            ax.set_xlabel("Exceedance probability")
             ax.set_ylabel(r'T [K]')
             ax.set_ylim(temp_bounds)
             ax.set_title('')

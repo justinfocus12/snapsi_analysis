@@ -59,40 +59,40 @@ def all_gcms_institutes():
 def gcm_plot_styles():            
     styles = dict({
         'BCC-CSM2-HR': dict({
-            'marker': '.',
+            'marker': r".",
             }),
         'GLOBO': dict({
-            'marker': '$H$',
+            'marker': r"$\text{H}$",
             }),
         'GEM-NEMO': dict({
-            'marker': '$I$',
+            'marker': r"$\text{I}$",
             }),
         'CanESM5': dict({
-            'marker': '$G$',
+            'marker': r"$\text{G}$",
             }),
         'IFS': dict({
-            'marker': "$A$",
+            'marker': r"$\text{A}$",
             }),
         'SPEAR': dict({
-            'marker': ".",
+            'marker': r".",
             }),
         'GRIMs': dict({
-            'marker': "$B$",
+            'marker': r"$\text{B}$",
             }),
         'GloSea6-GC32': dict({
-            'marker': "$C$",
+            'marker': r"$\text{C}$",
             }),
         'CNRM-CM61': dict({
-            'marker': "$D$",
+            'marker': r"$\text{D}$",
             }),
         'CESM2-CAM6': dict({
-            'marker': "$E$",
+            'marker': r"$\text{E}$",
             }),
         'NAVGEM': dict({
-            'marker': "$.$",
+            'marker': r"$.$",
             }),
         'GloSea6': dict({
-            'marker': "$F$",
+            'marker': r"$\text{F}$",
             }),
         })
     return styles
@@ -544,8 +544,8 @@ def plot_relrisks_dvalatrisks_allgcms(
                         dvarlo,dvarhi = [np.quantile(rr_dvar.sel(quantity='dvalatrisk',expt_pair=expt_pair_coordval(expt_pair),fc_date=fc_date,boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]]
                         ax.plot([logrrlo,logrrhi],[dvarmid,dvarmid], color=expt_colors[expt_pair[1]], zorder=-1)
                         ax.plot([logrrmid,logrrmid], [dvarlo,dvarhi], color=expt_colors[expt_pair[1]], zorder=-1)
-                        ax.scatter(logrrmid,dvarmid,marker='o',fc='white',ec=expt_colors[expt_pair[1]], zorder=0, s=18**2)
-                        ax.scatter(logrrmid,dvarmid,marker=gcmstyles[gcm]['marker'],color='black', zorder=1)
+                        ax.scatter(logrrmid,dvarmid,marker='o',fc='white',ec=expt_colors[expt_pair[1]], zorder=0, s=18**2, linewidth=1.5)
+                        ax.scatter(logrrmid,dvarmid,marker=gcmstyles[gcm]['marker'],color='black', zorder=1, s=11**2)
                         # draw an arrow toward the other one 
                         expt_pair_other = expt_pairs[(i_expt_pair+1) % 2]
                         ddvar = dvarmids.sel(expt_pair=expt_pair_coordval(expt_pair_other)) - dvarmid
@@ -834,8 +834,8 @@ def plot_gevsevlev_comp_select_regions(
                                 for sgn in [-1,1]]
                         dvarlo,dvarhi = [np.quantile(
                             gev_sev_risk_var_rr_dvar['rr_dvar'].sel(expt_pair=expt_pair_coordval(expt_pair),fc_date=fc_date,quantity='dvalatrisk',boot=slice(1,None)), 0.5*(1+sgn*confint_width)) for sgn in [-1,1]]
-                        axrrdvar.scatter(logrrmid,dvarmid,marker='o',s=15**2, ec=expt_colors[expt], fc='white', zorder=1)
-                        axrrdvar.scatter(logrrmid,dvarmid,marker=gcmstyles[gcm]['marker'], zorder=2)
+                        axrrdvar.scatter(logrrmid,dvarmid,marker='o',s=25**2, ec=expt_colors[expt], fc='white', zorder=1)
+                        axrrdvar.scatter(logrrmid,dvarmid,marker=gcmstyles[gcm]['marker'], s=12**2, zorder=2)
                         axrrdvar.plot([logrrlo,logrrhi],[dvarmid,dvarmid],color=expt_colors[expt], zorder=-1)
                         axrrdvar.plot([logrrmid,logrrmid],[dvarlo,dvarhi],color=expt_colors[expt], zorder=-1)
                         # draw an arrow toward the other one 
@@ -1257,14 +1257,14 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
             'coarse_grain_space':               0,
             'onset_date_sensitivity_analysis':  0,
             'compute_severities':               0,
-            'plot_sumstats_map':                0,
+            'plot_sumstats_map':                1,
             'fit_gev':                          0,
             'plot_gevpar_map':                  0,
             'compute_risk':                     0,
             'plot_risk_map':                    0,
             'plot_valatrisk_map':               0,
             'fit_gev_select_regions':           0,
-            'plot_gevsevlev_select_regions':    1,
+            'plot_gevsevlev_select_regions':    0,
             })
     else:
         todo = dict({key: todoflags[i] for (i,key) in enumerate(todokeys)})
@@ -1411,7 +1411,7 @@ if __name__ == "__main__":
         raise ValueError("procedures is {procedures} but must be a subset of of {options}".format(procedures=procedures, options=all_procedures))
 
     # Pass in which procedure to do based on system arguments
-    for which_ssw in ["feb2018","jan2019","sep2019"][0:3]:
+    for which_ssw in ["feb2018","jan2019","sep2019"][2:3]:
         if "sep2019" == which_ssw:
             gcms2ignore += ["CanESM5"]
         idx_gcms = [i for i in range(len(gcms)) if ((gcms[i] not in gcms2ignore))]
