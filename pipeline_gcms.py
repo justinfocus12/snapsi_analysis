@@ -878,7 +878,7 @@ def plot_gevsevlev_comp_select_regions(
                 axgev.set_ylabel("severity [K]")
                 grk = utils.greekletters()
                 axdvar.set_ylabel(f"severity - (free severity) [K]")
-                axdvar.set_xlabel("Probability")
+                axdvar.set_xlabel("Exceedance probability")
 
                 for ax in (axgev, axrr):
                     ax.set_ylim(sev_bounds)
@@ -915,10 +915,10 @@ def plot_gevsevlev_comp_select_regions(
 
 def compare_expts(which_ssw, i_gcm):
     todo = dict({
-        'plot_gevpar_map_diffs':                    1,
-        'compute_valatrisk_comp':                   1,
-        'plot_valatrisk_comp_maps':                 1,
-        'compute_gevsevlev_comp_select_regions':    1,
+        'plot_gevpar_map_diffs':                    0,
+        'compute_valatrisk_comp':                   0,
+        'plot_valatrisk_comp_maps':                 0,
+        'compute_gevsevlev_comp_select_regions':    0,
         'plot_gevsevlev_comp_select_regions':       1,
         })
     gcms,expts,fc_dates,_,term_date = gcm_multiparams(which_ssw)
@@ -1411,7 +1411,7 @@ if __name__ == "__main__":
         raise ValueError("procedures is {procedures} but must be a subset of of {options}".format(procedures=procedures, options=all_procedures))
 
     # Pass in which procedure to do based on system arguments
-    for which_ssw in ["feb2018","jan2019","sep2019"][2:3]:
+    for which_ssw in ["feb2018","jan2019","sep2019"][:]:
         if "sep2019" == which_ssw:
             gcms2ignore += ["CanESM5"]
         idx_gcms = [i for i in range(len(gcms)) if ((gcms[i] not in gcms2ignore))]
