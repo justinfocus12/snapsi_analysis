@@ -337,7 +337,8 @@ def reduce_era5(which_ssw):
                 ext_symb, onset_date, term_date,
                 figdir, figfile_tag, figtitle_affix,
                 '''),
-                subplot_prefixes=["Climatological ","Climatological ",""]
+                subplot_prefixes=["Climatological ","Climatological ",""],
+                do_special=True,
                 )
     if todo['fit_gev']:
         pipeline_base.fit_gev_exttemp(

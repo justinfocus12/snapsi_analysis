@@ -230,6 +230,7 @@ def plot_sumstats_maps_flat(
         ext_symb,onset_date,term_date,figdir,figfile_tag,
         title_prefix='',subplot_prefixes=None,
         diff_from_ref=False,
+        do_special=False,
         ):
     # 1. ensemble-mean of time-min
     # 2. ensemble-std of time-min
@@ -268,12 +269,13 @@ def plot_sumstats_maps_flat(
         if diff_from_ref:
             da_cgts_extt_ensmean -= da_cgts_extt_ensmean_ref
             da_cgts_extt_ensstd -= da_cgts_extt_ensstd_ref
-        try:
-            da_cgts_extt_special_anom = masksea((da_cgts_extt.sel(member=mem_special, drop=True)-da_cgts_extt_ensmean_ref)/da_cgts_extt_ensstd_ref)
-        except Exception:
-            pdb.set_trace()
+        if do_special:
+            try: # maybe this doesn't matter for model output 
+                da_cgts_extt_special_anom = masksea((da_cgts_extt.sel(member=mem_special, drop=True)-da_cgts_extt_ensmean_ref)/da_cgts_extt_ensstd_ref)
+            except Exception:
+                pdb.set_trace()
 
-        bounds_special_anom = utils.padded_bounds(da_cgts_extt_special_anom_ref, 0.05)
+            bounds_special_anom = utils.padded_bounds(da_cgts_extt_special_anom_ref, 0.05)
 
         fig,axes = plt.subplots(figsize=(3*aspect,3*3), nrows=3, gridspec_kw={'hspace': 0.3}, subplot_kw={'projection': ccrs.Mercator(central_longitude=(lons[0]+lons[-1])/2)})
         axmean,axstd,axanomspecial = axes
@@ -303,17 +305,18 @@ def plot_sumstats_maps_flat(
                 **pcmargs,
                 )
         pcmargs['cbar_kwargs']['label'] = ''
-        xr.plot.pcolormesh(
-                da_cgts_extt_special_anom,
-                cmap=plt.cm.RdYlBu_r,
-                #vmin=-np.max(np.abs(bounds_special_anom)), vmax=np.max(np.abs(bounds_special_anom)),
-                vmin=-3, vmax=3,
-                ax=axanomspecial, 
-                **pcmargs,
-                )
+        if do_special:
+            xr.plot.pcolormesh(
+                    da_cgts_extt_special_anom,
+                    cmap=plt.cm.RdYlBu_r,
+                    #vmin=-np.max(np.abs(bounds_special_anom)), vmax=np.max(np.abs(bounds_special_anom)),
+                    vmin=-3, vmax=3,
+                    ax=axanomspecial, 
+                    **pcmargs,
+                    )
 
         # Bounding box around event region
-        if i_cgs_level == len(cgs_levels):
+        if i_cgs_level == len(cgs_levels) and do_special:
             for ax in [axmean,axstd,axanomspecial]:
                 ax.plot(
                         [event_region['lon'].start, event_region['lon'].stop, event_region['lon'].stop, event_region['lon'].start, event_region['lon'].start],
@@ -339,7 +342,7 @@ def plot_sumstats_maps_flat(
             ax.set_title(titles[i_ax], loc='left')
         fig.suptitle(suptitle, x=axes[0].get_position().x0, y=axes[0].get_position().y1+0.05, ha='left', va='bottom')
         cgs_suffix = r'%dx%d'%(cgs_levels[i_cgs_level][0],cgs_levels[i_cgs_level][1]) if i_cgs_level<len(cgs_levels) else 'context'
-        fig.savefig(join(figdir,'sumstats_map_%s_cgs%s.png'%(figfile_tag,cgs_suffix)), **pltkwargs)
+        fig.savefig(join(figdir,'sumstats_map_%s_cgs%s%s.png'%(figfile_tag,cgs_suffix,"_minusera5" if diff_from_ref else "")), **pltkwargs)
         plt.close(fig)
     return 
 
@@ -800,7 +803,7 @@ def plot_gevpar_maps_flat(gevpar_files, ext_sign, cgs_levels, param_bounds_file,
         for (i_ax,ax) in enumerate(axes):
             decorate_mercator_axis(ax, lonmin, lonmax, latmin, latmax)
         fig.suptitle(title_affix, x=0.5, y=axes[0].get_position().y1+0.05, ha='center', va='bottom')
-        fig.savefig(join(figdir,"gevpar_map_%s_%s_cgs%dx%d.png"%("diff" if gevpar_ref_files else "", figfile_tag,cgs_level[0],cgs_level[1])), **pltkwargs)
+        fig.savefig(join(figdir,"gevpar_map_%s_cgs%dx%d%s.png"%(figfile_tag,cgs_level[0],cgs_level[1], "_minusera5" if gevpar_ref_files else "")), **pltkwargs)
         plt.close(fig)
     return 
 

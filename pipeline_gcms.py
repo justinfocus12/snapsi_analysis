@@ -1259,7 +1259,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
             'compute_severities':               0,
             'plot_sumstats_map':                1,
             'fit_gev':                          0,
-            'plot_gevpar_map':                  0,
+            'plot_gevpar_map':                  1,
             'compute_risk':                     0,
             'plot_risk_map':                    0,
             'plot_valatrisk_map':               0,
@@ -1324,6 +1324,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
                 figdir, figfile_tag, figtitle_affix,
                 '''),
                 diff_from_ref=False,
+                do_special=False,
                 )
         pipeline_base.plot_sumstats_maps_flat(
                 wkf['event_region'],wkf['context_region'],
@@ -1335,6 +1336,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
                 figdir, figfile_tag, figtitle_affix,
                 '''),
                 diff_from_ref=True,
+                do_special=False,
                 )
     if todo['fit_gev']:
         pipeline_base.fit_gev_exttemp(
