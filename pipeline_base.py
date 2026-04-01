@@ -229,6 +229,7 @@ def plot_sumstats_maps_flat(
         ext_sign, param_bounds_file, cgs_levels, 
         ext_symb,onset_date,term_date,figdir,figfile_tag,
         title_prefix='',subplot_prefixes=None,
+        diff_from_ref=False,
         ):
     # 1. ensemble-mean of time-min
     # 2. ensemble-std of time-min
@@ -262,8 +263,11 @@ def plot_sumstats_maps_flat(
         da_cgts_extt_special_anom_ref = masksea((da_cgts_extt_ref.sel(member=mem_special_ref, drop=True)-da_cgts_extt_ensmean_ref)/da_cgts_extt_ensstd_ref)
 
         # Compute the summary stats 
-        da_cgts_extt_ensmean = masksea(da_cgts_extt.mean('member'))
+        da_cgts_extt_ensmean = masksea(da_cgts_extt.mean('member')) 
         da_cgts_extt_ensstd = masksea(da_cgts_extt.std('member'))
+        if diff_from_ref:
+            da_cgts_extt_ensmean -= da_cgts_extt_ensmean_ref
+            da_cgts_extt_ensstd -= da_cgts_extt_ensstd_ref
         try:
             da_cgts_extt_special_anom = masksea((da_cgts_extt.sel(member=mem_special, drop=True)-da_cgts_extt_ensmean_ref)/da_cgts_extt_ensstd_ref)
         except Exception:
@@ -287,7 +291,7 @@ def plot_sumstats_maps_flat(
         xr.plot.pcolormesh(
                 da_cgts_extt_ensmean,
                 cmap=plt.cm.RdYlBu_r,
-                vmin = np.min(ext_sign*param_bounds.sel(param='loc')).item(), vmax=np.max(ext_sign*param_bounds.sel(param='loc')).item(),
+                vmin = None if diff_from_ref else np.min(ext_sign*param_bounds.sel(param='loc')).item(), vmax=None if diff_from_ref else np.max(ext_sign*param_bounds.sel(param='loc')).item(),
                 ax=axmean,
                 **pcmargs,
                 )
@@ -295,14 +299,15 @@ def plot_sumstats_maps_flat(
                 da_cgts_extt_ensstd,
                 ax=axstd, 
                 cmap=plt.cm.viridis,
-                vmin = 0, vmax=param_bounds.sel(param='scale',side='hi').item(),
+                vmin =None if diff_from_ref else  0, vmax=None if diff_from_ref else param_bounds.sel(param='scale',side='hi').item(),
                 **pcmargs,
                 )
         pcmargs['cbar_kwargs']['label'] = ''
         xr.plot.pcolormesh(
                 da_cgts_extt_special_anom,
                 cmap=plt.cm.RdYlBu_r,
-                vmin=-np.max(np.abs(bounds_special_anom)), vmax=np.max(np.abs(bounds_special_anom)),
+                #vmin=-np.max(np.abs(bounds_special_anom)), vmax=np.max(np.abs(bounds_special_anom)),
+                vmin=-3, vmax=3,
                 ax=axanomspecial, 
                 **pcmargs,
                 )
@@ -325,6 +330,8 @@ def plot_sumstats_maps_flat(
                 "%s norm. anom."%(mem_special),
                 ]
         if subplot_prefixes is None: subplot_prefixes = ['']*3
+        if diff_from_ref:
+            titles = list(map(lambda title: title + ("( $-$ ERA5)"), titles))
             
         titles = list(map(lambda titlepre,title: titlepre+title, subplot_prefixes, titles))
         for (i_ax,ax) in enumerate(axes):
@@ -726,12 +733,19 @@ def plot_gevpar_difference_maps_flat(gevpar_files_0, expt0, gevpar_files_1, expt
 
     return 
 
-def plot_gevpar_maps_flat(gevpar_files, ext_sign, cgs_levels, param_bounds_file, figdir, figfile_tag, title_affix):
+def plot_gevpar_maps_flat(gevpar_files, ext_sign, cgs_levels, param_bounds_file, figdir, figfile_tag, title_affix, gevpar_ref_files=None):
+    # if gevpar_ref_files is provided, take the difference 
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
         print(f"{cgs_level = }")
         if min(cgs_level) <= 1:
             continue
         gevpar = xr.open_dataarray(gevpar_files[i_cgs_level])
+        if gevpar_ref_files is not None:
+            gevpar_ref = xr.open_dataarray(gevpar_ref_files[i_cgs_level])
+            gevpar = gevpar - gevpar_ref
+            title_addendum = " ( $-$ ERA5)"
+        else:
+            title_addendum = ""
         lons,lats = (gevpar[c].to_numpy() for c in ('lon','lat'))
         dlon = lons[1]-lons[0]
         dlat = lats[1]-lats[0]
@@ -761,32 +775,32 @@ def plot_gevpar_maps_flat(gevpar_files, ext_sign, cgs_levels, param_bounds_file,
         xr.plot.pcolormesh(
                 ext_sign*gevpar.sel(param='loc'),
                 cmap=plt.cm.RdYlBu_r,
-                vmin = np.min(ext_sign*bounds_loc), vmax=np.max(ext_sign*bounds_loc),
+                vmin=None if gevpar_ref_files else np.min(ext_sign*bounds_loc), vmax=None if gevpar_ref_files else np.max(ext_sign*bounds_loc),
                 ax=axloc, 
                 **pcmargs,
                 )
-        axloc.set_title(r"Location $\mu$", loc='left')
+        axloc.set_title(r"Location $\mu$%s"%(title_addendum), loc='left')
         xr.plot.pcolormesh(
                 gevpar.sel(param='scale'),
                 ax=axscale,
                 cmap=plt.cm.viridis,
-                vmin = 0, vmax=np.max(bounds_scale[1]), 
+                vmin = None if gevpar_ref_files else 0, vmax=None if gevpar_ref_files else np.max(bounds_scale[1]), 
                 **pcmargs,
                 )
-        axscale.set_title(r"Scale $\sigma$", loc='left')
+        axscale.set_title(r"Scale $\sigma$%s"%(title_addendum), loc='left')
         pcmargs['cbar_kwargs']['label'] = ''
         xr.plot.pcolormesh(
                 gevpar.sel(param='shape'),
                 cmap=plt.cm.RdYlBu_r,
-                vmin=-np.max(np.abs(bounds_shape)), vmax=np.max(np.abs(bounds_shape)),
+                vmin=None if gevpar_ref_files else -np.max(np.abs(bounds_shape)), vmax=None if gevpar_ref_files else np.max(np.abs(bounds_shape)),
                 ax=axshape,
                 **pcmargs,
                 )
-        axshape.set_title(r"Shape $\xi$", loc='left')
+        axshape.set_title(r"Shape $\xi$%s"%(title_addendum), loc='left')
         for (i_ax,ax) in enumerate(axes):
             decorate_mercator_axis(ax, lonmin, lonmax, latmin, latmax)
         fig.suptitle(title_affix, x=0.5, y=axes[0].get_position().y1+0.05, ha='center', va='bottom')
-        fig.savefig(join(figdir,"gevpar_map_%s_cgs%dx%d.png"%(figfile_tag,cgs_level[0],cgs_level[1])), **pltkwargs)
+        fig.savefig(join(figdir,"gevpar_map_%s_%s_cgs%dx%d.png"%("diff" if gevpar_ref_files else "", figfile_tag,cgs_level[0],cgs_level[1])), **pltkwargs)
         plt.close(fig)
     return 
 

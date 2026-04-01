@@ -1323,6 +1323,18 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
                 ext_symb,onset_date,term_date,
                 figdir, figfile_tag, figtitle_affix,
                 '''),
+                diff_from_ref=False,
+                )
+        pipeline_base.plot_sumstats_maps_flat(
+                wkf['event_region'],wkf['context_region'],
+                wkf['ens_files_cgts_extt'], wkf_era5['ens_files_cgts_extt'],
+                mem_special, wkf_era5['event_year'],
+                *dtoa(wkf,'''
+                ext_sign,param_bounds_file,cgs_levels,
+                ext_symb,onset_date,term_date,
+                figdir, figfile_tag, figtitle_affix,
+                '''),
+                diff_from_ref=True,
                 )
     if todo['fit_gev']:
         pipeline_base.fit_gev_exttemp(
@@ -1340,6 +1352,14 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
                 ext_sign,cgs_levels,param_bounds_file,
                 figdir, figfile_tag, figtitle_affix,
                 '''),
+                )
+        pipeline_base.plot_gevpar_maps_flat(
+                *dtoa(wkf, '''
+                gevpar_files,
+                ext_sign,cgs_levels,param_bounds_file,
+                figdir, figfile_tag, figtitle_affix,
+                '''),
+                gevpar_ref_files=wkf_era5['gevpar_files'],
                 )
     if todo['compute_risk']:
         pipeline_base.compute_valatrisk(
