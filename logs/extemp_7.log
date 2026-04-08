@@ -2,47 +2,4243 @@ procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '7']
 gcm = 'GloSea6-GC32'
 i_fcdate = 0
 i_expt = 0
-svmem(total=1622496026624, available=1042046935040, percent=35.8, used=571402485760, free=632158310400, active=586515546112, inactive=378362859520, buffers=4444160, cached=418930786304, shared=30896128, slab=8922365952)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p10f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p10f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p11f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p11f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p12f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p12f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p13f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p13f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p14f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p14f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p15f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p15f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p16f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p16f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p17f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p17f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p18f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p18f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p19f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p19f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p1f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p1f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p20f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p20f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p21f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p21f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p22f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p22f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p23f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p23f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p24f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p24f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p25f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p25f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p26f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p26f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p27f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p27f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p28f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p28f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p29f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p29f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p2f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p2f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p30f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p30f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p31f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p31f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p32f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p32f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p33f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p33f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p34f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p34f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p35f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p35f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p36f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p36f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p37f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p37f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p38f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p38f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p39f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p39f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p3f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p3f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p40f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p40f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p41f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p41f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p42f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p42f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p43f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p43f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p44f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p44f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p45f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p45f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p46f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p46f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p47f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p47f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p48f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p48f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p49f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p49f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p4f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p4f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p50f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p50f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p5f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p5f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p6f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p6f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p7f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p7f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p8f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p8f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180125/r1i1p9f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180125-r1i1p9f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 192B 40.5 42.0 43.5 45.0 46.5 ... 70.5 72.0 73.5 75.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-01-25 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 856B -19.5 -18.0 -16.5 -15.0 ... 136.5 138.0 139.5
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1457137741824, percent=10.2, used=156311949312, free=137362608128, active=250391429120, inactive=1154335195136, buffers=1744896, cached=1328819335168, shared=26046464, slab=38105989120)
 i_expt = 1
-svmem(total=1622496026624, available=1018865459200, percent=37.2, used=594584469504, free=653447991296, active=606740787200, inactive=334025228288, buffers=4444160, cached=374459121664, shared=30896128, slab=8841584640)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p10f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p10f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p11f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p11f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p12f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p12f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p13f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p13f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p14f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p14f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p15f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p15f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p16f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p16f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p17f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p17f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p18f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p18f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p19f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p19f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p1f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p1f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p20f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p20f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p21f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p21f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p22f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p22f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p23f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p23f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p24f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p24f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p25f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p25f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p26f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p26f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p27f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p27f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p28f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p28f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p29f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p29f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p2f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p2f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p30f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p30f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p31f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p31f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p32f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p32f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p33f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p33f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p34f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p34f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p35f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p35f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p36f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p36f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p37f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p37f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p38f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p38f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p39f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p39f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p3f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p3f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p40f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p40f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p41f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p41f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p42f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p42f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p43f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p43f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p44f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p44f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p45f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p45f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p46f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p46f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p47f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p47f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p48f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p48f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p49f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p49f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p4f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p4f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p50f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p50f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p5f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p5f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p6f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p6f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p7f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p7f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p8f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p8f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180125/r1i1p9f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180125-r1i1p9f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 192B 40.5 42.0 43.5 45.0 46.5 ... 70.5 72.0 73.5 75.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-01-25 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 856B -19.5 -18.0 -16.5 -15.0 ... 136.5 138.0 139.5
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1449572700160, percent=10.7, used=163877031936, free=120682483712, active=256250269696, inactive=1163414978560, buffers=1744896, cached=1337934376960, shared=26046464, slab=38171185152)
 i_expt = 2
-svmem(total=1622496026624, available=1039633321984, percent=35.9, used=573816012800, free=671579672576, active=586516918272, inactive=336660488192, buffers=4444160, cached=377095897088, shared=30896128, slab=8854884352)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p10f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p10f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p11f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p11f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p12f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p12f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p13f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p13f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p14f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p14f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p15f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p15f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p16f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p16f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p17f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p17f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p18f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p18f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p19f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p19f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p1f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p1f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p20f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p20f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p21f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p21f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p22f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p22f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p23f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p23f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p24f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p24f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p25f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p25f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p26f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p26f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p27f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p27f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p28f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p28f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p29f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p29f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p2f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p2f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p30f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p30f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p31f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p31f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p32f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p32f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p33f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p33f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p34f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p34f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p35f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p35f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p36f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p36f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p37f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p37f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p38f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p38f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p39f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p39f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p3f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p3f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p40f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p40f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p41f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p41f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p42f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p42f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p43f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p43f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p44f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p44f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p45f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p45f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p46f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p46f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p47f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p47f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p48f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p48f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p49f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p49f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p4f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p4f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p50f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p50f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p5f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p5f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p6f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p6f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p7f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p7f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p8f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p8f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180125/r1i1p9f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180125-r1i1p9f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 192B 40.5 42.0 43.5 45.0 46.5 ... 70.5 72.0 73.5 75.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-01-25 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 856B -19.5 -18.0 -16.5 -15.0 ... 136.5 138.0 139.5
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1450884706304, percent=10.6, used=162564993024, free=112650981376, active=256346013696, inactive=1172730355712, buffers=1744896, cached=1347277918208, shared=26046464, slab=38217728000)
 i_fcdate = 1
 i_expt = 0
-svmem(total=1622496026624, available=1031320743936, percent=36.4, used=582129000448, free=662567944192, active=596924473344, inactive=336318984192, buffers=4444160, cached=377794637824, shared=30900224, slab=8951468032)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p10f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p10f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p11f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p11f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p12f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p12f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p13f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p13f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p14f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p14f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p15f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p15f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p16f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p16f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p17f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p17f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p18f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p18f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p19f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p19f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p1f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p1f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p20f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p20f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p21f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p21f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p22f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p22f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p23f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p23f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p24f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p24f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p25f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p25f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p26f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p26f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p27f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p27f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p28f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p28f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p29f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p29f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p2f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p2f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p30f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p30f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p31f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p31f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p32f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p32f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p33f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p33f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p34f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p34f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p35f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p35f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p36f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p36f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p37f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p37f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p38f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p38f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p39f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p39f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p3f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p3f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p40f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p40f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p41f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p41f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p42f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p42f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p43f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p43f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p44f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p44f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p45f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p45f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p46f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p46f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p47f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p47f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p48f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p48f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p49f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p49f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p4f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p4f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p50f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p50f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p5f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p5f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p6f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p6f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p7f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p7f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p8f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p8f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20180208/r1i1p9f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20180208-r1i1p9f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 192B 40.5 42.0 43.5 45.0 46.5 ... 70.5 72.0 73.5 75.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 928B 2018-02-08 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 856B -19.5 -18.0 -16.5 -15.0 ... 136.5 138.0 139.5
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1452147093504, percent=10.5, used=161302548480, free=106190487552, active=258092429312, inactive=1180217884672, buffers=1744896, cached=1355000856576, shared=26046464, slab=38269755392)
 i_expt = 1
-svmem(total=1622496026624, available=1036804358144, percent=36.1, used=576645009408, free=667678584832, active=591275409408, inactive=337692340224, buffers=4444160, cached=378167988224, shared=30900224, slab=8908681216)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p10f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p10f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p11f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p11f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p12f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p12f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p13f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p13f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p14f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p14f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p15f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p15f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p16f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p16f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p17f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p17f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p18f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p18f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p19f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p19f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p1f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p1f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p20f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p20f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p21f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p21f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p22f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p22f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p23f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p23f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p24f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p24f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p25f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p25f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p26f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p26f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p27f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p27f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p28f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p28f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p29f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p29f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p2f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p2f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p30f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p30f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p31f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p31f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p32f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p32f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p33f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p33f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p34f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p34f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p35f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p35f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p36f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p36f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p37f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p37f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p38f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p38f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p39f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p39f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p3f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p3f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p40f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p40f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p41f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p41f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p42f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p42f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p43f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p43f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p44f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p44f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p45f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p45f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p46f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p46f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p47f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p47f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p48f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p48f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p49f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p49f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p4f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p4f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p50f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p50f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p5f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p5f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p6f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p6f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p7f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p7f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p8f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p8f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20180208/r1i1p9f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20180208-r1i1p9f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 192B 40.5 42.0 43.5 45.0 46.5 ... 70.5 72.0 73.5 75.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 928B 2018-02-08 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 856B -19.5 -18.0 -16.5 -15.0 ... 136.5 138.0 139.5
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1364719550464, percent=15.9, used=248733827072, free=41784713216, active=370057703424, inactive=1158842839040, buffers=1744896, cached=1331975352320, shared=26071040, slab=38682640384)
 i_expt = 2
-svmem(total=1622496026624, available=1040287862784, percent=35.9, used=573161447424, free=670927708160, active=588378771456, inactive=337911828480, buffers=4444160, cached=378402426880, shared=30900224, slab=8887357440)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p10f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p10f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p11f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p11f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p12f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p12f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p13f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p13f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p14f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p14f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p15f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p15f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p16f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p16f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p17f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p17f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p18f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p18f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p19f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p19f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p1f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p1f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p20f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p20f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p21f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p21f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p22f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p22f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p23f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p23f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p24f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p24f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p25f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p25f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p26f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p26f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p27f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p27f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p28f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p28f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p29f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p29f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p2f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p2f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p30f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p30f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p31f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p31f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p32f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p32f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p33f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p33f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p34f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p34f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p35f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p35f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p36f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p36f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p37f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p37f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p38f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p38f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p39f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p39f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p3f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p3f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p40f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p40f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p41f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p41f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p42f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p42f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p43f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p43f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p44f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p44f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p45f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p45f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p46f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p46f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p47f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p47f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p48f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p48f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p49f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p49f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p4f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p4f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p50f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p50f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p5f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p5f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p6f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p6f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p7f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p7f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p8f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p8f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20180208/r1i1p9f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20180208-r1i1p9f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 192B 40.5 42.0 43.5 45.0 46.5 ... 70.5 72.0 73.5 75.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 928B 2018-02-08 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 856B -19.5 -18.0 -16.5 -15.0 ... 136.5 138.0 139.5
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1383053164544, percent=14.8, used=228989517824, free=394758848512, active=394917883904, inactive=768022790144, buffers=1744896, cached=998745526272, shared=26230784, slab=39360954368)
 procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '7']
 gcm = 'GloSea6-GC32'
 i_fcdate = 0
 i_expt = 0
-svmem(total=1622496026624, available=1050304155648, percent=35.3, used=563145695232, free=677126574080, active=578709454848, inactive=341684191232, buffers=4444160, cached=382219313152, shared=30896128, slab=8905420800)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p10f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p10f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p11f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p11f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p12f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p12f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p13f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p13f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p14f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p14f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p15f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p15f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p16f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p16f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p17f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p17f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p18f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p18f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p19f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p19f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p1f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p1f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p20f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p20f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p21f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p21f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p22f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p22f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p23f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p23f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p24f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p24f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p25f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p25f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p26f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p26f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p27f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p27f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p28f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p28f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p29f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p29f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p2f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p2f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p30f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p30f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p31f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p31f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p32f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p32f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p33f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p33f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p34f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p34f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p35f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p35f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p36f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p36f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p37f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p37f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p38f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p38f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p39f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p39f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p3f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p3f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p40f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p40f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p41f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p41f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p42f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p42f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p43f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p43f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p44f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p44f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p45f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p45f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p46f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p46f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p47f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p47f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p48f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p48f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p49f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p49f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p4f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p4f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p50f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p50f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p5f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p5f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p6f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p6f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p7f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p7f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p8f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p8f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20181213/r1i1p9f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20181213-r1i1p9f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 216B 30.0 31.5 33.0 34.5 36.0 ... 64.5 66.0 67.5 69.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-12-13 ... 2019-01-26T18:00:00
+  * lon      (lon) float64 360B -111.0 -109.5 -108.0 ... -48.0 -46.5 -45.0
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1478779887616, percent=8.9, used=133264650240, free=465345114112, active=323779977216, inactive=771000356864, buffers=1744896, cached=1023884128256, shared=26046464, slab=38275612672)
 i_expt = 1
-svmem(total=1622496026624, available=1053111066624, percent=35.1, used=560338292736, free=679025491968, active=576339238912, inactive=342552465408, buffers=4444160, cached=383127797760, shared=30896128, slab=8906285056)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p10f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p10f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p11f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p11f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p12f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p12f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p13f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p13f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p14f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p14f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p15f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p15f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p16f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p16f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p17f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p17f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p18f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p18f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p19f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p19f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p1f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p1f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p20f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p20f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p21f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p21f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p22f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p22f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p23f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p23f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p24f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p24f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p25f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p25f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p26f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p26f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p27f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p27f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p28f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p28f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p29f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p29f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p2f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p2f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p30f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p30f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p31f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p31f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p32f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p32f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p33f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p33f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p34f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p34f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p35f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p35f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p36f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p36f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p37f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p37f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p38f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p38f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p39f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p39f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p3f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p3f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p40f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p40f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p41f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p41f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p42f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p42f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p43f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p43f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p44f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p44f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p45f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p45f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p46f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p46f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p47f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p47f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p48f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p48f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p49f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p49f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p4f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p4f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p50f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p50f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p5f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p5f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p6f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p6f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p7f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p7f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p8f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p8f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20181213/r1i1p9f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20181213-r1i1p9f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 216B 30.0 31.5 33.0 34.5 36.0 ... 64.5 66.0 67.5 69.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-12-13 ... 2019-01-26T18:00:00
+  * lon      (lon) float64 360B -111.0 -109.5 -108.0 ... -48.0 -46.5 -45.0
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1482391158784, percent=8.6, used=129653387264, free=461419651072, active=328166637568, inactive=771000365056, buffers=1744896, cached=1031420854272, shared=26046464, slab=38278574080)
 i_expt = 2
-svmem(total=1622496026624, available=1055210254336, percent=35.0, used=558239068160, free=682022875136, active=574569619456, inactive=341543677952, buffers=4444160, cached=382229639168, shared=30896128, slab=8899047424)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p10f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p10f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p11f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p11f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p12f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p12f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p13f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p13f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p14f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p14f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p15f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p15f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p16f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p16f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p17f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p17f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p18f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p18f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p19f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p19f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p20f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p20f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p21f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p21f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p22f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p22f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p23f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p23f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p24f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p24f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p25f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p25f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p26f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p26f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p27f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p27f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p28f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p28f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p29f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p29f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p2f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p2f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p30f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p30f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p31f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p31f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p32f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p32f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p33f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p33f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p34f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p34f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p35f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p35f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p36f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p36f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p37f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p37f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p38f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p38f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p39f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p39f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p3f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p3f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p40f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p40f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p41f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p41f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p42f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p42f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p44f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p44f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p45f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p45f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p46f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p46f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p47f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p47f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p49f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p49f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p50f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p50f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p51f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p51f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p52f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p52f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p55f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p55f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p56f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p56f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p57f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p57f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p58f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p58f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p59f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p59f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p5f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p5f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p7f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p7f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p8f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p8f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20181213/r1i1p9f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20181213-r1i1p9f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 216B 30.0 31.5 33.0 34.5 36.0 ... 64.5 66.0 67.5 69.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-12-13 ... 2019-01-26T18:00:00
+  * lon      (lon) float64 360B -111.0 -109.5 -108.0 ... -48.0 -46.5 -45.0
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1486231371776, percent=8.4, used=125813211136, free=457891954688, active=325920821248, inactive=778006327296, buffers=1744896, cached=1038788726784, shared=26046464, slab=38275682304)
 i_fcdate = 1
 i_expt = 0
-svmem(total=1622496026624, available=1054938902528, percent=35.0, used=558510403584, free=681757204480, active=575491178496, inactive=341434195968, buffers=4444160, cached=382223974400, shared=30896128, slab=8902864896)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p10f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p10f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p11f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p11f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p12f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p12f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p13f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p13f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p14f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p14f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p15f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p15f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p16f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p16f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p17f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p17f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p18f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p18f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p19f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p19f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p1f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p1f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p20f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p20f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p21f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p21f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p22f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p22f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p23f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p23f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p24f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p24f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p25f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p25f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p26f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p26f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p27f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p27f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p28f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p28f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p29f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p29f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p2f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p2f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p30f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p30f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p31f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p31f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p32f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p32f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p33f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p33f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p34f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p34f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p35f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p35f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p36f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p36f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p37f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p37f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p38f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p38f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p39f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p39f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p3f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p3f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p40f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p40f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p41f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p41f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p42f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p42f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p43f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p43f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p44f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p44f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p45f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p45f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p46f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p46f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p47f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p47f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p48f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p48f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p49f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p49f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p4f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p4f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p50f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p50f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p5f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p5f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p6f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p6f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p7f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p7f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p8f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p8f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190108/r1i1p9f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190108-r1i1p9f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 216B 30.0 31.5 33.0 34.5 36.0 ... 64.5 66.0 67.5 69.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 640B 2019-01-08 ... 2019-01-27T18:00:00
+  * lon      (lon) float64 360B -111.0 -109.5 -108.0 ... -48.0 -46.5 -45.0
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1478716522496, percent=8.9, used=133328035840, free=443829944320, active=338146754560, inactive=779391823872, buffers=1744896, cached=1045335912448, shared=26046464, slab=38278701056)
 i_expt = 1
-svmem(total=1622496026624, available=1066420305920, percent=34.3, used=547029049344, free=692698959872, active=564698689536, inactive=341851738112, buffers=4444160, cached=382763573248, shared=30896128, slab=8906145792)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p10f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p10f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p11f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p11f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p12f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p12f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p13f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p13f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p14f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p14f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p15f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p15f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p16f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p16f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p17f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p17f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p18f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p18f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p19f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p19f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p1f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p1f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p20f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p20f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p21f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p21f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p22f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p22f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p23f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p23f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p24f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p24f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p25f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p25f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p26f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p26f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p27f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p27f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p28f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p28f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p29f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p29f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p2f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p2f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p30f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p30f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p31f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p31f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p32f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p32f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p33f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p33f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p34f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p34f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p35f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p35f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p36f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p36f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p37f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p37f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p38f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p38f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p39f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p39f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p3f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p3f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p40f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p40f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p41f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p41f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p42f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p42f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p43f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p43f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p44f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p44f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p45f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p45f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p46f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p46f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p47f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p47f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p48f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p48f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p49f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p49f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p4f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p4f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p50f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p50f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p5f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p5f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p6f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p6f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p7f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p7f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p8f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p8f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/free/s20190108/r1i1p9f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_free_s20190108-r1i1p9f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 216B 30.0 31.5 33.0 34.5 36.0 ... 64.5 66.0 67.5 69.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 640B 2019-01-08 ... 2019-01-27T18:00:00
+  * lon      (lon) float64 360B -111.0 -109.5 -108.0 ... -48.0 -46.5 -45.0
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1494333767680, percent=7.9, used=117710868480, free=456779698176, active=315726401536, inactive=789248479232, buffers=1744896, cached=1048003325952, shared=26046464, slab=38279614464)
 i_expt = 2
-svmem(total=1622496026624, available=1047888539648, percent=35.4, used=565560721408, free=673894137856, active=583543586816, inactive=341983215616, buffers=4444160, cached=383036723200, shared=30920704, slab=8915689472)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p10f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p10f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p11f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p11f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p12f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p12f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p13f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p13f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p14f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p14f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p15f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p15f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p16f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p16f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p17f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p17f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p18f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p18f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p19f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p19f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p1f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p1f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p20f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p20f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p21f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p21f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p22f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p22f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p23f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p23f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p24f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p24f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p25f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p25f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p26f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p26f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p27f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p27f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p28f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p28f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p29f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p29f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p2f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p2f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p30f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p30f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p31f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p31f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p32f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p32f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p33f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p33f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p34f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p34f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p35f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p35f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p36f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p36f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p37f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p37f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p38f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p38f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p39f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p39f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p3f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p3f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p40f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p40f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p41f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p41f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p42f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p42f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p43f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p43f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p44f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p44f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p45f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p45f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p46f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p46f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p47f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p47f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p48f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p48f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p49f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p49f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p4f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p4f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p50f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p50f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p5f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p5f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p6f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p6f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p7f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p7f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p8f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p8f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/nudged/s20190108/r1i1p9f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_nudged_s20190108-r1i1p9f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 216B 30.0 31.5 33.0 34.5 36.0 ... 64.5 66.0 67.5 69.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 640B 2019-01-08 ... 2019-01-27T18:00:00
+  * lon      (lon) float64 360B -111.0 -109.5 -108.0 ... -48.0 -46.5 -45.0
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1472444608512, percent=9.2, used=139599962112, free=430297780224, active=342226886656, inactive=790970249216, buffers=1744896, cached=1052596150272, shared=26046464, slab=38276206592)
 procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '7']
 gcm = 'GloSea6-GC32'
 i_fcdate = 0
 i_expt = 0
-svmem(total=1622496026624, available=1038805868544, percent=36.0, used=574643326976, free=663988121600, active=591774928896, inactive=342590439424, buffers=4444160, cached=383860133888, shared=30920704, slab=8911355904)
-i_expt = 1
-svmem(total=1622496026624, available=1017586950144, percent=37.3, used=595862163456, free=642538745856, active=612099043328, inactive=342741581824, buffers=4444160, cached=384090673152, shared=30920704, slab=8921284608)
-i_expt = 2
-svmem(total=1622496026624, available=1012654125056, percent=37.6, used=600795049984, free=637452103680, active=617409064960, inactive=342847168512, buffers=4444160, cached=384244428800, shared=30920704, slab=8926756864)
-i_fcdate = 1
-i_expt = 0
-svmem(total=1622496026624, available=1016197898240, percent=37.4, used=597251137536, free=640804347904, active=612543655936, inactive=342966439936, buffers=4444160, cached=384436097024, shared=30920704, slab=8925757440)
-i_expt = 1
-svmem(total=1622496026624, available=1017966972928, percent=37.3, used=595482296320, free=642097414144, active=610896855040, inactive=343366635520, buffers=4444160, cached=384911872000, shared=30920704, slab=8933584896)
-i_expt = 2
-svmem(total=1622496026624, available=1013725208576, percent=37.5, used=599724118016, free=637744738304, active=615588835328, inactive=343426371584, buffers=4444160, cached=385022726144, shared=30920704, slab=8928210944)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p10f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p10f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p11f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p11f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p12f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p12f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p13f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p13f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p14f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p14f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p15f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p15f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p16f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p16f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p17f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p17f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p18f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p18f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p19f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p19f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p1f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p1f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p20f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p20f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p21f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p21f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p22f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p22f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p23f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p23f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p24f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p24f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p25f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p25f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p26f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p26f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p27f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p27f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p28f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p28f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p29f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p29f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p2f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p2f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p30f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p30f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p31f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p31f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p32f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p32f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p33f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p33f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p34f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p34f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p35f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p35f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p36f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p36f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p37f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p37f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p38f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p38f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p39f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p39f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p3f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p3f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p40f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p40f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p41f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p41f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p42f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p42f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p43f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p43f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p44f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p44f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p45f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p45f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p46f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p46f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p47f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p47f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p48f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p48f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p49f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p49f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p4f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p4f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p50f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p50f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p5f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p5f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p6f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p6f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p7f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p7f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p8f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p8f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/KMA/GloSea6-GC32/control/s20190829/r1i1p9f1/6hrPt/tas/gr/v20230131/tas_6hrPt_GloSea6-GC32_control_s20190829-r1i1p9f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 304B -55.5 -54.0 -52.5 -51.0 ... -4.5 -3.0 -1.5 0.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2019-08-29 ... 2019-10-12T18:00:00
+  * lon      (lon) float64 336B 102.0 103.5 105.0 106.5 ... 160.5 162.0 163.5
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH

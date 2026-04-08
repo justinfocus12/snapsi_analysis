@@ -293,15 +293,17 @@ def plot_sumstats_maps_flat(
         xr.plot.pcolormesh(
                 da_cgts_extt_ensmean,
                 cmap=plt.cm.RdYlBu_r,
-                vmin = None if diff_from_ref else np.min(ext_sign*param_bounds.sel(param='loc')).item(), vmax=None if diff_from_ref else np.max(ext_sign*param_bounds.sel(param='loc')).item(),
+                vmin = None if diff_from_ref else np.min(ext_sign*param_bounds.sel(param='loc')).item(), 
+                vmax = None if diff_from_ref else np.max(ext_sign*param_bounds.sel(param='loc')).item(),
                 ax=axmean,
                 **pcmargs,
                 )
         xr.plot.pcolormesh(
                 da_cgts_extt_ensstd,
                 ax=axstd, 
-                cmap=plt.cm.viridis,
-                vmin =None if diff_from_ref else  0, vmax=None if diff_from_ref else param_bounds.sel(param='scale',side='hi').item(),
+                cmap=plt.cm.RdYlBu_r if diff_from_ref else plt.cm.viridis,
+                vmin=None if diff_from_ref else  0, 
+                vmax=None if diff_from_ref else param_bounds.sel(param='scale',side='hi').item(),
                 **pcmargs,
                 )
         pcmargs['cbar_kwargs']['label'] = ''
@@ -339,7 +341,7 @@ def plot_sumstats_maps_flat(
         titles = list(map(lambda titlepre,title: titlepre+title, subplot_prefixes, titles))
         for (i_ax,ax) in enumerate(axes):
             decorate_mercator_axis(ax, lonmin, lonmax, latmin, latmax)
-            ax.set_title(titles[i_ax], loc='left')
+            ax.set_title(titles[i_ax], loc='left', fontsize=18)
         fig.suptitle(suptitle, x=axes[0].get_position().x0, y=axes[0].get_position().y1+0.05, ha='left', va='bottom')
         cgs_suffix = r'%dx%d'%(cgs_levels[i_cgs_level][0],cgs_levels[i_cgs_level][1]) if i_cgs_level<len(cgs_levels) else 'context'
         fig.savefig(join(figdir,'sumstats_map_%s_cgs%s%s.png'%(figfile_tag,cgs_suffix,"_minusera5" if diff_from_ref else "")), **pltkwargs)
@@ -413,30 +415,45 @@ def compute_risk(gevpar_files, risk_files, ens_files_cgts_extt, mem_special, ext
         risk.to_netcdf(risk_files[i_cgs_level])
     return 
 
-def compute_valatrisk(ens_files_cgts_extt_ref, mem_special_ref, gevpar_ref_files, gevpar_files, valatrisk_files, cgs_levels, ext_sign):
+def compute_valatrisk(ens_files_cgts_extt_A, mem_special_A, gevpar_files_A, gevpar_files_B, valatrisk_files_B, cgs_levels, ext_sign, valatrisk_files_C=None):
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
-        gevpar = xr.open_dataarray(gevpar_files[i_cgs_level])
-        gevpar_ref = xr.open_dataarray(gevpar_ref_files[i_cgs_level])
-        da_cgts_extt_ref = xr.open_dataarray(ens_files_cgts_extt_ref[i_cgs_level]).sel(member=mem_special_ref)
-        lons,lats = (da_cgts_extt_ref.coords[c].to_numpy() for c in ['lon','lat'])
-        valatrisk = xr.DataArray(
-                coords={'lon': lons, 'lat': lats, 'quantity': ['risk_refgivenref','risk_refgivenexpt','valatrisk']},
-                dims=['quantity'] + [d for d in da_cgts_extt_ref.dims if d in ['lat','lon']],
+        gevpar_B = xr.open_dataarray(gevpar_files_B[i_cgs_level])
+        gevpar_A = xr.open_dataarray(gevpar_files_A[i_cgs_level])
+        da_cgts_extt_A = xr.open_dataarray(ens_files_cgts_extt_A[i_cgs_level]).sel(member=mem_special_A)
+        lons,lats = (da_cgts_extt_A.coords[c].to_numpy() for c in ['lon','lat'])
+        # code: 'x' reverse to a severity; 'r' revers to an exceedance probability; 'D' refers to a distribution, which can be A, B, or C. The lower-case "a" refers to the value coming from the reference distribution.
+        # the suffix _r<D> means (exceedance probability under D of)
+        quantities = [
+                'a_rA', 
+                'a_rB',   # risk
+                'a_rA_xB' # quantile
+                ]
+        if valatrisk_files_C is not None:
+            quantities += ['a_rA_xC_rB'] # re-mapped risk 
+        valatrisk_B = xr.DataArray(
+                coords={'lon': lons, 'lat': lats, 'quantity': quantities},
+                dims=['quantity'] + [d for d in da_cgts_extt_A.dims if d in ['lat','lon']],
                 data=np.nan,
                 )
-        shapes_ref,locs_ref,scales_ref = (gevpar_ref.sel(param=p).to_numpy() for p in ('shape','loc','scale'))
-        shapes,locs,scales = (gevpar.sel(param=p).to_numpy() for p in ('shape','loc','scale'))
-        valatrisk.loc[dict(quantity='risk_refgivenref')] = spgex.sf(da_cgts_extt_ref.to_numpy()*ext_sign, -shapes_ref, loc=locs_ref, scale=scales_ref)
-        valatrisk.loc[dict(quantity='risk_refgivenexpt')] = spgex.sf(da_cgts_extt_ref.to_numpy()*ext_sign, -shapes, loc=locs, scale=scales)
-        valatrisk.loc[dict(quantity='valatrisk')] = spgex.isf(valatrisk.sel(quantity='risk_refgivenref').to_numpy(), -shapes, loc=locs, scale=scales)*ext_sign
-        valatrisk.to_netcdf(valatrisk_files[i_cgs_level])
+        shapes_A,locs_A,scales_A = (gevpar_A.sel(param=p).to_numpy() for p in ('shape','loc','scale'))
+        shapes_B,locs_B,scales_B = (gevpar_B.sel(param=p).to_numpy() for p in ('shape','loc','scale'))
+        valatrisk_B.loc[dict(quantity='a_rA')] = spgex.sf(da_cgts_extt_A.to_numpy()*ext_sign, -shapes_A, loc=locs_A, scale=scales_A)
+        valatrisk_B.loc[dict(quantity='a_rB')] = spgex.sf(da_cgts_extt_A.to_numpy()*ext_sign, -shapes_B, loc=locs_B, scale=scales_B)
+        valatrisk_B.loc[dict(quantity='a_rA_xB')] = spgex.isf(valatrisk_B.sel(quantity='a_rA').to_numpy(), -shapes_B, loc=locs_B, scale=scales_B)*ext_sign
+        if valatrisk_files_C is not None:
+            valatrisk_C = xr.open_dataarray(valatrisk_files_C[i_cgs_level])
+            valatrisk_B.loc[dict(quantity='a_rA_xC_rB')] = spgex.sf(valatrisk_C.sel(quantity='a_rA_xB').to_numpy()*ext_sign, -shapes_B, loc=locs_B, scale=scales_B)
+        valatrisk_B.to_netcdf(valatrisk_files_B[i_cgs_level])
     return 
 
 def plot_risk_or_valatrisk_map(
         riskandvar_files, cgs_levels, ext_sign, 
         onset_date, term_date, 
         prob_symb, ext_symb, leq_symb, ineq_symb, title_infix, event_year, 
-        figdir, figfile_tag, is_risk
+        figdir, figfile_tag, 
+        *,
+        is_risk,
+        is_quantmapped
         ):
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
         if min(cgs_level) <= 1:
@@ -480,7 +497,14 @@ def plot_risk_or_valatrisk_map(
                 cmap=plt.cm.RdYlBu_r if ext_sign==-1 else plt.cm.RdYlBu,
                 ))
         fig,ax = plt.subplots(figsize=(3*aspect,3), subplot_kw=subplot_kw)
-        quantity2plot = 'risk_refgivenexpt' if is_risk else 'valatrisk'
+        #quantity2plot = 'risk_refgivenexpt' if is_risk else 'valatrisk'
+        if not is_risk:
+            quantity2plot = 'a_rA_xB'
+        else:
+            if is_quantmapped:
+                quantity2plot = 'a_rA_xC_rB'
+            else:
+                quantity2plot = 'a_rA_xB'
         xr.plot.pcolormesh(riskandvar.sel(quantity=quantity2plot), **pcmargs, ax=ax)
         decorate_mercator_axis(ax, minlon, maxlon, minlat, maxlat)
         fmtfun = lambda dt: dtlib.datetime.strftime(dt, "%m/%d")
@@ -738,12 +762,13 @@ def plot_gevpar_difference_maps_flat(gevpar_files_0, expt0, gevpar_files_1, expt
 
 def plot_gevpar_maps_flat(gevpar_files, ext_sign, cgs_levels, param_bounds_file, figdir, figfile_tag, title_affix, gevpar_ref_files=None):
     # if gevpar_ref_files is provided, take the difference 
+    diff_from_ref = (gevpar_ref_files is not None)
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
         print(f"{cgs_level = }")
         if min(cgs_level) <= 1:
             continue
         gevpar = xr.open_dataarray(gevpar_files[i_cgs_level])
-        if gevpar_ref_files is not None:
+        if diff_from_ref:
             gevpar_ref = xr.open_dataarray(gevpar_ref_files[i_cgs_level])
             gevpar = gevpar - gevpar_ref
             title_addendum = " ( $-$ ERA5)"
@@ -778,31 +803,34 @@ def plot_gevpar_maps_flat(gevpar_files, ext_sign, cgs_levels, param_bounds_file,
         xr.plot.pcolormesh(
                 ext_sign*gevpar.sel(param='loc'),
                 cmap=plt.cm.RdYlBu_r,
-                vmin=None if gevpar_ref_files else np.min(ext_sign*bounds_loc), vmax=None if gevpar_ref_files else np.max(ext_sign*bounds_loc),
+                vmin=None if diff_from_ref else np.min(ext_sign*bounds_loc), 
+                vmax=None if diff_from_ref else np.max(ext_sign*bounds_loc),
                 ax=axloc, 
                 **pcmargs,
                 )
-        axloc.set_title(r"Location $\mu$%s"%(title_addendum), loc='left')
+        axloc.set_title(r"Location $\mu$%s"%(title_addendum), loc='left', fontsize=18)
         xr.plot.pcolormesh(
                 gevpar.sel(param='scale'),
                 ax=axscale,
-                cmap=plt.cm.viridis,
-                vmin = None if gevpar_ref_files else 0, vmax=None if gevpar_ref_files else np.max(bounds_scale[1]), 
+                cmap=plt.cm.RdYlBu_r if diff_from_ref else plt.cm.viridis,
+                vmin=None if diff_from_ref else 0, 
+                vmax=None if diff_from_ref else np.max(bounds_scale[1]), 
                 **pcmargs,
                 )
-        axscale.set_title(r"Scale $\sigma$%s"%(title_addendum), loc='left')
+        axscale.set_title(r"Scale $\sigma$%s"%(title_addendum), loc='left', fontsize=18)
         pcmargs['cbar_kwargs']['label'] = ''
         xr.plot.pcolormesh(
                 gevpar.sel(param='shape'),
                 cmap=plt.cm.RdYlBu_r,
-                vmin=None if gevpar_ref_files else -np.max(np.abs(bounds_shape)), vmax=None if gevpar_ref_files else np.max(np.abs(bounds_shape)),
+                vmin=None if diff_from_ref else -np.max(np.abs(bounds_shape)), 
+                vmax=None if diff_from_ref else np.max(np.abs(bounds_shape)),
                 ax=axshape,
                 **pcmargs,
                 )
-        axshape.set_title(r"Shape $\xi$%s"%(title_addendum), loc='left')
+        axshape.set_title(r"Shape $\xi$%s"%(title_addendum), loc='left', fontsize=18)
         for (i_ax,ax) in enumerate(axes):
             decorate_mercator_axis(ax, lonmin, lonmax, latmin, latmax)
-        fig.suptitle(title_affix, x=0.5, y=axes[0].get_position().y1+0.05, ha='center', va='bottom')
+        fig.suptitle(title_affix, x=0.5, y=axes[0].get_position().y1+0.05, ha='center', va='bottom', fontsize=18)
         fig.savefig(join(figdir,"gevpar_map_%s_cgs%dx%d%s.png"%(figfile_tag,cgs_level[0],cgs_level[1], "_minusera5" if gevpar_ref_files else "")), **pltkwargs)
         plt.close(fig)
     return 

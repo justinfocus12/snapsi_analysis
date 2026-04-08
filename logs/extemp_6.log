@@ -2,47 +2,4231 @@ procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '6']
 gcm = 'GRIMs'
 i_fcdate = 0
 i_expt = 0
-svmem(total=1622496026624, available=1069077372928, percent=34.1, used=544270286848, free=610706440192, active=572834574336, inactive=416614166528, buffers=3289088, cached=467516010496, shared=127889408, slab=7695044608)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p10f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p10f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p11f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p11f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p12f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p12f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p13f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p13f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p14f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p14f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p15f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p15f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p16f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p16f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p17f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p17f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p18f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p18f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p19f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p19f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p1f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p1f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p20f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p20f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p21f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p21f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p22f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p22f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p23f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p23f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p24f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p24f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p25f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p25f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p26f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p26f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p27f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p27f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p28f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p28f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p29f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p29f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p2f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p2f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p30f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p30f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p31f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p31f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p32f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p32f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p33f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p33f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p34f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p34f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p35f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p35f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p36f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p36f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p37f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p37f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p38f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p38f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p39f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p39f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p3f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p3f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p40f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p40f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p41f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p41f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p42f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p42f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p43f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p43f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p44f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p44f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p45f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p45f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p46f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p46f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p47f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p47f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p48f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p48f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p49f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p49f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p4f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p4f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p50f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p50f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p5f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p5f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p6f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p6f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p7f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p7f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p8f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p8f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180125/r1i1p9f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180125-r1i1p9f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 192B 40.5 42.0 43.5 45.0 46.5 ... 70.5 72.0 73.5 75.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-01-25 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 856B -19.5 -18.0 -16.5 -15.0 ... 136.5 138.0 139.5
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1451226275840, percent=10.6, used=162223374336, free=131286884352, active=254457446400, inactive=1154498928640, buffers=1744896, cached=1328983633920, shared=26046464, slab=38107635712)
 i_expt = 1
-svmem(total=1622496026624, available=1073615695872, percent=33.8, used=539732553728, free=615161028608, active=564961579008, inactive=419953487872, buffers=3289088, cached=467599155200, shared=127889408, slab=7702208512)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p10f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p10f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p11f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p11f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p12f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p12f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p13f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p13f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p14f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p14f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p15f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p15f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p16f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p16f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p17f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p17f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p18f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p18f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p19f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p19f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p1f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p1f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p20f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p20f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p21f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p21f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p22f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p22f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p23f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p23f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p24f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p24f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p25f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p25f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p26f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p26f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p27f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p27f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p28f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p28f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p29f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p29f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p2f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p2f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p30f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p30f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p31f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p31f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p32f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p32f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p33f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p33f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p34f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p34f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p35f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p35f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p36f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p36f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p37f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p37f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p38f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p38f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p39f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p39f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p3f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p3f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p40f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p40f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p41f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p41f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p42f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p42f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p43f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p43f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p44f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p44f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p45f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p45f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p46f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p46f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p47f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p47f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p48f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p48f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p49f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p49f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p4f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p4f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p50f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p50f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p5f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p5f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p6f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p6f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p7f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p7f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p8f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p8f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180125/r1i1p9f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180125-r1i1p9f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 192B 40.5 42.0 43.5 45.0 46.5 ... 70.5 72.0 73.5 75.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-01-25 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 856B -19.5 -18.0 -16.5 -15.0 ... 136.5 138.0 139.5
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1443123597312, percent=11.1, used=170326081536, free=113956245504, active=264016764928, inactive=1163691098112, buffers=1744896, cached=1338211565568, shared=26046464, slab=38172528640)
 i_expt = 2
-svmem(total=1622496026624, available=1073392652288, percent=33.8, used=539954999296, free=610579492864, active=565464035328, inactive=424267083776, buffers=3289088, cached=471958245376, shared=127893504, slab=7693135872)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p10f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p10f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p11f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p11f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p12f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p12f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p13f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p13f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p14f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p14f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p15f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p15f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p16f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p16f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p17f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p17f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p18f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p18f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p19f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p19f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p1f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p1f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p20f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p20f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p21f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p21f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p22f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p22f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p23f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p23f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p24f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p24f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p25f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p25f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p26f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p26f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p27f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p27f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p28f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p28f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p29f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p29f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p2f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p2f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p30f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p30f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p31f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p31f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p32f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p32f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p33f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p33f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p34f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p34f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p35f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p35f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p36f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p36f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p37f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p37f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p38f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p38f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p39f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p39f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p3f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p3f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p40f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p40f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p41f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p41f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p42f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p42f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p43f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p43f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p44f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p44f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p45f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p45f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p46f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p46f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p47f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p47f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p48f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p48f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p49f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p49f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p4f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p4f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p50f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p50f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p5f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p5f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p6f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p6f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p7f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p7f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p8f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p8f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180125/r1i1p9f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180125-r1i1p9f1_gr_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 24, 107)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 192B 40.5 42.0 43.5 45.0 46.5 ... 70.5 72.0 73.5 75.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-01-25 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 856B -19.5 -18.0 -16.5 -15.0 ... 136.5 138.0 139.5
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1452908380160, percent=10.5, used=160545415168, free=113221693440, active=255688855552, inactive=1174165073920, buffers=1744896, cached=1348726784000, shared=26046464, slab=38235557888)
 i_fcdate = 1
 i_expt = 0
-svmem(total=1622496026624, available=1067635040256, percent=34.2, used=545713168384, free=602936324096, active=571203543040, inactive=426136731648, buffers=3289088, cached=473843245056, shared=127889408, slab=7703302144)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p10f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p10f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p11f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p11f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p12f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p12f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p13f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p13f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p14f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p14f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p15f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p15f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p16f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p16f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p17f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p17f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p18f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p18f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p19f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p19f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p1f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p1f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p20f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p20f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p21f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p21f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p22f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p22f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p23f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p23f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p24f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p24f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p25f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p25f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p26f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p26f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p27f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p27f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p28f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p28f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p29f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p29f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p2f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p2f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p30f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p30f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p31f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p31f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p32f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p32f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p33f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p33f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p34f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p34f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p35f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p35f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p36f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p36f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p37f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p37f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p38f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p38f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p39f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p39f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p3f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p3f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p40f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p40f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p41f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p41f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p42f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p42f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p43f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p43f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p44f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p44f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p45f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p45f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p46f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p46f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p47f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p47f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p48f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p48f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p49f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p49f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p4f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p4f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p50f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p50f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p5f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p5f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p6f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p6f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p7f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p7f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p8f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p8f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20180208/r1i1p9f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20180208-r1i1p9f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 192B 40.5 42.0 43.5 45.0 46.5 ... 70.5 72.0 73.5 75.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 928B 2018-02-08 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 856B -19.5 -18.0 -16.5 -15.0 ... 136.5 138.0 139.5
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1463773065216, percent=9.8, used=149676679168, free=117769035776, active=246563246080, inactive=1179812614144, buffers=1744896, cached=1355048177664, shared=26046464, slab=38273675264)
 i_expt = 1
-svmem(total=1622496026624, available=1082667405312, percent=33.3, used=530681438208, free=618116440064, active=555959107584, inactive=425974452224, buffers=3289088, cached=473694859264, shared=127889408, slab=7698812928)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p10f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p10f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p11f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p11f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p12f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p12f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p13f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p13f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p14f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p14f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p15f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p15f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p16f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p16f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p17f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p17f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p18f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p18f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p19f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p19f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p1f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p1f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p20f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p20f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p21f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p21f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p22f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p22f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p23f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p23f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p24f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p24f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p25f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p25f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p26f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p26f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p27f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p27f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p28f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p28f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p29f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p29f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p2f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p2f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p30f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p30f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p31f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p31f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p32f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p32f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p33f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p33f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p34f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p34f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p35f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p35f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p36f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p36f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p37f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p37f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p38f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p38f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p39f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p39f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p3f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p3f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p40f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p40f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p41f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p41f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p42f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p42f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p43f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p43f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p44f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p44f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p45f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p45f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p46f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p46f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p47f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p47f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p48f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p48f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p49f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p49f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p4f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p4f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p50f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p50f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p5f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p5f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p6f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p6f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p7f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p7f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p8f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p8f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20180208/r1i1p9f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20180208-r1i1p9f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 192B 40.5 42.0 43.5 45.0 46.5 ... 70.5 72.0 73.5 75.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 928B 2018-02-08 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 856B -19.5 -18.0 -16.5 -15.0 ... 136.5 138.0 139.5
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1272697577472, percent=21.6, used=339331399680, free=47677038592, active=440921792512, inactive=1076175589376, buffers=1744896, cached=1235485454336, shared=26337280, slab=38689325056)
 i_expt = 2
-svmem(total=1622496026624, available=1082576052224, percent=33.3, used=530772176896, free=617956913152, active=555643289600, inactive=426014416896, buffers=3289088, cached=473763647488, shared=127889408, slab=7693811712)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p10f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p10f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p11f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p11f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p12f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p12f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p13f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p13f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p14f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p14f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p15f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p15f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p16f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p16f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p17f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p17f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p18f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p18f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p19f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p19f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p1f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p1f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p20f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p20f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p21f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p21f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p22f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p22f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p23f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p23f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p24f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p24f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p25f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p25f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p26f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p26f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p27f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p27f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p28f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p28f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p29f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p29f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p2f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p2f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p30f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p30f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p31f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p31f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p32f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p32f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p33f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p33f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p34f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p34f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p35f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p35f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p36f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p36f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p37f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p37f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p38f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p38f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p39f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p39f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p3f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p3f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p40f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p40f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p41f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p41f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p42f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p42f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p43f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p43f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p44f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p44f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p45f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p45f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p46f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p46f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p47f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p47f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p48f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p48f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p49f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p49f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p4f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p4f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p50f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p50f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p5f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p5f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p6f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p6f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p7f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p7f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p8f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p8f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20180208/r1i1p9f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20180208-r1i1p9f1_gr_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 24, 107)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 192B 40.5 42.0 43.5 45.0 46.5 ... 70.5 72.0 73.5 75.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 928B 2018-02-08 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 856B -19.5 -18.0 -16.5 -15.0 ... 136.5 138.0 139.5
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1384506404864, percent=14.7, used=227536834560, free=396171730944, active=393723650048, inactive=768022736896, buffers=1744896, cached=998785327104, shared=26230784, slab=39338864640)
 procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '6']
 gcm = 'GRIMs'
 i_fcdate = 0
 i_expt = 0
-svmem(total=1622496026624, available=1097806176256, percent=32.3, used=515542233088, free=631982813184, active=541212667904, inactive=427209658368, buffers=3289088, cached=474967691264, shared=127864832, slab=7691030528)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p10f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p10f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p11f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p11f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p12f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p12f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p13f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p13f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p14f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p14f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p15f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p15f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p16f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p16f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p17f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p17f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p18f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p18f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p19f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p19f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p1f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p1f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p20f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p20f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p21f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p21f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p22f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p22f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p23f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p23f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p24f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p24f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p25f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p25f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p26f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p26f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p27f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p27f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p28f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p28f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p29f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p29f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p2f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p2f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p30f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p30f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p31f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p31f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p32f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p32f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p33f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p33f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p34f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p34f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p35f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p35f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p36f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p36f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p37f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p37f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p38f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p38f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p39f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p39f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p3f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p3f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p40f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p40f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p41f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p41f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p42f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p42f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p43f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p43f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p44f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p44f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p45f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p45f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p46f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p46f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p47f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p47f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p48f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p48f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p49f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p49f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p4f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p4f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p50f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p50f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p5f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p5f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p6f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p6f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p7f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p7f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p8f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p8f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20181213/r1i1p9f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20181213-r1i1p9f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 216B 30.0 31.5 33.0 34.5 36.0 ... 64.5 66.0 67.5 69.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-12-13 ... 2019-01-26T18:00:00
+  * lon      (lon) float64 360B -111.0 -109.5 -108.0 ... -48.0 -46.5 -45.0
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1479751868416, percent=8.8, used=132292743168, free=466058756096, active=323444809728, inactive=771000360960, buffers=1744896, cached=1024142393344, shared=26046464, slab=38275710976)
 i_expt = 1
-svmem(total=1622496026624, available=1102560198656, percent=32.0, used=510788165632, free=635098320896, active=536741466112, inactive=428830220288, buffers=3289088, cached=476606251008, shared=127864832, slab=7697780736)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p10f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p10f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p11f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p11f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p12f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p12f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p13f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p13f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p14f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p14f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p15f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p15f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p16f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p16f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p17f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p17f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p18f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p18f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p19f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p19f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p1f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p1f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p20f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p20f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p21f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p21f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p22f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p22f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p23f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p23f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p24f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p24f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p25f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p25f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p26f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p26f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p27f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p27f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p28f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p28f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p29f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p29f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p2f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p2f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p30f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p30f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p31f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p31f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p32f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p32f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p33f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p33f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p34f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p34f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p35f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p35f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p36f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p36f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p37f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p37f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p38f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p38f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p39f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p39f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p3f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p3f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p40f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p40f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p41f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p41f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p42f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p42f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p43f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p43f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p44f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p44f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p45f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p45f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p46f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p46f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p47f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p47f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p48f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p48f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p49f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p49f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p4f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p4f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p50f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p50f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p5f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p5f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p6f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p6f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p7f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p7f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p8f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p8f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20181213/r1i1p9f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20181213-r1i1p9f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 216B 30.0 31.5 33.0 34.5 36.0 ... 64.5 66.0 67.5 69.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-12-13 ... 2019-01-26T18:00:00
+  * lon      (lon) float64 360B -111.0 -109.5 -108.0 ... -48.0 -46.5 -45.0
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1482449879040, percent=8.6, used=129594667008, free=461478371328, active=328086945792, inactive=771000365056, buffers=1744896, cached=1031420854272, shared=26046464, slab=38278574080)
 i_expt = 2
-svmem(total=1622496026624, available=1115737448448, percent=31.2, used=497611505664, free=648318693376, active=523323203584, inactive=428768780288, buffers=3289088, cached=476562538496, shared=127864832, slab=7708610560)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p10f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p10f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p11f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p11f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p12f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p12f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p13f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p13f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p14f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p14f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p15f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p15f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p16f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p16f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p17f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p17f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p18f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p18f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p19f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p19f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p1f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p1f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p20f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p20f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p21f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p21f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p22f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p22f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p23f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p23f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p24f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p24f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p25f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p25f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p26f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p26f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p27f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p27f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p28f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p28f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p29f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p29f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p2f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p2f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p30f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p30f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p31f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p31f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p32f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p32f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p33f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p33f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p34f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p34f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p35f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p35f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p36f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p36f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p37f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p37f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p38f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p38f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p39f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p39f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p3f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p3f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p40f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p40f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p41f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p41f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p42f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p42f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p43f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p43f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p44f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p44f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p45f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p45f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p46f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p46f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p47f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p47f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p48f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p48f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p49f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p49f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p4f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p4f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p50f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p50f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p5f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p5f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p6f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p6f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p7f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p7f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p8f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p8f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20181213/r1i1p9f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20181213-r1i1p9f1_gr_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 27, 45)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 216B 30.0 31.5 33.0 34.5 36.0 ... 64.5 66.0 67.5 69.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-12-13 ... 2019-01-26T18:00:00
+  * lon      (lon) float64 360B -111.0 -109.5 -108.0 ... -48.0 -46.5 -45.0
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1478659731456, percent=8.9, used=133384888320, free=450430832640, active=333554077696, inactive=777902411776, buffers=1744896, cached=1038678171648, shared=26046464, slab=38275387392)
 i_fcdate = 1
 i_expt = 0
-svmem(total=1622496026624, available=1105203019776, percent=31.9, used=508145311744, free=636571668480, active=533641777152, inactive=429971984384, buffers=3289088, cached=477775757312, shared=127864832, slab=7709261824)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p10f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p10f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p11f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p11f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p12f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p12f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p13f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p13f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p14f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p14f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p15f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p15f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p16f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p16f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p17f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p17f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p18f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p18f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p19f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p19f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p1f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p1f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p20f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p20f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p21f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p21f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p22f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p22f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p23f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p23f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p24f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p24f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p25f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p25f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p26f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p26f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p27f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p27f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p28f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p28f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p29f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p29f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p2f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p2f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p30f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p30f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p31f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p31f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p32f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p32f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p33f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p33f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p34f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p34f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p35f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p35f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p36f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p36f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p37f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p37f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p38f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p38f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p39f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p39f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p3f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p3f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p40f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p40f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p41f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p41f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p42f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p42f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p43f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p43f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p44f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p44f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p45f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p45f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p46f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p46f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p47f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p47f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p48f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p48f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p49f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p49f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p4f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p4f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p50f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p50f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p5f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p5f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p6f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p6f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p7f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p7f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p8f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p8f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190108/r1i1p9f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190108-r1i1p9f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 216B 30.0 31.5 33.0 34.5 36.0 ... 64.5 66.0 67.5 69.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 640B 2019-01-08 ... 2019-01-27T18:00:00
+  * lon      (lon) float64 360B -111.0 -109.5 -108.0 ... -48.0 -46.5 -45.0
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1477760483328, percent=8.9, used=134284075008, free=442358927360, active=339740450816, inactive=779767975936, buffers=1744896, cached=1045850890240, shared=26046464, slab=38278709248)
 i_expt = 1
-svmem(total=1622496026624, available=1112614133760, percent=31.4, used=500734177280, free=643432955904, active=525715881984, inactive=430498172928, buffers=3289088, cached=478325604352, shared=127873024, slab=7698817024)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p10f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p10f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p11f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p11f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p12f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p12f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p13f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p13f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p14f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p14f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p15f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p15f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p16f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p16f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p17f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p17f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p18f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p18f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p19f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p19f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p1f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p1f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p20f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p20f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p21f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p21f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p22f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p22f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p23f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p23f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p24f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p24f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p25f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p25f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p26f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p26f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p27f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p27f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p28f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p28f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p29f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p29f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p2f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p2f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p30f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p30f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p31f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p31f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p32f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p32f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p33f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p33f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p34f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p34f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p35f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p35f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p36f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p36f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p37f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p37f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p38f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p38f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p39f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p39f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p3f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p3f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p40f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p40f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p41f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p41f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p42f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p42f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p43f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p43f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p44f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p44f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p45f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p45f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p46f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p46f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p47f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p47f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p48f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p48f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p49f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p49f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p4f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p4f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p50f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p50f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p5f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p5f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p6f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p6f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p7f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p7f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p8f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p8f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/free/s20190108/r1i1p9f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_free_s20190108-r1i1p9f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 216B 30.0 31.5 33.0 34.5 36.0 ... 64.5 66.0 67.5 69.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 640B 2019-01-08 ... 2019-01-27T18:00:00
+  * lon      (lon) float64 360B -111.0 -109.5 -108.0 ... -48.0 -46.5 -45.0
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1482437206016, percent=8.6, used=129607880704, free=444821741568, active=327877566464, inactive=789231521792, buffers=1744896, cached=1048064270336, shared=26046464, slab=38279823360)
 i_expt = 2
-svmem(total=1622496026624, available=1102826442752, percent=32.0, used=510521905152, free=633730084864, active=535135895552, inactive=430396960768, buffers=3289088, cached=478240747520, shared=127864832, slab=7694376960)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p10f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p10f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p11f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p11f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p12f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p12f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p13f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p13f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p14f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p14f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p15f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p15f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p16f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p16f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p17f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p17f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p18f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p18f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p19f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p19f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p1f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p1f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p20f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p20f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p21f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p21f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p22f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p22f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p23f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p23f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p24f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p24f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p25f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p25f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p26f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p26f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p27f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p27f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p28f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p28f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p29f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p29f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p2f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p2f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p30f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p30f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p31f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p31f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p32f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p32f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p33f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p33f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p34f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p34f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p35f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p35f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p36f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p36f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p37f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p37f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p38f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p38f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p39f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p39f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p3f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p3f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p40f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p40f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p41f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p41f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p42f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p42f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p43f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p43f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p44f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p44f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p45f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p45f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p46f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p46f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p47f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p47f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p48f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p48f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p49f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p49f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p4f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p4f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p50f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p50f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p5f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p5f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p6f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p6f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p7f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p7f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p8f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p8f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/nudged/s20190108/r1i1p9f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_nudged_s20190108-r1i1p9f1_gr_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 27, 45)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 216B 30.0 31.5 33.0 34.5 36.0 ... 64.5 66.0 67.5 69.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 640B 2019-01-08 ... 2019-01-27T18:00:00
+  * lon      (lon) float64 360B -111.0 -109.5 -108.0 ... -48.0 -46.5 -45.0
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH
+mem_special = 'r1i1p10f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1480990908416, percent=8.7, used=131053600768, free=439123550208, active=334343196672, inactive=790324613120, buffers=1744896, cached=1052316741632, shared=26046464, slab=38276648960)
 procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '6']
 gcm = 'GRIMs'
 i_fcdate = 0
 i_expt = 0
-svmem(total=1622496026624, available=1100043677696, percent=32.2, used=513304637440, free=630472396800, active=537462140928, inactive=430869659648, buffers=3289088, cached=478715703296, shared=127864832, slab=7704670208)
-i_expt = 1
-svmem(total=1622496026624, available=1098423984128, percent=32.3, used=514924384256, free=628344868864, active=540190679040, inactive=431359414272, buffers=3289088, cached=479223484416, shared=127864832, slab=7713923072)
-i_expt = 2
-svmem(total=1622496026624, available=1095582273536, percent=32.5, used=517766168576, free=625731043328, active=543140913152, inactive=431125794816, buffers=3289088, cached=478995525632, shared=127864832, slab=7706353664)
-i_fcdate = 1
-i_expt = 0
-svmem(total=1622496026624, available=1096979968000, percent=32.4, used=516368359424, free=626949275648, active=541259563008, inactive=431304048640, buffers=3289088, cached=479175102464, shared=127864832, slab=7713034240)
-i_expt = 1
-svmem(total=1622496026624, available=1097822830592, percent=32.3, used=515526074368, free=627663826944, active=540146991104, inactive=431414632448, buffers=3289088, cached=479302836224, shared=127864832, slab=7716990976)
-i_expt = 2
-svmem(total=1622496026624, available=1098994823168, percent=32.3, used=514353086464, free=633373847552, active=539483615232, inactive=426879877120, buffers=3289088, cached=474765803520, shared=127864832, slab=7707660288)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p10f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p10f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p11f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p11f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p12f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p12f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p13f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p13f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p14f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p14f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p15f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p15f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p16f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p16f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p17f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p17f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p18f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p18f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p19f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p19f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p1f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p1f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p20f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p20f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p21f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p21f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p22f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p22f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p23f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p23f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p24f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p24f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p25f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p25f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p26f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p26f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p27f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p27f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p28f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p28f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p29f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p29f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p2f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p2f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p30f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p30f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p31f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p31f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p32f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p32f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p33f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p33f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p34f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p34f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p35f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p35f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p36f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p36f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p37f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p37f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p38f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p38f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p39f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p39f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p3f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p3f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p40f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p40f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p41f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p41f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p42f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p42f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p43f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p43f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p44f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p44f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p45f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p45f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p46f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p46f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p47f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p47f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p48f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p48f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p49f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p49f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p4f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p4f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p50f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p50f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p5f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p5f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p6f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p6f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p7f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p7f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p8f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p8f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/SNU/GRIMs/control/s20190829/r1i1p9f1/6hrPt/tas/gr/v20230116/tas_6hrPt_GRIMs_control_s20190829-r1i1p9f1_gr_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 38, 42)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 304B -55.5 -54.0 -52.5 -51.0 ... -4.5 -3.0 -1.5 0.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2019-08-29 ... 2019-10-12T18:00:00
+  * lon      (lon) float64 336B 102.0 103.5 105.0 106.5 ... 160.5 162.0 163.5
+  * member   (member) <U9 2kB 'r1i1p10f1' 'r1i1p11f1' ... 'r1i1p8f1' 'r1i1p9f1'
+AAAUUGGGHHH

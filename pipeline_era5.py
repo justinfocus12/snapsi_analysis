@@ -39,7 +39,7 @@ def era5_workflow(which_ssw,verbose=False):
     raw_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596/era5'
 
     # 2. Processed data
-    analysis_date = '2025-12-04'
+    analysis_date = '2026-04-07'
     processed_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596'
     reduced_data_dir = join(processed_data_dir,which_ssw,analysis_date,'era5')
     figdir = join('/home/users/ju26596/snapsi_analysis_figures',which_ssw,analysis_date,'era5')
@@ -257,19 +257,19 @@ def coarse_grain_time(years, year_filegroups, region, context_region, Nlon_inter
 
 def reduce_era5(which_ssw):
     todo = dict({
-        'interpolate_landmask':             0,
-        'coarse_grain_time':                0,
-        'coarse_grain_space':               0,
-        'set_param_bounds':                 0,
-        'onset_date_sensitivity_analysis':  0,
-        'compute_severities':               0,
+        'interpolate_landmask':             1,
+        'coarse_grain_time':                1,
+        'coarse_grain_space':               1,
+        'set_param_bounds':                 1,
+        'onset_date_sensitivity_analysis':  1,
+        'compute_severities':               1,
         'plot_sumstats_map':                1,
-        'fit_gev':                          0,
-        'plot_gevpar_map':                  0,
-        'compute_risk':                     0,
-        'plot_risk_map':                    0,
-        'fit_gev_select_regions':           0,
-        'plot_gev_select_regions':          0,
+        'fit_gev':                          1,
+        'plot_gevpar_map':                  1,
+        'compute_risk':                     1,
+        'plot_risk_map':                    1,
+        'fit_gev_select_regions':           1,
+        'plot_gev_select_regions':          1,
         })
     wkf = era5_workflow(which_ssw)
     if todo['interpolate_landmask']:
@@ -338,7 +338,7 @@ def reduce_era5(which_ssw):
                 figdir, figfile_tag, figtitle_affix,
                 '''),
                 subplot_prefixes=["Climatological ","Climatological ",""],
-                do_special=True,
+                do_special=True, # whether to plot the normalized anomaly of a specific member of the ensemble
                 )
     if todo['fit_gev']:
         pipeline_base.fit_gev_exttemp(

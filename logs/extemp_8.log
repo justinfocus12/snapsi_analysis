@@ -2,47 +2,4231 @@ procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '8']
 gcm = 'CNRM-CM61'
 i_fcdate = 0
 i_expt = 0
-svmem(total=1622475350016, available=952939593728, percent=41.3, used=661346050048, free=805963046912, active=586237652992, inactive=209558118400, buffers=1064960, cached=155165188096, shared=16375808, slab=3836039168)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r10i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r10i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r11i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r11i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r12i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r12i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r13i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r13i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r14i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r14i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r15i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r15i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r16i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r16i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r17i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r17i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r18i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r18i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r19i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r19i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r1i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r1i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r20i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r20i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r21i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r21i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r22i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r22i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r23i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r23i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r24i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r24i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r25i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r25i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r26i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r26i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r27i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r27i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r28i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r28i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r29i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r29i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r2i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r2i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r30i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r30i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r31i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r31i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r32i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r32i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r33i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r33i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r34i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r34i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r35i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r35i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r36i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r36i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r37i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r37i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r38i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r38i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r39i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r39i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r3i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r3i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r40i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r40i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r41i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r41i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r42i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r42i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r43i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r43i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r44i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r44i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r45i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r45i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r46i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r46i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r47i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r47i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r48i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r48i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r49i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r49i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r4i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r4i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r50i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r50i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r5i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r5i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r6i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r6i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r7i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r7i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r8i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r8i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180125/r9i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180125-r9i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float32 144B 40.0 41.0 42.0 43.0 44.0 ... 72.0 73.0 74.0 75.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-01-25 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 1kB -20.0 -19.0 -18.0 -17.0 ... 138.0 139.0 140.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1455563014144, percent=10.3, used=157886664704, free=135496007680, active=250403377152, inactive=1154625822720, buffers=1744896, cached=1329111220224, shared=26046464, slab=38110240768)
 i_expt = 1
-svmem(total=1622475350016, available=936194056192, percent=42.3, used=678091304960, free=791030329344, active=601399812096, inactive=207735836672, buffers=1064960, cached=153352650752, shared=16375808, slab=3839639552)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r10i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r10i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r11i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r11i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r12i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r12i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r13i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r13i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r14i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r14i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r15i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r15i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r16i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r16i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r17i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r17i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r18i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r18i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r19i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r19i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r1i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r1i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r20i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r20i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r21i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r21i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r22i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r22i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r23i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r23i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r24i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r24i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r25i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r25i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r26i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r26i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r27i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r27i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r28i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r28i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r29i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r29i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r2i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r2i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r30i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r30i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r31i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r31i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r32i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r32i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r33i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r33i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r34i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r34i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r35i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r35i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r36i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r36i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r37i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r37i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r38i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r38i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r39i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r39i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r3i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r3i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r40i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r40i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r41i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r41i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r42i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r42i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r43i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r43i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r44i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r44i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r45i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r45i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r46i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r46i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r47i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r47i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r48i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r48i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r49i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r49i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r4i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r4i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r50i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r50i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r5i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r5i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r6i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r6i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r7i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r7i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r8i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r8i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180125/r9i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180125-r9i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float32 144B 40.0 41.0 42.0 43.0 44.0 ... 72.0 73.0 74.0 75.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-01-25 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 1kB -20.0 -19.0 -18.0 -17.0 ... 138.0 139.0 140.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1444296982528, percent=11.0, used=169152663552, free=113644281856, active=261810270208, inactive=1165171204096, buffers=1744896, cached=1339696947200, shared=26046464, slab=38183411712)
 i_expt = 2
-svmem(total=1622475350016, available=940872777728, percent=42.0, used=673412513792, free=795357466624, active=598435237888, inactive=208084705280, buffers=1064960, cached=153704304640, shared=16375808, slab=3769126912)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r10i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r10i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r11i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r11i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r12i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r12i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r13i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r13i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r14i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r14i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r15i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r15i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r16i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r16i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r17i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r17i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r18i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r18i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r19i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r19i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r1i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r1i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r20i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r20i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r21i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r21i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r22i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r22i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r23i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r23i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r24i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r24i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r25i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r25i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r26i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r26i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r27i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r27i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r28i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r28i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r29i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r29i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r2i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r2i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r30i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r30i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r31i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r31i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r32i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r32i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r33i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r33i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r34i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r34i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r35i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r35i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r36i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r36i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r37i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r37i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r38i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r38i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r39i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r39i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r3i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r3i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r40i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r40i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r41i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r41i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r42i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r42i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r43i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r43i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r44i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r44i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r45i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r45i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r46i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r46i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r47i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r47i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r48i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r48i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r49i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r49i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r4i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r4i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r50i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r50i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r5i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r5i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r6i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r6i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r7i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r7i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r8i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r8i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180125/r9i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180125-r9i1p1f1_gr_20180125-20180310.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 36, 161)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float32 144B 40.0 41.0 42.0 43.0 44.0 ... 72.0 73.0 74.0 75.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-01-25 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 1kB -20.0 -19.0 -18.0 -17.0 ... 138.0 139.0 140.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1453431832576, percent=10.4, used=160013668352, free=113356972032, active=255842893824, inactive=1174560161792, buffers=1744896, cached=1349123252224, shared=26046464, slab=38238433280)
 i_fcdate = 1
 i_expt = 0
-svmem(total=1622475350016, available=926862602240, percent=42.9, used=687422177280, free=781319553024, active=610555695104, inactive=208111951872, buffers=1064960, cached=153732554752, shared=16375808, slab=3800035328)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r10i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r10i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r11i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r11i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r12i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r12i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r13i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r13i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r14i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r14i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r15i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r15i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r16i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r16i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r17i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r17i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r18i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r18i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r19i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r19i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r1i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r1i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r20i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r20i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r21i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r21i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r22i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r22i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r23i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r23i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r24i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r24i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r25i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r25i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r26i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r26i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r27i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r27i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r28i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r28i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r29i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r29i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r2i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r2i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r30i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r30i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r31i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r31i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r32i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r32i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r33i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r33i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r34i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r34i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r35i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r35i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r36i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r36i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r37i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r37i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r38i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r38i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r39i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r39i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r3i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r3i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r40i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r40i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r41i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r41i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r42i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r42i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r43i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r43i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r44i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r44i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r45i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r45i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r46i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r46i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r47i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r47i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r48i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r48i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r49i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r49i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r4i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r4i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r50i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r50i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r5i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r5i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r6i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r6i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r7i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r7i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r8i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r8i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20180208/r9i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20180208-r9i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float32 144B 40.0 41.0 42.0 43.0 44.0 ... 72.0 73.0 74.0 75.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 928B 2018-02-08 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 1kB -20.0 -19.0 -18.0 -17.0 ... 138.0 139.0 140.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1462432890880, percent=9.9, used=151016816640, free=115999686656, active=249043533824, inactive=1180240347136, buffers=1744896, cached=1355477389312, shared=26046464, slab=38276132864)
 i_expt = 1
-svmem(total=1622475350016, available=929234952192, percent=42.7, used=685049384960, free=784386138112, active=608183914496, inactive=207417274368, buffers=1064960, cached=153038761984, shared=16375808, slab=3814076416)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r10i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r10i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r11i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r11i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r12i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r12i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r13i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r13i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r14i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r14i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r15i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r15i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r16i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r16i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r17i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r17i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r18i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r18i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r19i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r19i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r1i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r1i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r20i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r20i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r21i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r21i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r22i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r22i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r23i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r23i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r24i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r24i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r25i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r25i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r26i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r26i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r27i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r27i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r28i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r28i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r29i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r29i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r2i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r2i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r30i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r30i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r31i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r31i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r32i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r32i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r33i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r33i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r34i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r34i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r35i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r35i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r36i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r36i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r37i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r37i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r38i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r38i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r39i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r39i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r3i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r3i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r40i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r40i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r41i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r41i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r42i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r42i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r43i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r43i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r44i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r44i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r45i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r45i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r46i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r46i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r47i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r47i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r48i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r48i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r49i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r49i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r4i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r4i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r50i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r50i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r5i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r5i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r6i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r6i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r7i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r7i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r8i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r8i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20180208/r9i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20180208-r9i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float32 144B 40.0 41.0 42.0 43.0 44.0 ... 72.0 73.0 74.0 75.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 928B 2018-02-08 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 1kB -20.0 -19.0 -18.0 -17.0 ... 138.0 139.0 140.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1234325860352, percent=23.9, used=377706143744, free=189570293760, active=490293411840, inactive=887817383936, buffers=1744896, cached=1055217455104, shared=26357760, slab=38684135424)
 i_expt = 2
-svmem(total=1622475350016, available=920431431680, percent=43.3, used=693852434432, free=776223076352, active=617265696768, inactive=206773084160, buffers=1064960, cached=152398774272, shared=16375808, slab=3820118016)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r10i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r10i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r11i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r11i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r12i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r12i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r13i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r13i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r14i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r14i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r15i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r15i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r16i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r16i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r17i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r17i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r18i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r18i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r19i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r19i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r1i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r1i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r20i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r20i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r21i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r21i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r22i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r22i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r23i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r23i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r24i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r24i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r25i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r25i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r26i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r26i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r27i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r27i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r28i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r28i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r29i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r29i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r2i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r2i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r30i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r30i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r31i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r31i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r32i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r32i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r33i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r33i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r34i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r34i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r35i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r35i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r36i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r36i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r37i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r37i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r38i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r38i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r39i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r39i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r3i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r3i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r40i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r40i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r41i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r41i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r42i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r42i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r43i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r43i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r44i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r44i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r45i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r45i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r46i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r46i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r47i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r47i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r48i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r48i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r49i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r49i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r4i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r4i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r50i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r50i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r5i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r5i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r6i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r6i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r7i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r7i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r8i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r8i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20180208/r9i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20180208-r9i1p1f1_gr_20180208-20180324.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 36, 161)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float32 144B 40.0 41.0 42.0 43.0 44.0 ... 72.0 73.0 74.0 75.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 928B 2018-02-08 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 1kB -20.0 -19.0 -18.0 -17.0 ... 138.0 139.0 140.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1386090446848, percent=14.6, used=225953390592, free=397486776320, active=392467644416, inactive=768022806528, buffers=1744896, cached=999053725696, shared=26230784, slab=39255023616)
 procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '8']
 gcm = 'CNRM-CM61'
 i_fcdate = 0
 i_expt = 0
-svmem(total=1622475350016, available=936275501056, percent=42.3, used=678008000512, free=792348282880, active=601377099776, inactive=206245195776, buffers=1064960, cached=152118001664, shared=16375808, slab=3815419904)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r10i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r10i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r11i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r11i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r12i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r12i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r13i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r13i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r14i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r14i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r15i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r15i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r16i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r16i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r17i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r17i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r18i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r18i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r19i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r19i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r1i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r1i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r20i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r20i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r21i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r21i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r22i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r22i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r23i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r23i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r24i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r24i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r25i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r25i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r26i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r26i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r27i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r27i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r28i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r28i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r29i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r29i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r2i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r2i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r30i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r30i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r31i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r31i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r32i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r32i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r33i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r33i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r34i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r34i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r35i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r35i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r36i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r36i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r37i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r37i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r38i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r38i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r39i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r39i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r3i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r3i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r40i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r40i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r41i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r41i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r42i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r42i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r43i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r43i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r44i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r44i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r45i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r45i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r46i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r46i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r47i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r47i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r48i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r48i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r49i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r49i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r4i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r4i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r50i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r50i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r5i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r5i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r6i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r6i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r7i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r7i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r8i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r8i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20181213/r9i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20181213-r9i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float32 164B 30.0 31.0 32.0 33.0 34.0 ... 67.0 68.0 69.0 70.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-12-13 ... 2019-01-26T18:00:00
+  * lon      (lon) float64 544B -112.0 -111.0 -110.0 ... -47.0 -46.0 -45.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1468669960192, percent=9.5, used=143374602240, free=452581195776, active=337287954432, inactive=771000365056, buffers=1744896, cached=1026538094592, shared=26046464, slab=38275878912)
 i_expt = 1
-svmem(total=1622475350016, available=936512589824, percent=42.3, used=677770444800, free=802057510912, active=601543647232, inactive=196772577280, buffers=1064960, cached=142646329344, shared=16375808, slab=3815604224)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r10i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r10i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r11i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r11i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r12i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r12i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r13i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r13i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r14i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r14i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r15i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r15i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r16i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r16i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r17i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r17i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r18i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r18i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r19i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r19i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r1i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r1i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r20i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r20i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r21i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r21i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r22i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r22i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r23i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r23i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r24i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r24i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r25i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r25i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r26i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r26i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r27i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r27i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r28i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r28i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r29i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r29i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r2i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r2i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r30i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r30i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r31i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r31i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r32i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r32i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r33i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r33i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r34i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r34i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r35i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r35i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r36i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r36i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r37i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r37i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r38i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r38i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r39i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r39i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r3i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r3i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r40i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r40i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r41i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r41i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r42i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r42i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r43i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r43i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r44i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r44i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r45i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r45i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r46i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r46i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r47i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r47i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r48i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r48i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r49i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r49i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r4i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r4i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r50i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r50i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r5i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r5i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r6i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r6i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r7i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r7i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r8i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r8i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20181213/r9i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20181213-r9i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float32 164B 30.0 31.0 32.0 33.0 34.0 ... 67.0 68.0 69.0 70.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-12-13 ... 2019-01-26T18:00:00
+  * lon      (lon) float64 544B -112.0 -111.0 -110.0 ... -47.0 -46.0 -45.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1484307107840, percent=8.5, used=127737528320, free=460223598592, active=329088925696, inactive=771000356864, buffers=1744896, cached=1034532765696, shared=26046464, slab=38275354624)
 i_expt = 2
-svmem(total=1622475350016, available=935735762944, percent=42.3, used=678547013632, free=800154644480, active=603129749504, inactive=197898285056, buffers=1064960, cached=143772626944, shared=16375808, slab=3816120320)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r10i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r10i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r11i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r11i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r12i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r12i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r13i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r13i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r14i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r14i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r15i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r15i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r16i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r16i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r17i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r17i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r18i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r18i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r19i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r19i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r1i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r1i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r20i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r20i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r21i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r21i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r22i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r22i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r23i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r23i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r24i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r24i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r25i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r25i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r26i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r26i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r27i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r27i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r28i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r28i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r29i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r29i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r2i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r2i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r30i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r30i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r31i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r31i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r32i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r32i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r33i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r33i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r34i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r34i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r35i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r35i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r36i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r36i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r37i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r37i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r38i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r38i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r39i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r39i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r3i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r3i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r40i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r40i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r41i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r41i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r42i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r42i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r43i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r43i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r44i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r44i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r45i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r45i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r46i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r46i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r47i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r47i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r48i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r48i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r49i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r49i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r4i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r4i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r50i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r50i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r5i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r5i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r6i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r6i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r7i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r7i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r8i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r8i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20181213/r9i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20181213-r9i1p1f1_gr_20181213-20190126.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 41, 68)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float32 164B 30.0 31.0 32.0 33.0 34.0 ... 67.0 68.0 69.0 70.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-12-13 ... 2019-01-26T18:00:00
+  * lon      (lon) float64 544B -112.0 -111.0 -110.0 ... -47.0 -46.0 -45.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1479723048960, percent=8.8, used=132321542144, free=449342730240, active=335007838208, inactive=777928085504, buffers=1744896, cached=1040829620224, shared=26046464, slab=38277144576)
 i_fcdate = 1
 i_expt = 0
-svmem(total=1622475350016, available=938122665984, percent=42.2, used=676159660032, free=801370128384, active=600697966592, inactive=199069278208, buffers=1064960, cached=144944496640, shared=16375808, slab=3823464448)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r10i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r10i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r11i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r11i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r12i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r12i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r13i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r13i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r14i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r14i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r15i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r15i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r16i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r16i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r17i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r17i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r18i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r18i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r19i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r19i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r1i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r1i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r20i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r20i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r21i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r21i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r22i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r22i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r23i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r23i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r24i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r24i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r25i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r25i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r26i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r26i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r27i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r27i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r28i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r28i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r29i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r29i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r2i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r2i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r30i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r30i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r31i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r31i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r32i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r32i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r33i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r33i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r34i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r34i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r35i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r35i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r36i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r36i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r37i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r37i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r38i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r38i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r39i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r39i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r3i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r3i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r40i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r40i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r41i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r41i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r42i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r42i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r43i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r43i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r44i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r44i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r45i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r45i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r46i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r46i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r47i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r47i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r48i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r48i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r49i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r49i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r4i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r4i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r50i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r50i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r5i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r5i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r6i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r6i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r7i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r7i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r8i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r8i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190108/r9i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190108-r9i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float32 164B 30.0 31.0 32.0 33.0 34.0 ... 67.0 68.0 69.0 70.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 640B 2019-01-08 ... 2019-01-27T18:00:00
+  * lon      (lon) float64 544B -112.0 -111.0 -110.0 ... -47.0 -46.0 -45.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1482236239872, percent=8.6, used=129808384000, free=446970343424, active=338202796032, inactive=777171542016, buffers=1744896, cached=1045715165184, shared=26046464, slab=38279086080)
 i_expt = 1
-svmem(total=1622475350016, available=951887605760, percent=41.3, used=662394253312, free=812028022784, active=587619950592, inactive=202175913984, buffers=1064960, cached=148052008960, shared=16375808, slab=3824353280)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r10i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r10i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r11i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r11i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r12i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r12i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r13i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r13i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r14i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r14i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r15i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r15i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r16i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r16i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r17i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r17i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r18i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r18i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r19i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r19i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r1i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r1i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r20i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r20i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r21i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r21i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r22i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r22i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r23i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r23i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r24i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r24i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r25i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r25i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r26i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r26i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r27i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r27i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r28i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r28i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r29i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r29i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r2i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r2i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r30i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r30i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r31i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r31i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r32i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r32i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r33i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r33i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r34i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r34i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r35i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r35i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r36i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r36i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r37i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r37i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r38i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r38i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r39i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r39i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r3i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r3i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r40i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r40i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r41i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r41i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r42i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r42i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r43i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r43i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r44i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r44i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r45i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r45i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r46i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r46i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r47i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r47i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r48i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r48i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r49i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r49i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r4i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r4i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r50i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r50i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r5i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r5i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r6i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r6i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r7i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r7i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r8i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r8i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/free/s20190108/r9i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_free_s20190108-r9i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float32 164B 30.0 31.0 32.0 33.0 34.0 ... 67.0 68.0 69.0 70.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 640B 2019-01-08 ... 2019-01-27T18:00:00
+  * lon      (lon) float64 544B -112.0 -111.0 -110.0 ... -47.0 -46.0 -45.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1475821551616, percent=9.0, used=136222986240, free=434685444096, active=338280775680, inactive=790572376064, buffers=1744896, cached=1051585462272, shared=26046464, slab=38275694592)
 i_expt = 2
-svmem(total=1622475350016, available=953550626816, percent=41.2, used=660730793984, free=810501083136, active=586277466112, inactive=205365510144, buffers=1064960, cached=151242407936, shared=16375808, slab=3828756480)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r10i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r10i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r11i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r11i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r12i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r12i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r13i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r13i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r14i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r14i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r15i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r15i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r16i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r16i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r17i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r17i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r18i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r18i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r19i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r19i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r1i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r1i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r20i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r20i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r21i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r21i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r22i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r22i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r23i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r23i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r24i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r24i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r25i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r25i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r26i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r26i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r27i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r27i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r28i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r28i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r29i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r29i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r2i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r2i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r30i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r30i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r31i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r31i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r32i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r32i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r33i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r33i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r34i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r34i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r35i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r35i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r36i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r36i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r37i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r37i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r38i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r38i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r39i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r39i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r3i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r3i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r40i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r40i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r41i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r41i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r42i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r42i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r43i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r43i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r44i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r44i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r45i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r45i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r46i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r46i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r47i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r47i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r48i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r48i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r49i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r49i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r4i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r4i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r50i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r50i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r5i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r5i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r6i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r6i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r7i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r7i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r8i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r8i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/nudged/s20190108/r9i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_nudged_s20190108-r9i1p1f1_gr_20190108-20190221.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 41, 68)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float32 164B 30.0 31.0 32.0 33.0 34.0 ... 67.0 68.0 69.0 70.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 640B 2019-01-08 ... 2019-01-27T18:00:00
+  * lon      (lon) float64 544B -112.0 -111.0 -110.0 ... -47.0 -46.0 -45.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1492301844480, percent=8.0, used=119742791680, free=449268928512, active=328491745280, inactive=787814092800, buffers=1744896, cached=1053482172416, shared=26046464, slab=38269153280)
 procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '8']
 gcm = 'CNRM-CM61'
 i_fcdate = 0
 i_expt = 0
-svmem(total=1622475350016, available=942498660352, percent=41.9, used=671782326272, free=794437988352, active=598230757376, inactive=210376212480, buffers=1064960, cached=156253970432, shared=16375808, slab=3828281344)
-i_expt = 1
-svmem(total=1622475350016, available=946953830400, percent=41.6, used=667326869504, free=797068926976, active=593157566464, inactive=212200067072, buffers=1064960, cached=158078488576, shared=16375808, slab=3827298304)
-i_expt = 2
-svmem(total=1622475350016, available=948180598784, percent=41.6, used=666099589120, free=797040308224, active=592485179392, inactive=213454925824, buffers=1064960, cached=159334387712, shared=16375808, slab=3820519424)
-i_fcdate = 1
-i_expt = 0
-svmem(total=1622475350016, available=947255844864, percent=41.6, used=667023953920, free=795158429696, active=593346375680, inactive=214411665408, buffers=1064960, cached=160291901440, shared=16375808, slab=3821465600)
-i_expt = 1
-svmem(total=1622475350016, available=954674421760, percent=41.2, used=659605450752, free=801834319872, active=586686042112, inactive=215153971200, buffers=1064960, cached=161034514432, shared=16375808, slab=3822272512)
-i_expt = 2
-svmem(total=1622475350016, available=945891237888, percent=41.7, used=668387803136, free=792089915392, active=595811569664, inactive=216114532352, buffers=1064960, cached=161996566528, shared=16375808, slab=3818364928)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r10i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r10i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r11i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r11i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r12i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r12i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r13i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r13i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r14i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r14i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r15i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r15i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r16i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r16i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r17i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r17i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r18i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r18i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r19i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r19i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r1i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r1i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r20i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r20i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r21i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r21i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r22i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r22i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r23i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r23i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r24i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r24i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r25i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r25i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r26i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r26i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r27i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r27i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r28i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r28i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r29i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r29i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r2i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r2i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r30i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r30i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r31i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r31i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r32i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r32i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r33i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r33i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r34i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r34i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r35i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r35i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r36i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r36i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r37i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r37i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r38i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r38i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r39i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r39i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r3i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r3i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r40i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r40i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r41i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r41i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r42i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r42i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r43i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r43i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r44i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r44i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r45i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r45i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r46i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r46i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r47i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r47i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r48i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r48i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r49i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r49i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r4i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r4i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r50i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r50i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r5i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r5i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r6i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r6i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r7i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r7i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r8i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r8i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/Meteo-France/CNRM-CM61/control/s20190829/r9i1p1f1/6hrPt/tas/gr/v20230215/tas_6hrPt_CNRM-CM61_control_s20190829-r9i1p1f1_gr_20190829-20191012.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 57, 63)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float32 228B -56.0 -55.0 -54.0 -53.0 ... -3.0 -2.0 -1.0 0.0
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2019-08-29 ... 2019-10-12T18:00:00
+  * lon      (lon) float64 504B 102.0 103.0 104.0 105.0 ... 162.0 163.0 164.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH

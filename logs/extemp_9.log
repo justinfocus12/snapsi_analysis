@@ -2,47 +2,4309 @@ procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '9']
 gcm = 'CESM2-CAM6'
 i_fcdate = 0
 i_expt = 0
-svmem(total=1622475350016, available=952932626432, percent=41.3, used=661353533440, free=805955563520, active=586243846144, inactive=209558118400, buffers=1064960, cached=155165188096, shared=16375808, slab=3836039168)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r10i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r10i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r11i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r11i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r12i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r12i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r13i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r13i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r14i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r14i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r15i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r15i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r16i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r16i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r17i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r17i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r18i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r18i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r19i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r19i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r1i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r1i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r20i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r20i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r21i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r21i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r22i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r22i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r23i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r23i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r24i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r24i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r25i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r25i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r26i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r26i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r27i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r27i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r28i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r28i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r29i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r29i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r2i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r2i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r30i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r30i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r31i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r31i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r32i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r32i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r33i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r33i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r34i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r34i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r35i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r35i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r36i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r36i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r37i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r37i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r38i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r38i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r39i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r39i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r3i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r3i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r40i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r40i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r41i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r41i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r42i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r42i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r43i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r43i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r44i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r44i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r45i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r45i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r46i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r46i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r47i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r47i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r48i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r48i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r49i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r49i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r4i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r4i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r50i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r50i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r51i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r51i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r5i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r5i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r6i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r6i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r7i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r7i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r8i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r8i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180125/r9i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180125-r9i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 304B 40.05 40.99 41.94 42.88 ... 73.04 73.98 74.92
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-01-25 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 1kB -20.0 -18.75 -17.5 -16.25 ... 137.5 138.8 140.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1445722902528, percent=10.9, used=167726714880, free=125858242560, active=259709018112, inactive=1154424000512, buffers=1744896, cached=1328908935168, shared=26046464, slab=38109310976)
 i_expt = 1
-svmem(total=1622475350016, available=932505423872, percent=42.5, used=681780432896, free=787283894272, active=604831547392, inactive=207793639424, buffers=1064960, cached=153409957888, shared=16375808, slab=3839639552)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r10i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r10i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r11i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r11i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r12i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r12i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r13i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r13i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r14i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r14i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r15i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r15i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r16i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r16i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r17i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r17i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r18i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r18i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r19i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r19i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r1i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r1i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r20i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r20i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r21i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r21i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r22i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r22i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r23i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r23i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r24i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r24i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r25i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r25i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r26i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r26i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r27i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r27i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r28i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r28i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r29i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r29i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r2i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r2i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r30i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r30i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r31i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r31i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r32i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r32i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r33i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r33i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r34i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r34i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r35i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r35i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r36i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r36i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r37i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r37i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r38i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r38i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r39i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r39i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r3i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r3i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r40i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r40i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r41i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r41i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r42i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r42i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r43i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r43i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r44i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r44i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r45i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r45i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r46i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r46i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r47i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r47i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r48i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r48i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r49i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r49i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r4i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r4i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r50i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r50i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r51i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r51i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r5i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r5i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r6i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r6i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r7i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r7i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r8i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r8i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180125/r9i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180125-r9i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 304B 40.05 40.99 41.94 42.88 ... 73.04 73.98 74.92
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-01-25 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 1kB -20.0 -18.75 -17.5 -16.25 ... 137.5 138.8 140.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1443936714752, percent=11.0, used=169512894464, free=113395142656, active=263346073600, inactive=1165060599808, buffers=1744896, cached=1339585855488, shared=26046464, slab=38182645760)
 i_expt = 2
-svmem(total=1622475350016, available=940667166720, percent=42.0, used=673618145280, free=795151536128, active=598725267456, inactive=208085024768, buffers=1064960, cached=153704603648, shared=16375808, slab=3769126912)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r10i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r10i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r11i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r11i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r12i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r12i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r13i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r13i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r14i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r14i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r15i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r15i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r16i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r16i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r17i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r17i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r18i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r18i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r19i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r19i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r1i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r1i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r20i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r20i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r21i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r21i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r22i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r22i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r23i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r23i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r24i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r24i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r25i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r25i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r26i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r26i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r27i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r27i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r28i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r28i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r29i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r29i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r2i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r2i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r30i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r30i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r31i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r31i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r32i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r32i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r33i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r33i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r34i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r34i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r35i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r35i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r36i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r36i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r37i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r37i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r38i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r38i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r39i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r39i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r3i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r3i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r40i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r40i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r41i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r41i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r42i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r42i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r43i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r43i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r44i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r44i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r45i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r45i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r46i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r46i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r47i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r47i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r48i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r48i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r49i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r49i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r4i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r4i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r50i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r50i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r51i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r51i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r5i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r5i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r6i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r6i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r7i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r7i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r8i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r8i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180125/r9i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180125-r9i1p1f1_gn_20180125-20180311.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 172, 38, 129)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 304B 40.05 40.99 41.94 42.88 ... 73.04 73.98 74.92
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-01-25 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 1kB -20.0 -18.75 -17.5 -16.25 ... 137.5 138.8 140.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1450627375104, percent=10.6, used=162821730304, free=109880930304, active=258613764096, inactive=1175225716736, buffers=1744896, cached=1349791232000, shared=26046464, slab=38240800768)
 i_fcdate = 1
 i_expt = 0
-svmem(total=1622475350016, available=929173024768, percent=42.7, used=685111562240, free=783614570496, active=607886426112, inactive=208127188992, buffers=1064960, cached=153748152320, shared=16375808, slab=3801923584)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r10i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r10i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r11i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r11i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r12i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r12i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r13i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r13i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r14i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r14i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r15i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r15i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r16i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r16i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r17i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r17i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r18i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r18i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r19i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r19i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r1i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r1i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r20i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r20i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r21i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r21i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r22i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r22i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r23i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r23i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r24i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r24i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r25i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r25i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r26i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r26i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r27i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r27i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r28i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r28i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r29i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r29i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r2i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r2i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r30i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r30i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r31i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r31i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r32i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r32i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r33i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r33i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r34i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r34i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r35i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r35i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r36i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r36i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r37i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r37i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r38i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r38i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r39i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r39i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r3i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r3i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r40i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r40i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r41i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r41i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r42i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r42i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r43i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r43i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r44i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r44i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r45i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r45i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r46i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r46i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r47i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r47i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r48i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r48i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r49i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r49i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r4i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r4i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r50i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r50i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r51i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r51i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r5i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r5i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r6i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r6i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r7i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r7i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r8i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r8i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20180208/r9i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20180208-r9i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 304B 40.05 40.99 41.94 42.88 ... 73.04 73.98 74.92
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 928B 2018-02-08 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 1kB -20.0 -18.75 -17.5 -16.25 ... 137.5 138.8 140.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1463229026304, percent=9.8, used=150220681216, free=115244494848, active=249005232128, inactive=1181787119616, buffers=1744896, cached=1357028716544, shared=26046464, slab=38281895936)
 i_expt = 1
-svmem(total=1622475350016, available=927566045184, percent=42.8, used=686717632512, free=782691000320, active=610097078272, inactive=207442800640, buffers=1064960, cached=153065652224, shared=16375808, slab=3815374848)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r10i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r10i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r11i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r11i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r12i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r12i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r13i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r13i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r14i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r14i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r15i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r15i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r16i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r16i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r17i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r17i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r18i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r18i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r19i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r19i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r1i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r1i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r20i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r20i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r21i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r21i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r22i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r22i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r23i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r23i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r24i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r24i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r25i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r25i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r26i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r26i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r27i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r27i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r28i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r28i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r29i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r29i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r2i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r2i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r30i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r30i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r31i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r31i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r32i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r32i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r33i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r33i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r34i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r34i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r35i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r35i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r36i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r36i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r37i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r37i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r38i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r38i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r39i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r39i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r3i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r3i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r40i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r40i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r41i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r41i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r42i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r42i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r43i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r43i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r44i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r44i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r45i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r45i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r46i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r46i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r47i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r47i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r48i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r48i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r49i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r49i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r4i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r4i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r50i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r50i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r51i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r51i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r5i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r5i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r6i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r6i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r7i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r7i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r8i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r8i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20180208/r9i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20180208-r9i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 304B 40.05 40.99 41.94 42.88 ... 73.04 73.98 74.92
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 928B 2018-02-08 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 1kB -20.0 -18.75 -17.5 -16.25 ... 137.5 138.8 140.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1377453264896, percent=15.1, used=234590601216, free=390086152192, active=400485695488, inactive=768022814720, buffers=1744896, cached=997817139200, shared=26230784, slab=39805206528)
 i_expt = 2
-svmem(total=1622475350016, available=920434786304, percent=43.3, used=693849079808, free=776226430976, active=617261568000, inactive=206773084160, buffers=1064960, cached=152398774272, shared=16375808, slab=3820118016)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r10i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r10i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r11i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r11i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r12i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r12i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r13i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r13i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r14i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r14i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r15i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r15i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r16i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r16i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r17i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r17i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r18i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r18i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r19i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r19i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r1i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r1i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r20i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r20i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r21i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r21i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r22i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r22i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r23i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r23i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r24i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r24i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r25i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r25i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r26i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r26i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r27i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r27i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r28i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r28i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r29i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r29i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r2i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r2i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r30i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r30i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r31i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r31i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r32i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r32i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r33i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r33i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r34i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r34i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r35i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r35i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r36i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r36i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r37i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r37i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r38i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r38i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r39i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r39i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r3i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r3i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r40i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r40i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r41i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r41i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r42i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r42i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r43i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r43i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r44i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r44i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r45i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r45i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r46i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r46i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r47i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r47i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r48i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r48i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r49i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r49i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r4i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r4i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r50i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r50i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r51i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r51i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r5i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r5i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r6i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r6i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r7i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r7i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r8i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r8i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20180208/r9i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20180208-r9i1p1f1_gn_20180208-20180325.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 116, 38, 129)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 304B 40.05 40.99 41.94 42.88 ... 73.04 73.98 74.92
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 928B 2018-02-08 ... 2018-03-08T18:00:00
+  * lon      (lon) float64 1kB -20.0 -18.75 -17.5 -16.25 ... 137.5 138.8 140.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+cgs_level = (1, 1)
+cgs_level = (5, 1)
+cgs_level = (10, 2)
+cgs_level = (20, 4)
+cgs_level = (40, 8)
+cgs_level = (80, 16)
+svmem(total=1622495637504, available=1481541042176, percent=8.7, used=130503561216, free=468805177344, active=319599587328, inactive=771000348672, buffers=1744896, cached=1023185154048, shared=26046464, slab=38274871296)
 procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '9']
 gcm = 'CESM2-CAM6'
 i_fcdate = 0
 i_expt = 0
-svmem(total=1622475350016, available=936275501056, percent=42.3, used=678008000512, free=792348282880, active=601377099776, inactive=206245195776, buffers=1064960, cached=152118001664, shared=16375808, slab=3815419904)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r10i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r10i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r11i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r11i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r12i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r12i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r13i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r13i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r14i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r14i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r15i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r15i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r16i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r16i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r17i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r17i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r18i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r18i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r19i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r19i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r1i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r1i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r20i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r20i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r21i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r21i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r22i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r22i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r23i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r23i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r24i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r24i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r25i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r25i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r26i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r26i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r27i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r27i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r28i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r28i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r29i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r29i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r2i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r2i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r30i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r30i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r31i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r31i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r32i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r32i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r33i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r33i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r34i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r34i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r35i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r35i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r36i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r36i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r37i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r37i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r38i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r38i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r39i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r39i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r3i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r3i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r40i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r40i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r41i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r41i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r42i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r42i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r43i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r43i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r44i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r44i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r45i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r45i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r46i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r46i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r47i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r47i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r48i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r48i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r49i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r49i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r4i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r4i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r50i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r50i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r51i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r51i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r5i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r5i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r6i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r6i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r7i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r7i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r8i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r8i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20181213/r9i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20181213-r9i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 336B 30.63 31.57 32.51 33.46 ... 67.38 68.32 69.27
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-12-13 ... 2019-01-26T18:00:00
+  * lon      (lon) float64 432B -111.2 -110.0 -108.8 ... -47.5 -46.25 -45.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1479950290944, percent=8.8, used=132094255104, free=458830299136, active=330496045056, inactive=771000365056, buffers=1744896, cached=1031569338368, shared=26046464, slab=38279610368)
 i_expt = 1
-svmem(total=1622475350016, available=935478075392, percent=42.3, used=678804865024, free=800841003008, active=603089625088, inactive=196954406912, buffers=1064960, cached=142828417024, shared=16375808, slab=3815809024)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r10i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r10i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r11i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r11i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r12i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r12i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r13i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r13i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r14i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r14i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r15i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r15i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r16i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r16i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r17i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r17i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r18i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r18i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r19i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r19i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r1i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r1i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r20i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r20i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r21i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r21i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r22i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r22i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r23i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r23i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r24i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r24i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r25i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r25i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r26i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r26i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r27i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r27i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r28i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r28i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r29i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r29i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r2i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r2i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r30i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r30i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r31i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r31i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r32i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r32i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r33i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r33i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r34i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r34i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r35i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r35i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r36i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r36i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r37i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r37i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r38i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r38i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r39i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r39i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r3i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r3i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r40i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r40i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r41i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r41i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r42i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r42i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r43i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r43i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r44i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r44i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r45i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r45i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r46i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r46i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r47i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r47i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r48i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r48i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r49i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r49i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r4i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r4i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r50i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r50i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r51i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r51i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r5i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r5i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r6i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r6i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r7i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r7i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r8i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r8i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20181213/r9i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20181213-r9i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 336B 30.63 31.57 32.51 33.46 ... 67.38 68.32 69.27
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-12-13 ... 2019-01-26T18:00:00
+  * lon      (lon) float64 432B -111.2 -110.0 -108.8 ... -47.5 -46.25 -45.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1480282591232, percent=8.8, used=131762028544, free=451457826816, active=332131090432, inactive=778038202368, buffers=1744896, cached=1039274037248, shared=26046464, slab=38276276224)
 i_expt = 2
-svmem(total=1622475350016, available=935127314432, percent=42.4, used=679155261440, free=799420407808, active=603649241088, inactive=198023888896, buffers=1064960, cached=143898615808, shared=16375808, slab=3816599552)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r10i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r10i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r11i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r11i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r12i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r12i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r13i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r13i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r14i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r14i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r15i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r15i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r16i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r16i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r17i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r17i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r18i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r18i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r19i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r19i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r1i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r1i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r20i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r20i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r21i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r21i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r22i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r22i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r23i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r23i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r24i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r24i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r25i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r25i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r26i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r26i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r27i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r27i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r28i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r28i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r29i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r29i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r2i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r2i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r30i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r30i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r31i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r31i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r32i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r32i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r33i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r33i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r34i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r34i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r35i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r35i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r36i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r36i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r37i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r37i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r38i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r38i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r39i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r39i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r3i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r3i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r40i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r40i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r41i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r41i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r42i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r42i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r43i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r43i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r44i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r44i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r45i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r45i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r46i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r46i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r47i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r47i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r48i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r48i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r49i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r49i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r4i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r4i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r50i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r50i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r51i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r51i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r5i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r5i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r6i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r6i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r7i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r7i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r8i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r8i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20181213/r9i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20181213-r9i1p1f1_gn_20181213-20190127.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 42, 54)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 336B 30.63 31.57 32.51 33.46 ... 67.38 68.32 69.27
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2018-12-13 ... 2019-01-26T18:00:00
+  * lon      (lon) float64 432B -111.2 -110.0 -108.8 ... -47.5 -46.25 -45.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1474878427136, percent=9.1, used=137166581760, free=438933254144, active=343032856576, inactive=779307307008, buffers=1744896, cached=1046394056704, shared=26046464, slab=38279159808)
 i_fcdate = 1
 i_expt = 0
-svmem(total=1622475350016, available=939069222912, percent=42.1, used=675212906496, free=801859723264, active=599795433472, inactive=199526027264, buffers=1064960, cached=145401655296, shared=16375808, slab=3826470912)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r10i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r10i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r11i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r11i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r12i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r12i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r13i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r13i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r14i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r14i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r15i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r15i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r16i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r16i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r17i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r17i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r18i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r18i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r19i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r19i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r1i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r1i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r20i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r20i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r21i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r21i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r22i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r22i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r23i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r23i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r24i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r24i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r25i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r25i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r26i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r26i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r27i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r27i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r28i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r28i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r29i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r29i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r2i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r2i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r30i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r30i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r31i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r31i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r32i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r32i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r33i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r33i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r34i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r34i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r35i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r35i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r36i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r36i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r37i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r37i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r38i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r38i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r39i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r39i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r3i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r3i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r40i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r40i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r41i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r41i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r42i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r42i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r43i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r43i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r44i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r44i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r45i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r45i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r46i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r46i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r47i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r47i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r48i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r48i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r49i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r49i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r4i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r4i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r50i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r50i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r51i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r51i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r5i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r5i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r6i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r6i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r7i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r7i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r8i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r8i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190108/r9i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190108-r9i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 336B 30.63 31.57 32.51 33.46 ... 67.38 68.32 69.27
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 640B 2019-01-08 ... 2019-01-27T18:00:00
+  * lon      (lon) float64 432B -111.2 -110.0 -108.8 ... -47.5 -46.25 -45.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1485454065664, percent=8.4, used=126590484480, free=446565355520, active=327253614592, inactive=789246173184, buffers=1744896, cached=1049338052608, shared=26046464, slab=38279024640)
 i_expt = 1
-svmem(total=1622475350016, available=955571490816, percent=41.1, used=658710302720, free=815580446720, active=583761743872, inactive=202307334144, buffers=1064960, cached=148183535616, shared=16375808, slab=3824562176)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r10i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r10i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r11i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r11i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r12i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r12i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r13i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r13i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r14i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r14i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r15i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r15i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r16i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r16i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r17i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r17i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r18i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r18i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r19i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r19i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r1i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r1i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r20i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r20i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r21i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r21i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r22i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r22i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r23i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r23i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r24i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r24i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r25i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r25i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r26i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r26i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r27i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r27i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r28i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r28i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r29i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r29i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r2i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r2i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r30i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r30i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r31i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r31i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r32i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r32i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r33i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r33i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r34i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r34i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r35i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r35i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r36i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r36i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r37i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r37i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r38i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r38i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r39i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r39i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r3i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r3i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r40i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r40i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r41i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r41i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r42i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r42i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r43i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r43i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r44i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r44i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r45i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r45i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r46i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r46i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r47i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r47i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r48i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r48i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r49i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r49i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r4i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r4i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r50i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r50i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r51i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r51i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r5i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r5i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r6i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r6i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r7i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r7i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r8i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r8i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/free/s20190108/r9i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_free_s20190108-r9i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 336B 30.63 31.57 32.51 33.46 ... 67.38 68.32 69.27
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 640B 2019-01-08 ... 2019-01-27T18:00:00
+  * lon      (lon) float64 432B -111.2 -110.0 -108.8 ... -47.5 -46.25 -45.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1486901436416, percent=8.4, used=125143244800, free=444764672000, active=331177193472, inactive=787933982720, buffers=1744896, cached=1052585975808, shared=26046464, slab=38274351104)
 i_expt = 2
-svmem(total=1622475350016, available=952604721152, percent=41.3, used=661676548096, free=809061384192, active=587240030208, inactive=205859119104, buffers=1064960, cached=151736352768, shared=16375808, slab=3829760000)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r10i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r10i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r11i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r11i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r12i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r12i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r13i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r13i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r14i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r14i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r15i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r15i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r16i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r16i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r17i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r17i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r18i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r18i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r19i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r19i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r1i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r1i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r20i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r20i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r21i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r21i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r22i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r22i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r23i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r23i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r24i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r24i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r25i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r25i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r26i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r26i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r27i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r27i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r28i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r28i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r29i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r29i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r2i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r2i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r30i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r30i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r31i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r31i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r32i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r32i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r33i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r33i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r34i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r34i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r35i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r35i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r36i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r36i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r37i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r37i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r38i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r38i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r39i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r39i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r3i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r3i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r40i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r40i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r41i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r41i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r42i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r42i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r43i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r43i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r44i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r44i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r45i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r45i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r46i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r46i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r47i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r47i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r48i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r48i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r49i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r49i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r4i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r4i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r50i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r50i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r51i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r51i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r5i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r5i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r6i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r6i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r7i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r7i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r8i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r8i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/nudged/s20190108/r9i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_nudged_s20190108-r9i1p1f1_gn_20190108-20190222.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 80, 42, 54)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 336B 30.63 31.57 32.51 33.46 ... 67.38 68.32 69.27
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 640B 2019-01-08 ... 2019-01-27T18:00:00
+  * lon      (lon) float64 432B -111.2 -110.0 -108.8 ... -47.5 -46.25 -45.0
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH
+mem_special = 'r10i1p1f1'
+memdim = 0
+memdim = 0
+memdim = 0
+memdim = 0
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+cgs_level = (1, 1)
+cgs_level = (9, 6)
+cgs_level = (15, 10)
+cgs_level = (30, 20)
+svmem(total=1622495637504, available=1498215911424, percent=7.7, used=113828749312, free=455636586496, active=322281193472, inactive=785525239808, buffers=1744896, cached=1053028556800, shared=26046464, slab=38266142720)
 procedure = 'reduce', sys.argv = ['pipeline_gcms.py', 'reduce', '9']
 gcm = 'CESM2-CAM6'
 i_fcdate = 0
 i_expt = 0
-svmem(total=1622475350016, available=942508138496, percent=41.9, used=671772880896, free=794448474112, active=598205591552, inactive=210375204864, buffers=1064960, cached=156252930048, shared=16375808, slab=3827765248)
-i_expt = 1
-svmem(total=1622475350016, available=947016978432, percent=41.6, used=667263717376, free=797113036800, active=592955891712, inactive=212219105280, buffers=1064960, cached=158097530880, shared=16375808, slab=3827339264)
-i_expt = 2
-svmem(total=1622475350016, available=948759932928, percent=41.5, used=665520173056, free=797742321664, active=591837851648, inactive=213332656128, buffers=1064960, cached=159211790336, shared=16375808, slab=3820367872)
-i_fcdate = 1
-i_expt = 0
-svmem(total=1622475350016, available=948498329600, percent=41.5, used=665781637120, free=796566630400, active=592191410176, inactive=214246146048, buffers=1064960, cached=160126017536, shared=16375808, slab=3820953600)
-i_expt = 1
-svmem(total=1622475350016, available=951338508288, percent=41.4, used=662940999680, free=798608265216, active=589918638080, inactive=215044300800, buffers=1064960, cached=160925020160, shared=16375808, slab=3825229824)
-i_expt = 2
-svmem(total=1622475350016, available=945254301696, percent=41.7, used=669024739328, free=791705743360, active=595438493696, inactive=215862112256, buffers=1064960, cached=161743802368, shared=16375808, slab=3820584960)
+all([exists(f) for f in raw_mem_files]) = True
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r10i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r10i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r11i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r11i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r12i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r12i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r13i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r13i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r14i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r14i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r15i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r15i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r16i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r16i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r17i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r17i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r18i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r18i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r19i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r19i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r1i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r1i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r20i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r20i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r21i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r21i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r22i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r22i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r23i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r23i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r24i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r24i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r25i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r25i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r26i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r26i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r27i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r27i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r28i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r28i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r29i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r29i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r2i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r2i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r30i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r30i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r31i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r31i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r32i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r32i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r33i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r33i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r34i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r34i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r35i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r35i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r36i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r36i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r37i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r37i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r38i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r38i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r39i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r39i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r3i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r3i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r40i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r40i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r41i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r41i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r42i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r42i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r43i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r43i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r44i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r44i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r45i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r45i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r46i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r46i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r47i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r47i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r48i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r48i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r49i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r49i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r4i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r4i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r50i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r50i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r51i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r51i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r5i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r5i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r6i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r6i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r7i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r7i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r8i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r8i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+
+
+Appended file /badc/snap/data/post-cmip6/SNAPSI/NCAR/CESM2-CAM6/control/s20190829/r9i1p1f1/6hrPt/tas/gn/v20230713/tas_6hrPt_CESM2-CAM6_control_s20190829-r9i1p1f1_gn_20190829-20191013.nc, with dimensions 
+('member', 'time', 'lat', 'lon')
+shape
+(1, 180, 59, 50)
+ds_ens.coords = Coordinates:
+  * lat      (lat) float64 472B -55.13 -54.19 -53.25 ... -2.356 -1.414 -0.4712
+    height   float64 8B 2.0
+  * time     (time) datetime64[us] 1kB 2019-08-29 ... 2019-10-12T18:00:00
+  * lon      (lon) float64 400B 102.5 103.8 105.0 106.2 ... 161.2 162.5 163.8
+  * member   (member) <U9 2kB 'r10i1p1f1' 'r11i1p1f1' ... 'r8i1p1f1' 'r9i1p1f1'
+AAAUUGGGHHH

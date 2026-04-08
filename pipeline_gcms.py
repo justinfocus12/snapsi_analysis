@@ -314,7 +314,7 @@ def gcm_workflow(which_ssw, i_gcm, i_expt, i_fc_date, verbose=False):
     assert len(raw_mem_files) == len(mem_labels)
 
     # 2. Processed data 
-    analysis_date = '2025-12-04'
+    analysis_date = '2026-04-07'
     processed_data_dir = '/gws/nopw/j04/snapsi/processed/wg2/ju26596'
     reduced_data_dir = join(processed_data_dir,which_ssw,analysis_date,f'{gcm}')
     figdir = join('/home/users/ju26596/snapsi_analysis_figures',which_ssw,analysis_date,gcm)
@@ -1255,16 +1255,17 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
         todo = dict({
             'coarse_grain_time':                0,
             'coarse_grain_space':               0,
-            'onset_date_sensitivity_analysis':  0,
             'compute_severities':               0,
-            'plot_sumstats_map':                1,
+            'plot_sumstats_map':                0,
             'fit_gev':                          0,
-            'plot_gevpar_map':                  1,
-            'compute_risk':                     0,
+            'plot_gevpar_map':                  0,
+            'compute_risk':                     0, # here we might need to change the reference 
             'plot_risk_map':                    0,
             'plot_valatrisk_map':               0,
             'fit_gev_select_regions':           0,
             'plot_gevsevlev_select_regions':    0,
+            # defunct
+            'onset_date_sensitivity_analysis':  0,
             })
     else:
         todo = dict({key: todoflags[i] for (i,key) in enumerate(todokeys)})
@@ -1272,6 +1273,11 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
 
     # In this main function, specify only the inputs and outputs as files 
     wkf = gcm_workflow(which_ssw,i_gcm,i_expt,i_init)
+    # SRE 
+    expts = gcm_multiparams(which_ssw)[1]
+    expt = expts[i_expt]
+    wkf_earlyfree = gcm_workflow(which_ssw,i_gcm,expts.index('free'),0)
+    # ERE
     wkf_era5 = pipeline_era5.era5_workflow(which_ssw)
     if todo['coarse_grain_time']:
         coarse_grain_time(
@@ -1367,7 +1373,11 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
         pipeline_base.compute_valatrisk(
                 *dtoa(wkf_era5, 'ens_files_cgts_extt, event_year, gevpar_files,'),
                 *dtoa(wkf, 'gevpar_files, valatrisk_files, cgs_levels, ext_sign'),
+                valatrisk_files_C=(wkf_earlyfree['valatrisk_files'] if expt!='free' else None),
                 )
+        # SRE
+        # TODO compute valatrisk relative to early free, in addition to era5, when the init/expt of interest is not early free
+        # ERE
     if todo['plot_risk_map']:
         pipeline_base.plot_risk_or_valatrisk_map(
                 *dtoa(wkf, '''
@@ -1376,7 +1386,8 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
                 prob_symb, ext_symb, leq_symb, ineq_symb, figtitle_affix, event_year,
                 figdir, figfile_tag
                 '''),
-                True,
+                is_risk=True,
+                is_quantmapped=(expt != 'free'),
                 )
     if todo['plot_valatrisk_map']:
         pipeline_base.plot_risk_or_valatrisk_map(
@@ -1386,7 +1397,8 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
                 prob_symb, ext_symb, leq_symb, ineq_symb, figtitle_affix, event_year,
                 figdir, figfile_tag
                 '''),
-                False,
+                is_risk=False,
+                is_quantmapped=(expt != 'free'),
                 )
     if todo['fit_gev_select_regions']:
         pipeline_base.fit_gev_select_regions(
@@ -1433,10 +1445,11 @@ if __name__ == "__main__":
         raise ValueError("procedures is {procedures} but must be a subset of of {options}".format(procedures=procedures, options=all_procedures))
 
     # Pass in which procedure to do based on system arguments
-    for which_ssw in ["feb2018","jan2019","sep2019"][:]:
+    for which_ssw in ["feb2018","jan2019","sep2019"][2:]:
         if "sep2019" == which_ssw:
             gcms2ignore += ["CanESM5"]
         idx_gcms = [i for i in range(len(gcms)) if ((gcms[i] not in gcms2ignore))]
+        expts = gcm_multiparams(which_ssw)[1]
         for procedure in procedures:
             print(f'{procedure = }, {sys.argv = }')
             if procedure in ["reduce","compare_expts"]:
@@ -1446,12 +1459,13 @@ if __name__ == "__main__":
                     if (len(sys.argv) >= 3) and (i_gcm != int(sys.argv[2])):
                         continue
                     print(f"{gcm = }")
-                    #if not (gcm in ["IFS",]): #"IFS" == gcm):
-                    #    continue
+                    if not (gcm in ["IFS",]): #"IFS" == gcm):
+                        continue
                     if "reduce" == procedure:
                         for i_fcdate in range(2):
                             print(f"{i_fcdate = }")
-                            for i_expt in range(3):
+                            for expt in ['free','nudged','control']:
+                                i_expt = expts.index(expt)
                                 print(f"{i_expt = }")
                                 reduce_gcm(which_ssw,i_gcm,i_expt,i_fcdate)
                                 garbcol.collect()
