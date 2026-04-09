@@ -1253,17 +1253,17 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
     ''')
     if todoflags is None:
         todo = dict({
-            'coarse_grain_time':                1,
-            'coarse_grain_space':               1,
-            'compute_severities':               1,
-            'plot_sumstats_map':                1,
-            'fit_gev':                          1,
-            'plot_gevpar_map':                  1,
-            'compute_risk':                     1, # here we might need to change the reference 
-            'plot_risk_map':                    1,
-            'plot_valatrisk_map':               1,
+            'coarse_grain_time':                0,
+            'coarse_grain_space':               0,
+            'compute_severities':               0,
+            'plot_sumstats_map':                0,
+            'fit_gev':                          0,
+            'plot_gevpar_map':                  0,
+            'compute_risk':                     0, # here we might need to change the reference 
+            'plot_risk_map':                    0,
+            'plot_valatrisk_map':               0,
             'fit_gev_select_regions':           0,
-            'plot_gevsevlev_select_regions':    0,
+            'plot_gevsevlev_select_regions':    1,
             # defunct
             'onset_date_sensitivity_analysis':  0,
             })
@@ -1273,8 +1273,8 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
 
     # In this main function, specify only the inputs and outputs as files 
     wkf = gcm_workflow(which_ssw,i_gcm,i_expt,i_init)
-    wkf_earlyfree = gcm_workflow(which_ssw,i_gcm,expts.index('free'),0)
     expts = gcm_multiparams(which_ssw)[1]
+    wkf_earlyfree = gcm_workflow(which_ssw,i_gcm,expts.index('free'),0)
     expt = expts[i_expt]
     is_earlyfree = (i_init==0 and expt=='free')
     wkf_era5 = pipeline_era5.era5_workflow(which_ssw)
@@ -1410,13 +1410,13 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
                 cgs_levels, select_regions,
                 ext_sign,
                 '''),
-                False, n_boot=1000
+                False, n_boot=1000,
                 ens_files_cgts_extt_C=(None if is_earlyfree else wkf_earlyfree['ens_files_cgts_extt']),
-                gevsevlev_files_C=(None if is_earlyfree else wkf_earlyfree['gevsevlev_files_extt']),
+                gevsevlev_files_C=(None if is_earlyfree else wkf_earlyfree['gevsevlev_files']),
                 )
     if todo['plot_gevsevlev_select_regions']:
         pipeline_base.plot_gevsevlev_select_regions(
-                *dtoa(wkf, 'ens_files_cgts, ens_files_cgts_extt, gevsevlev_files'),
+                *dtoa(wkf,      'ens_files_cgts, ens_files_cgts_extt, gevsevlev_files'),
                 *dtoa(wkf_era5, 'ens_files_cgts, ens_files_cgts_extt, gevsevlev_files, event_year, param_bounds_file'),
                 'ERA5',
                 *dtoa(wkf, '''
@@ -1427,7 +1427,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
                 fc_dates, fc_date, onset_date, term_date, 
                 prob_symb, ext_sign, ext_symb, leq_symb, ineq_symb
                 '''),
-                ref_is_different=True,
+                is_quantmapped=is_earlyfree,
                 )
     return 
 

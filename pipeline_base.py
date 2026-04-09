@@ -441,6 +441,7 @@ def compute_valatrisk(ens_files_cgts_extt_A, mem_special_A, gevpar_files_A, gevp
         valatrisk_B.loc[dict(quantity='a_rB')] = spgex.sf(da_cgts_extt_A.to_numpy()*ext_sign, -shapes_B, loc=locs_B, scale=scales_B)
         valatrisk_B.loc[dict(quantity='a_rA_xB')] = spgex.isf(valatrisk_B.sel(quantity='a_rA').to_numpy(), -shapes_B, loc=locs_B, scale=scales_B)*ext_sign
         if valatrisk_files_C is not None:
+            # TODO 
             valatrisk_C = xr.open_dataarray(valatrisk_files_C[i_cgs_level])
             valatrisk_B.loc[dict(quantity='a_rA_xC_rB')] = spgex.sf(valatrisk_C.sel(quantity='a_rA_xB').to_numpy()*ext_sign, -shapes_B, loc=locs_B, scale=scales_B)
         valatrisk_B.to_netcdf(valatrisk_files_B[i_cgs_level])
@@ -984,77 +985,87 @@ def fit_gev_select_regions(
         n_boot=1000,
         ens_files_cgts_extt_C=None, gevsevlev_files_C=None, 
         ):
+
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
-        da_cgts_extt = xr.open_dataarray(ens_files_cgts_extt[i_cgs_level])
         da_cgts_extt_A = xr.open_dataarray(ens_files_cgts_extt_A[i_cgs_level])
+        da_cgts_extt_B = xr.open_dataarray(ens_files_cgts_extt_B[i_cgs_level])
+        if ens_files_cgts_extt_C is not None:
+            da_cgts_extt_C = xr.open_dataarray(ens_files_cgts_extt_C[i_cgs_level])
         Nmem_A = da_cgts_extt_A.coords['member'].size
         i_mem_special_A = np.argmax([mem==mem_special_A for mem in da_cgts_extt_A.coords['member'].values])
         for (i_region,(i_lon,i_lat)) in enumerate(select_regions[i_cgs_level]):
             gevpar_B,sevlev_B = fit_gev_exttemp_1d_uq(
-                    da_cgts_extt.isel(lon=i_lon,lat=i_lat).to_numpy().flatten(),
+                    da_cgts_extt_B.isel(lon=i_lon,lat=i_lat).to_numpy().flatten(),
                     risk_levels, ext_sign, method='PWM', n_boot=n_boot
                     )
             extt_A = da_cgts_extt_A.isel(lon=i_lon,lat=i_lat).to_numpy().flatten()
             a_rB = spgex.sf(ext_sign*extt_A[i_mem_special_A], -gevpar_B.sel(param="shape").to_numpy(), gevpar_B.sel(param="loc").to_numpy(), gevpar_B.sel(param="scale").to_numpy())
+            if ens_files_cgts_extt_C is not None:
+                a_rA_xC_rB = spgex.sf(ext_sign*extt_C[i_mem_special_A], -gevpar_B.sel(param="shape").to_numpy(), gevpar_B.sel(param="loc").to_numpy(), gevpar_B.sel(param="scale").to_numpy())
             if B_equals_A:
                 a_rA = a_rB
             else:
-                a_rA = xr.open_dataset(gevsevlev_files_ref[i_cgs_level][i_region])['a_rB']
+                a_rA = xr.open_dataset(gevsevlev_files_A[i_cgs_level][i_region])['a_rB']
             # ---------- VESTIGE -------------
             #rank_special_ref = np.argsort(np.argsort(extt_ref))[i_mem_special_ref]
             #prob_greater = (Nmem_ref - rank_special_ref + 0.5) / Nmem_ref
             #prob_lesser = (rank_special_ref + 0.5) / Nmem_ref 
             #risk_empirical_special_ref = prob_greater if 1==ext_sign else prob_lesser
             a_rA_xB = ext_sign*spgex.isf(a_rA[0], -gevpar_B.sel(param="shape").to_numpy(), gevpar_B.sel(param="loc").to_numpy(), gevpar_B.sel(param="scale").to_numpy())
+            data_vars = {
+                    'gevpar': gevpar_B, 
+                    'sevlev': sevlev_B, 
+                    'a_rB': xr.DataArray(coords={'boot': np.arange(n_boot+1),},data=a_rB),
+                    'a_rA_xB': xr.DataArray(coords={'boot': np.arange(n_boot+1),}, data=a_rA_xB)
+                    }
+            if gevsevlev_files_C is not None:
+                a_rA_xC_rB = spgex.sf(ext_sign*extt_C[i_mem_special_A], -gevpar_B.sel(param="shape").to_numpy(), gevpar_B.sel(param="loc").to_numpy(), gevpar_B.sel(param="scale").to_numpy())
             gev_sev_risk_var = xr.Dataset(data_vars={
-                'gevpar': gevpar_B, 
-                'sevlev': sevlev_B, 
-                'a_rB': xr.DataArray(coords={'boot': np.arange(n_boot+1),},data=a_rB),
-                'a_rA_xB': xr.DataArray(coords={'boot': np.arange(n_boot+1),}, data=a_rA_xB)
                 })
-            gev_sev_risk_var.to_netcdf(gevsevlev_files[i_cgs_level][i_region])
+            gev_sev_risk_var.to_netcdf(gevsevlev_files_B[i_cgs_level][i_region])
     return
 
 def plot_gevsevlev_select_regions(
         # TODO sync with new notation
-        ens_files_cgts, ens_files_cgts_extt, gevsevlev_files, 
-        ens_files_cgts_ref, ens_files_cgts_extt_ref, gevsevlev_files_ref, 
-        mem_special_ref, param_bounds_file, ref_label,
+        ens_files_cgts_B, ens_files_cgts_extt_B, gevsevlev_files_B, 
+        ens_files_cgts_A, ens_files_cgts_extt_A, gevsevlev_files_A, 
+        mem_special_A, 
+        param_bounds_file, A_label,
         cgs_levels, daily_stat,
         event_region, select_regions, 
         boot_type, confint_width, 
         figdir, figfile_tag, figtitle_affix, gcm_label,
         fc_dates, fc_date, onset_date, term_date, 
         prob_symb, ext_sign, ext_symb, leq_symb, ineq_symb,
-        ref_is_different=False, # whether the reference ensemble is different from the main one 
+        #ens_files_cgts_C=None, ens_files_cgts_extt_C=None, gevsevlev_files_C=None, 
+        is_quantmapped = False,
         ):
     # TODO add lines to indicate the reference values etc 
     param_bounds = xr.open_dataarray(param_bounds_file)
 
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
-        da_cgts = xr.open_dataset(ens_files_cgts[i_cgs_level])['1xday'].sel(daily_stat=daily_stat)
-        da_cgts_ref = xr.open_dataset(ens_files_cgts_ref[i_cgs_level])['1xday'].sel(daily_stat=daily_stat)
-        da_cgts_extt = xr.open_dataarray(ens_files_cgts_extt[i_cgs_level])
-        da_cgts_extt_ref = xr.open_dataarray(ens_files_cgts_extt_ref[i_cgs_level])
+        da_cgts_B = xr.open_dataset(ens_files_cgts_B[i_cgs_level])['1xday'].sel(daily_stat=daily_stat)
+        da_cgts_A = xr.open_dataset(ens_files_cgts_A[i_cgs_level])['1xday'].sel(daily_stat=daily_stat)
+        da_cgts_extt_B = xr.open_dataarray(ens_files_cgts_extt_B[i_cgs_level])
+        da_cgts_extt_A = xr.open_dataarray(ens_files_cgts_extt_A[i_cgs_level])
         lon_blocksize,lat_blocksize = ((event_region[d].stop - event_region[d].start)/cgs_level[i_d] for (i_d,d) in enumerate(('lon','lat')))
-        idx_mem_special_ref = np.argmax([mem_special_ref == mem for mem in da_cgts_extt_ref['member'].values])
+        idx_mem_special_A = np.argmax([mem_special_A == mem for mem in da_cgts_extt_A['member'].values])
         for (i_region,(i_lon,i_lat)) in enumerate(select_regions[i_cgs_level]):
-            gevsevlev = xr.open_dataset(gevsevlev_files[i_cgs_level][i_region])
-            gevsevlev_ref = xr.open_dataset(gevsevlev_files_ref[i_cgs_level][i_region])
-            sevlev = gevsevlev['sevlev'].to_numpy() # n_boot x n_lev
-            sevlev_ref = gevsevlev_ref['sevlev'].to_numpy() # n_boot x n_lev
-            exttemp = da_cgts_extt.isel(lon=i_lon,lat=i_lat).to_numpy().flatten()
-            exttemp_ref = da_cgts_extt_ref.isel(lon=i_lon,lat=i_lat).to_numpy().flatten()
-            temp_bounds = utils.padded_bounds(da_cgts_ref.isel(lon=i_lon,lat=i_lat), inflation=0.2)
-            exttemp_ref_special = exttemp_ref[idx_mem_special_ref]
-            risk_levels = gevsevlev.coords['risk'].to_numpy() # increasing 
-            risk_levels_ref = gevsevlev_ref.coords['risk'].to_numpy() # increasing 
-            gevpar = gevsevlev['gevpar']
-            gevpar_ref = gevsevlev_ref['gevpar']
-            risk_refgivenexpt = gevsevlev['risk_refgivenexpt']
-            valatrisk_refgivenexpt = gevsevlev['valatrisk_refgivenexpt']
-            risk_refgivenref = gevsevlev_ref['risk_refgivenexpt']
-            valatrisk_refgivenref = gevsevlev_ref['valatrisk_refgivenexpt']
+            gevsevlev_B = xr.open_dataset(gevsevlev_files_B[i_cgs_level][i_region])
+            gevsevlev_A = xr.open_dataset(gevsevlev_files_A[i_cgs_level][i_region])
+            sevlev_B = gevsevlev_B['sevlev'].to_numpy() # n_boot x n_lev
+            sevlev_A = gevsevlev_A['sevlev'].to_numpy() # n_boot x n_lev
+            exttemp_B = da_cgts_extt_B.isel(lon=i_lon,lat=i_lat).to_numpy().flatten()
+            exttemp_A = da_cgts_extt_A.isel(lon=i_lon,lat=i_lat).to_numpy().flatten()
+            temp_bounds = utils.padded_bounds(da_cgts_A.isel(lon=i_lon,lat=i_lat), inflation=0.2)
+            exttemp_A_special = exttemp_A[idx_mem_special_A]
+            risk_levels_B = gevsevlev_B.coords['risk'].to_numpy() # increasing 
+            risk_levels_A = gevsevlev_A.coords['risk'].to_numpy() # increasing 
+            gevpar_A = gevsevlev_A['gevpar']
+            gevpar_B = gevsevlev_B['gevpar']
+            a_rB = gevsevlev_B['a_rB' if (not is_quantmapped) else 'a_rA_xC_rB'] 
+            a_rA_xB = gevsevlev_B['a_rA_xB']
+            a_rA = gevsevlev_A['a_rB']
 
             center_lon = event_region['lon'].start + (i_lon+0.5)*lon_blocksize
             center_lat = event_region['lat'].start + (i_lat+0.5)*lat_blocksize
@@ -1062,19 +1073,19 @@ def plot_gevsevlev_select_regions(
             if max(cgs_level) == 1:
                 lonlatstr = r'%s (whole region)'%(lonlatstr)
 
-            order = np.argsort(exttemp)
-            rank = np.argsort(order)
-            order_ref = np.argsort(exttemp_ref)
-            rank_ref = np.argsort(order_ref)
+            order_B = np.argsort(exttemp_B)
+            rank_B = np.argsort(order_B)
+            order_A = np.argsort(exttemp_A)
+            rank_A = np.argsort(order_A)
             if ext_sign == -1:
-                risk_empirical = np.arange(1,len(exttemp)+1)/len(exttemp)
-                risk_empirical_ref = np.arange(1,len(exttemp_ref)+1)/len(exttemp_ref)
+                risk_empirical_B = np.arange(1,len(exttemp_B)+1)/len(exttemp_B)
+                risk_empirical_A = np.arange(1,len(exttemp_A)+1)/len(exttemp_A)
             else:
-                risk_empirical = np.arange(len(exttemp),0,-1)/len(exttemp)
-                risk_empirical_ref = np.arange(len(exttemp_ref),0,-1)/len(exttemp_ref)
-            shape,loc,scale = (gevpar.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
-            shape_ref,loc_ref,scale_ref = (gevpar_ref.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
-            if not np.all([np.isfinite(p) for p in [shape,loc,scale]]):
+                risk_empirical_B = np.arange(len(exttemp_B),0,-1)/len(exttemp_B)
+                risk_empirical_A = np.arange(len(exttemp_A),0,-1)/len(exttemp_A)
+            shape_B,loc_B,scale_B = (gevpar_B.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
+            shape_A,loc_A,scale_A = (gevpar_A.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
+            if not np.all([np.isfinite(p) for p in [shape_B,loc_B,scale_B]]):
                 pdb.set_trace()
             # --------------- Figure: left GEV, right timeseries ---------
             fig = plt.figure(figsize=(12,8))
@@ -1093,58 +1104,57 @@ def plot_gevsevlev_select_regions(
                     ])
                 return param_label
             ax = ax_gev
-            xlim = [min(np.min(risk_empirical),np.min(risk_empirical_ref)), 1.01]
+            xlim = [min(np.min(risk_empirical_B),np.min(risk_empirical_A)), 1.01]
             ax.set_xlim(xlim)
             handles = []
             # non-ref
-            ax.scatter(risk_empirical, exttemp[order], color='red', marker='+')
-            h, = ax.plot(risk_levels,sevlev[0,:],color='red', label=gcm_label+'\n'+param_label_fun(loc,scale,shape))
+            ax.scatter(risk_empirical_B, exttemp_B[order_B], color='red', marker='+')
+            h, = ax.plot(risk_levels_B,sevlev_B[0,:],color='red', label=gcm_label+'\n'+param_label_fun(loc_B,scale_B,shape_B))
             handles.append(h)
-            boot_quant_lo,boot_quant_hi = (np.quantile(sevlev[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
+            boot_quant_lo,boot_quant_hi = (np.quantile(sevlev_B[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
             if boot_type == 'percentile':
                 lo,hi = boot_quant_lo,boot_quant_hi
             else:
                 lo,hi = 2*sevlev[0,:]-boot_quant_hi, 2*sevlev[0,:]-boot_quant_lo
-            ax.fill_between(risk_levels, lo, hi, fc='red', ec='none', alpha=0.3, zorder=-1)
+            ax.fill_between(risk_levels_B, lo, hi, fc='red', ec='none', alpha=0.3, zorder=-1)
             # Plot the ref risk value to make sure it's consistent
             ax.plot(
-                    [risk_refgivenexpt.isel(boot=0).item()] + [np.quantile(risk_refgivenexpt.isel(boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]], 
-                    exttemp_ref_special*np.ones(3), 
+                    [a_rB.isel(boot=0).item()] + [np.quantile(a_rB.isel(boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]], 
+                    exttemp_A_special*np.ones(3), 
                     color='purple', linewidth=3, zorder=2
                     )
             ax.plot(
                     #risk_empirical_ref[rank_ref[idx_mem_special_ref]]*np.ones(3), 
-                    risk_refgivenref.isel(boot=0).item()*np.ones(3),
-                    [valatrisk_refgivenexpt.isel(boot=0).item()] + [np.quantile(valatrisk_refgivenexpt[1:], 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]],
+                    a_rA.isel(boot=0).item()*np.ones(3),
+                    [a_rA_xB.isel(boot=0).item()] + [np.quantile(a_rA_xB[1:], 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]],
                     color='purple', linewidth=3, zorder=2
                     )
             # Dropping lines to axes to illustrate absolute risk and value-at-risk 
             # 1. Horizontal line from era5 to gcm curve 
-            ax.plot([risk_empirical_ref[rank_ref[idx_mem_special_ref]], risk_refgivenexpt.isel(boot=0).item()], exttemp_ref_special*np.ones(2), color='black', linestyle='--', linewidth=1.5)
+            ax.plot([risk_empirical_A[rank_A[idx_mem_special_A]], a_rB.isel(boot=0).item()], exttemp_A_special*np.ones(2), color='black', linestyle='--', linewidth=1.5)
             # 2. vertical line from gcm curve to risk axis, with error bars
-            ax.plot(risk_refgivenexpt.isel(boot=0).item()*np.ones(2), [temp_bounds[0], exttemp_ref_special], color='red', linestyle='--', linewidth=1.5)
-            ax.fill_betweenx([temp_bounds[0], exttemp_ref_special], *[np.quantile(risk_refgivenexpt.isel(boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]], fc='red', ec='none', zorder=-1, alpha=0.3)
+            ax.plot(a_rB.isel(boot=0).item()*np.ones(2), [temp_bounds[0], exttemp_A_special], color='red', linestyle='--', linewidth=1.5)
+            ax.fill_betweenx([temp_bounds[0], exttemp_A_special], *[np.quantile(a_rB.isel(boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]], fc='red', ec='none', zorder=-1, alpha=0.3)
             # 3. Vertical line from era5 curve (at ERA5 risk) to gcm curve
-            ax.plot(risk_refgivenref.isel(boot=0).item()*np.ones(2), [exttemp_ref_special, valatrisk_refgivenexpt.isel(boot=0).item()], color='black', linestyle='--', linewidth=1.5) 
+            ax.plot(a_rA.isel(boot=0).item()*np.ones(2), [exttemp_A_special, a_rB.isel(boot=0).item()], color='black', linestyle='--', linewidth=1.5) 
             # 4. Horizontal line from gcm curve (at valatrisk) to severity axis
-            ax.plot([risk_refgivenref.isel(boot=0).item(), xlim[1]], valatrisk_refgivenexpt.isel(boot=0).item()*np.ones(2), color='red', linestyle='--', linewidth=1.5)
-            ax.fill_between([risk_refgivenref.isel(boot=0).item(), xlim[1]], *[np.quantile(valatrisk_refgivenexpt.isel(boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]], fc='red', ec='none', zorder=-1, alpha=0.3)
+            ax.plot([a_rA.isel(boot=0).item(), xlim[1]], a_rB.isel(boot=0).item()*np.ones(2), color='red', linestyle='--', linewidth=1.5)
+            ax.fill_between([a_rA.isel(boot=0).item(), xlim[1]], *[np.quantile(a_rB.isel(boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]], fc='red', ec='none', zorder=-1, alpha=0.3)
 
 
             # ref
-            ax.scatter(risk_empirical_ref, exttemp_ref[order_ref], color='black', marker='+', s=[100 if i_mem==idx_mem_special_ref else 36 for i_mem in range(len(order_ref))])
-            #ax.scatter(risk_empirical_ref[idx_mem_special_ref], exttemp_ref[order_ref], color='black', marker='+', s=20)
-            h, = ax.plot(risk_levels_ref,sevlev_ref[0,:],color='black', label=ref_label+'\n'+param_label_fun(loc_ref,scale_ref,shape_ref))
+            ax.scatter(risk_empirical_A, exttemp_A[order_A], color='black', marker='+', s=[100 if i_mem==idx_mem_special_A else 36 for i_mem in range(len(order_A))])
+            h, = ax.plot(risk_levels_A,sevlev_A[0,:],color='black', label=A_label+'\n'+param_label_fun(loc_A,scale_A,shape_A))
             handles.append(h)
-            boot_quant_lo,boot_quant_hi = (np.quantile(sevlev_ref[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
+            boot_quant_lo,boot_quant_hi = (np.quantile(sevlev_A[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
             if boot_type == 'percentile':
                 lo,hi = boot_quant_lo,boot_quant_hi
             else:
-                lo,hi = 2*sevlev_ref[0,:]-boot_quant_hi, 2*sevlev_ref[0,:]-boot_quant_lo
-            ax.fill_between(risk_levels_ref, lo, hi, fc='gray', ec='none', alpha=0.3, zorder=-1)
+                lo,hi = 2*sevlev_A[0,:]-boot_quant_hi, 2*sevlev_A[0,:]-boot_quant_lo
+            ax.fill_between(risk_levels_A, lo, hi, fc='gray', ec='none', alpha=0.3, zorder=-1)
 
             # Special marker for the event year itself 
-            ax.scatter(risk_empirical_ref[rank_ref[idx_mem_special_ref]], exttemp_ref_special, color='black', marker='o', s=18)
+            ax.scatter(risk_empirical_A[rank_A[idx_mem_special_A]], exttemp_A_special, color='black', marker='o', s=18)
 
             # Decorations 
             ax.set_xscale('log')
@@ -1162,8 +1172,8 @@ def plot_gevsevlev_select_regions(
             ax = ax_timeseries
             ts_argmax = []
             Ts_argmax = []
-            for i_mem in range(da_cgts.member.size):
-                temp_gcm = da_cgts.isel(lat=i_lat,lon=i_lon,member=i_mem)
+            for i_mem in range(da_cgts_B.member.size):
+                temp_gcm = da_cgts_B.isel(lat=i_lat,lon=i_lon,member=i_mem)
                 #print(f'{temp_gcm.time = }')
                 xr.plot.plot(temp_gcm, x='time', ax=ax, color='red', alpha=0.25)
                 i_t_argmax = argmaxwindow(ext_sign*temp_gcm).argmax(dim='time').item()
@@ -1176,19 +1186,19 @@ def plot_gevsevlev_select_regions(
             ts_argmax = []
             Ts_argmax = []
             markersizes,linewidths = [],[]
-            for (i_mem,mem) in enumerate(da_cgts_ref.member.to_numpy()):
-                temp_ref = da_cgts_ref.isel(lat=i_lat,lon=i_lon,member=i_mem)
-                xr.plot.plot(temp_ref, x='time', ax=ax, color='gray', alpha=0.25) 
-                if mem == mem_special_ref:
-                    xr.plot.plot(temp_ref, x='time', ax=ax, color='black', linestyle='--', linewidth=2) 
+            for (i_mem,mem) in enumerate(da_cgts_A.member.to_numpy()):
+                temp_A = da_cgts_A.isel(lat=i_lat,lon=i_lon,member=i_mem)
+                xr.plot.plot(temp_A, x='time', ax=ax, color='gray', alpha=0.25) 
+                if mem == mem_special_A:
+                    xr.plot.plot(temp_A, x='time', ax=ax, color='black', linestyle='--', linewidth=2) 
                     markersizes.append(100)
                     linewidths.append(3)
                 else:
                     markersizes.append(36)
                     linewidths.append(1)
-                i_t_argmax = argmaxwindow(ext_sign*temp_ref).argmax(dim='time').item()
+                i_t_argmax = argmaxwindow(ext_sign*temp_A).argmax(dim='time').item()
                 t_argmax = onset_date + dtlib.timedelta(i_t_argmax)
-                T_argmax = argmaxwindow(temp_ref).isel(time=i_t_argmax).item()
+                T_argmax = argmaxwindow(temp_A).isel(time=i_t_argmax).item()
                 ts_argmax.append(t_argmax)
                 Ts_argmax.append(T_argmax)
             ax.scatter(ts_argmax, Ts_argmax,color='black', marker='+', s=markersizes, linewidths=linewidths)
@@ -1204,14 +1214,16 @@ def plot_gevsevlev_select_regions(
             ax.yaxis.set_tick_params(which='both', labelbottom=True)
             ax.set_ylabel('')
 
-            shape,loc,scale = (gevpar.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
-            shape_ref,loc_ref,scale_ref = (gevpar_ref.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
+            shape_B,loc_B,scale_B = (gevpar_B.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
+            shape_A,loc_A,scale_A = (gevpar_A.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
             # Title
             ax_title.text(0.5, 0.0, figtitle_affix, transform=ax_title.transAxes, ha='center', va='bottom', fontsize=20)
             ax_title.axis('off')
 
             fig.savefig(join(figdir,f'gevsevlev_{figfile_tag}_cgs{cgs_level[0]}x{cgs_level[1]}_ilon{i_lon}_ilat{i_lat}.png'), **pltkwargs)
             plt.close(fig)
+
+    return
             
 
             
