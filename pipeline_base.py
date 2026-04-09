@@ -504,7 +504,7 @@ def plot_risk_or_valatrisk_map(
             if is_quantmapped:
                 quantity2plot = 'a_rA_xC_rB'
             else:
-                quantity2plot = 'a_rA_xB'
+                quantity2plot = 'a_rB'
         xr.plot.pcolormesh(riskandvar.sel(quantity=quantity2plot), **pcmargs, ax=ax)
         decorate_mercator_axis(ax, minlon, maxlon, minlat, maxlat)
         fmtfun = lambda dt: dtlib.datetime.strftime(dt, "%m/%d")
@@ -977,46 +977,46 @@ def fit_gev_exttemp_1d_uq(exttemp, risks, ext_sign, method='PWM', n_boot=1000):
 
 
 def fit_gev_select_regions(
-        ens_files_cgts_extt_ref, gevsevlev_files_ref, 
-        mem_special_ref, 
-        ens_files_cgts_extt, gevsevlev_files, 
+        ens_files_cgts_extt_A, gevsevlev_files_A, mem_special_A, 
+        ens_files_cgts_extt_B, gevsevlev_files_B, 
         risk_levels, cgs_levels, select_regions, ext_sign, 
-        expt_equals_ref: bool,
-        n_boot=1000
+        B_equals_A: bool,
+        n_boot=1000,
+        ens_files_cgts_extt_C=None, gevsevlev_files_C=None, 
         ):
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
         da_cgts_extt = xr.open_dataarray(ens_files_cgts_extt[i_cgs_level])
-        da_cgts_extt_ref = xr.open_dataarray(ens_files_cgts_extt_ref[i_cgs_level])
-        Nmem_ref = da_cgts_extt_ref.coords['member'].size
-        i_mem_special_ref = np.argmax([mem==mem_special_ref for mem in da_cgts_extt_ref.coords['member'].values])
+        da_cgts_extt_A = xr.open_dataarray(ens_files_cgts_extt_A[i_cgs_level])
+        Nmem_A = da_cgts_extt_A.coords['member'].size
+        i_mem_special_A = np.argmax([mem==mem_special_A for mem in da_cgts_extt_A.coords['member'].values])
         for (i_region,(i_lon,i_lat)) in enumerate(select_regions[i_cgs_level]):
-            gevpar,sevlev = fit_gev_exttemp_1d_uq(
+            gevpar_B,sevlev_B = fit_gev_exttemp_1d_uq(
                     da_cgts_extt.isel(lon=i_lon,lat=i_lat).to_numpy().flatten(),
                     risk_levels, ext_sign, method='PWM', n_boot=n_boot
                     )
-            extt_ref = da_cgts_extt_ref.isel(lon=i_lon,lat=i_lat).to_numpy().flatten()
-            # Additionally, here should calculate risk and value at risk  
-            risk_refgivenexpt = spgex.sf(ext_sign*extt_ref[i_mem_special_ref], -gevpar.sel(param="shape").to_numpy(), gevpar.sel(param="loc").to_numpy(), gevpar.sel(param="scale").to_numpy())
-            if expt_equals_ref:
-                risk_refgivenref = risk_refgivenexpt
+            extt_A = da_cgts_extt_A.isel(lon=i_lon,lat=i_lat).to_numpy().flatten()
+            a_rB = spgex.sf(ext_sign*extt_A[i_mem_special_A], -gevpar_B.sel(param="shape").to_numpy(), gevpar_B.sel(param="loc").to_numpy(), gevpar_B.sel(param="scale").to_numpy())
+            if B_equals_A:
+                a_rA = a_rB
             else:
-                risk_refgivenref = xr.open_dataset(gevsevlev_files_ref[i_cgs_level][i_region])['risk_refgivenexpt']
+                a_rA = xr.open_dataset(gevsevlev_files_ref[i_cgs_level][i_region])['a_rB']
             # ---------- VESTIGE -------------
             #rank_special_ref = np.argsort(np.argsort(extt_ref))[i_mem_special_ref]
             #prob_greater = (Nmem_ref - rank_special_ref + 0.5) / Nmem_ref
             #prob_lesser = (rank_special_ref + 0.5) / Nmem_ref 
             #risk_empirical_special_ref = prob_greater if 1==ext_sign else prob_lesser
-            valatrisk_refgivenexpt = ext_sign*spgex.isf(risk_refgivenref[0], -gevpar.sel(param="shape").to_numpy(), gevpar.sel(param="loc").to_numpy(), gevpar.sel(param="scale").to_numpy())
+            a_rA_xB = ext_sign*spgex.isf(a_rA[0], -gevpar_B.sel(param="shape").to_numpy(), gevpar_B.sel(param="loc").to_numpy(), gevpar_B.sel(param="scale").to_numpy())
             gev_sev_risk_var = xr.Dataset(data_vars={
-                'gevpar': gevpar, 
-                'sevlev': sevlev, 
-                'risk_refgivenexpt': xr.DataArray(coords={'boot': np.arange(n_boot+1),},data=risk_refgivenexpt),
-                'valatrisk_refgivenexpt': xr.DataArray(coords={'boot': np.arange(n_boot+1),}, data=valatrisk_refgivenexpt)
+                'gevpar': gevpar_B, 
+                'sevlev': sevlev_B, 
+                'a_rB': xr.DataArray(coords={'boot': np.arange(n_boot+1),},data=a_rB),
+                'a_rA_xB': xr.DataArray(coords={'boot': np.arange(n_boot+1),}, data=a_rA_xB)
                 })
             gev_sev_risk_var.to_netcdf(gevsevlev_files[i_cgs_level][i_region])
     return
 
 def plot_gevsevlev_select_regions(
+        # TODO sync with new notation
         ens_files_cgts, ens_files_cgts_extt, gevsevlev_files, 
         ens_files_cgts_ref, ens_files_cgts_extt_ref, gevsevlev_files_ref, 
         mem_special_ref, param_bounds_file, ref_label,

@@ -1253,15 +1253,15 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
     ''')
     if todoflags is None:
         todo = dict({
-            'coarse_grain_time':                0,
-            'coarse_grain_space':               0,
-            'compute_severities':               0,
-            'plot_sumstats_map':                0,
-            'fit_gev':                          0,
-            'plot_gevpar_map':                  0,
-            'compute_risk':                     0, # here we might need to change the reference 
-            'plot_risk_map':                    0,
-            'plot_valatrisk_map':               0,
+            'coarse_grain_time':                1,
+            'coarse_grain_space':               1,
+            'compute_severities':               1,
+            'plot_sumstats_map':                1,
+            'fit_gev':                          1,
+            'plot_gevpar_map':                  1,
+            'compute_risk':                     1, # here we might need to change the reference 
+            'plot_risk_map':                    1,
+            'plot_valatrisk_map':               1,
             'fit_gev_select_regions':           0,
             'plot_gevsevlev_select_regions':    0,
             # defunct
@@ -1273,11 +1273,10 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
 
     # In this main function, specify only the inputs and outputs as files 
     wkf = gcm_workflow(which_ssw,i_gcm,i_expt,i_init)
-    # SRE 
+    wkf_earlyfree = gcm_workflow(which_ssw,i_gcm,expts.index('free'),0)
     expts = gcm_multiparams(which_ssw)[1]
     expt = expts[i_expt]
-    wkf_earlyfree = gcm_workflow(which_ssw,i_gcm,expts.index('free'),0)
-    # ERE
+    is_earlyfree = (i_init==0 and expt=='free')
     wkf_era5 = pipeline_era5.era5_workflow(which_ssw)
     if todo['coarse_grain_time']:
         coarse_grain_time(
@@ -1373,7 +1372,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
         pipeline_base.compute_valatrisk(
                 *dtoa(wkf_era5, 'ens_files_cgts_extt, event_year, gevpar_files,'),
                 *dtoa(wkf, 'gevpar_files, valatrisk_files, cgs_levels, ext_sign'),
-                valatrisk_files_C=(wkf_earlyfree['valatrisk_files'] if expt!='free' else None),
+                valatrisk_files_C=(None if is_earlyfree else wkf_earlyfree['valatrisk_files']),
                 )
         # SRE
         # TODO compute valatrisk relative to early free, in addition to era5, when the init/expt of interest is not early free
@@ -1387,7 +1386,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
                 figdir, figfile_tag
                 '''),
                 is_risk=True,
-                is_quantmapped=(expt != 'free'),
+                is_quantmapped=(not is_earlyfree),
                 )
     if todo['plot_valatrisk_map']:
         pipeline_base.plot_risk_or_valatrisk_map(
@@ -1398,13 +1397,12 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
                 figdir, figfile_tag
                 '''),
                 is_risk=False,
-                is_quantmapped=(expt != 'free'),
+                is_quantmapped=(not is_earlyfree),
                 )
     if todo['fit_gev_select_regions']:
         pipeline_base.fit_gev_select_regions(
                 *dtoa(wkf_era5, '''
-                ens_files_cgts_extt, gevsevlev_files, 
-                event_year
+                ens_files_cgts_extt, gevsevlev_files, event_year
                 '''),
                 *dtoa(wkf, '''
                 ens_files_cgts_extt, gevsevlev_files, 
@@ -1413,6 +1411,8 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
                 ext_sign,
                 '''),
                 False, n_boot=1000
+                ens_files_cgts_extt_C=(None if is_earlyfree else wkf_earlyfree['ens_files_cgts_extt']),
+                gevsevlev_files_C=(None if is_earlyfree else wkf_earlyfree['gevsevlev_files_extt']),
                 )
     if todo['plot_gevsevlev_select_regions']:
         pipeline_base.plot_gevsevlev_select_regions(
@@ -1429,7 +1429,6 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
                 '''),
                 ref_is_different=True,
                 )
-    print(psutil.virtual_memory())
     return 
 
 if __name__ == "__main__":
@@ -1459,8 +1458,8 @@ if __name__ == "__main__":
                     if (len(sys.argv) >= 3) and (i_gcm != int(sys.argv[2])):
                         continue
                     print(f"{gcm = }")
-                    if not (gcm in ["IFS",]): #"IFS" == gcm):
-                        continue
+                    #if not (gcm in ["IFS",]): #"IFS" == gcm):
+                    #    continue
                     if "reduce" == procedure:
                         for i_fcdate in range(2):
                             print(f"{i_fcdate = }")
