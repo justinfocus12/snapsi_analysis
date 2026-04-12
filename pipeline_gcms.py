@@ -1257,11 +1257,11 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
             'coarse_grain_space':               0,
             'compute_severities':               0,
             'plot_sumstats_map':                0,
-            'fit_gev':                          0,
-            'plot_gevpar_map':                  0,
-            'compute_risk':                     0, # here we might need to change the reference 
-            'plot_risk_map':                    0,
-            'plot_valatrisk_map':               0,
+            'fit_gev':                          1,
+            'plot_gevpar_map':                  1,
+            'compute_risk':                     1, # here we might need to change the reference 
+            'plot_risk_map':                    1,
+            'plot_valatrisk_map':               1,
             'fit_gev_select_regions':           1,
             'plot_gevsevlev_select_regions':    1,
             # defunct
@@ -1444,7 +1444,7 @@ if __name__ == "__main__":
         raise ValueError("procedures is {procedures} but must be a subset of of {options}".format(procedures=procedures, options=all_procedures))
 
     # Pass in which procedure to do based on system arguments
-    for which_ssw in ["feb2018","jan2019","sep2019"][2:]:
+    for which_ssw in ["feb2018","jan2019","sep2019"]:
         if "sep2019" == which_ssw:
             gcms2ignore += ["CanESM5"]
         idx_gcms = [i for i in range(len(gcms)) if ((gcms[i] not in gcms2ignore))]
@@ -1458,8 +1458,8 @@ if __name__ == "__main__":
                     if (len(sys.argv) >= 3) and (i_gcm != int(sys.argv[2])):
                         continue
                     print(f"{gcm = }")
-                    #if not (gcm in ["IFS",]): #"IFS" == gcm):
-                    #    continue
+                    if not (gcm in ["GRIMs",]): #"IFS" == gcm):
+                        continue
                     if "reduce" == procedure:
                         for i_fcdate in range(2):
                             print(f"{i_fcdate = }")

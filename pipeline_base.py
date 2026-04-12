@@ -1000,13 +1000,15 @@ def fit_gev_select_regions(
             if B_equals_A:
                 a_rA = a_rB
             else:
-                a_rA = xr.open_dataset(gevsevlev_files_A[i_cgs_level][i_region])['a_rB']
-            a_rA_xB = ext_sign*spgex.isf(a_rA[0], -gevpar_B.sel(param="shape").to_numpy(), gevpar_B.sel(param="loc").to_numpy(), gevpar_B.sel(param="scale").to_numpy())
+                a_rA = xr.open_dataset(gevsevlev_files_A[i_cgs_level][i_region])['a_rB'].to_numpy()
+            a_rA_xB = ext_sign*spgex.isf(a_rA, -gevpar_B.sel(param="shape").to_numpy(), gevpar_B.sel(param="loc").to_numpy(), gevpar_B.sel(param="scale").to_numpy())
+            a_rA_xB_rB = spgex.sf(ext_sign*a_rA_xB, -gevpar_B.sel(param="shape").to_numpy(), gevpar_B.sel(param="loc").to_numpy(), gevpar_B.sel(param="scale").to_numpy())
             data_vars = {
                     'gevpar': gevpar_B, 
                     'sevlev': sevlev_B, 
                     'a_rB': xr.DataArray(coords={'boot': np.arange(n_boot+1),},data=a_rB),
-                    'a_rA_xB': xr.DataArray(coords={'boot': np.arange(n_boot+1),}, data=a_rA_xB)
+                    'a_rA_xB': xr.DataArray(coords={'boot': np.arange(n_boot+1),}, data=a_rA_xB),
+                    'a_rA_xB_rB': xr.DataArray(coords={'boot': np.arange(n_boot+1),}, data=a_rA_xB_rB)
                     }
             if gevsevlev_files_C is not None:
                 data_vars['a_rA_xC'] = xr.open_dataset(gevsevlev_files_C[i_cgs_level][i_region])['a_rA_xB']
@@ -1057,6 +1059,7 @@ def plot_gevsevlev_select_regions(
             a_rA = gevsevlev_A['a_rB']
             a_rB = gevsevlev_B['a_rB']
             a_rA_xB = gevsevlev_B['a_rA_xB']
+            a_rA_xB_rB = gevsevlev_B['a_rA_xB_rB']
             if is_quantmapped:
                 a_rA_xC = gevsevlev_B['a_rA_xC']
                 a_rA_xC_rB = gevsevlev_B['a_rA_xC_rB']
@@ -1079,6 +1082,8 @@ def plot_gevsevlev_select_regions(
                 risk_empirical_A = np.arange(len(exttemp_A),0,-1)/len(exttemp_A)
             shape_B,loc_B,scale_B = (gevpar_B.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
             shape_A,loc_A,scale_A = (gevpar_A.sel(param=p).isel(boot=0) for p in ('shape','loc','scale'))
+            shape_B_std,loc_B_std,scale_B_std = (np.std(gevpar_B.sel(param=p).isel(boot=slice(1,None))).item() for p in ('shape','loc','scale'))
+            shape_A_std,loc_A_std,scale_A_std = (np.std(gevpar_A.sel(param=p).isel(boot=slice(1,None))).item() for p in ('shape','loc','scale'))
             if not np.all([np.isfinite(p) for p in [shape_B,loc_B,scale_B]]):
                 pdb.set_trace()
             # --------------- Figure: left GEV, right timeseries ---------
@@ -1090,11 +1095,12 @@ def plot_gevsevlev_select_regions(
 
             # GEV & sevlev
             grk = utils.greekletters()
-            def param_label_fun(loc,scale,shape):
+            def param_label_fun(loc,scale,shape,loc_std,scale_std,shape_std):
+                pm = "\u00B1"
                 param_label = '\n'.join([
-                    '%s=%.1f'%(grk["mu"],ext_sign*loc),
-                    '%s=%.1f'%(grk["sigma"],scale),
-                    '%s=%+.2f'%(grk["xi"],shape)
+                    '%s=%.1f%s%.1f'%(grk["mu"],ext_sign*loc,pm,loc_std),
+                    '%s=%.1f%s%.1f'%(grk["sigma"],scale,pm,scale_std),
+                    '%s=%+.2f%s%.1f'%(grk["xi"],shape,pm,shape_std)
                     ])
                 return param_label
             ax = ax_gev
@@ -1103,7 +1109,7 @@ def plot_gevsevlev_select_regions(
             handles = []
             # non-ref
             ax.scatter(risk_empirical_B, exttemp_B[order_B], color='red', marker='+')
-            h, = ax.plot(risk_levels_B,sevlev_B[0,:],color='red', label=gcm_label+'\n'+param_label_fun(loc_B,scale_B,shape_B))
+            h, = ax.plot(risk_levels_B,sevlev_B[0,:],color='red', label=gcm_label+'\n'+param_label_fun(loc_B,scale_B,shape_B,loc_B_std,scale_B_std,shape_B_std))
             handles.append(h)
             boot_quant_lo,boot_quant_hi = (np.quantile(sevlev_B[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
             if boot_type == 'percentile':
@@ -1112,48 +1118,49 @@ def plot_gevsevlev_select_regions(
                 lo,hi = 2*sevlev[0,:]-boot_quant_hi, 2*sevlev[0,:]-boot_quant_lo
             ax.fill_between(risk_levels_B, lo, hi, fc='red', ec='none', alpha=0.3, zorder=-1)
             # Plot the ref risk value to make sure it's consistent
-            # TODO fix the horizontal coordinate 
-            if is_quantmapped:
-                pdb.set_trace()
-            ax.plot(
-                    [a_rB.isel(boot=0).item()] + [np.quantile(a_rB.isel(boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]], 
-                    (a_rA_xB.isel(boot=0).item() if is_quantmapped else exttemp_A_special) * np.ones(3), 
+            # vertical line at ERA5 risk, through EXPT error bars
+            ax.plot( 
+                    a_rA.isel(boot=0).item()*np.ones(3),
+                    [a_rA_xB.isel(boot=0).item()] + [np.quantile(a_rA_xB[1:], 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]],
                     color='purple', linewidth=3, zorder=2
                     )
             if is_quantmapped:
+                # horizontal line at EXPT risk equivalent to that of EARLYFREE, through EXPT error bars
                 ax.plot(
                         [a_rA_xC_rB.isel(boot=0).item()] + [np.quantile(a_rA_xC_rB.isel(boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]], 
                         a_rA_xC.isel(boot=0).item() * np.ones(3), 
                         color='purple', linewidth=3, zorder=2
                         )
             else:
+                # horizontal line at EXPT risk equivalent to that of ERA5, through EXPT error bars
                 ax.plot(
-                        [a_rB.isel(boot=0).item()] + [np.quantile(a_rA_xC_rB.isel(boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]], 
+                        [a_rB.isel(boot=0).item()] + [np.quantile(a_rB.isel(boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]], 
+                        exttemp_A_special * np.ones(3), 
+                        color='purple', linewidth=3, zorder=2
+                        )
+                ax.plot(
+                        [a_rA_xB_rB.isel(boot=0).item()] + [np.quantile(a_rA_xB_rB.isel(boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]], 
                         a_rA_xB.isel(boot=0).item() * np.ones(3), 
                         color='purple', linewidth=3, zorder=2
                         )
-            ax.plot(
-                    #risk_empirical_ref[rank_ref[idx_mem_special_ref]]*np.ones(3), 
-                    a_rA.isel(boot=0).item()*np.ones(3),
-                    [a_rA_xB.isel(boot=0).item()] + [np.quantile(a_rA_xB[1:], 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]],
-                    color='purple', linewidth=3, zorder=2
-                    )
-            # Dropping lines to axes to illustrate absolute risk and value-at-risk 
-            # 1. Horizontal line from era5 to gcm curve 
-            ax.plot([risk_empirical_A[rank_A[idx_mem_special_A]], a_rB.isel(boot=0).item()], exttemp_A_special*np.ones(2), color='black', linestyle='--', linewidth=1.5)
-            # 2. vertical line from gcm curve to risk axis, with error bars
-            ax.plot(a_rB.isel(boot=0).item()*np.ones(2), [temp_bounds[0], exttemp_A_special], color='red', linestyle='--', linewidth=1.5)
-            ax.fill_betweenx([temp_bounds[0], exttemp_A_special], *[np.quantile(a_rB.isel(boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]], fc='red', ec='none', zorder=-1, alpha=0.3)
-            # 3. Vertical line from era5 curve (at ERA5 risk) to gcm curve
-            ax.plot(a_rA.isel(boot=0).item()*np.ones(2), [exttemp_A_special, a_rB.isel(boot=0).item()], color='black', linestyle='--', linewidth=1.5) 
-            # 4. Horizontal line from gcm curve (at valatrisk) to severity axis
-            ax.plot([a_rA.isel(boot=0).item(), xlim[1]], a_rB.isel(boot=0).item()*np.ones(2), color='red', linestyle='--', linewidth=1.5)
-            ax.fill_between([a_rA.isel(boot=0).item(), xlim[1]], *[np.quantile(a_rB.isel(boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]], fc='red', ec='none', zorder=-1, alpha=0.3)
+            if False:
+                # TODO modify the fill_betweens to reflect the new bounds 
+                # Dropping lines to axes to illustrate absolute risk and value-at-risk 
+                # 1. Horizontal line from era5 to gcm curve 
+                ax.plot([risk_empirical_A[rank_A[idx_mem_special_A]], a_rB.isel(boot=0).item()], exttemp_A_special*np.ones(2), color='black', linestyle='--', linewidth=1.5)
+                # 2. vertical line from gcm curve to risk axis, with error bars
+                ax.plot(a_rB.isel(boot=0).item()*np.ones(2), [temp_bounds[0], exttemp_A_special], color='red', linestyle='--', linewidth=1.5)
+                ax.fill_betweenx([temp_bounds[0], exttemp_A_special], *[np.quantile(a_rB.isel(boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]], fc='red', ec='none', zorder=-1, alpha=0.3)
+                # 3. Vertical line from era5 curve (at ERA5 risk) to gcm curve
+                ax.plot(a_rA.isel(boot=0).item()*np.ones(2), [exttemp_A_special, a_rB.isel(boot=0).item()], color='black', linestyle='--', linewidth=1.5) 
+                # 4. Horizontal line from gcm curve (at valatrisk) to severity axis
+                ax.plot([a_rA.isel(boot=0).item(), xlim[1]], a_rB.isel(boot=0).item()*np.ones(2), color='red', linestyle='--', linewidth=1.5)
+                ax.fill_between([a_rA.isel(boot=0).item(), xlim[1]], *[np.quantile(a_rB.isel(boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]], fc='red', ec='none', zorder=-1, alpha=0.3)
 
 
             # ref
             ax.scatter(risk_empirical_A, exttemp_A[order_A], color='black', marker='+', s=[100 if i_mem==idx_mem_special_A else 36 for i_mem in range(len(order_A))])
-            h, = ax.plot(risk_levels_A,sevlev_A[0,:],color='black', label=A_label+'\n'+param_label_fun(loc_A,scale_A,shape_A))
+            h, = ax.plot(risk_levels_A,sevlev_A[0,:],color='black', label=A_label+'\n'+param_label_fun(loc_A,scale_A,shape_A,loc_A_std,scale_A_std,shape_A_std))
             handles.append(h)
             boot_quant_lo,boot_quant_hi = (np.quantile(sevlev_A[1:], 0.5*(1+sgn*confint_width), axis=0) for sgn in (-1,1))
             if boot_type == 'percentile':

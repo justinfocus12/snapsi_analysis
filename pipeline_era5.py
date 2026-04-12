@@ -124,10 +124,11 @@ def era5_workflow(which_ssw,verbose=False):
     geq_symb = "\u2265"
     ineq_symb = geq_symb if 1==ext_sign else leq_symb
     prob_symb = "\u2119"
+    plusminus_symb = "\u00B1"
 
 
     select_points = ()
-    risk_levels = np.exp(np.linspace(np.log(0.001),np.log(49/50),30))
+    risk_levels = np.exp(np.linspace(np.log(0.001),np.log(49.5/50),90))
     workflow = dict(
             years             =years,
             event_year        =event_year,
@@ -264,12 +265,12 @@ def reduce_era5(which_ssw):
         'onset_date_sensitivity_analysis':  0,
         'compute_severities':               0,
         'plot_sumstats_map':                0,
-        'fit_gev':                          0,
-        'plot_gevpar_map':                  0,
+        'fit_gev':                          1,
+        'plot_gevpar_map':                  1,
         'compute_risk':                     1,
         'plot_risk_map':                    1,
         'fit_gev_select_regions':           1,
-        'plot_gev_select_regions':          0,
+        'plot_gev_select_regions':          1,
         })
     wkf = era5_workflow(which_ssw)
     if todo['interpolate_landmask']:
@@ -410,7 +411,7 @@ def reduce_era5(which_ssw):
                 onset_date, term_date,
                 prob_symb, ext_sign, ext_symb, leq_symb, ineq_symb
                 '''),
-                ref_is_different=False,
+                is_quantmapped=False,
                 )
     return 
 
