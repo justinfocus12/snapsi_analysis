@@ -1262,7 +1262,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
             'compute_risk':                     0, # here we might need to change the reference 
             'plot_risk_map':                    0,
             'plot_valatrisk_map':               0,
-            'fit_gev_select_regions':           0,
+            'fit_gev_select_regions':           1,
             'plot_gevsevlev_select_regions':    1,
             # defunct
             'onset_date_sensitivity_analysis':  0,
@@ -1427,7 +1427,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
                 fc_dates, fc_date, onset_date, term_date, 
                 prob_symb, ext_sign, ext_symb, leq_symb, ineq_symb
                 '''),
-                is_quantmapped=is_earlyfree,
+                is_quantmapped=(not is_earlyfree),
                 )
     return 
 
