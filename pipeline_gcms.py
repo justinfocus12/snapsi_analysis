@@ -1458,8 +1458,8 @@ if __name__ == "__main__":
                     if (len(sys.argv) >= 3) and (i_gcm != int(sys.argv[2])):
                         continue
                     print(f"{gcm = }")
-                    if not (gcm in ["GRIMs",]): #"IFS" == gcm):
-                        continue
+                    #if not (gcm in ["GRIMs",]): #"IFS" == gcm):
+                    #    continue
                     if "reduce" == procedure:
                         for i_fcdate in range(2):
                             print(f"{i_fcdate = }")

@@ -1122,27 +1122,33 @@ def plot_gevsevlev_select_regions(
             ax.plot( 
                     a_rA.isel(boot=0).item()*np.ones(3),
                     [a_rA_xB.isel(boot=0).item()] + [np.quantile(a_rA_xB[1:], 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]],
-                    color='purple', linewidth=3, zorder=2
+                    color='cyan', linewidth=3, zorder=2
                     )
+            ax.plot([a_rA.isel(boot=0).item(), xlim[1]], a_rA_xB.isel(boot=0).item()*np.ones(2), color='red', linestyle='--', linewidth=1.5)
+            ax.fill_between([a_rA.isel(boot=0).item(), xlim[1]], *[np.quantile(a_rA_xB.isel(boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in[-1,1]],fc='red', ec='none', zorder=-1, alpha=0.3) 
             if is_quantmapped:
                 # horizontal line at EXPT risk equivalent to that of EARLYFREE, through EXPT error bars
                 ax.plot(
                         [a_rA_xC_rB.isel(boot=0).item()] + [np.quantile(a_rA_xC_rB.isel(boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]], 
                         a_rA_xC.isel(boot=0).item() * np.ones(3), 
-                        color='purple', linewidth=3, zorder=2
+                        color='cyan', linewidth=3, zorder=2
                         )
+                ax.plot(a_rA_xC_rB.isel(boot=0).item()*np.ones(2), [temp_bounds[0], a_rA_xC.isel(boot=0).item()], color='red', linestyle='--', linewidth=1.5)
+                ax.fill_betweenx([temp_bounds[0], a_rA_xC.isel(boot=0)], *[np.quantile(a_rA_xC_rB.isel(boot=slice(1,None)),0.5*(1+sgn*confint_width)) for sgn in [-1,1]], fc='red', ec='none', zorder=-1, alpha=0.3)
             else:
                 # horizontal line at EXPT risk equivalent to that of ERA5, through EXPT error bars
                 ax.plot(
                         [a_rB.isel(boot=0).item()] + [np.quantile(a_rB.isel(boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]], 
                         exttemp_A_special * np.ones(3), 
-                        color='purple', linewidth=3, zorder=2
+                        color='black', linewidth=3, zorder=2
                         )
                 ax.plot(
                         [a_rA_xB_rB.isel(boot=0).item()] + [np.quantile(a_rA_xB_rB.isel(boot=slice(1,None)), 0.5*(1+sgn*confint_width)).item() for sgn in [-1,1]], 
                         a_rA_xB.isel(boot=0).item() * np.ones(3), 
-                        color='purple', linewidth=3, zorder=2
+                        color='cyan', linewidth=3, zorder=2
                         )
+                ax.plot(a_rA_xB_rB.isel(boot=0).item()*np.ones(2), [temp_bounds[0], a_rA_xB.isel(boot=0).item()], color='red', linestyle='--', linewidth=1.5)
+                ax.fill_betweenx([temp_bounds[0], a_rA_xB.isel(boot=0)], *[np.quantile(a_rA_xB_rB.isel(boot=slice(1,None)),0.5*(1+sgn*confint_width)) for sgn in [-1,1]], fc='red', ec='none', zorder=-1, alpha=0.3)
             if False:
                 # TODO modify the fill_betweens to reflect the new bounds 
                 # Dropping lines to axes to illustrate absolute risk and value-at-risk 
@@ -1170,7 +1176,9 @@ def plot_gevsevlev_select_regions(
             ax.fill_between(risk_levels_A, lo, hi, fc='gray', ec='none', alpha=0.3, zorder=-1)
 
             # Special marker for the event year itself 
-            ax.scatter(risk_empirical_A[rank_A[idx_mem_special_A]], exttemp_A_special, color='black', marker='o', s=18)
+            ax.scatter(risk_empirical_A[rank_A[idx_mem_special_A]], exttemp_A_special, color='black', marker='o', s=64, zorder=10)
+            # Another special marker for the quantile-mapped extreme
+            ax.scatter(a_rA.isel(boot=0).item(), (a_rA_xB if not is_quantmapped else a_rA_xC).isel(boot=0).item(), color='cyan', marker='o', s=64, zorder=10)
 
             # Decorations 
             ax.set_xscale('log')
