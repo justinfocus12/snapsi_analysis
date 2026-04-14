@@ -626,17 +626,17 @@ def expt_pair_coordval(expt_pair):
 
 def compute_gevsevlev_comp_select_regions(
         # A more-detailed regional verion of valatrisk_comp 
-        gevsevlev_files: dict, 
-        gevsevlev_files_ref, 
+        gevsevlev_files_B: dict, # maps expt -> (files for that expt) # something other than earlyfree
+        gevsevlev_files_A, # should be ERA5
         gevsevlev_comp_files, 
         risk_levels,
         expts, expt_pairs, cgs_levels, select_regions, fc_dates, n_boot
         ):
     for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
         for (i_region,(i_lon,i_lat)) in enumerate(select_regions[i_cgs_level]):
-            gev_sev_risk_var = xr.concat([
+            gev_sev_risk_var_B = xr.concat([
                 xr.concat([
-                    xr.open_dataset(gevsevlev_files[expt][i_fc_date][i_cgs_level][i_region])
+                    xr.open_dataset(gevsevlev_files_B[expt][i_fc_date][i_cgs_level][i_region])
                     for (i_fc_date,fc_date) in enumerate(fc_dates)
                     ], dim='fc_date').assign_coords(fc_date=fc_dates)
                 for expt in expts
@@ -646,22 +646,22 @@ def compute_gevsevlev_comp_select_regions(
             rr_dvar = xr.DataArray(coords={'expt_pair': list(map(expt_pair_coordval, expt_pairs)), 'fc_date': fc_dates, 'quantity': ['relrisk','dvalatrisk'], 'boot': np.arange(n_boot+1)}, dims=['expt_pair','fc_date','quantity','boot'], data=np.nan)
             for (i_expt_pair,expt_pair) in enumerate(expt_pairs):
                 rr_dvar.loc[dict(expt_pair=expt_pair_coordval(expt_pair),quantity='relrisk')] = np.divide(*(
-                    gev_sev_risk_var['risk_refgivenexpt']
+                    gev_sev_risk_var_B['a_rA_xC_rB']
                     .sel(expt=expt)
                     for expt in (expt_pair[1],expt_pair[0])
                     ))
                 rr_dvar.loc[dict(expt_pair=expt_pair_coordval(expt_pair),quantity='dvalatrisk')] = np.subtract(*(
-                    gev_sev_risk_var['valatrisk_refgivenexpt']
+                    gev_sev_risk_var_B['a_rA_xB']
                     .sel(expt=expt)
                     for expt in (expt_pair[1],expt_pair[0])
                     ))
-            gev_sev_risk_var_rr_dvar = xr.Dataset(data_vars={**{dv: gev_sev_risk_var[dv].copy() for dv in gev_sev_risk_var.data_vars.keys()}, 'rr_dvar': rr_dvar})
+            gev_sev_risk_var_rr_dvar = xr.Dataset(data_vars={**{dv: gev_sev_risk_var_B[dv].copy() for dv in gev_sev_risk_var_B.data_vars.keys()}, 'rr_dvar': rr_dvar})
             print(f'{i_lon = }, {i_lat = }')
             #if (i_lon == 8 and i_lat == 1):
             #    pdb.set_trace()
             gev_sev_risk_var_rr_dvar.to_netcdf(gevsevlev_comp_files[i_cgs_level][i_region])
             
-            gev_sev_risk_var.close()
+            gev_sev_risk_var_B.close()
             gev_sev_risk_var_rr_dvar.close()
     return
 
@@ -749,7 +749,7 @@ def plot_gevsevlev_comp_select_regions(
             gev_sev_risk_var_rr_dvar = xr.open_dataset(gevsevlev_comp_files[i_cgs_level][i_region])
             sevlev = gev_sev_risk_var_rr_dvar['sevlev']
             gevsevlev_era5 = xr.open_dataset(gevsevlev_files_era5[i_cgs_level][i_region])
-            sevlev_era5,risk_refgivenref = gevsevlev_era5['sevlev'],gevsevlev_era5['risk_refgivenexpt']
+            sevlev_era5,a_rA = gevsevlev_era5['sevlev'],gevsevlev_era5['a_rB'] #risk_refgivenexpt']
             sev_bounds = utils.padded_bounds(da_cgts_extt_era5.isel(lon=i_lon,lat=i_lat), inflation=0.5)
             risks = sevlev.coords["risk"].to_numpy() # increasing 
             ordering_for_interp = np.arange(len(risks)-1,-1,-1)
@@ -853,7 +853,13 @@ def plot_gevsevlev_comp_select_regions(
                         for ax in (axgev,axrr):
                             ax.axhline(exttemp[i_mem_special_era5], color=expt_colors['era5'], linestyle='--')
                         for ax in (axgev,axdvar):
-                            ax.axvline(risk_refgivenref.isel(boot=0).item(), color=expt_colors['era5'], linestyle='--')
+                            ax.axvline(a_rA.isel(boot=0).item(), color=expt_colors['era5'], linestyle='--')
+                    if expt_baseline == expt:
+                        for ax in (axgev,axrr):
+                            ax.axhline(gev_sev_risk_var_rr_dvar.sel(expt=expt_baseline).isel(fc_date=0)['a_rA_xB'].isel(boot=0).item(), color=expt_colors[expt_baseline], linestyle='--', linewidth=2)
+                        #for ax in (axgev,axdvar):
+                        #    ax.axvline(gev_sev_risk_var_rr_dvar.sel(expt=expt_baseline).isel(fc_date=0)['a_rA_xB_rB'].isel(boot=0).item(), color='cyan', linestyle='--', linewidth=2)
+
 
                 fc_date_abbrv = dtlib.datetime.strftime(fc_date,'%Y%m%d')
                 fc_date_label = dtlib.datetime.strftime(fc_date,'%Y/%m/%d')
@@ -1257,11 +1263,11 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
             'coarse_grain_space':               0,
             'compute_severities':               0,
             'plot_sumstats_map':                0,
-            'fit_gev':                          1,
-            'plot_gevpar_map':                  1,
-            'compute_risk':                     1, # here we might need to change the reference 
-            'plot_risk_map':                    1,
-            'plot_valatrisk_map':               1,
+            'fit_gev':                          0,
+            'plot_gevpar_map':                  0,
+            'compute_risk':                     0, # here we might need to change the reference 
+            'plot_risk_map':                    0,
+            'plot_valatrisk_map':               0,
             'fit_gev_select_regions':           1,
             'plot_gevsevlev_select_regions':    1,
             # defunct
@@ -1427,7 +1433,7 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
                 fc_dates, fc_date, onset_date, term_date, 
                 prob_symb, ext_sign, ext_symb, leq_symb, ineq_symb
                 '''),
-                is_quantmapped=(not is_earlyfree),
+                is_quantmapped=True, #(not is_earlyfree),
                 )
     return 
 

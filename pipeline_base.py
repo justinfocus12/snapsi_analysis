@@ -1013,7 +1013,10 @@ def fit_gev_select_regions(
             if gevsevlev_files_C is not None:
                 data_vars['a_rA_xC'] = xr.open_dataset(gevsevlev_files_C[i_cgs_level][i_region])['a_rA_xB']
                 a_rA_xC_rB = spgex.sf(ext_sign*data_vars['a_rA_xC'].to_numpy(), -gevpar_B.sel(param="shape").to_numpy(), gevpar_B.sel(param="loc").to_numpy(), gevpar_B.sel(param="scale").to_numpy())
-                data_vars['a_rA_xC_rB'] = xr.DataArray(coords={'boot': np.arange(n_boot+1),},data=a_rA_xC_rB)
+            else:
+                data_vars['a_rA_xC'] = data_vars['a_rA_xB'] #xr.open_dataset(gevsevlev_files_C[i_cgs_level][i_region])['a_rA_xB']
+                a_rA_xC_rB = a_rA_xB_rB #spgex.sf(ext_sign*data_vars['a_rA_xC'].to_numpy(), -gevpar_B.sel(param="shape").to_numpy(), gevpar_B.sel(param="loc").to_numpy(), gevpar_B.sel(param="scale").to_numpy())
+            data_vars['a_rA_xC_rB'] = xr.DataArray(coords={'boot': np.arange(n_boot+1),},data=a_rA_xC_rB)
             gev_sev_risk_var = xr.Dataset(data_vars=data_vars)
             gev_sev_risk_var.to_netcdf(gevsevlev_files_B[i_cgs_level][i_region])
     return
