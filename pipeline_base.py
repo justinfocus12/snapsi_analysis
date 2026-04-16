@@ -238,6 +238,7 @@ def plot_sumstats_maps_flat(
 
 
     param_bounds = xr.open_dataarray(param_bounds_file)
+    bounds_loc,bounds_scale,bounds_shape = (param_bounds.sel(param=p).to_numpy().flatten() for p in ['loc','scale','shape'])
     # TODO expand the below loop to include the context region map 
     for i_cgs_level in range(len(cgs_levels)+1):
     #for (i_cgs_level,cgs_level) in enumerate(cgs_levels):
@@ -293,17 +294,17 @@ def plot_sumstats_maps_flat(
         xr.plot.pcolormesh(
                 da_cgts_extt_ensmean,
                 cmap=plt.cm.RdYlBu_r,
-                vmin = None if diff_from_ref else np.min(ext_sign*param_bounds.sel(param='loc')).item(), 
-                vmax = None if diff_from_ref else np.max(ext_sign*param_bounds.sel(param='loc')).item(),
+                vmin = -np.max(bounds_scale) if diff_from_ref else np.min(ext_sign*param_bounds.sel(param='loc')).item(), 
+                vmax = np.max(bounds_scale) if diff_from_ref else np.max(ext_sign*param_bounds.sel(param='loc')).item(),
                 ax=axmean,
                 **pcmargs,
                 )
         xr.plot.pcolormesh(
                 da_cgts_extt_ensstd,
                 ax=axstd, 
-                cmap=plt.cm.RdYlBu_r if diff_from_ref else plt.cm.viridis,
-                vmin=None if diff_from_ref else  0, 
-                vmax=None if diff_from_ref else param_bounds.sel(param='scale',side='hi').item(),
+                cmap=plt.cm.RdYlBu_r, # if diff_from_ref else plt.cm.viridis,
+                vmin=-np.max(bounds_scale), #if diff_from_ref else  0, 
+                vmax=np.max(bounds_scale), #None if diff_from_ref else param_bounds.sel(param='scale',side='hi').item(),
                 **pcmargs,
                 )
         pcmargs['cbar_kwargs']['label'] = ''
@@ -801,8 +802,8 @@ def plot_gevpar_maps_flat(gevpar_files, ext_sign, cgs_levels, param_bounds_file,
         xr.plot.pcolormesh(
                 ext_sign*gevpar.sel(param='loc'),
                 cmap=plt.cm.RdYlBu_r,
-                vmin=None if diff_from_ref else np.min(ext_sign*bounds_loc), 
-                vmax=None if diff_from_ref else np.max(ext_sign*bounds_loc),
+                vmin=-np.max(bounds_scale) if diff_from_ref else np.min(ext_sign*bounds_loc), 
+                vmax=np.max(bounds_scale) if diff_from_ref else np.max(ext_sign*bounds_loc),
                 ax=axloc, 
                 **pcmargs,
                 )
@@ -810,9 +811,9 @@ def plot_gevpar_maps_flat(gevpar_files, ext_sign, cgs_levels, param_bounds_file,
         xr.plot.pcolormesh(
                 gevpar.sel(param='scale'),
                 ax=axscale,
-                cmap=plt.cm.RdYlBu_r if diff_from_ref else plt.cm.viridis,
-                vmin=None if diff_from_ref else 0, 
-                vmax=None if diff_from_ref else np.max(bounds_scale[1]), 
+                cmap=plt.cm.RdYlBu_r, # if diff_from_ref else plt.cm.viridis,
+                vmin=-np.max(bounds_scale), # if diff_from_ref else 0, 
+                vmax=np.max(bounds_scale), # if diff_from_ref else np.max(bounds_scale[1]), 
                 **pcmargs,
                 )
         axscale.set_title(r"Scale $\sigma$%s"%(title_addendum), loc='left', fontsize=18)
@@ -820,8 +821,8 @@ def plot_gevpar_maps_flat(gevpar_files, ext_sign, cgs_levels, param_bounds_file,
         xr.plot.pcolormesh(
                 gevpar.sel(param='shape'),
                 cmap=plt.cm.RdYlBu_r,
-                vmin=None if diff_from_ref else -np.max(np.abs(bounds_shape)), 
-                vmax=None if diff_from_ref else np.max(np.abs(bounds_shape)),
+                vmin=-np.max(np.abs(bounds_shape)), 
+                vmax=np.max(np.abs(bounds_shape)),
                 ax=axshape,
                 **pcmargs,
                 )

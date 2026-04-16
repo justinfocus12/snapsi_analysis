@@ -804,7 +804,7 @@ def plot_gevsevlev_comp_select_regions(
                         # empirical quantile shift
                         if (expt_baseline,expt) in expt_pairs:
                             dvar_emp = np.subtract(*(np.sort(da_cgts_extt.isel(lon=i_lon,lat=i_lat).sel(fc_date=fc_date,expt=e).to_numpy().flatten()) for e in [expt,expt_baseline]))
-                            axdvar.scatter(risk_empirical, dvar_emp, color=expt_colors[expt], marker='+')
+                            axdvar.scatter(risk_empirical[ordering_for_interp_empirical], dvar_emp, color=expt_colors[expt], marker='+')
                         # interpolate for relative risks
                         risks_interp = np.apply_along_axis(interp_fun, 1, sevlev_expt.to_numpy())
                         relrisk = risks_interp / risks_interp_baseline
@@ -1268,8 +1268,8 @@ def reduce_gcm(which_ssw,i_gcm,i_expt,i_init,todoflags=None):
             'compute_risk':                     0, # here we might need to change the reference 
             'plot_risk_map':                    0,
             'plot_valatrisk_map':               0,
-            'fit_gev_select_regions':           1,
-            'plot_gevsevlev_select_regions':    1,
+            'fit_gev_select_regions':           0,
+            'plot_gevsevlev_select_regions':    0,
             # defunct
             'onset_date_sensitivity_analysis':  0,
             })
@@ -1464,8 +1464,8 @@ if __name__ == "__main__":
                     if (len(sys.argv) >= 3) and (i_gcm != int(sys.argv[2])):
                         continue
                     print(f"{gcm = }")
-                    #if not (gcm in ["GRIMs",]): #"IFS" == gcm):
-                    #    continue
+                    if not (gcm in ["IFS",]): #"IFS" == gcm):
+                        continue
                     if "reduce" == procedure:
                         for i_fcdate in range(2):
                             print(f"{i_fcdate = }")
